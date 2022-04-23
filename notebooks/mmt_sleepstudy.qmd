@@ -1,0 +1,318 @@
+---
+title: "Analysis of the sleepstudy data"
+author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
+format:
+  html:
+    toc: true
+jupyter: julia-1.7
+---
+
+# Analysis of the sleepstudy data
+
+The `sleepstudy` data are from a study on the effects of sleep deprivation on response time.
+Eighteen subjects were allowed only 3 hours of time to sleep each night for 9 successive nights.
+Their reaction time was measured each day, starting the day before the first night of sleep deprivation, when the subjects were on their regular sleep schedule.
+
+::: {.callout-note}
+This description is inaccurate.
+In fact the first two days were acclimatization, the third was a baseline and sleep deprivation was only enforced after day 2.
+To allow for comparison with earlier analyses of these data we retain the old data description for this notebook only.
+:::
+
+## Loading the data
+
+First attach the MixedModels package and other packages for plotting.  The CairoMakie package allows the Makie graphics system to generate high quality static images.  Activate that package with the SVG (Scalable Vector Graphics) backend.
+
+
+```{julia}
+#| code-fold: true
+using CairoMakie
+using DataFrameMacros # simplified dplyr-like data wrangling 
+using DataFrames
+using KernelDensity
+using MixedModels
+using MixedModelsMakie
+using Random          # random number generators
+
+CairoMakie.activate!(type="svg")
+```
+
+
+The `sleepstudy` data are one of the datasets available with the `MixedModels` package.
+
+
+```{julia}
+sleepstudy = MixedModels.dataset("sleepstudy")
+```
+
+
+To display the data we use a multi-panel plot previously created with the `lattice` package in `R`.
+
+
+```{julia}
+#| eval: false
+Resource("https://github.com/palday/MixedModelsMakie.jl/blob/main/examples/sleepxy.svg?raw=true")
+
+```
+
+
+Each panel shows the data from one subject and a line fit by least squares to that subject's data.
+Starting at the lower left panel and proceeding across rows, the panels are ordered by increasing intercept of the least squares line.
+
+There are some deviations from linearity within the panels but the deviations are neither substantial nor systematic.
+
+
+## Fitting an initial model
+
+```{julia}
+contrasts = Dict(:subj => Grouping())
+progress = false
+m1 = let
+  form = @formula(reaction ~ 1+days+(1+days|subj))
+  fit(MixedModel, form, sleepstudy; contrasts, progress)
+end
+```
+
+This model includes fixed effects for the intercept, representing the typical reaction time at the beginning of the experiment with zero days of sleep deprivation, and the slope w.r.t. days of sleep deprivation.
+The parameter estimates are about 250 ms. typical reaction time without deprivation and a typical increase of 10.5 ms. per day of sleep deprivation.
+
+The random effects represent shifts from the typical behavior for each subject.
+The shift in the intercept has a standard deviation of about 24 ms. which would suggest a range of about 200 ms. to 300 ms. in the intercepts.
+Similarly within-subject slopes would be expected to have a range of about 0 ms./day up to 20 ms./day.
+
+The random effects for the slope and for the intercept are allowed to be correlated within subject.
+The estimated correlation, 0.08, is small.
+This estimate is not shown in the default display above but is shown in the output from `VarCorr` (variance components and correlations).
+
+
+```{julia}
+VarCorr(m1)
+```
+
+
+Technically, the random effects for each subject are unobserved random variables and are not "parameters" in the model per se.
+Hence we do not report standard errors or confidence intervals for these deviations.
+However, we can produce prediction intervals on the random effects for each subject.
+Because the experimental design is balanced, these intervals will have the same width for all subjects.
+
+A plot of the prediction intervals versus the level of the grouping factor (`subj`, in this case) is sometimes called a *caterpillar* plot because it can look like a fuzzy caterpillar if there are many levels of the grouping factor.
+By default, the levels of the grouping factor are sorted by increasing value of the first random effect.
+
+```{julia}
+#| code-fold: true
+#| fig-cap: Prediction intervals on random effects for model m1
+#| label: fig-m1caterpillar
+caterpillar(m1)
+```
+
+@fig-m1caterpillar reinforces the conclusion that there is little correlation between the random effect for intercept and the random effect for slope.
+
+## A model with uncorrelated random effects
+
+The `zerocorr` function applied to a random-effects term creates uncorrelated vector-valued per-subject random effects.
+
+```{julia}
+m2 = let
+  form = @formula reaction ~ 1 + days + zerocorr(1+days|subj)
+  fit(MixedModel, form, sleepstudy; contrasts, progress)
+end
+```
+
+Again, the default display doesn't show that there is no correlation parameter to be estimated in this model, but the `VarCorr` display does.
+
+```{julia}
+VarCorr(m2)
+```
+
+This model has a slightly lower log-likelihood than does `m1` and one fewer parameter than `m1`.
+A likelihood-ratio test can be used to compare these nested models.
+
+```{julia}
+MixedModels.likelihoodratiotest(m2, m1)
+```
+
+Alternatively, the AIC or BIC values can be compared.
+
+```{julia}
+#| code-fold: true
+let mods = [m2, m1]
+  DataFrame(
+    model=[:m2, :m1],
+    pars=dof.(mods),
+    geomdof=(sum ∘ leverage).(mods),
+    AIC=aic.(mods),
+    BIC=bic.(mods),
+    AICc=aicc.(mods),
+  )
+end
+```
+
+The goodness of fit measures: AIC, BIC, and AICc, are all on a "smaller is better" scale and, hence, they all prefer `m2`.
+
+The `pars` column, which is the same as the `model-dof` column in the likelihood ratio test output, is simply a count of the number of parameters to be estimated when fitting the model.
+For example, in `m2` there are two fixed-effects parameters and three variance components (including the residual variance).
+
+An alternative, more geometrically inspired definition of "degrees of freedom", is the sum of the leverage values, called `geomdof` in this table.
+
+Interestingly, the model with fewer parameters, `m2`, has a greater sum of the leverage values than the model with more parameters, `m1`.
+We're not sure what to make of that.
+
+In both cases the sum of the leverage values is toward the upper end of the range of possible values, which is the rank of the fixed-effects model matrix (2) up to the rank of the fixed-effects plus the random effects model matrix (2 + 36 = 38).
+
+::: {.callout-note}
+I think that the upper bound may be 36, not 38, because the two columns of X lie in the column span of Z
+:::
+
+This comparison does show, however, that a simple count of the parameters in a mixed-effects model can underestimate, sometimes drastically, the model complexity.
+This is because a single variance component or multiple components can add many dimensions to the linear predictor.
+
+## Some diagnostic plots
+
+In mixed-effects models the *linear predictor* expression incorporates *fixed-effects parameters*, which summarize trends for the population or certain well-defined subpopulations, and *random effects* which represent deviations associated with the *experimental units* or *observational units* - individual subjects, in this case.
+The random effects are modeled as unobserved random variables.
+
+The conditional means of these random variables, sometimes called the BLUPs or *Best Linear Unbiased Predictors*, are not simply the least squares estimates.
+They are attenuated or *shrunk* towards zero to reflect the fact that the individuals are assumed to come from a population.
+A *shrinkage plot*, @fig-m1shrinkage, shows the BLUPs from the model fit compared to the values without any shrinkage.
+If the BLUPs are similar to the unshrunk values then the more complicated model accounting for individual differences is supported.
+If the BLUPs are strongly shrunk towards zero then the additional complexity in the model to account for individual differences is not providing sufficient increase in fidelity to the data to warrant inclusion.
+
+```{julia}
+#| code-fold: true
+#| fig-cap: Shrinkage plot of means of the random effects in model m1
+#| label: fig-m1shrinkage
+shrinkageplot!(Figure(; resolution=(500,500)), m1)
+```
+
+::: {.callout-note}
+This plot could be drawn as `shrinkageplot(m1)`.
+The reason for explicitly creating a `Figure` to be modified by `shrinkageplot!` is to control the resolution.
+:::
+
+This plot shows an intermediate pattern.
+The random effects are somewhat shrunk toward the origin, a model simplification trend, but not completely shrunk - indicating that fidelity to the data is enhanced with these additional coefficients in the linear predictor.
+
+If the shrinkage were primarily in one direction - for example, if the arrows from the unshrunk values to the shrunk values were mostly in the vertical direction - then we would get an indication that we could drop the random effect for slope and revert to a simpler model.
+This is not the case here.
+
+As would be expected, the unshrunk values that are further from the origin tend to be shrunk more toward the origin.  That is, the arrows that originate furthest from the origin are longer.
+However, that is not always the case.  The arrow in the upper right corner, from `S337`, is relatively short.
+Examination of the panel for `S337` in the data plot shows a strong linear trend, even though both the intercept and the slope are unusually large.
+The neighboring panels in the data plot, `S330` and `S331`, have more variability around the least squares line and are subject to a greater amount of shrinkage in the model.
+(They correspond to the two arrows on the right hand side of the figure around -5 on the vertical scale.)
+
+## Assessing variability by bootstrapping
+
+The speed of fitting linear mixed-effects models using `MixedModels.jl` allows for using simulation-based approaches to inference instead of relying on approximate standard errors.
+A *parametric bootstrap sample* for model `m` is a collection of models of the same form as `m` fit to data values simulated from `m`.
+That is, we pretend that `m` and its parameter values are the *true* parameter values, simulate data from these values, and estimate parameters from the simulated data.
+
+Simulating and fitting a substantial number of model fits, 5000 in this case, takes only a few seconds, following which we extract a data frame of the parameter estimates and plot densities of some of these estimates.
+
+```{julia}
+rng = Random.seed!(42)    # initialize a random number generator
+m1bstp = parametricbootstrap(rng, 5000, m1; hide_progress=true)
+allpars = DataFrame(m1bstp.allpars)
+```
+
+An empirical density plot of the estimates for the fixed-effects coefficients, @fig-bsbetadensity, shows the normal distribution, "bell-curve", shape as we might expect.
+
+```{julia}
+#| code-fold: true
+#| fig-cap: Empirical density plots of bootstrap replications of fixed-effects parameter estimates
+#| label: fig-bsbetadensity
+begin
+	f1 = Figure(; resolution=(1000, 400))
+	CairoMakie.density!(
+		Axis(f1[1,1], xlabel="Intercept [ms]"),
+		@subset(allpars, :type=="β" && :names=="(Intercept)").value,
+	)
+	CairoMakie.density!(
+		Axis(f1[1,2], xlabel="Coefficient of days [ms/day]"),
+		@subset(allpars, :type=="β" && :names=="days").value,
+	)
+	f1
+end
+```
+
+It is also possible to create interval estimates of the parameters from the bootstrap replicates.
+We define the 1-α `shortestcovint` to be the shortest interval that contains a proportion 1-α (defaults to 95%) of the bootstrap estimates of the parameter.
+
+```{julia}
+DataFrame(shortestcovint(m1bstp))
+```
+
+The intervals look reasonable except that the upper bound on the interval for ρ, the correlation coefficient, is 1.0 .
+It turns out that the estimates of ρ have a great deal of variability.
+
+Even more alarming, some of these ρ values are undefined (denoted `NaN`) because the way ρ is calculated can create a division by zero.
+
+```{julia}
+describe(@select(@subset(allpars, :type=="ρ"), :value))
+```
+
+Because there are several values on the boundary (`ρ = 1.0`) and a *pulse* like this is not handled well by a density plot, we plot this sample as a histogram, @fig-correlationhist.
+
+```{julia}
+#| code-fold: true
+#| fig-cap: Histogram of bootstrap replications of the within-subject correlation parameter
+#| label: fig-correlationhist
+hist(
+	@subset(allpars, :type == "ρ", isfinite(:value)).value,
+	bins=40,
+	axis=(; xlabel="Estimated correlation of the random effects"),
+	figure=(; resolution=(500, 500)),
+)
+```
+
+Finally, density plots for the variance components (but on the scale of the standard deviation), @fig-bssigmadensity, show reasonable symmetry.
+
+```{julia}
+#| code-fold: true
+#| fig-cap: Empirical density plots of bootstrap replicates of standard deviation estimates
+#| label: fig-bssigmadensity
+begin
+	σs = @subset(allpars, :type=="σ")
+	f2 = Figure(; resolution=(1000, 300))
+	CairoMakie.density!(
+		Axis(f2[1,1], xlabel="Residual σ"),
+		@subset(σs, :group=="residual").value,
+	)
+	CairoMakie.density!(
+		Axis(f2[1,2], xlabel="subj-Intercept σ"),
+		@subset(σs, :group=="subj" && :names=="(Intercept)").value,
+	)
+	CairoMakie.density!(
+		Axis(f2[1,3], xlabel="subj-slope σ"),
+		@subset(σs, :group=="subj" && :names=="days").value,
+	)
+	f2
+end
+```
+
+The estimates of the coefficients, β₁ and β₂, are not highly correlated as shown in a scatterplot of the bootstrap estimates, @fig-bsbetacontours .
+
+```{julia}
+vcov(m1, corr=true)  # correlation estimate from the model
+```
+
+```{julia}
+#| code-fold: true
+#| fig-cap: Scatter-plot of bootstrap replicates of fixed-effects estimates with contours
+#| label: fig-bsbetacontours
+let
+	vals = disallowmissing(
+		Array(
+			select(unstack(DataFrame(m1bstp.β), :iter, :coefname, :β), Not(:iter)),
+		),
+	)
+	scatter(
+		vals,
+		color=(:blue, 0.20),
+		axis=(; xlabel="Intercept", ylabel="Coefficient of days"),
+		figure=(; resolution=(500, 500)),
+	)
+	contour!(kde(vals))
+	current_figure()
+end
+```

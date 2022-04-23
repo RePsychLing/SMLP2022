@@ -1,0 +1,101 @@
+---
+title: "Creating multi-panel plots"
+author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
+format:
+  html:
+    toc: true
+jupyter: julia-1.7
+---
+
+This notebook shows creating a multi-panel plot similar to Figure 2 of Fühner, Golle, Granacher, & Kliegl (2021).
+
+The data have been saved as an Arrow-format file.
+
+```{julia}
+#| code-fold: true
+using Arrow
+using AlgebraOfGraphics
+using CairoMakie   # for displaying static plots
+using DataFrames
+using Statistics
+using StatsBase
+
+CairoMakie.activate!(type="svg") # use SVG (other options include PNG)
+datadir = joinpath(@__DIR__, "data");
+```
+
+```{julia}
+tbl = Arrow.Table(joinpath(datadir, "fggk21.arrow"))
+```
+
+```{julia}
+typeof(tbl)
+```
+
+```{julia}
+df = DataFrame(tbl)
+typeof(df)
+```
+
+
+## Creating a summary data frame
+
+The response to be plotted is the mean score by `Test` and `Sex` and `age`, rounded to the nearest 0.1 years.
+
+The first task is to round the `age` to 1 digit after the decimal place, which can be done with `select` applied to a `DataFrame`.
+In some ways this is the most complicated expression in creating the plot so we will break it down.
+`select` is applied to `DataFrame(dat)`, which is the conversion of the `Arrow.Table`, `dat`, to a `DataFrame`.
+This is necessary because an `Arrow.Table` is immutable but a `DataFrame` can be modified.
+
+The arguments after the `DataFrame` describe how to modify the contents.
+The first `:` indicates that all the existing columns should be included.
+The other expression can be pairs (created with the `=>` operator) of the form `:col => function` or of the form `:col => function => :newname`.
+(See the [documentation of the DataFrames package](http://juliadata.github.io/DataFrames.jl/stable/) for details.)
+
+In this case the function is an anonymous function of the form `round.(x, digits=1)` where "dot-broadcasting" is used to apply to the entire column (see [this documentation](https://docs.julialang.org/en/v1/manual/functions/#man-vectorized) for details).
+
+
+```{julia}
+transform!(df, :age, :age => (x -> x .- 8.5) => :a1) # centered age (linear)
+select!(groupby(df,  :Test), :, :score => zscore => :zScore) # z-score
+tlabels = [     # establish order and labels of tbl.Test
+	"Run" => "Endurance",
+	"Star_r" => "Coordination",
+	"S20_r" => "Speed",
+	"SLJ" => "PowerLOW",	
+	"BPT" => "PowerUP",
+];
+```
+
+The next stage is a *group-apply-combine* operation to group the rows by `Sex`, `Test` and `rnd_age` then apply `mean` to the `zScore` and also apply `length` to `zScore` to record the number in each group.
+
+```{julia}
+df2 = combine(
+	groupby(
+		select(df, :, :age => ByRow(x -> round(x; digits=1)) => :age),
+		[:Sex, :Test, :age],
+	),
+	:zScore => mean => :zScore,
+	:zScore => length => :n,
+)
+```
+
+## Creating the plot
+
+The `AlgebraOfGraphics` package applies operators to the results of functions such as `data` (specify the data table to be used), `mapping` (designate the roles of columns), and `visual` (type of visual presentation).
+
+
+```{julia}
+let
+	design = mapping(:age, :zScore; color = :Sex, col = :Test)
+	lines = design * linear()
+	means = design * visual(Scatter, markersize=5)
+	data(df2) * means + data(df) * lines |> draw
+end
+```
+
+
++ TBD: Relabel factor levels (Boys, Girls; fitness components for Test)
++ TBD: Relevel factors; why not levels from Tables?
++ TBD: Set range (7.8 to 9.2 and tick marks (8, 8.5, 9) of axes.
++ TBD: Move legend in plot? 

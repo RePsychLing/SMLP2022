@@ -1,0 +1,144 @@
+---
+title: Transformed and original metrics in Emotikon
+author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
+format:
+  html:
+    toc: true
+jupyter: julia-1.7
+---
+
+In the [Fühner et al. (2021, Sci Reps)](https://www.nature.com/articles/s41598-021-97000-4) the original metric of two tasks (Star, S20) is time, but they were transformed to speed scores in the publication prior to computing z-scores.
+The critical result is the absence of evidence for the age x Sex x Test interaction.
+Is this interaction significant if we analyse all tasks in their original metric?
+
+Fitting the LMM of the publication takes time, roughly 1 hour.
+However, if you save the model parameters (and other relevant information), you can restore the fitted model object very quickly.
+The notebook also illustrates this procedure.
+
+## Getting the packages and data
+
+```{julia}
+#| code-fold: true
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie
+using DataFrames
+using DataFrameMacros
+using MixedModels
+using MixedModelsMakie
+using RCall
+using Serialization
+using StatsBase
+
+CairoMakie.activate!(type="svg")
+datadir = joinpath(@__DIR__, "data");
+```
+
+### Data and figure in publication
+
+```{julia}
+dat = DataFrame(Arrow.Table(joinpath(datadir, "fggk21.arrow")))
+@transform!(dat, :a1 = :age - 8.5);
+select!(groupby(dat, :Test), :, :score => zscore => :zScore);
+describe(dat)
+```
+
+### Data and figure with z-scores based on original metric
+
+```{julia}
+# dat_om = rcopy(R"readRDS('./data/fggk21_om.rds')");  #Don't know what the _om is
+# @transform!(dat_om, :a1 = :age - 8.5);
+# select!(groupby(dat_om, :Test), :, :score => zscore => :zScore);
+# describe(dat_om)
+```
+
+## LMMs
+
+### Contrasts
+
+```{julia}
+contrasts = Dict(
+	:Test => SeqDiffCoding(),
+	:Sex => HelmertCoding(),
+	:School => Grouping(),
+	:Child => Grouping(),
+	:Cohort => Grouping(),
+);
+```
+
+### Formula
+
+```{julia}
+f1 = @formula zScore ~ 1 + Test*a1*Sex +
+     (1+Test+a1+Sex | School) + (1+Test | Child) + 
+     zerocorr(1 + Test | Cohort);
+```
+
+
+### Restore LMM m1 from publication
++ Command for fitting LMM m1 = fit(MixedModel, f1, dat, contrasts=contr)
++ Fit statistics for LMM m1: Minimizing 5179  Time: 0 Time: 1:00:38 ( 0.70  s/it)
+
+
+```{julia}
+m1x = LinearMixedModel(f1, dat; contrasts)
+restoreoptsum!(m1x, "./fits/fggk21_m1_optsum.json")
+```
+
+```{julia}
+VarCorr(m1x)
+```
+
+
+### Restore new LMM m1_om Star and S20 in original metric
++ Command for fitting LMM m1_om = fit(MixedModel, f1, dat_om, contrasts=contr)
++ Minimizing 10502 Time: 0 Time: 2:09:40 ( 0.74  s/it)
++ Store with: julia> saveoptsum("./fits/fggk21_m1_om_optsum.json", m1_om)
++ Only for short-term and when desparate: julia> serialize("./fits/m1_om.jls", m1_om);
+
+
+ #### ... restoreoptsum!()
+
+```{julia}
+#| eval: false
+m1_om = LinearMixedModel(f1, dat; contrasts=contr);
+restoreoptsum!(m1_om, "./fits/fggk21_m1_om_optsum.json");
+```
+
+ #### ... deserialize()
+
+```{julia}
+#| eval: false
+m1x_om = deserialize("./fits/m1_om.jls")
+```
+
+```{julia}
+#| eval: false
+VarCorr(m1x_om)
+```
+
+
+### Residual diagnostics for LMM m1
+Residual plots for published LMM
+
+
+```{julia}
+#scatter(fitted(m1x), residuals(m1x)
+```
+
+```{julia}
+#qqnorm(m1x)
+```
+
+
+### Residual diagnostics for LMM m1_om
+
+Residual plots for LMM with Star and Speed in original metric.
+
+```{julia}
+#scatter(fitted(m1_om_v2), residuals(m1_om_v2)
+```
+
+```{julia}
+#qqnorm(m1_om_v2)
+```

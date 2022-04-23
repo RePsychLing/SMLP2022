@@ -1,0 +1,218 @@
+---
+title: "More on shrinkage plots"
+author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
+format:
+  html:
+    toc: true
+jupyter: julia-1.7
+---
+
+- I have stated that the likelihood criterion used to fit linear mixed-effects can be considered as balancing fidelity to the data (i.e. fits the observed data well) versus model complexity.
+- This is similar to some of the criterion used in Machine Learning (ML), except that the criterion for LMMs has a rigorous mathematical basis.
+- In the shrinkage plot we consider the values of the random-effects coefficients for the fitted values of the model versus those from a model in which there is no penalty for model complexity.
+- If there is strong subject-to-subject variation then the model fit will tend to values of the random effects similar to those without a penalty on complexity.
+- If the random effects term is not contributing much (i.e. it is "inert") then the random effects will be *shrunk* considerably towards zero in some directions.
+
+
+```{julia}
+#| code-fold: true
+using CairoMakie
+using DataFrames
+using LinearAlgebra
+using MixedModels
+using MixedModelsMakie
+using Random
+```
+
+Load the kb07 data set (don't tell Reinhold that I used these data).
+
+```{julia}
+kb07 = MixedModels.dataset(:kb07)
+```
+
+```{julia}
+contrasts = Dict(
+  :subj => Grouping(),
+  :item => Grouping(),
+  :spkr => HelmertCoding(),
+  :prec => HelmertCoding(),
+  :load => HelmertCoding(),
+)
+progress = false
+m1 = let
+  form = @formula(
+    rt_trunc ~ 1 + spkr * prec * load +
+	(1+spkr+prec+load|subj) + 
+	(1+spkr+prec+load|item)
+  )
+  fit(MixedModel, form, kb07; contrasts, progress)
+end
+```
+
+```{julia}
+VarCorr(m1)
+```
+
+```{julia}
+issingular(m1)
+```
+
+```{julia}
+print(m1)
+```
+
+
+## Expressing the covariance of random effects
+
+Earlier today we mentioned that the parameters being optimized are from a "matrix square root" of the covariance matrix for the random effects.
+There is one such lower triangular matrix for each grouping factor.
+
+
+```{julia}
+l1 = first(m1.λ)   # Cholesky factor of relative covariance for subj
+```
+
+Notice the zero on the diagonal.  A triangular matrix with zeros on the diagonal is singular.
+
+```{julia}
+l2 = last(m1.λ)    # this one is not singular
+```
+
+To regenerate the covariance matrix we need to know that the covariance is not the *square* of `l1`, it is `l1 * l1'` (so that the result is symmetric) and multiplied by σ̂²
+
+```{julia}
+Σ₁ = varest(m1) .* (l1 * l1')
+```
+
+```{julia}
+diag(Σ₁)  # compare to the variance column in the VarCorr output
+```
+
+```{julia}
+sqrt.(diag(Σ₁))
+```
+
+## Shrinkage plots
+
+```{julia}
+#| label: fig-m1shrinkage
+#| fig-cap: Shrinkage plot of model m1
+#| code-fold: true
+shrinkageplot(m1)
+```
+
+The upper left panel shows the perfect negative correlation for those two components of the random effects.
+
+```{julia}
+shrinkageplot(m1, :item)
+```
+
+```{julia}
+X1 = Int.(m1.X')
+```
+
+```{julia}
+X1 * X1'
+```
+
+## How to interpret a shrinkage plot
+
+- Extreme shrinkage (shrunk to a line or to a point) is easy to interpret - the term is not providing benefit and can be removed.
+- When the range of the blue dots (shrunk values) is comparable to those of the red dots (unshrunk) it indicates that the term after shrinkage is about as strong as without shrinkage.
+- By itself, this doesn't mean that the term is important.  In some ways you need to get a feeling for the absolute magnitude of the random effects in addition to the relative magnitude.
+- Small magnitude and small relative magnitude indicate you can drop that term
+
+## Conclusions from these plots
+- Only the intercept for the `subj` appears to be contributing explanatory power
+- For the `item` both the intercept and the `spkr` appear to be contributing
+
+```{julia}
+m2 = let
+  form = @formula(rt_trunc ~ 1 + prec*spkr*load + (1|subj) + (1+prec|item))
+  fit(MixedModel, form, kb07; contrasts, progress)
+end
+```
+
+```{julia}
+VarCorr(m2)
+```
+
+```{julia}
+#| fig-cap: Shrinkage plot of model m2
+#| label: fig-m2shrinkage
+#| code-fold: true
+shrinkageplot(m2)
+```
+
+```{julia}
+m3 = let
+  form = @formula(rt_trunc ~ 1 + prec + spkr + load + (1|subj) + (1+prec|item))
+  fit(MixedModel, form, kb07; contrasts, progress)
+end
+```
+
+```{julia}
+VarCorr(m3)
+```
+
+```{julia}
+rng = Random.seed!(1234321);
+```
+
+```{julia}
+m3btstrp = parametricbootstrap(rng, 2000, m3);
+```
+
+```{julia}
+DataFrame(shortestcovint(m3btstrp))
+```
+
+```{julia}
+ridgeplot(m3btstrp)
+```
+
+```{julia}
+ridgeplot(m3btstrp; show_intercept=false)
+```
+
+```{julia}
+m4 = let
+  form = @formula(rt_trunc~1+prec+spkr+load+(1+prec|item)+(1|subj))
+  fit(MixedModel, form, kb07; contrasts, progress)
+end
+```
+
+```{julia}
+m4bstrp = parametricbootstrap(rng, 2000, m4);
+```
+
+```{julia}
+ridgeplot(m4bstrp; show_intercept=false)
+```
+
+```{julia}
+DataFrame(shortestcovint(m4bstrp))
+```
+
+```{julia}
+VarCorr(m4)
+```
+
+```{julia}
+#| code-fold: true
+let mods = [m1, m2, m4]
+	DataFrame(geomdof = (sum ∘ leverage).(mods),
+		npar = dof.(mods),
+		deviance = deviance.(mods),
+		AIC = aic.(mods),
+		BIC = bic.(mods),
+		AICc = aicc.(mods),
+	)
+end
+```
+
+```{julia}
+#| label: fig-scatterm4
+#| fig-cap: Residuals versus fitted values for model m4
+scatter(fitted(m4), residuals(m4))
+```

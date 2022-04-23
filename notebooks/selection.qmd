@@ -1,0 +1,52 @@
+---
+jupyter:
+  kernelspec:
+    name: julia-1.7
+    display_name: Julia 1.7.2
+    language: julia
+---
+
+```{julia}
+#| code-fold: true
+using Arrow
+using CairoMakie
+using DataFrames
+CairoMakie.activate!(type="svg") # use SVG (other options include PNG)
+```
+
+```{julia}
+tbl = Arrow.Table("./data/fggk21.arrow")
+```
+
+```{julia}
+df = DataFrame(tbl)
+describe(df)
+```
+## Raw score density
+
+```{julia}
+let
+	fdensity = Figure(resolution = (1000, 500))
+	axs = Axis(fdensity[1,1])
+	tdf = filter(:Test => ==(test), df)
+	colors = Makie.cgrad(:PuOr_4, 2; categorical=true, alpha=0.6)
+	if by_sex
+		density!(
+			axs,
+			filter(:Sex => ==("female"), tdf).score,
+			color=colors[1],
+			label="Girls",
+		)
+		density!(
+			axs,
+			filter(:Sex => ==("male"), tdf).score,
+			color=colors[2],
+			label="Boys",
+		)
+		axislegend(axs, position = :lt)
+	else
+		density!(axs, tdf.score)
+	end
+	fdensity
+end
+```
