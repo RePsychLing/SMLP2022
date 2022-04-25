@@ -1,5 +1,6 @@
 ---
-title: 'Basics with Emotikon Project'
+title: Basics with Emotikon Project
+jupyter: julia-1.7
 ---
 
 This script uses a subset of data reported in @Fuehner2021.
@@ -38,7 +39,6 @@ datadir = joinpath(@__DIR__, "data")
 ProgressMeter.ijulia_behavior(:clear)
 CairoMakie.activate!(type="svg")
 ```
-
 
 ## Readme
 
@@ -84,7 +84,7 @@ recode!(df.Test,
 describe(df)
 ```
 
-#### 1.2.2 Transformations
+#### Transformations
 We center `age` at 8.5 years and compute z-scores for each `Test`.
 With these variables the data frame `df` contains all variables used for the final model in the original publication.
 
@@ -107,7 +107,6 @@ If they are not in the theoretical focus, but serve as statistical control varia
 
  **Stratified sampling:**  We generate a `Child` table with information about children. `MersenneTwister(42)` specifies **42** as the seed for the random number generator to ensure reproducibility of the stratification. For a different pattern of results choose, for example, **84**. We randomly sample 1000 boys and 1000 girls from this table; they are stored in `samp`. Then, we extract the corresponding subset of these children's test scores from `df` and store them `dat`.  
 
-
 ```{julia}
 Child = unique(select(df, :Cohort, :School, :Child, :Sex, :age))
 sample = let
@@ -129,13 +128,13 @@ df2 = combine(
   groupby(
     select(df, :, :age => ByRow(x -> round(x; digits=1)) => :age),
       [:Sex, :Test, :age],
-	),
-	:zScore => mean => :zScore,
-	:zScore => length => :n,
+  ),
+  :zScore => mean => :zScore,
+  :zScore => length => :n,
 )
 ```
 
-#### 1.3.1  Figure(s) of interaction
+#### Figure(s) of interaction
 
 The core results of the article are reported in Figure 2 of @Fuehner2021. In summary:
 
@@ -146,7 +145,7 @@ The core results of the article are reported in Figure 2 of @Fuehner2021. In sum
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: 'Age trends by sex for each Test for the full data set'
+#| fig-cap: Age trends by sex for each Test for the full data set
 #| label: fig-agetrends
 let
   design1 = mapping(:age, :zScore; color = :Sex, col = :Test)
@@ -176,7 +175,6 @@ Most people want to know the signficance of these five Sex x age interactions.
 The theoretical focus of the article, however, is on comparisons between tests displayed next to each other.
 We ask whether the degree of parallelism is statistically the same for `Endurance` and `Coordination` (H1), `Coordination` and `Speed` (H2), `Speed` and `PowerLOW` (H3), and `PowerLow` and `PowerUP` (H4). Hypotheses H1 to H4 require `Sequential Difference` contrasts c1 to c4 for `Test`; they are tested as fixed effects for``H1 x age x Sex`, `H2 x age x Sex`, `H3 x age x Sex`, and `H4 x age x Sex`. 
 
-
 ```{julia}
 #| code-fold: true
 dat2 = 
@@ -184,15 +182,15 @@ dat2 =
     groupby(
       select(dat, :, :age => ByRow(x -> round(x; digits=1)) => :age),
       [:Sex, :Test, :age],
-	),
-	:zScore => mean => :zScore,
-	:zScore => length => :n,
+    ),
+  :zScore => mean => :zScore,
+  :zScore => length => :n,
 )
 ```
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: 'Age trends by sex for each Test for the stratified sample'
+#| fig-cap: Age trends by sex for each Test for the stratified sample
 #| label: fig-agetrendssamp
 let
   design2 = mapping(:age, :zScore; color = :Sex, col = :Test)
@@ -231,7 +229,7 @@ combine(
 )
 ```
 
-### 1.4 _SeqDiffCoding_ of `Test`
+### _SeqDiffCoding_ of `Test`
 
 _SeqDiffCoding_ was used in the publication. This specification tests pairwise 
 differences between the five neighboring levels of `Test`, that is: 
@@ -258,7 +256,7 @@ recode!(
   "Speed" => "S20_r",
   "PowerLOW" => "SLJ",
   "PowerUP" => "BMT"
-)	
+)
 contrasts = merge(
   Dict(nm => SeqDiffCoding() for nm in (:Test, :Sex)),
   Dict(nm => Grouping() for nm in (:Child, :School, :Cohort)),
@@ -286,7 +284,7 @@ We ignore the other two random factors `Child` and `Cohort` to avoid undue delay
 
 In a final part illustrate how to check whether the complex model is supported by the data, rather than leading to a singular fit and, if supported by the data, whether there is an increase in goodness of fit associated with the model complexification. 
 
-### 2.1 LMM `m_ovi`
+### LMM `m_ovi`
 
 In its random-effect structure (RES) we only vary intercepts (i.e., Grand Means) for `School` (LMM `m_ovi`), that is we allow that the schools differ in the average fitness of its children, average over the five tests.
 
@@ -308,7 +306,7 @@ issingular(m_ovi)
 
 Models varying only in intercepts are almost always supported by the data.
 
-### 2.2 LMM `m_zcp`
+### LMM `m_zcp`
 
 In this LMM we allow that schools differ not only in `GM`, but also in the size of the four contrasts defined for `Test`, in the difference between boys and girls (`Sex`) and the developmental gain children achieve within the third grade (`age`). 
 
@@ -318,7 +316,7 @@ We assume that there is covariance associated with these CPs beyond residual noi
 m_zcp = let
   f = @formula(
     zScore ~ 1 + Test * Sex * a1 +
-	zerocorr(1 + Test + Sex + a1 | School)
+    zerocorr(1 + Test + Sex + a1 | School)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -330,7 +328,7 @@ Depending on sampling, this model estimating variance components for `School`  m
 issingular(m_zcp)
 ```
 
-### 2.3 LMM `m_cpx`
+### LMM `m_cpx`
 
 In the complex LMM investigated in this sequence we give up the assumption of zero-correlation between VCs.
 
@@ -338,7 +336,7 @@ In the complex LMM investigated in this sequence we give up the assumption of ze
 m_cpx = let
   f =  @formula(
     zScore ~ 1 + Test * Sex * a1 +
-      (1 + Test + Sex + a1| School)
+    (1 + Test + Sex + a1| School)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -356,11 +354,11 @@ issingular(m_cpx)
 
 The complex model may or may not be supported by the data.
 
-### 2.4 Model comparisons
+### Model comparisons
 
 The checks of model singularity indicate that the three models are supported by the data. Does model complexification also increase the goodness of fit or are we only fitting noise?
 
-#### 2.4.1 LRT and goodness-of-fit statistics
+#### LRT and goodness-of-fit statistics
 
 As the thee models are strictly hierarchically nested, we compare them with a likelihood-ratio tests (LRT) and AIC and BIC goodness-of-fit statistics derived from them.
 
@@ -371,9 +369,11 @@ MixedModels.likelihoodratiotest(m_ovi, m_zcp, m_cpx)
 ```{julia}
 #| code-fold: true
 gof_summary = let
-  mods = [m_ovi, m_zcp, m_cpx];
+  nms = [:m_ovi, :m_zcp, :m_cpx]
+  mods = eval.(nms)
   DataFrame(
-    dof=dof.(mods),
+    name = nms,
+    dof = dof.(mods),
     deviance=deviance.(mods),
     AIC = aic.(mods),
     AICc = aicc.(mods),
@@ -390,7 +390,7 @@ Therefore, it is not always the case that the criteria are unanimous in their ve
 Basicly, the more confirmatory the analysis, the more one may go with deviance and AIC; for exploratory analyses the BIC is probably a better guide.
 There are grey zones here. 
 
-#### 2.4.2 Comparing fixed effects of `m_ovi`, `m_zcp`, and `m_cpx`
+#### Comparing fixed effects of `m_ovi`, `m_zcp`, and `m_cpx`
 
 We check whether enriching the RES changed the significance of fixed effects in the final model.  
 
@@ -432,7 +432,7 @@ In general, dropping significant variance components and/or correlation paramete
 Basically, some of the variance allocated to `age` and `Sex` in LMM `m_ovi` could also be due to differences between schools.
 This ambiguity increased the uncertainty of the respective fixed effects in the other two LMMs.
 
-### 2.5 Fitting an overparameterized LMM
+### Fitting an overparameterized LMM
 
 The complex LMM was not overparameterized with respect to `School`, because there are over 400 schools in the data.
 When the number of units (levels) of a grouping factor is small relative to the number of parameters we are trying to estimate, we often end up with an overparameterized / degenerate random-effect structure. 
@@ -581,7 +581,7 @@ RK: The order of RE terms is critical. In formula `f2` the `zerocorr()` term mus
 VarCorr(m2)
 ```
 
-### 2.7 Principle Component Analysis of Random Effect Structure (rePCA)
+### Principle Component Analysis of Random Effect Structure (rePCA)
 
 The `ìssingular()` command is sort of a shortcut for a quick inspection of the principle components (PCs) of the variance-covariance matrix of the RES. With the `MixedModels.PCA()` command, we also obtain information about the amount of cumulative variance accounted for as we add PCs. 
 
@@ -661,13 +661,18 @@ The size and direction of interaction effects correspond with what is shown in @
 
 ```{julia}
 #| code-fold: true
-gof_summary3 = DataFrame(
-  dof=dof.([m1, m2, m2_nested]),
-  deviance=deviance.([m1, m2, m2_nested]),
-  AIC = aic.([m1, m2, m2_nested]), 
-  AICc = aicc.([m1, m2, m2_nested]), 
-  BIC = bic.([m1, m2, m2_nested])
-)
+gof_summary3 = let
+  nms = [:m1, :m2, :m2_nested]
+  mods = eval.(nms)
+  DataFrame(
+    name = nms,
+    dof=dof.(mods),
+    deviance=deviance.(mods),
+    AIC = aic.(mods),
+    AICc = aicc.(mods), 
+    BIC = bic.(mods)
+  )
+end
 ```
 
 ```{julia}
@@ -709,13 +714,13 @@ m1.feterm.rank
 dof(m1)
 ```
 
-## 4. Glossary of _MixedModels.jl_ commands
+## Glossary of _MixedModels.jl_ commands
 
 Here we introduce most of the commands available in the _MixedModels.jl_ package that allow the immediated inspection and analysis of results returned in a fitted _linear_ mixed-effect model. 
 
 Postprocessing related to conditional modes will be dealt with in a different tutorial.
 
-### 4.1 Overall summary statistics
+### Overall summary statistics
 
 ```
 + julia> m1.optsum         # MixedModels.OptSummary:  gets all info 
@@ -730,7 +735,6 @@ Postprocessing related to conditional modes will be dealt with in a different tu
 + julia> aic(m1)           # objective(m1) + 2*dof(m1)
 + julia> bic(m1)           # objective(m1) + dof(m1)*log(nobs(m1))
 ```
-
 
 ```{julia}
 m1.optsum            # MixedModels.OptSummary:  gets all info
@@ -776,8 +780,7 @@ aic(m1)  # objective(m1) + 2*dof(m1)
 bic(m1)  # objective(m1) + dof(m1)*log(nobs(m1))
 ```
 
-
-### 4.2 Fixed-effect statistics
+### Fixed-effect statistics
 ```
 + julia> coeftable(m1)     # StatsBase.coeftable: fixed-effects statiscs; 
 						     default level=0.95
@@ -832,7 +835,7 @@ stderror(m1)       # StatsBase.stderror: SE for fixed-effects coefficients
 propertynames(m1)  # names of available extractors
 ```
 
-### 5.3 Covariance parameter estimates
+### Covariance parameter estimates
 These commands inform us about the model parameters associated with the RES.
 ```
 + julia> issingular(m1)        # Test singularity for param. vector m1.theta
@@ -881,7 +884,7 @@ m2.θ
 BlockDescription(m2)
 ```
 
-### 5.4 Model "predictions" 
+### Model "predictions" 
 These commands inform us about extracion of conditional modes/means and (co-)variances, that using the model parameters to improve the predictions for units (levels) of the grouping (random) factors. We need this information, e.g., for partial-effect response profiles (e.g., facet plot) or effect profiles (e.g., caterpillar plot), or visualizing the borrowing-strength effect for correlation parameters (e.g., shrinkage plots).
 We are using the fit of LMM `m2`.
 
@@ -896,7 +899,7 @@ Some plotting functions are currently available from the `MixedModelsMakie` pack
 + julia> shrinkage!(m2)
 ```
 
-#### 5.4.1 Conditional covariances
+#### Conditional covariances
 
 ```{julia}
 condVar(m1)
@@ -906,39 +909,39 @@ condVar(m1)
 condVar(m2)
 ```
 
-
 They are hard to look at.
 Let's take pictures.
 
-#### 5.4.2 Caterpillar plots
+#### Caterpillar plots
 
 ```{julia}
 #| code-fold: true
 #| label: fig-caterpillarCohort
-#| fig-cap: 'Prediction intervals of the random effects for Cohort in model m1'
+#| fig-cap: Prediction intervals of the random effects for Cohort in model m1
 caterpillar!(
   Figure(; resolution=(800,400)),
   ranefinfo(m1, :Cohort),
 )
 ```
 
-#### 5.4.3 Shrinkage plots
+#### Shrinkage plots
 
 These are just teasers. We will pick this up in a separate tutorial. Enjoy! 
 
 ```{julia}
 #| code-fold: true
 #| label: fig-m1shrinkageCohort
-#| fig-cap: 'Shrinkage plot of the random effects for Cohort in model m1'
+#| fig-cap: Shrinkage plot of the random effects for Cohort in model m1
 shrinkageplot!(Figure(; resolution=(800,800)), m1, :Cohort)
 ```
 
 ```{julia}
 #| code-fold: true
 #| label: fig-m2shrinkageCohort
-#| fig-cap: 'Shrinkage plot of the random effects for Cohort in model m2'
+#| fig-cap: Shrinkage plot of the random effects for Cohort in model m2
 shrinkageplot!(Figure(; resolution=(800,800)), m2, :Cohort)
 ```
 
 ::: {#refs}
 :::
+

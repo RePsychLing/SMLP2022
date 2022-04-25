@@ -25,7 +25,7 @@ describe(df)
 ## Raw score density
 
 ```{julia}
-let
+#| eval: false
 	fdensity = Figure(resolution = (1000, 500))
 	axs = Axis(fdensity[1,1])
 	tdf = filter(:Test => ==(test), df)

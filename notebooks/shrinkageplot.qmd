@@ -1,9 +1,5 @@
 ---
 title: "More on shrinkage plots"
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-format:
-  html:
-    toc: true
 jupyter: julia-1.7
 ---
 
@@ -42,8 +38,8 @@ progress = false
 m1 = let
   form = @formula(
     rt_trunc ~ 1 + spkr * prec * load +
-	(1+spkr+prec+load|subj) + 
-	(1+spkr+prec+load|item)
+	  (1+spkr+prec+load|subj) + 
+	  (1+spkr+prec+load|item)
   )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
@@ -60,7 +56,6 @@ issingular(m1)
 ```{julia}
 print(m1)
 ```
-
 
 ## Expressing the covariance of random effects
 
@@ -145,6 +140,7 @@ shrinkageplot(m2)
 ```
 
 ```{julia}
+#| lst-label: m1def
 m3 = let
   form = @formula(rt_trunc ~ 1 + prec + spkr + load + (1|subj) + (1+prec|item))
   fit(MixedModel, form, kb07; contrasts, progress)
@@ -168,10 +164,14 @@ DataFrame(shortestcovint(m3btstrp))
 ```
 
 ```{julia}
+#| label: fig-ridgeplot
+#| fig-cap: 'Ridge plot of the fixed-effects coefficients from the bootstrap sample'
 ridgeplot(m3btstrp)
 ```
 
 ```{julia}
+#| label: fig-ridgeplotnoint
+#| fig-cap: 'Ridge plot of the fixed-effects coefficients from the bootstrap sample (with the intercept)'
 ridgeplot(m3btstrp; show_intercept=false)
 ```
 

@@ -1,14 +1,11 @@
 ---
-title: "Analysis of the sleepstudy data"
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-format:
-  html:
-    toc: true
+title: Analysis of the sleepstudy data
+execute: 
+  keep-ipynb: true
 jupyter: julia-1.7
-bibliography: references.bib
 ---
 
-The `sleepstudy` data are from a study [@Balkin2000], [@Belenky2003] of the effects of sleep deprivation on response time.
+The `sleepstudy` data are from a study of the effects of sleep deprivation on response time reported in  @Balkin2000 and in @Belenky2003.
 Eighteen subjects were allowed only 3 hours of time to sleep each night for 9 successive nights.
 Their reaction time was measured each day, starting the day before the first night of sleep deprivation, when the subjects were on their regular sleep schedule.
 
@@ -23,7 +20,6 @@ To allow for comparison with earlier analyses of these data we retain the old da
 First attach the MixedModels package and other packages for plotting.
 The CairoMakie package allows the Makie graphics system [@Danisch2021] to generate high quality static images.
 Activate that package with the SVG (Scalable Vector Graphics) backend.
-
 
 ```{julia}
 #| code-fold: true
@@ -49,7 +45,7 @@ sleepstudy = MixedModels.dataset("sleepstudy")
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: "Average response time versus days of sleep deprivation by subject"
+#| fig-cap: Average response time versus days of sleep deprivation by subject
 #| label: fig-xyplotsleep
 RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=4.5)
 R"""
@@ -133,7 +129,7 @@ Again, the default display doesn't show that there is no correlation parameter t
 VarCorr(m2)
 ```
 
-This model has a slightly lower log-likelihood than does @lst-m1 and one fewer parameter than `m1`.
+This model has a slightly lower log-likelihood than does `m1` and one fewer parameter than `m1`.
 A likelihood-ratio test can be used to compare these nested models.
 
 ```{julia}
@@ -163,7 +159,7 @@ For example, in `m2` there are two fixed-effects parameters and three variance c
 
 An alternative, more geometrically inspired definition of "degrees of freedom", is the sum of the leverage values, called `geomdof` in this table.
 
-Interestingly, the model with fewer parameters, @lst-m2, has a greater sum of the leverage values than the model with more parameters, `m1`.
+Interestingly, the model with fewer parameters, `m2`, has a greater sum of the leverage values than the model with more parameters, `m1`.
 We're not sure what to make of that.
 
 In both cases the sum of the leverage values is toward the upper end of the range of possible values, which is the rank of the fixed-effects model matrix (2) up to the rank of the fixed-effects plus the random effects model matrix (2 + 36 = 38).
@@ -229,7 +225,7 @@ An empirical density plot of the estimates for the fixed-effects coefficients, @
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: Empirical density plots of bootstrap replications of fixed-effects parameter estimates
+#| fig-cap: 'Empirical density plots of bootstrap replications of fixed-effects parameter estimates'
 #| label: fig-bsbetadensity
 begin
 	f1 = Figure(; resolution=(1000, 400))
@@ -265,7 +261,7 @@ Because there are several values on the boundary (`ρ = 1.0`) and a *pulse* like
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: Histogram of bootstrap replications of the within-subject correlation parameter
+#| fig-cap: 'Histogram of bootstrap replications of the within-subject correlation parameter'
 #| label: fig-correlationhist
 hist(
 	@subset(allpars, :type == "ρ", isfinite(:value)).value,
@@ -279,7 +275,7 @@ Finally, density plots for the variance components (but on the scale of the stan
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: Empirical density plots of bootstrap replicates of standard deviation estimates
+#| fig-cap: 'Empirical density plots of bootstrap replicates of standard deviation estimates'
 #| label: fig-bssigmadensity
 begin
 	σs = @subset(allpars, :type=="σ")
@@ -308,7 +304,7 @@ vcov(m1, corr=true)  # correlation estimate from the model
 
 ```{julia}
 #| code-fold: true
-#| fig-cap: Scatter-plot of bootstrap replicates of fixed-effects estimates with contours
+#| fig-cap: 'Scatter-plot of bootstrap replicates of fixed-effects estimates with contours'
 #| label: fig-bsbetacontours
 let
 	vals = disallowmissing(
@@ -329,3 +325,4 @@ end
 
 ::: {#refs}
 :::
+

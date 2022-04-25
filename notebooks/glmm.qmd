@@ -1,15 +1,14 @@
 ---
 title: "Generalized linear mixed models"
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-format:
-  html:
-    toc: true
+execute: 
+  keep-ipynb: true
 jupyter: julia-1.7
 ---
 
 Load the packages to be used
 ```{julia}
 #| code-fold: true
+using AlgebraOfGraphics
 using CairoMakie
 using DataFrameMacros
 using DataFrames
@@ -100,19 +99,19 @@ In symbols we would write the *linear predictor expression* as
 $$
 \boldsymbol{\eta} = \mathbf{X}\boldsymbol{\beta} +\mathbf{Z b}
 $$
-where $\eta$ has 180 elements, $\beta$ has 2 elements, $\bf b$ has 36 elements, $\bf X$ is of size 180 × 2 and $\bf Z$ is of size 180 × 36.
+where $\boldsymbol{\eta}$ has 180 elements, $\boldsymbol{\beta}$ has 2 elements, $\bf b$ has 36 elements, $\bf X$ is of size 180 × 2 and $\bf Z$ is of size 180 × 36.
 
-For a linear model or linear mixed model the linear predictor **is** the mean response, $\mu$.
+For a linear model or linear mixed model the linear predictor **is** the mean response, $\boldsymbol\mu$.
 That is, we can write the probability model in terms of a 180-dimensional random variable, $\mathcal Y$, for the response and a 36-dimensional random variable, $\mathcal B$, for the random effects as
 $$
 \begin{aligned}
-  (\mathcal{Y} | \mathcal{B}=\bf{b}) &\sim\mathcal{N}(\bf{ X\beta + Z b},\sigma^2\bf{I})\\\\
-  \mathcal{B}&\sim\mathcal{N}(\bf{0},\Sigma_\theta) .
+  (\mathcal{Y} | \mathcal{B}=\bf{b}) &\sim\mathcal{N}(\bf{ X\boldsymbol\beta + Z b},\sigma^2\bf{I})\\\\
+  \mathcal{B}&\sim\mathcal{N}(\bf{0},\boldsymbol{\Sigma}_{\boldsymbol\theta}) .
 \end{aligned}
 $$
-where $\Sigma_\theta$ is a 36 × 36 symmetric covariance matrix that has a special form - it consists of 18 diagonal blocks, each of size 2 × 2 and all the same.
+where $\boldsymbol{\Sigma}_\boldsymbol{\theta}$ is a 36 × 36 symmetric covariance matrix that has a special form - it consists of 18 diagonal blocks, each of size 2 × 2 and all the same.
 
-Recall that this symmetric matrix can be constructed from the parameters θ, which generate the lower triangular matrix λ, and the estimate σ̂².
+Recall that this symmetric matrix can be constructed from the parameters $\boldsymbol\theta$, which generate the lower triangular matrix $\boldsymbol\lambda$, and the estimate $\widehat{\sigma^2}$.
 
 
 ```{julia}
@@ -138,7 +137,7 @@ VarCorr(m1)
 
 Writing the model for $\mathcal Y$ as
 $$
-(\mathcal{Y} | \mathcal{B}=\bf{b})\sim\mathcal{N}(\bf{ X\beta + Z b},\sigma^2\bf{I})
+(\mathcal{Y} | \mathcal{B}=\bf{b})\sim\mathcal{N}(\bf{ X\boldsymbol\beta + Z b},\sigma^2\bf{I})
 $$
 may seem like over-mathematization (or "overkill", if you prefer) relative to expressions like
 $$
@@ -147,16 +146,19 @@ $$
 but this more abstract form is necessary for generalizations.
 
 The way that I read the first form is
-> The conditional distribution of the response vector, $\mathcal Y$, given that the random effects vector, $\mathcal B =\bf b$, is a multivariate normal (or *Gaussian*) distribution whose mean, $\mu$, is the linear predictor, $\eta=\bf X\beta+Zb$, and whose covariance matrix is $\sigma^2\bf I$.  That is, conditional on $\bf b$, the elements of $\mathcal Y$ are independent normal random variables with constant variance, $\sigma^2$, and means of the form $\mu = \eta = \bf X\beta+Zb$.
+:::{.callout}
+The conditional distribution of the response vector, $\mathcal Y$, given that the random effects vector, $\mathcal B =\bf b$, is a multivariate normal (or *Gaussian*) distribution whose mean, $\boldsymbol\mu$, is the linear predictor, $\boldsymbol\eta=\bf{X\boldsymbol\beta+Zb}$, and whose covariance matrix is $\sigma^2\bf I$.  That is, conditional on $\bf b$, the elements of $\mathcal Y$ are independent normal random variables with constant variance, $\sigma^2$, and means of the form $\boldsymbol\mu = \boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}$.
 
-So the only things that differ in the distributions of the $y_i$'s are the means and they are determined by this linear predictor, $\eta = \bf X\beta+Zb$.
+So the only things that differ in the distributions of the $y_i$'s are the means and they are determined by this linear predictor, $\boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}$.
 
 ## Generalized Linear Mixed Models
 
 Consider first a GLMM for a vector, $\bf y$, of binary (i.e. yes/no) responses.
-The probability model for the conditional distribution $\mathcal Y|\mathcal B=\bf b$ consists of independent [Bernoulli distributions](https://en.wikipedia.org/wiki/Bernoulli_distribution) where the mean, $\mu_i$, for the i'th response is again determined by the i'th element of a *linear predictor*, $\eta = \mathbf{X}\beta+\mathbf{Z b}$.
+The probability model for the conditional distribution $\mathcal Y|\mathcal B=\bf b$ consists of independent [Bernoulli distributions](https://en.wikipedia.org/wiki/Bernoulli_distribution) where the mean, $\mu_i$, for the i'th response is again determined by the i'th element of a *linear predictor*, $\boldsymbol\eta = \mathbf{X}\boldsymbol\beta+\mathbf{Z b}$.
 
-However, in this case we will run into trouble if we try to make $\mu=\eta$ because $\mu_i$ is the probability of "success" for the i'th response and must be between 0 and 1.  We can't guarantee that the i'th component of $\eta$ will be between 0 and 1.  To get around this problem we apply a transformation to take $\eta_i$ to $\mu_i$.
+However, in this case we will run into trouble if we try to make $\boldsymbol\mu=\boldsymbol\eta$ because $\mu_i$ is the probability of "success" for the i'th response and must be between 0 and 1.
+We can't guarantee that the i'th component of $\boldsymbol\eta$ will be between 0 and 1.
+To get around this problem we apply a transformation to take $\eta_i$ to $\mu_i$.
 For historical reasons this transformation is called the *inverse link*, written $g^{-1}$, and the opposite transformation - from the probability scale to an unbounded scale - is called the *link*, g.
 
 Each probability distribution in the [exponential family](https://en.wikipedia.org/wiki/Exponential_family) (which is most of the important ones), has a *canonical link* which comes from the form of the distribution itself.  The details aren't as important as recognizing that the distribution itself determines a preferred link function.
@@ -186,8 +188,8 @@ end
 To reiterate, the probability model for a Generalized Linear Mixed Model (GLMM) is
 $$
 \begin{aligned}
-  (\mathcal{Y} | \mathcal{B}=\bf{b}) &\sim\mathcal{D}(\bf{g^{-1}(X\beta + Z b)},\phi)\\\\
-  \mathcal{B}&\sim\mathcal{N}(\bf{0},\Sigma_\theta) .
+  (\mathcal{Y} | \mathcal{B}=\bf{b}) &\sim\mathcal{D}(\bf{g^{-1}(X\boldsymbol\beta + Z b)},\phi)\\\\
+  \mathcal{B}&\sim\mathcal{N}(\bf{0},\Sigma_{\boldsymbol\theta}) .
 \end{aligned}
 $$
 where $\mathcal{D}$ is the distribution family (such as Bernoulli or Poisson), $g^{-1}$ is the inverse link and $\phi$ is a scale parameter for $\mathcal{D}$ if it has one.
@@ -216,8 +218,22 @@ If we fit a model with only the `age` term in the fixed effects, that term will 
 This doesn't mean that there is no "age effect", it only means that there is no significant linear effect for `age`.
 
 ```{julia}
-#| eval: false
-Resource("https://github.com/RePsychLing/SMLP2021/blob/main/notebooks/contra.svg?raw=true")
+#| code-fold: true
+#| fig-cap: Smoothed relative frequency of contraception use versus centered age for women in the 1989 Bangladesh Fertility Survey
+#| label: fig-contradata
+draw(
+  data(@transform(
+      contra,
+      :numuse = Int(:use == "Y"),
+      :urb = ifelse(:urban == "Y", "Urban", "Rural")
+      )) *
+  mapping(
+    :age => "Centered age (yr)",
+    :numuse => "Frequency of contraception use";
+    col = :urb,
+    color = :livch) * smooth();
+  figure=(; resolution=(800, 450)),
+)
 ```
 
 ```{julia}
@@ -252,7 +268,7 @@ VarCorr(gm1)
 Notice that there is no "residual" variance being estimated.
 This is because the Bernoulli distribution doesn't have a scale parameter.
 
-### Reducing the levels of `livch` to `no children` versus `children`.
+### Convert `livch` to a binary factor
 
 ```{julia}
 @transform!(contra, :children = :livch ≠ "0")

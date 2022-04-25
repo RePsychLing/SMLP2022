@@ -1,0 +1,11 @@
+author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
+format:
+  html:
+    toc: true
+    number-sections: true
+bibliography: references.bib
+execute:
+  keep-ipynb: true
+date: today
+date-format: iso
+jupyter: julia-1.7

@@ -1,9 +1,7 @@
 ---
 title: "Notes on saved data files"
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-format:
-  html:
-    toc: true
+execute: 
+  keep-ipynb: true
 jupyter: julia-1.7
 ---
 
