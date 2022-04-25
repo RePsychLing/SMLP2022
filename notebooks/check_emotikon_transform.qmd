@@ -1,13 +1,8 @@
 ---
 title: Transformed and original metrics in Emotikon
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-format:
-  html:
-    toc: true
-jupyter: julia-1.7
 ---
 
-In the [Fühner et al. (2021, Sci Reps)](https://www.nature.com/articles/s41598-021-97000-4) the original metric of two tasks (Star, S20) is time, but they were transformed to speed scores in the publication prior to computing z-scores.
+In @Fuehner2021 the original metric of two tasks (Star, S20) is time, but they were transformed to speed scores in the publication prior to computing z-scores.
 The critical result is the absence of evidence for the age x Sex x Test interaction.
 Is this interaction significant if we analyse all tasks in their original metric?
 
@@ -142,3 +137,6 @@ Residual plots for LMM with Star and Speed in original metric.
 ```{julia}
 #qqnorm(m1_om_v2)
 ```
+
+::: {#refs}
+:::

@@ -16,7 +16,7 @@ The columns can be of different types including numeric values, character string
 An Arrow file can be read or written from R, Python, Julia and many other languages.  Somewhat confusingly in R and Python the name `feather`, which refers to an earlier version of the storage format, is used in some function names like `read_feather`.
 
 ## The Emotikon data
-The [SMLP2021 repository](https://github.com/RePsychling/SMLP2021) contains a version of the data from Fühner, Golle, Granacher, & Kliegl (2021) in `notebooks/data/fggk21.arrow`.
+The [SMLP2021 repository](https://github.com/RePsychling/SMLP2021) contains a version of the data from @Fuehner2021 in `notebooks/data/fggk21.arrow`.
 After that file was created there were changes in the master RDS file on the [osf.io site](https://osf.io/2d8rj/) for the project.
 We will recreate the Arrow file here then split it into two separate tables, one with a row for each child in the study and one with a row for each test result.
 
@@ -256,7 +256,6 @@ ridgeplot(args...; kwargs...) = ridgeplot!(Figure(), args...; kwargs...)
 parent(gdf)
 ```
 
-
 ## Reading Arrow files in other languages
 There are Arrow implementations for R (the `arrow` package) and for Python (`pyarrow`).
 They can be accessed within Julia using the `RCall` and `PyCall` packages.
@@ -271,7 +270,7 @@ feather.read_table("./data/fggk21.arrow")
 ```
 
 ```{julia}
-R"""library("arrow")""";
+R"""require("arrow", quietly=TRUE)""";
 ```
 
 ```{julia}
@@ -286,9 +285,11 @@ R"names(fggk21)"
 ```
 
 ```{julia}
-R"library(tibble)"
+R"""
+require("tibble", quietly=TRUE)
+glimpse(fggk21)
+"""
 ```
 
-```{julia}
-R"glimpse(fggk21)"
-```
+::: {#refs}
+:::

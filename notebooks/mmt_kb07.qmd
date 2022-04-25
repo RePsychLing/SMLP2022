@@ -1,0 +1,148 @@
+---
+title: "Bootstrapping a fitted model"
+---
+
+Begin by loading the packages to be used.
+```{julia}
+#| code-fold: true
+using AlgebraOfGraphics
+using CairoMakie
+using DataFrameMacros
+using DataFrames
+using MixedModels
+using Random
+
+CairoMakie.activate!(type="svg") # use SVG (other options include PNG)
+```
+
+Provide a short alias for `AlgebraOfGraphics`.
+```{julia}
+const AOG = AlgebraOfGraphics;
+```
+
+
+## Data set and model
+
+The `kb07` data [@Kronmueller2007] are one of the datasets provided by the `MixedModels` package.
+
+```{julia}
+kb07 = MixedModels.dataset(:kb07)
+```
+
+Convert the table to a DataFrame for summary.
+```{julia}
+kb07 = DataFrame(kb07)
+describe(kb07)
+```
+
+The experimental factors; `spkr`, `prec`, and `load`, are two-level factors.
+The `EffectsCoding` contrast is used with these to create a $\pm1$ encoding.
+Furthermore, `Grouping` constrasts are assigned to the `subj` and `item` factors.
+This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
+For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
+
+It is not important in these cases but a good practice in any case.
+
+```{julia}
+progress = false
+contrasts = merge(
+  Dict(nm => EffectsCoding() for nm in (:spkr, :prec, :load)),
+  Dict(nm => Grouping() for nm in (:subj, :item)),
+);
+```
+
+The display of an initial model fit
+```{julia}
+kbm01 = let
+  form = @formula(
+    rt_trunc ~ 1 + spkr * prec * load +
+	(1+spkr+prec+load|subj) +
+	(1+spkr+prec+load|item)
+  )
+  fit(MixedModel, form, kb07; contrasts, progress)
+end
+```
+does not include the estimated correlations of the random effects.
+
+The `VarCorr` extractor displays these.
+```{julia}
+VarCorr(kbm01)
+```
+
+None of the two-factor or three-factor interaction terms in the fixed-effects are significant.
+In the random-effects terms only the scalar random effects and the `prec` random effect for `item` appear to be warranted, leading to the reduced formula
+
+```{julia}
+kbm02 = let
+  form = @formula(rt_trunc ~ 1+spkr+prec+load+(1|subj)+(1+prec|item))
+  fit(MixedModel, form, kb07; contrasts, progress)
+end
+```
+
+```{julia}
+VarCorr(kbm02)
+```
+
+These two models are nested and can be compared with a likelihood-ratio test.
+```{julia}
+MixedModels.likelihoodratiotest(kbm02, kbm01)
+```
+
+The p-value of approximately 14% leads us to prefer the simpler model, `kbm02`, to the more complex, `kbm01`.
+
+## A bootstrap sample
+
+Create a bootstrap sample of a few thousand parameter estimates from the reduced model.
+The pseudo-random number generator is initialized to a fixed value for reproducibility.
+
+```{julia}
+Random.seed!(1234321)
+hide_progress = true
+kbm02samp = parametricbootstrap(2000, kbm02; hide_progress);
+```
+
+One of the uses of such a sample is to form "confidence intervals" on the parameters by obtaining the shortest interval that covers a given proportion (95%, by default) of the sample.
+
+```{julia}
+DataFrame(shortestcovint(kbm02samp))
+```
+
+A sample like this can be used for more than just creating an interval because it approximates the distribution of the estimator.
+For the fixed-effects parameters the estimators are close to being normally distributed, @fig-kbm02fedens.
+
+```{julia}
+#| code-fold: true
+#| fig-cap: "Comparative densities of the fixed-effects coefficients in kbm02samp"
+#| label: fig-kbm02fedens
+draw(
+  data(kbm02samp.β) * mapping(:β; color=:coefname) * AOG.density();
+  figure=(; resolution=(800,450)),
+)
+```
+
+```{julia}
+#| code-fold: true
+#| fig-cap: "Density plot of bootstrap samples standard deviation of random effects"
+#| label: fig-kbm02sampsigmadens
+draw(
+  data(filter(:column => ==(Symbol("(Intercept)")), DataFrame(kbm02samp.σs))) *
+  mapping(:σ, color = :group) *
+  AOG.density();
+  figure=(; resolution=(800, 450)),
+)
+```
+
+```{julia}
+#| code-fold: true
+#| fig-cap: "Density plot of correlation parameters in bootstrap sample from model kbm02"
+#| label: fig-kbm02sampcorrdens
+draw(
+  data(filter(:type => ==("ρ"), DataFrame(kbm02samp.allpars))) *
+  mapping(:value => "Correlation"; color=:names) *
+  AOG.density();
+  figure=(; resolution=(800, 450))
+)
+```
+
+::: {#refs}
+:::

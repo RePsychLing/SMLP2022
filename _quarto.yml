@@ -1,5 +1,10 @@
 project:
+  output-dir: _output
   title: "SMLP2022"
 
+toc: true
+bibliography: references.bib
 
+format: html
 
+jupyter: julia-1.7

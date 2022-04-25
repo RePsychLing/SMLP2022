@@ -1,13 +1,8 @@
 ---
 title: "Creating multi-panel plots"
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-format:
-  html:
-    toc: true
-jupyter: julia-1.7
 ---
 
-This notebook shows creating a multi-panel plot similar to Figure 2 of Fühner, Golle, Granacher, & Kliegl (2021).
+This notebook shows creating a multi-panel plot similar to Figure 2 of @Fuehner2021.
 
 The data have been saved as an Arrow-format file.
 
@@ -99,3 +94,6 @@ end
 + TBD: Relevel factors; why not levels from Tables?
 + TBD: Set range (7.8 to 9.2 and tick marks (8, 8.5, 9) of axes.
 + TBD: Move legend in plot? 
+
+::: {#refs}
+:::
