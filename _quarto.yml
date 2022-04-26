@@ -4,21 +4,32 @@ project:
   execute-dir: project
   output-dir: _site
   render:
-    - notebooks/useful_packages.ipynb
-    - notebooks/mmt_sleepstudy.ipynb
-    - notebooks/mmt_sleepstudy_speed.ipynb
-    - notebooks/Arrow.ipynb
-    - notebooks/glmm.ipynb
-    - notebooks/mmt_kb07.ipynb
+    - index.qmd
+    - about.qmd
+    - notebooks/useful_packages.qmd
+    - notebooks/mmt_sleepstudy.qmd
+    - notebooks/mmt_sleepstudy_speed.qmd
+    - notebooks/Arrow.qmd
+    - notebooks/glmm.qmd
+    - notebooks/mmt_kb07.qmd
 
 website:
-  title: "SMLP2022 - Advanced frequentist methods"
+  title: "SMLP2022"
+  site-url: https://RePsychLing.github.io/SMLP2022
+  repo-url: https://github.com/RePsychLing/SMLP2022
+  repo-actions: [issue]
   navbar:
     background: primary
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - text: "Home"
+        href: index.qmd
+      - text: "Packages"
+        href: notebooks/useful_packages.qmd
+      - text: "Sleepstudy"
+        href: notebooks/mmt_sleepstudy.qmd
+    right:
+      - icon: github
+        href: https://github.com/RePsychLing/SMLP2022
 
 execute: 
   keep-ipynb: true
