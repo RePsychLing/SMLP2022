@@ -1,5 +1,6 @@
 ---
 title: "Mixed Models Tutorial: Contrast Coding"
+jupyter: julia-1.7
 ---
 
 Ths script uses a subset of data reported in Fühner, Golle, Granacher, & Kliegl (2021).
