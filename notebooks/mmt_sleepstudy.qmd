@@ -41,7 +41,7 @@ The `sleepstudy` data are one of the datasets available with the `MixedModels` p
 sleepstudy = MixedModels.dataset("sleepstudy")
 ```
 
-@fig-xyplotsleep displays the data in a multi-panel plot created with the `lattice` package in `R`, using the [RCall](https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13) package for Julia.
+@fig-xyplotsleep displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using the [RCall](https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13) package for Julia.
 
 ```{julia}
 #| code-fold: true
@@ -307,19 +307,23 @@ vcov(m1, corr=true)  # correlation estimate from the model
 #| fig-cap: 'Scatter-plot of bootstrap replicates of fixed-effects estimates with contours'
 #| label: fig-bsbetacontours
 let
-	vals = disallowmissing(
-		Array(
-			select(unstack(DataFrame(m1bstp.β), :iter, :coefname, :β), Not(:iter)),
-		),
-	)
-	scatter(
-		vals,
-		color=(:blue, 0.20),
-		axis=(; xlabel="Intercept", ylabel="Coefficient of days"),
-		figure=(; resolution=(500, 500)),
-	)
-	contour!(kde(vals))
-	current_figure()
+  vals = disallowmissing(
+    Array(
+      select(
+        unstack(DataFrame(m1bstp.β), :iter, :coefname, :β), Not(:iter),
+      ),
+    ),
+  )
+  scatter(
+    vals;
+    color=(:blue, 0.20),
+    axis=(;
+      xlabel="Intercept", ylabel="Coefficient of days"
+    ),
+    figure=(; resolution=(500, 500)),
+  )
+  contour!(kde(vals))
+  current_figure()
 end
 ```
 
