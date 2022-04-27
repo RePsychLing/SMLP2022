@@ -25,7 +25,7 @@ The authors analyzed response speed, that is (1/RT)*1000 -- completely warranted
 
 **Current data**
 
-The current data distributed with the _RData_ collection is attributed to the 3-hour TIB group, but the means do not agree at all with those reported for this group in [@Belenky2003 Figure 3] where the 3-hour TIB group is also based on only 13 (not 18) subjects. Specifically, the current data show a much smaller slow-down of response speed across E1 to E7 and do not reflect the recovery during R1 to R3. The currrent data also cover only 10 not 11 days, but it looks like only R3 is missing. The closest match of the current means was with the average of the 3-hour and 7-hour TIB groups; if only males were included, this would amount to 18 subjects. (This conjecture is based only on visual inspection of graphs.) 
+The current data distributed with the _RData_ collection is attributed to the 3-hour TIB group, but the means do not agree at all with those reported for this group in [@Belenky2003 Figure 3] where the 3-hour TIB group is also based on only 13 (not 18) subjects. Specifically, the current data show a much smaller slow-down of response speed across E1 to E7 and do not reflect the recovery during R1 to R3. The currrent data also cover only 10 not 11 days, but it looks like only R3 is missing. The closest match of the current means was with the average of the 3-hour and 7-hour TIB groups; if only males were included, this would amount to 18 subjects. (This conjecture is based only on visual inspection of graphs.)
 
 ## Setup
 
@@ -44,10 +44,10 @@ using MixedModelsMakie   # plots specific to mixed-effects models using Makie
 ## Preprocessing
 
 The `sleepstudy` data are one of the datasets available with recent versions of the `MixedModels` package. We carry out some preprocessing to have the dataframe in the desired shape:
-+ Capitalize random factor `Subj`
-+ Compute `speed` as an alternative dependent variable from `reaction`, warranted by a 'boxcox' check of residuals. 
-+ Create a `GroupedDataFrame` by levels of `Subj` (the original dataframe is available as `gdf.parent`, which we name `df`)
 
+  - Capitalize random factor `Subj`
+  - Compute `speed` as an alternative dependent variable from `reaction`, warranted by a 'boxcox' check of residuals.
+  - Create a `GroupedDataFrame` by levels of `Subj` (the original dataframe is available as `gdf.parent`, which we name `df`)
 
 ```{julia}
 gdf = @chain MixedModels.dataset(:sleepstudy) begin
@@ -73,7 +73,7 @@ pooledcoef = simplelinreg(df.day, df.speed)  # produces a Tuple
 
 ## Within-subject effects
 
-In the second analysis we estimate coefficients for each `Subj` without regard of the information available from the complete set of data. We do not "borrow strength" to adjust for differences due to between-`Subj` variability and due to being far from the population mean. 
+In the second analysis we estimate coefficients for each `Subj` without regard of the information available from the complete set of data. We do not "borrow strength" to adjust for differences due to between-`Subj` variability and due to being far from the population mean.
 
 ### Within-subject simple regressions
 
@@ -86,6 +86,7 @@ within = combine(gdf, [:day, :speed] => simplelinreg => :coef)
 
 @fig-xyplotsleepspeed shows the reaction speed versus days of sleep deprivation by subject.
 The panels are arranged by increasing initial reaction speed starting at the lower left and proceeding across rows.
+
 ```{julia}
 #| code-fold: true
 #| label: fig-xyplotsleepspeed
@@ -93,7 +94,7 @@ The panels are arranged by increasing initial reaction speed starting at the low
 let
   ord = sortperm(first.(within.coef))
   labs = values(only.(keys(gdf)))[ord]       # labels for panels
-  f = clevelandaxes!(Figure(resolution=(1000,750)), labs, (2, 9))
+  f = clevelandaxes!(Figure(; resolution=(1000, 750)), labs, (2, 9))
   for (axs, sdf) in zip(f.content, gdf[ord]) # iterate over the panels and groups
     scatter!(axs, sdf.day, sdf.speed)      # add the points
     coef = simplelinreg(sdf.day, sdf.speed)
@@ -109,24 +110,24 @@ end
 contrasts = Dict(:Subj => Grouping())
 progress = false
 m1 = let
-  form = @formula speed ~ 1 + day + (1+day|Subj)
+  form = @formula speed ~ 1 + day + (1 + day | Subj)
   fit(MixedModel, form, df; contrasts, progress)
 end
 ```
 
-This model includes fixed effects for the intercept which estimates the average speed on the baseline day of the experiment prior to sleep deprivation, and the slowing per day of sleep deprivation. In this case about -0.11/second. 
+This model includes fixed effects for the intercept which estimates the average speed on the baseline day of the experiment prior to sleep deprivation, and the slowing per day of sleep deprivation. In this case about -0.11/second.
 
-The random effects represent shifts from the typical behavior for each subject.The shift in the intercept has a standard deviation of about 0.42/s. 
+The random effects represent shifts from the typical behavior for each subject.The shift in the intercept has a standard deviation of about 0.42/s.
 
 The within-subject correlation of the random effects for intercept and slope is small, -0.18, indicating that a simpler model with a correlation parameter (CP) forced to/ assumed to be zero may be sufficient.
 
-##  No correlation parameter: zcp LMM
+## No correlation parameter: zcp LMM
 
 The `zerocorr` function applied to a random-effects term estimates one parameter less than LMM `m1`-- the CP is now fixed to zero.
 
 ```{julia}
 m2 = let
-  form = @formula speed ~ 1 + day + zerocorr(1+day|Subj)
+  form = @formula speed ~ 1 + day + zerocorr(1 + day | Subj)
   fit(MixedModel, form, df; contrasts, progress)
 end
 ```
@@ -145,12 +146,12 @@ Alternatively, the AIC, AICc, and BIC values can be compared.  They are on a sca
 #| code-fold: true
 let
   mods = [m2, m1]
-  DataFrame(
-    dof = dof.(mods),
-    deviance = deviance.(mods),
-    AIC = aic.(mods),
-    AICc = aicc.(mods),
-    BIC = bic.(mods),
+  DataFrame(;
+    dof=dof.(mods),
+    deviance=deviance.(mods),
+    AIC=aic.(mods),
+    AICc=aicc.(mods),
+    BIC=bic.(mods),
   )
 end
 ```
@@ -176,7 +177,7 @@ caterpillar(m2)
 #| code-fold: true
 #| fig-cap: "Shrinkage plot of the means of the random effects in model m2"
 #| label: fig-shrinkagem2
-shrinkageplot!(Figure(; resolution=(500,500)), m2)
+shrinkageplot!(Figure(; resolution=(500, 500)), m2)
 ```
 
 ::: {#refs}

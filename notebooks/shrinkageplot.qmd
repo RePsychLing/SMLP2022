@@ -3,12 +3,11 @@ title: "More on shrinkage plots"
 jupyter: julia-1.7
 ---
 
-- I have stated that the likelihood criterion used to fit linear mixed-effects can be considered as balancing fidelity to the data (i.e. fits the observed data well) versus model complexity.
-- This is similar to some of the criterion used in Machine Learning (ML), except that the criterion for LMMs has a rigorous mathematical basis.
-- In the shrinkage plot we consider the values of the random-effects coefficients for the fitted values of the model versus those from a model in which there is no penalty for model complexity.
-- If there is strong subject-to-subject variation then the model fit will tend to values of the random effects similar to those without a penalty on complexity.
-- If the random effects term is not contributing much (i.e. it is "inert") then the random effects will be *shrunk* considerably towards zero in some directions.
-
+  - I have stated that the likelihood criterion used to fit linear mixed-effects can be considered as balancing fidelity to the data (i.e. fits the observed data well) versus model complexity.
+  - This is similar to some of the criterion used in Machine Learning (ML), except that the criterion for LMMs has a rigorous mathematical basis.
+  - In the shrinkage plot we consider the values of the random-effects coefficients for the fitted values of the model versus those from a model in which there is no penalty for model complexity.
+  - If there is strong subject-to-subject variation then the model fit will tend to values of the random effects similar to those without a penalty on complexity.
+  - If the random effects term is not contributing much (i.e. it is "inert") then the random effects will be *shrunk* considerably towards zero in some directions.
 
 ```{julia}
 #| code-fold: true
@@ -37,9 +36,11 @@ contrasts = Dict(
 progress = false
 m1 = let
   form = @formula(
-    rt_trunc ~ 1 + spkr * prec * load +
-	  (1+spkr+prec+load|subj) + 
-	  (1+spkr+prec+load|item)
+    rt_trunc ~
+      1 +
+      spkr * prec * load +
+      (1 + spkr + prec + load | subj) +
+      (1 + spkr + prec + load | item)
   )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
@@ -61,7 +62,6 @@ print(m1)
 
 Earlier today we mentioned that the parameters being optimized are from a "matrix square root" of the covariance matrix for the random effects.
 There is one such lower triangular matrix for each grouping factor.
-
 
 ```{julia}
 l1 = first(m1.λ)   # Cholesky factor of relative covariance for subj
@@ -112,18 +112,22 @@ X1 * X1'
 
 ## How to interpret a shrinkage plot
 
-- Extreme shrinkage (shrunk to a line or to a point) is easy to interpret - the term is not providing benefit and can be removed.
-- When the range of the blue dots (shrunk values) is comparable to those of the red dots (unshrunk) it indicates that the term after shrinkage is about as strong as without shrinkage.
-- By itself, this doesn't mean that the term is important.  In some ways you need to get a feeling for the absolute magnitude of the random effects in addition to the relative magnitude.
-- Small magnitude and small relative magnitude indicate you can drop that term
+  - Extreme shrinkage (shrunk to a line or to a point) is easy to interpret - the term is not providing benefit and can be removed.
+  - When the range of the blue dots (shrunk values) is comparable to those of the red dots (unshrunk) it indicates that the term after shrinkage is about as strong as without shrinkage.
+  - By itself, this doesn't mean that the term is important.  In some ways you need to get a feeling for the absolute magnitude of the random effects in addition to the relative magnitude.
+  - Small magnitude and small relative magnitude indicate you can drop that term
 
 ## Conclusions from these plots
-- Only the intercept for the `subj` appears to be contributing explanatory power
-- For the `item` both the intercept and the `spkr` appear to be contributing
+
+  - Only the intercept for the `subj` appears to be contributing explanatory power
+  - For the `item` both the intercept and the `spkr` appear to be contributing
 
 ```{julia}
 m2 = let
-  form = @formula(rt_trunc ~ 1 + prec*spkr*load + (1|subj) + (1+prec|item))
+  form = @formula(
+    rt_trunc ~
+      1 + prec * spkr * load + (1 | subj) + (1 + prec | item)
+  )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
@@ -142,7 +146,10 @@ shrinkageplot(m2)
 ```{julia}
 #| lst-label: m1def
 m3 = let
-  form = @formula(rt_trunc ~ 1 + prec + spkr + load + (1|subj) + (1+prec|item))
+  form = @formula(
+    rt_trunc ~
+      1 + prec + spkr + load + (1 | subj) + (1 + prec | item)
+  )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
@@ -177,7 +184,10 @@ ridgeplot(m3btstrp; show_intercept=false)
 
 ```{julia}
 m4 = let
-  form = @formula(rt_trunc~1+prec+spkr+load+(1+prec|item)+(1|subj))
+  form = @formula(
+    rt_trunc ~
+      1 + prec + spkr + load + (1 + prec | item) + (1 | subj)
+  )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
@@ -201,13 +211,14 @@ VarCorr(m4)
 ```{julia}
 #| code-fold: true
 let mods = [m1, m2, m4]
-	DataFrame(geomdof = (sum ∘ leverage).(mods),
-		npar = dof.(mods),
-		deviance = deviance.(mods),
-		AIC = aic.(mods),
-		BIC = bic.(mods),
-		AICc = aicc.(mods),
-	)
+  DataFrame(;
+    geomdof=(sum ∘ leverage).(mods),
+    npar=dof.(mods),
+    deviance=deviance.(mods),
+    AIC=aic.(mods),
+    BIC=bic.(mods),
+    AICc=aicc.(mods),
+  )
 end
 ```
 

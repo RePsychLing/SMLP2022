@@ -5,14 +5,14 @@ jupyter: julia-1.7
 
 This script uses a subset of data reported in @Fuehner2021.
 To circumvent delays associated with model fitting we work with models that are less complex than those in the reference publication.
-All the data to reproduce the models in the publication are used here, too; the script requires only a few changes to specify the more complex models in the article. 
+All the data to reproduce the models in the publication are used here, too; the script requires only a few changes to specify the more complex models in the article.
 
-The script is structured in four main sections: 
+The script is structured in four main sections:
 
-1. **Setup** with reading and examing the data, plotting the main results, and specifying the contrasts for the fixed factor `Test`
-2. a demonstration of **model complexification** to determine a parsimonious random-effect structure appropriate for and supported by the data, including also a quite elaborate demonstration of **principle component analyses (PCAs)** of levels (scores) and effects,
-3. specification of **nested fixed effects or interactions** in the levels of another, superordinate factors,
-4. a **Glossary of MixedModels.jl commands** to inspect the information generated for a fitted model object. 
+ 1. **Setup** with reading and examing the data, plotting the main results, and specifying the contrasts for the fixed factor `Test`
+ 2. a demonstration of **model complexification** to determine a parsimonious random-effect structure appropriate for and supported by the data, including also a quite elaborate demonstration of **principle component analyses (PCAs)** of levels (scores) and effects,
+ 3. specification of **nested fixed effects or interactions** in the levels of another, superordinate factors,
+ 4. a **Glossary of MixedModels.jl commands** to inspect the information generated for a fitted model object.
 
 ## Packages and functions
 
@@ -37,7 +37,7 @@ using StatsBase
 datadir = joinpath(@__DIR__, "data")
 
 ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(type="svg")
+CairoMakie.activate!(; type="svg")
 ```
 
 ## Readme
@@ -45,21 +45,22 @@ CairoMakie.activate!(type="svg")
 Number of scores: 525126 in './data/fggk21.arrow'
 
  1. Cohort: 9 levels; 2011-2019
- 2. School: 515 levels 
+ 2. School: 515 levels
  3. Child: 108295 levels; all children are between 8.0 and 8.99 years old
  4. Sex: "Girls" (n=55,086), "Boys" (n= 53,209)
- 5. age: testdate - middle of month of birthdate 
+ 5. age: testdate - middle of month of birthdate
  6. Test: 5 levels
-     + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
-     + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
-     + Speed(`S20_r`): 20-meters sprint [m/s]
-     + Muscle power low (`SLJ`): standing long jump [cm] 
-     + Muscle power up (`BPT`): 1-kg medicine ball push test [m] 
+    
+      + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
+      + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
+      + Speed(`S20_r`): 20-meters sprint [m/s]
+      + Muscle power low (`SLJ`): standing long jump [cm]
+      + Muscle power up (`BPT`): 1-kg medicine ball push test [m]
  7. score - see units
 
 ## Preprocessing
 
-### Read data 
+### Read data
 
 ```{julia}
 df = @chain "fggk21.arrow" begin
@@ -74,7 +75,8 @@ df = @chain "fggk21.arrow" begin
 end
 levels!(df.Sex, ["Boys", "Girls"])
 levels!(df.Test, ["Run", "Star_r", "S20_r", "SLJ", "BPT"])
-recode!(df.Test,
+recode!(
+  df.Test,
   "Run" => "Endurance",
   "Star_r" => "Coordination",
   "S20_r" => "Speed",
@@ -85,6 +87,7 @@ describe(df)
 ```
 
 #### Transformations
+
 We center `age` at 8.5 years and compute z-scores for each `Test`.
 With these variables the data frame `df` contains all variables used for the final model in the original publication.
 
@@ -93,10 +96,10 @@ select!(groupby(df, :Test), :, :score => zscore => :zScore)
 dfx = df[:, Not(:score)]
 ```
 
-### Extract a stratified subsample 
+### Extract a stratified subsample
 
 For the prupose of the tutorial, we extract a random sample of 1000 boys and 1000 girls. `Child`, `School`, and `Cohort` are grouping variables.
-Traditionally, they are called random factors because the units (levels) of the factor are assumed to be a random sample from the population of their units (levels).  
+Traditionally, they are called random factors because the units (levels) of the factor are assumed to be a random sample from the population of their units (levels).
 
 Cohort has only nine "groups" and could have been included as a set of polynomical fixed-effect contrasts rather than a random factor.
 This choice warrants a short excursion: The secular trends are very different for different tests and require the inclusion of interaction terms with `Test` contrasts (see Figure 4 in [@Fuehner2021].
@@ -105,13 +108,15 @@ The authors opted to absorb these effects in cohort-related variance components 
 For complex designs, when they are in the theoretical focus of an article, factors and covariates should be specified as part of the fixed effects.
 If they are not in the theoretical focus, but serve as statistical control variables, they could be put in the RES - if supported by the data.
 
- **Stratified sampling:**  We generate a `Child` table with information about children. `MersenneTwister(42)` specifies **42** as the seed for the random number generator to ensure reproducibility of the stratification. For a different pattern of results choose, for example, **84**. We randomly sample 1000 boys and 1000 girls from this table; they are stored in `samp`. Then, we extract the corresponding subset of these children's test scores from `df` and store them `dat`.  
+**Stratified sampling:**  We generate a `Child` table with information about children. `MersenneTwister(42)` specifies **42** as the seed for the random number generator to ensure reproducibility of the stratification. For a different pattern of results choose, for example, **84**. We randomly sample 1000 boys and 1000 girls from this table; they are stored in `samp`. Then, we extract the corresponding subset of these children's test scores from `df` and store them `dat`.
 
 ```{julia}
 Child = unique(select(df, :Cohort, :School, :Child, :Sex, :age))
 sample = let
   rng = MersenneTwister(42)
-  combine(groupby(Child, :Sex), x -> x[rand(rng, 1:nrow(x), 1000), :])
+  combine(
+    groupby(Child, :Sex), x -> x[rand(rng, 1:nrow(x), 1000), :]
+  )
 end
 insamp(x) = x ∈ sample.Child
 dat = @subset(df, insamp(:Child))
@@ -120,14 +125,15 @@ dat = @subset(df, insamp(:Child))
 Due to missing scores for some tests we have about 2% less than 10,000 observtions.
 
 ### No evidence for `age x Sex x Test` interaction
+
 The main results are captured in the figure constructed in this section.
-We build it both for the full data and the stratified subset. 
+We build it both for the full data and the stratified subset.
 
 ```{julia}
 df2 = combine(
   groupby(
     select(df, :, :age => ByRow(x -> round(x; digits=1)) => :age),
-      [:Sex, :Test, :age],
+    [:Sex, :Test, :age],
   ),
   :zScore => mean => :zScore,
   :zScore => length => :n,
@@ -138,51 +144,49 @@ df2 = combine(
 
 The core results of the article are reported in Figure 2 of @Fuehner2021. In summary:
 
-+ Main effects of `age` and `Sex`: There are developmental gains in the ninth year of life; boys outperform girls. There is no main effect of `Test` because of z-scoring.
-+ Interactions of `Test` and `age`: Tests differ in how much children improve during the year (i.e., the magnitude of developmental gain), that is slopes depend on `Test`. 
-+ Interactions of `Test` and `Sex`: The sex difference is test dependent, that is the difference between the slopes depends on `Test`.  
-+ The most distinctive result is the absence of evidence for an `age x Sex x Test` interaction, that is the slopes for boys and girls are statistically parallel for each of the five tests.
+  - Main effects of `age` and `Sex`: There are developmental gains in the ninth year of life; boys outperform girls. There is no main effect of `Test` because of z-scoring.
+  - Interactions of `Test` and `age`: Tests differ in how much children improve during the year (i.e., the magnitude of developmental gain), that is slopes depend on `Test`.
+  - Interactions of `Test` and `Sex`: The sex difference is test dependent, that is the difference between the slopes depends on `Test`.
+  - The most distinctive result is the absence of evidence for an `age x Sex x Test` interaction, that is the slopes for boys and girls are statistically parallel for each of the five tests.
 
 ```{julia}
 #| code-fold: true
 #| fig-cap: Age trends by sex for each Test for the full data set
 #| label: fig-agetrends
 let
-  design1 = mapping(:age, :zScore; color = :Sex, col = :Test)
+  design1 = mapping(:age, :zScore; color=:Sex, col=:Test)
   lines1 = design1 * linear()
-  means1 = design1 * visual(Scatter, markersize=5)
-  draw(
-    data(df2) * means1 + data(df) * lines1;
-  )
+  means1 = design1 * visual(Scatter; markersize=5)
+  draw(data(df2) * means1 + data(df) * lines1;)
 end
 ```
 
 @fig-agetrends shows performance differences for the **full set of data** between 8.0 and 9.2 years by sex in the five physical fitness tests presented as z-transformed data computed separately for each test.
-- `Endurance` = cardiorespiratory endurance (i.e., 6-min-run test),
-- `Coordination` = star-run test,
-- `Speed` = 20-m linear sprint test, 
-- `PowerLOW` = power of lower limbs (i.e., standing long jump test),
-- `PowerUP` = power of upper limbs (i.e., ball push test),
-- SD = standard deviation.
-Points are binned observed child means; lines are simple regression fits to the observations.
+
+  - `Endurance` = cardiorespiratory endurance (i.e., 6-min-run test),
+  - `Coordination` = star-run test,
+  - `Speed` = 20-m linear sprint test,
+  - `PowerLOW` = power of lower limbs (i.e., standing long jump test),
+  - `PowerUP` = power of upper limbs (i.e., ball push test),
+  - SD = standard deviation.
+    Points are binned observed child means; lines are simple regression fits to the observations.
 
 What do the results look like for the stratified subsample?
 Here the parallelism is much less clear.
 In the final LMM we test whether the two regression lines in each of the five panels are statistically parallel for this subset of data.
 That is, we test the interaction of `Sex` and `age` as nested within the levels of `Test`.
-Most people want to know the signficance of these five Sex x age interactions. 
+Most people want to know the signficance of these five Sex x age interactions.
 
 The theoretical focus of the article, however, is on comparisons between tests displayed next to each other.
-We ask whether the degree of parallelism is statistically the same for `Endurance` and `Coordination` (H1), `Coordination` and `Speed` (H2), `Speed` and `PowerLOW` (H3), and `PowerLow` and `PowerUP` (H4). Hypotheses H1 to H4 require `Sequential Difference` contrasts c1 to c4 for `Test`; they are tested as fixed effects for``H1 x age x Sex`, `H2 x age x Sex`, `H3 x age x Sex`, and `H4 x age x Sex`. 
+We ask whether the degree of parallelism is statistically the same for `Endurance` and `Coordination` (H1), `Coordination` and `Speed` (H2), `Speed` and `PowerLOW` (H3), and `PowerLow` and `PowerUP` (H4). Hypotheses H1 to H4 require `Sequential Difference` contrasts c1 to c4 for `Test`; they are tested as fixed effects for``H1 x age x Sex`, `H2 x age x Sex`, `H3 x age x Sex`, and `H4 x age x Sex`.
 
 ```{julia}
 #| code-fold: true
-dat2 = 
-  combine(
-    groupby(
-      select(dat, :, :age => ByRow(x -> round(x; digits=1)) => :age),
-      [:Sex, :Test, :age],
-    ),
+dat2 = combine(
+  groupby(
+    select(dat, :, :age => ByRow(x -> round(x; digits=1)) => :age),
+    [:Sex, :Test, :age],
+  ),
   :zScore => mean => :zScore,
   :zScore => length => :n,
 )
@@ -193,27 +197,27 @@ dat2 =
 #| fig-cap: Age trends by sex for each Test for the stratified sample
 #| label: fig-agetrendssamp
 let
-  design2 = mapping(:age, :zScore; color = :Sex, col = :Test)
+  design2 = mapping(:age, :zScore; color=:Sex, col=:Test)
   lines2 = design2 * linear()
-  means2 = design2 * visual(Scatter, markersize=5)
-  draw(
-    data(dat2) * means2 + data(dat) * lines2;
-  )
+  means2 = design2 * visual(Scatter; markersize=5)
+  draw(data(dat2) * means2 + data(dat) * lines2;)
 end
 ```
 
 @fig-agetrendssamp Performance differences for **subset of data** between 8.0 and 9.2 years by sex in the five physical fitness tests presented as z-transformed data computed separately for each test.
-- `Endurance` = cardiorespiratory endurance (i.e., 6-min-run test),
-- `Coordination` = star-run test,
-- `Speed` = 20-m linear sprint test, 
-- `PowerLOW` = power of lower limbs (i.e., standing long jump test),
-- `PowerUP` = power of upper limbs (i.e., ball push test),
-- SD = standard deviation.
-Points are binned observed child means; lines are simple regression fits to the observations.
+
+  - `Endurance` = cardiorespiratory endurance (i.e., 6-min-run test),
+  - `Coordination` = star-run test,
+  - `Speed` = 20-m linear sprint test,
+  - `PowerLOW` = power of lower limbs (i.e., standing long jump test),
+  - `PowerUP` = power of upper limbs (i.e., ball push test),
+  - SD = standard deviation.
+    Points are binned observed child means; lines are simple regression fits to the observations.
 
 #### Regression on `age` by `Sex` for each `Test`
+
 Another set of relevant statistics are the slopes for the regression of performance on age for boys and girls in each of the five tests.
-The lines in Figures 1 and 2, however, are computed directly from the raw data with the `linear()` command. 
+The lines in Figures 1 and 2, however, are computed directly from the raw data with the `linear()` command.
 
 ```{julia}
 combine(
@@ -231,22 +235,22 @@ combine(
 
 ### _SeqDiffCoding_ of `Test`
 
-_SeqDiffCoding_ was used in the publication. This specification tests pairwise 
-differences between the five neighboring levels of `Test`, that is: 
+_SeqDiffCoding_ was used in the publication. This specification tests pairwise
+differences between the five neighboring levels of `Test`, that is:
 
-+ H1: `Star_r` - `Run` (2-1)
-+ H2: `S20_r` - `Star_r` (3-2) 
-+ H3: `SLJ` - `S20_r` (4-3)
-+ H4: `BPT` - `SLJ` (5-4)
+  - H1: `Star_r` - `Run` (2-1)
+  - H2: `S20_r` - `Star_r` (3-2)
+  - H3: `SLJ` - `S20_r` (4-3)
+  - H4: `BPT` - `SLJ` (5-4)
 
-The levels were sorted such that these contrasts map onto four  _a priori_ hypotheses; in other words, they are _theoretically_ motivated pairwise comparisons. 
-The motivation also encompasses theoretically motivated interactions with `Sex`. 
-The order of levels can also be explicitly specified during contrast construction. 
+The levels were sorted such that these contrasts map onto four  _a priori_ hypotheses; in other words, they are _theoretically_ motivated pairwise comparisons.
+The motivation also encompasses theoretically motivated interactions with `Sex`.
+The order of levels can also be explicitly specified during contrast construction.
 This is very useful if levels are in a different order in the dataframe.
 
-Note that random factors `Child`, `School`, and `Cohort` are declared as `Grouping` variables. Technically, this specification is required for variables with a very large number of levels (e.g., 100K+ children). We recommend the explicit specification for all random factors as a general coding style. 
+Note that random factors `Child`, `School`, and `Cohort` are declared as `Grouping` variables. Technically, this specification is required for variables with a very large number of levels (e.g., 100K+ children). We recommend the explicit specification for all random factors as a general coding style.
 
-The first command recodes names indicating the physical fitness components used in the above figures and tables back to the shorter actual test names. This reduces  clutter in LMM outputs. 
+The first command recodes names indicating the physical fitness components used in the above figures and tables back to the shorter actual test names. This reduces  clutter in LMM outputs.
 
 ```{julia}
 recode!(
@@ -255,7 +259,7 @@ recode!(
   "Coordination" => "Star_r",
   "Speed" => "S20_r",
   "PowerLOW" => "SLJ",
-  "PowerUP" => "BMT"
+  "PowerUP" => "BMT",
 )
 contrasts = merge(
   Dict(nm => SeqDiffCoding() for nm in (:Test, :Sex)),
@@ -263,13 +267,13 @@ contrasts = merge(
 );
 ```
 
-The statistical disadvantage of _SeqDiffCoding_ is that the contrasts are not orthogonal, 
+The statistical disadvantage of _SeqDiffCoding_ is that the contrasts are not orthogonal,
 that is the contrasts are correlated.
 This is obvious from the fact that levels 2, 3, and 4 are all used in two contrasts.
-One consequence of this is that correlation parameters estimated between neighboring contrasts (e.g., 2-1 and 3-2) are difficult to interpret. 
-Usually, they will be negative because assuming some practical limitations on the overall range (e.g., between levels 1 and 3), a small "2-1" effect "correlates" negatively with a larger "3-2" effect for mathematical reasons. 
+One consequence of this is that correlation parameters estimated between neighboring contrasts (e.g., 2-1 and 3-2) are difficult to interpret.
+Usually, they will be negative because assuming some practical limitations on the overall range (e.g., between levels 1 and 3), a small "2-1" effect "correlates" negatively with a larger "3-2" effect for mathematical reasons.
 
-Obviously, the tradeoff between theoretical motivation and statistical purity is something that must be considered carefully when planning the analysis. 
+Obviously, the tradeoff between theoretical motivation and statistical purity is something that must be considered carefully when planning the analysis.
 
 Various options for contrast coding are the topic of the *MixedModelsTutorial\_contrasts\_emotikon.jl* and *MixedModelsTutorial\_contrasts\_kwdyz.jl* notebooks.
 
@@ -278,17 +282,17 @@ Various options for contrast coding are the topic of the *MixedModelsTutorial\_c
 We fit and compare three LMMs with the same fixed-effect structure but increasing complexity of the random-effect structure for `School`.
 We ignore the other two random factors `Child` and `Cohort` to avoid undue delays when fitting the models.
 
-1. LMM `m_ovi`: allowing only varying intercepts ("Grand Means");
-2. LMM `m_zcp`: adding variance components (VCs) for the four `Test` contrasts, `Sex`, and `age` to LMM `m_ovi`, yielding the zero-correlation parameters LMM;
-3. LMM `m_cpx`: adding correlation parameters (CPs) to LMM `m_zcp`; yielding a complex LMM. 
+ 1. LMM `m_ovi`: allowing only varying intercepts ("Grand Means");
+ 2. LMM `m_zcp`: adding variance components (VCs) for the four `Test` contrasts, `Sex`, and `age` to LMM `m_ovi`, yielding the zero-correlation parameters LMM;
+ 3. LMM `m_cpx`: adding correlation parameters (CPs) to LMM `m_zcp`; yielding a complex LMM.
 
-In a final part illustrate how to check whether the complex model is supported by the data, rather than leading to a singular fit and, if supported by the data, whether there is an increase in goodness of fit associated with the model complexification. 
+In a final part illustrate how to check whether the complex model is supported by the data, rather than leading to a singular fit and, if supported by the data, whether there is an increase in goodness of fit associated with the model complexification.
 
 ### LMM `m_ovi`
 
 In its random-effect structure (RES) we only vary intercepts (i.e., Grand Means) for `School` (LMM `m_ovi`), that is we allow that the schools differ in the average fitness of its children, average over the five tests.
 
-It is well known that such a simple RES is likely to be anti-conservative with respect to fixed-effect test statistics. 
+It is well known that such a simple RES is likely to be anti-conservative with respect to fixed-effect test statistics.
 
 ```{julia}
 m_ovi = let
@@ -308,15 +312,15 @@ Models varying only in intercepts are almost always supported by the data.
 
 ### LMM `m_zcp`
 
-In this LMM we allow that schools differ not only in `GM`, but also in the size of the four contrasts defined for `Test`, in the difference between boys and girls (`Sex`) and the developmental gain children achieve within the third grade (`age`). 
+In this LMM we allow that schools differ not only in `GM`, but also in the size of the four contrasts defined for `Test`, in the difference between boys and girls (`Sex`) and the developmental gain children achieve within the third grade (`age`).
 
 We assume that there is covariance associated with these CPs beyond residual noise, that is we assume that there is no detectable evidence in the data that the CPs are different from zero.
 
 ```{julia}
 m_zcp = let
   f = @formula(
-    zScore ~ 1 + Test * Sex * a1 +
-    zerocorr(1 + Test + Sex + a1 | School)
+    zScore ~
+      1 + Test * Sex * a1 + zerocorr(1 + Test + Sex + a1 | School)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -334,9 +338,8 @@ In the complex LMM investigated in this sequence we give up the assumption of ze
 
 ```{julia}
 m_cpx = let
-  f =  @formula(
-    zScore ~ 1 + Test * Sex * a1 +
-    (1 + Test + Sex + a1| School)
+  f = @formula(
+    zScore ~ 1 + Test * Sex * a1 + (1 + Test + Sex + a1 | School)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -371,13 +374,13 @@ MixedModels.likelihoodratiotest(m_ovi, m_zcp, m_cpx)
 gof_summary = let
   nms = [:m_ovi, :m_zcp, :m_cpx]
   mods = eval.(nms)
-  DataFrame(
-    name = nms,
-    dof = dof.(mods),
+  DataFrame(;
+    name=nms,
+    dof=dof.(mods),
     deviance=deviance.(mods),
-    AIC = aic.(mods),
-    AICc = aicc.(mods),
-    BIC = bic.(mods),
+    AIC=aic.(mods),
+    AICc=aicc.(mods),
+    BIC=bic.(mods),
   )
 end
 ```
@@ -388,28 +391,29 @@ Usually, χ² should be larger than the associated degrees of freedom; for AIC a
 Severity of meeting these criteria increases from deviance to AIC to BIC.
 Therefore, it is not always the case that the criteria are unanimous in their verdict.
 Basicly, the more confirmatory the analysis, the more one may go with deviance and AIC; for exploratory analyses the BIC is probably a better guide.
-There are grey zones here. 
+There are grey zones here.
 
 #### Comparing fixed effects of `m_ovi`, `m_zcp`, and `m_cpx`
 
-We check whether enriching the RES changed the significance of fixed effects in the final model.  
+We check whether enriching the RES changed the significance of fixed effects in the final model.
 
 ```{julia}
 #| code-fold: true
 m_ovi_fe = DataFrame(coeftable(m_ovi));
-m_zcp_fe = DataFrame(coeftable(m_zcp)); 
-m_cpx_fe = DataFrame(coeftable(m_cpx)); 
+m_zcp_fe = DataFrame(coeftable(m_zcp));
+m_cpx_fe = DataFrame(coeftable(m_cpx));
 m_all = hcat(
   m_ovi_fe[:, [1, 2, 4]],
-    leftjoin(
-      m_zcp_fe[:, [1, 2, 4]],
-      m_cpx_fe[:, [1, 2, 4]];
-      on=:Name,
-      makeunique=true,
-    ),
+  leftjoin(
+    m_zcp_fe[:, [1, 2, 4]],
+    m_cpx_fe[:, [1, 2, 4]];
+    on=:Name,
+    makeunique=true,
+  );
   makeunique=true,
 )
-rename!(m_all, 
+rename!(
+  m_all,
   "Coef." => "b_ovi",
   "Coef._2" => "b_zcp",
   "Coef._1" => "b_cpx",
@@ -417,11 +421,12 @@ rename!(m_all,
   "z_2" => "z_zcp",
   "z_1" => "z_cpx",
 )
-m_all2 = round.(
-  m_all[:, [:b_ovi, :b_zcp, :b_cpx, :z_ovi, :z_zcp, :z_cpx]],
-  digits=2,
-)
-m_all3 = hcat(m_all.Name,  m_all2)
+m_all2 =
+  round.(
+    m_all[:, [:b_ovi, :b_zcp, :b_cpx, :z_ovi, :z_zcp, :z_cpx]],
+    digits=2,
+  )
+m_all3 = hcat(m_all.Name, m_all2)
 ```
 
 The three models usually do **not** differ in fixed-effect estimates.
@@ -435,10 +440,10 @@ This ambiguity increased the uncertainty of the respective fixed effects in the 
 ### Fitting an overparameterized LMM
 
 The complex LMM was not overparameterized with respect to `School`, because there are over 400 schools in the data.
-When the number of units (levels) of a grouping factor is small relative to the number of parameters we are trying to estimate, we often end up with an overparameterized / degenerate random-effect structure. 
+When the number of units (levels) of a grouping factor is small relative to the number of parameters we are trying to estimate, we often end up with an overparameterized / degenerate random-effect structure.
 
 As an illustration, we fit a full CP matrix for the `Cohort`.
-As there are only nine cohorts in the data, we may be asking too much to estimate 5*6/2 = 15 VC/CP parameters. 
+As there are only nine cohorts in the data, we may be asking too much to estimate 5*6/2 = 15 VC/CP parameters.
 
 ```{julia}
 m_cpxCohort = let
@@ -461,8 +466,7 @@ How about the **zero-correlation parameter** (zcp) version of this LMM?
 ```{julia}
 m_zcpCohort = let
   f = @formula(
-    zScore ~ 1 + Test * a1 * Sex +
-    zerocorr(1 + Test | Cohort)
+    zScore ~ 1 + Test * a1 * Sex + zerocorr(1 + Test | Cohort)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -477,7 +481,7 @@ This raises the possibility that LMM `m_oviCohort`  might fit as well as LMM `m_
 
 ```{julia}
 m_oviCohort = let
-  f =  @formula zScore ~ 1 + Test * a1 * Sex + (1 | Cohort)
+  f = @formula zScore ~ 1 + Test * a1 * Sex + (1 | Cohort)
   fit(MixedModel, f, dat; contrasts)
 end
 ```
@@ -495,12 +499,12 @@ MixedModels.likelihoodratiotest(m_oviCohort, m_zcpCohort)
 ```{julia}
 gof_summary2 = let
   mods = [m_oviCohort, m_zcpCohort, m_cpxCohort]
-  DataFrame(
+  DataFrame(;
     dof=dof.(mods),
-    deviance = deviance.(mods),
-    AIC = aic.(mods), 
-    AICc = aicc.(mods),
-    BIC = bic.(mods),
+    deviance=deviance.(mods),
+    AIC=aic.(mods),
+    AICc=aicc.(mods),
+    BIC=bic.(mods),
   )
 end
 ```
@@ -516,28 +520,30 @@ What if we include VCs and CPs related to random factors `Child` and `School`?
 
 :::{.callout-warning}
 The following LMMs `m1`, `m2`, etc. take a bit longer (e.g., close to 6 minutes in the Pluto notebook, close to 3 minutes in the REPL on a MacBook Pro).
-::: 
+:::
 
 LMM `m1` reported in @Fuehner2021 included random factors for `School`, `Child`, and `Cohort`.
 The RES for `School` was specified like in LMM `m_cpx`.
-The RES for `Child` included VCs and CPs for `Test`, but not for linear developmental gain in the ninth year of life `a1` or `Sex`; they are between-`Child` effects. 
+The RES for `Child` included VCs and CPs for `Test`, but not for linear developmental gain in the ninth year of life `a1` or `Sex`; they are between-`Child` effects.
 
 The RES for `Cohort` included only VCs, no CPs for `Test`.
 The _parsimony_ was due to the small number of nine levels for this grouping factor.
 
 Here we fit this LMM `m1` for the reduced data.
 For a different subset of similar size on MacBook Pro [13 | 15 | 16] this took [303 | 250 | 244 ] s; for LMM `m1a` (i.e., dropping 1 school-relate VC for `Sex`), times are  [212 | 165 | 160] s.
-The corresponding `lme4` times for LMM `m1` are [397  | 348 | 195]. 
+The corresponding `lme4` times for LMM `m1` are [397  | 348 | 195].
 
 Finally, times for fitting the full set of data --not in this script--, for LMM `m1`are [60 | 62 | 85] minutes (!); for LMM `m1a` the times were [46 | 48 | 34] minutes. It was  not possible to fit the full set of data with `lme4`; after about 13 to 18 minutes the  program stopped with:  `Error in eval_f(x, ...) : Downdated VtV is not positive definite.`
 
 ```{julia}
 m1 = let
   f = @formula(
-    zScore ~ 1 + Test * a1 * Sex +
-    (1 + Test + a1 + Sex | School) +
-    (1 + Test | Child) +
-    zerocorr(1 + Test | Cohort)
+    zScore ~
+      1 +
+      Test * a1 * Sex +
+      (1 + Test + a1 + Sex | School) +
+      (1 + Test | Child) +
+      zerocorr(1 + Test | Cohort)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -551,17 +557,19 @@ VarCorr(m1)
 issingular(m1)
 ```
 
-Depending on the random number for stratified samplign, LMM `m1` may or may not be supported by the data. 
+Depending on the random number for stratified samplign, LMM `m1` may or may not be supported by the data.
 
 We also fit an alternative parameterization, estimating VCs and CPs for `Test` scores rather than `Test` effects by replacing the `1 + ...` in the RE terms with `0 + ...`.
 
 ```{julia}
 m2 = let
   f = @formula(
-    zScore ~ 1 + Test * a1 * Sex +
-    (0 + Test + a1 + Sex | School) +
-    (0 + Test | Child) +
-    zerocorr(0 + Test | Cohort)
+    zScore ~
+      1 +
+      Test * a1 * Sex +
+      (0 + Test + a1 + Sex | School) +
+      (0 + Test | Child) +
+      zerocorr(0 + Test | Cohort)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -571,7 +579,7 @@ end
 issingular(m2)
 ```
 
-Depending on the random number generator seed, the model may or may not be supported in the alternative parameterization of scores. The fixed-effects profile is not affected (see 2.8 below). 
+Depending on the random number generator seed, the model may or may not be supported in the alternative parameterization of scores. The fixed-effects profile is not affected (see 2.8 below).
 
 :::{.callout-caution}
 RK: The order of RE terms is critical. In formula `f2` the `zerocorr()` term must be placed last as shown. If it is placed first, School-related and Child-related CPs are estimated/reported (?) as zero. This was not the case for formula `m1`. Thus, it appears to be related to the `0`-intercepts in School and Child terms. Need a reprex.
@@ -583,7 +591,7 @@ VarCorr(m2)
 
 ### Principle Component Analysis of Random Effect Structure (rePCA)
 
-The `ìssingular()` command is sort of a shortcut for a quick inspection of the principle components (PCs) of the variance-covariance matrix of the RES. With the `MixedModels.PCA()` command, we also obtain information about the amount of cumulative variance accounted for as we add PCs. 
+The `ìssingular()` command is sort of a shortcut for a quick inspection of the principle components (PCs) of the variance-covariance matrix of the RES. With the `MixedModels.PCA()` command, we also obtain information about the amount of cumulative variance accounted for as we add PCs.
 
 The output also provides PC loadings which may facilitate interpretation of the CP matrices (if estimated).
 This topic will be picked uo in a separate vignette. See also @Fuehner2021 for an application.
@@ -592,19 +600,19 @@ This topic will be picked uo in a separate vignette. See also @Fuehner2021 for a
 
 For every random factor, `MixedModels.PCA()` extracts as many PCs as there are VCs.
 Therefore, the cumulation of variance across PCs within a random factor will always add up to 100% -- at the latest with the last VC, but, in the case of overparameterized LMMs, the ceiling will be reached earlier.
-The final PCs are usually quite small. 
+The final PCs are usually quite small.
 
 PCs are extracted in the order of the amount of unique variance they account for.
 The first PC accounts for the largest and the final PC for the least amount of variance.
 The number the PCs with percent variance above a certain threshold indicates the number of weighted composites needed and reflects the dimensionality of the orthogonal space within which (almost) all the variance can be accounted for.
 The weights for forming composite scores are the listed loadings.
-For ease of interpretation it is often useful to change the sign of some composite scores. 
+For ease of interpretation it is often useful to change the sign of some composite scores.
 
-The PCA for LMM `m1` shows that each of the five PCs for `Child` accounts for a non-zero percent of unique variance. 
+The PCA for LMM `m1` shows that each of the five PCs for `Child` accounts for a non-zero percent of unique variance.
 
 For `School`  fewer than seven PCs have unique variance.
 The exact number depends on sampling.
-The overparameterization of `School` might be resolved when the CPs for `Sex` are dropped from the LMM. 
+The overparameterization of `School` might be resolved when the CPs for `Sex` are dropped from the LMM.
 
 `Cohort` was estimated with CPs forced to zero.
 Therefore, the VCs were forced to be orthogonal; they already represent the PCA solution.
@@ -620,9 +628,9 @@ MixedModels.PCA(m1)
 #### Scores in RES
 
 Now lets looks at the PCA results for the alternative parameterization of LMM `m2`.
-It is important to note that the reparameterization to base estimates of VCs and CPs on scores rather than effects applies only to the `Test` factor (i.e., the first factor in the formula); VCs for `Sex` and `age` refer to the associated effects. 
+It is important to note that the reparameterization to base estimates of VCs and CPs on scores rather than effects applies only to the `Test` factor (i.e., the first factor in the formula); VCs for `Sex` and `age` refer to the associated effects.
 
-Depending on  sampling, the difference between LMM `m1` and LMM `m2` may show that overparameterization according to PCs may depend on the specification chosen for the other the random-effect structure. 
+Depending on  sampling, the difference between LMM `m1` and LMM `m2` may show that overparameterization according to PCs may depend on the specification chosen for the other the random-effect structure.
 
 :::{.callout-note}
 For the _complete_ data, all PCs had unique variance associated with them.
@@ -640,15 +648,18 @@ Obviously, the subset of data is much noisier than the full set.
 ## `Age x Sex` nested in levels of `Test`
 
 In this final LMM, we test _post-hoc_ five `age x Sex` interactions by nesting the interaction in the levels of `Test`.
-As this LMM `m2_nested` is a reparameterization of LMM `m2`. 
+As this LMM `m2_nested` is a reparameterization of LMM `m2`.
 
 ```{julia}
 m2_nested = let
   f = @formula(
-    zScore ~ 1 + Test + Test & (a1*Sex) +
-    (0 + Test + a1 + Sex | School) +
-    (0 + Test | Child) +
-    zerocorr(0+Test | Cohort)
+    zScore ~
+      1 +
+      Test +
+      Test & (a1 * Sex) +
+      (0 + Test + a1 + Sex | School) +
+      (0 + Test | Child) +
+      zerocorr(0 + Test | Cohort)
   )
   fit(MixedModel, f, dat; contrasts)
 end
@@ -664,13 +675,13 @@ The size and direction of interaction effects correspond with what is shown in @
 gof_summary3 = let
   nms = [:m1, :m2, :m2_nested]
   mods = eval.(nms)
-  DataFrame(
-    name = nms,
+  DataFrame(;
+    name=nms,
     dof=dof.(mods),
     deviance=deviance.(mods),
-    AIC = aic.(mods),
-    AICc = aicc.(mods), 
-    BIC = bic.(mods)
+    AIC=aic.(mods),
+    AICc=aicc.(mods),
+    BIC=bic.(mods),
   )
 end
 ```
@@ -686,16 +697,16 @@ During optimization such models search for the absolute minimum in a very shallo
 #### Geometric degrees of freedom
 
 From MixedModels documentation: "The sum of the leverage values is the rank of the model matrix and `n - sum(leverage(m))` is the degrees of freedom for residuals.
-The sum of the leverage values is also the trace of the so-called "hat" matrix`H`." 
+The sum of the leverage values is also the trace of the so-called "hat" matrix`H`."
 
-New term: _geometric degrees of freedom_. 
+New term: _geometric degrees of freedom_.
 
 ```{julia}
 m1_geomdf = sum(leverage(m1))  # geom_dof
 ```
 
 ```{julia}
-sum(leverage(m2))          
+sum(leverage(m2))
 ```
 
 ```{julia}
@@ -716,7 +727,7 @@ dof(m1)
 
 ## Glossary of _MixedModels.jl_ commands
 
-Here we introduce most of the commands available in the _MixedModels.jl_ package that allow the immediated inspection and analysis of results returned in a fitted _linear_ mixed-effect model. 
+Here we introduce most of the commands available in the _MixedModels.jl_ package that allow the immediated inspection and analysis of results returned in a fitted _linear_ mixed-effect model.
 
 Postprocessing related to conditional modes will be dealt with in a different tutorial.
 
@@ -781,6 +792,7 @@ bic(m1)  # objective(m1) + dof(m1)*log(nobs(m1))
 ```
 
 ### Fixed-effect statistics
+
 ```
 + julia> coeftable(m1)     # StatsBase.coeftable: fixed-effects statiscs; 
 						     default level=0.95
@@ -836,7 +848,9 @@ propertynames(m1)  # names of available extractors
 ```
 
 ### Covariance parameter estimates
+
 These commands inform us about the model parameters associated with the RES.
+
 ```
 + julia> issingular(m1)        # Test singularity for param. vector m1.theta
 + julia> VarCorr(m1)           # MixedModels.VarCorr: est. of RES
@@ -877,14 +891,15 @@ BlockDescription(m1) #  Description of blocks of A and L in a LinearMixedModel
 ```
 
 ```{julia}
-m2.θ 
+m2.θ
 ```
 
 ```{julia}
 BlockDescription(m2)
 ```
 
-### Model "predictions" 
+### Model "predictions"
+
 These commands inform us about extracion of conditional modes/means and (co-)variances, that using the model parameters to improve the predictions for units (levels) of the grouping (random) factors. We need this information, e.g., for partial-effect response profiles (e.g., facet plot) or effect profiles (e.g., caterpillar plot), or visualizing the borrowing-strength effect for correlation parameters (e.g., shrinkage plots).
 We are using the fit of LMM `m2`.
 
@@ -919,29 +934,27 @@ Let's take pictures.
 #| label: fig-caterpillarCohort
 #| fig-cap: Prediction intervals of the random effects for Cohort in model m1
 caterpillar!(
-  Figure(; resolution=(800,400)),
-  ranefinfo(m1, :Cohort),
+  Figure(; resolution=(800, 400)), ranefinfo(m1, :Cohort)
 )
 ```
 
 #### Shrinkage plots
 
-These are just teasers. We will pick this up in a separate tutorial. Enjoy! 
+These are just teasers. We will pick this up in a separate tutorial. Enjoy!
 
 ```{julia}
 #| code-fold: true
 #| label: fig-m1shrinkageCohort
 #| fig-cap: Shrinkage plot of the random effects for Cohort in model m1
-shrinkageplot!(Figure(; resolution=(800,800)), m1, :Cohort)
+shrinkageplot!(Figure(; resolution=(800, 800)), m1, :Cohort)
 ```
 
 ```{julia}
 #| code-fold: true
 #| label: fig-m2shrinkageCohort
 #| fig-cap: Shrinkage plot of the random effects for Cohort in model m2
-shrinkageplot!(Figure(; resolution=(800,800)), m2, :Cohort)
+shrinkageplot!(Figure(; resolution=(800, 800)), m2, :Cohort)
 ```
 
 ::: {#refs}
 :::
-

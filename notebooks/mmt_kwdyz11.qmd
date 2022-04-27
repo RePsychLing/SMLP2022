@@ -14,7 +14,7 @@ jupyter: julia-1.7
 We take the `kwdyz11.arrow` dataset [@Kliegl2010] from an experiment looking at three effects of visual cueing under four different cue-target relations (CTRs).
 Two horizontal rectangles are displayed above and below a central fixation point or they displayed in vertical orientation to the left and right of the fixation point.
 Subjects react to the onset of a small visual target occuring at one of the four ends of the two rectangles.
-The target is cued validly on 70% of trials by a brief flash of the corner of the rectangle at which it appears; it is cued invalidly at the three other locations 10% of the trials each. 
+The target is cued validly on 70% of trials by a brief flash of the corner of the rectangle at which it appears; it is cued invalidly at the three other locations 10% of the trials each.
 
 We specify three contrasts for the four-level factor CTR that are derived from spatial, object-based, and attractor-like features of attention.
 They map onto sequential differences between appropriately ordered factor levels. At the level of fixed effects, there is the noteworthy result, that the attraction effect was estimated at 2 ms, that is clearly not significant.
@@ -23,7 +23,7 @@ Moreover, the reliable individual differences in the attraction effect were nega
 
 Unfortunately, a few years after the publication, we determined that the reported LMM is actually singular and that the singularity is linked to a theoretically critical correlation parameter (CP) between the spatial effect and the attraction effect.
 Fortunately, there is also a larger dataset `kkl15.arrow` from a replication and extension of this study [@Kliegl2015], analyzed with `kkl15.jl` notebook.
-The critical CP (along with other fixed effects and CPs) was replicated in this study. 
+The critical CP (along with other fixed effects and CPs) was replicated in this study.
 
 A more comprehensive analysis was reported in the parsimonious mixed-model paper [@Bates2015].
 Data and R scripts are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
@@ -59,9 +59,10 @@ dat = @chain "./data/kwdyz11.arrow" begin
   Arrow.Table
   DataFrame
   select(
-    :subj => (s -> categorical(string.('S', lpad.(s, 2, '0')))) => :Subj,
+    :subj =>
+      (s -> categorical(string.('S', lpad.(s, 2, '0')))) => :Subj,
     :tar => categorical => :CTR,
-	:rt,
+    :rt,
     :rt => (x -> log.(x)) => :lrt,
   )
 end
@@ -69,7 +70,7 @@ levels!(dat.CTR, ["val", "sod", "dos", "dod"])
 describe(dat)
 ```
 
-We recommend to code the levels/units of random factor / grouping variable not as a number, but as a string starting with a letter and of the same length for all levels/units. 
+We recommend to code the levels/units of random factor / grouping variable not as a number, but as a string starting with a letter and of the same length for all levels/units.
 
 We also recommend to sort levels of factors into a meaningful order, that is overwrite the default alphabetic ordering.
 This is also a good place to choose alternative names for variables in the context of the present analysis.
@@ -84,31 +85,29 @@ Comparative density plots of all response times by cue-target relation, @fig-com
 #| fig-cap: "Comparative density plots of log reaction time for different cue-target relations."
 #| label: fig-comparativedensity
 draw(
-  data(dat) * 
+  data(dat) *
   mapping(
-    :lrt => "log(Reaction time [ms])",	
-    color= :CTR => renamer(
-      "val" => "valid cue",   
-      "sod" => "some obj/diff pos",
-      "dos" =>  "diff obj/same pos", 
-      "dod" => "diff obj/diff pos",
-    ) => "Cue-target relation",     
-  ) * density(),
+    :lrt => "log(Reaction time [ms])";
+    color=:CTR =>
+      renamer("val" => "valid cue", "sod" => "some obj/diff pos", "dos" => "diff obj/same pos", "dod" => "diff obj/diff pos") => "Cue-target relation",
+  ) *
+  density(),
 )
 ```
 
 An alternative visualization without overlap of the conditions can be accomplished with ridge plots.
 
-**To be done** 
+**To be done**
 
 For the next set of plots we average subjects' data within the four experimental conditions.
 This table could be used as input for a repeated-measures ANOVA.
 
 ```{julia}
-dat_subj = combine(groupby(dat, [:Subj, :CTR]),
-  :rt => length => :n, 
+dat_subj = combine(
+  groupby(dat, [:Subj, :CTR]),
+  :rt => length => :n,
   :rt => mean => :rt_m,
-  :lrt  => mean => :lrt_m
+  :lrt => mean => :lrt_m,
 )
 ```
 
@@ -129,25 +128,25 @@ boxplot(
         "same obj/diff pos",
         "diff obj/same pos",
         "diff obj/diff pos",
-      ]
-    )
+      ],
+    ),
   ),
-  figure=(;resolution=(800, 300)),
+  figure=(; resolution=(800, 300)),
 )
 ```
 
- Mean of log reaction times for four cue-target relations. Targets appeared at (a) the cued position (valid) in a rectangle, (b) in the same rectangle cue, but at its other end, (c) on the second rectangle, but at a corresponding horizontal/vertical physical distance, or (d) at the other end of the second rectangle, that is $\sqrt{2}$ of horizontal/vertical distance diagonally across from the cue, that is also at larger physical distance compared to (c).
+Mean of log reaction times for four cue-target relations. Targets appeared at (a) the cued position (valid) in a rectangle, (b) in the same rectangle cue, but at its other end, (c) on the second rectangle, but at a corresponding horizontal/vertical physical distance, or (d) at the other end of the second rectangle, that is $\sqrt{2}$ of horizontal/vertical distance diagonally across from the cue, that is also at larger physical distance compared to (c).
 
- A better alternative to the boxplot is a dotplot. It also displays subjects' condition means.
+A better alternative to the boxplot is a dotplot. It also displays subjects' condition means.
 
- **To be done** 
+**To be done**
 
 ## Linear mixed model
 
 ```{julia}
 contrasts = Dict(
-  :CTR  => SeqDiffCoding(levels=["val", "sod", "dos", "dod"]),
-  :Subj => Grouping()
+  :CTR => SeqDiffCoding(; levels=["val", "sod", "dos", "dod"]),
+  :Subj => Grouping(),
 )
 progress = false
 m1 = let
@@ -164,9 +163,9 @@ VarCorr(m1)
 issingular(m1)
 ```
 
- LMM `m1` is not fully supported by the data; it is overparameterized.
- This is also visible in the PCA: only three, not four PCS are needed to account for all the variance and covariance in the random-effect structure.
- The problem is the +.93 CP for spatial `sod` and attraction `dod` effects.
+LMM `m1` is not fully supported by the data; it is overparameterized.
+This is also visible in the PCA: only three, not four PCS are needed to account for all the variance and covariance in the random-effect structure.
+The problem is the +.93 CP for spatial `sod` and attraction `dod` effects.
 
 ```{julia}
 first(MixedModels.PCA(m1))
@@ -174,10 +173,10 @@ first(MixedModels.PCA(m1))
 
 ## Diagnostic plots of LMM residuals
 
-Do model residuals meet LMM assumptions? Classic plots are 
+Do model residuals meet LMM assumptions? Classic plots are
 
-+ Residual over fitted
-+ Quantiles of model residuals over theoretical quantiles of normal distribution
+  - Residual over fitted
+  - Quantiles of model residuals over theoretical quantiles of normal distribution
 
 ### Residual-over-fitted plot
 
@@ -191,16 +190,13 @@ CairoMakie.activate!(; type="png")
 set_aog_theme!()
 draw(
   data((; f=fitted(m1), r=residuals(m1))) *
-  mapping(
-    :f => "Fitted values",
-    :r => "Residual from model m1",
-  ) *
+  mapping(:f => "Fitted values", :r => "Residual from model m1") *
   visual(Scatter);
 )
 ```
 
 With many observations the scatterplot is not that informative.
-Contour plots or heatmaps may be an alternative. 
+Contour plots or heatmaps may be an alternative.
 
 ```{julia}
 #| code-fold: true
@@ -210,19 +206,18 @@ CairoMakie.activate!(; type="svg")
 draw(
   data((; f=fitted(m1), r=residuals(m1))) *
   mapping(
-    :f => "Fitted log response time",
-    :r => "Residual from model m1",
-  ) * density();
+    :f => "Fitted log response time", :r => "Residual from model m1"
+  ) *
+  density();
 )
 ```
 
 ### Q-Q plot
 
-The plot of quantiles of model residuals over corresponding quantiles of the normal distribution should yield a straight line along the main diagonal. 
-
+The plot of quantiles of model residuals over corresponding quantiles of the normal distribution should yield a straight line along the main diagonal.
 
 ```{julia}
-qqnorm(residuals(m1); qqline = :none) 
+qqnorm(residuals(m1); qqline=:none)
 ```
 
 ### Observed and theoretical normal distribution
@@ -236,34 +231,31 @@ Overall, it does not look too bad.
 #| label: fig-standresdens
 let
   n = nrow(dat)
-  dat_rz = DataFrame(
+  dat_rz = DataFrame(;
     value=vcat(residuals(m1) ./ std(residuals(m1)), randn(n)),
-    curve= vcat(fill.("residual", n), fill.("normal", n))
+    curve=vcat(fill.("residual", n), fill.("normal", n)),
   )
   draw(
     data(dat_rz) *
-    mapping(
-      :value => "Standardized residuals";
-      color=:curve
-    ) *
-    density(bandwidth=.1);
+    mapping(:value => "Standardized residuals"; color=:curve) *
+    density(; bandwidth=0.1);
   )
 end
 ```
 
 ## Conditional modes
 
-Now we move on to visualizations that are based on model parameters and subjects' data, that is "predictions" of the LMM for subject's GM and experimental effects. Three important plots are 
+Now we move on to visualizations that are based on model parameters and subjects' data, that is "predictions" of the LMM for subject's GM and experimental effects. Three important plots are
 
-+ Overlay
-+ Caterpillar
-+ Shrinkage
+  - Overlay
+  - Caterpillar
+  - Shrinkage
 
 ### Overlay
 
 The first plot overlays shrinkage-corrected conditional modes of the random effects with within-subject-based and pooled GMs and experimental effects.
 
-**To be done** 
+**To be done**
 
 ### Caterpillar plot
 
@@ -274,9 +266,7 @@ The caterpillar plot, @fig-m1caterpillar, also reveals the high correlation betw
 #| fig-cap: "Prediction intervals on the random effects for Subj in model m1"
 #| label: fig-m1caterpillar
 caterpillar!(
-  Figure(; resolution=(800,1000)),
-  ranefinfo(m1, :Subj);
-  orderby=2,
+  Figure(; resolution=(800, 1000)), ranefinfo(m1, :Subj); orderby=2
 )
 ```
 
@@ -289,16 +279,16 @@ The corresponding panel illustrates an *implosion* of conditional modes.
 #| code-fold: true
 #| fig-cap: "Shrinkage plot of the conditional means of the random effects for model m1"
 #| label: fig-m1shrinkage
-shrinkageplot!(Figure(; resolution=(1000,1000)), m1)
+shrinkageplot!(Figure(; resolution=(1000, 1000)), m1)
 ```
 
 ## Parametric bootstrap
 
-Here we 
+Here we
 
-+ generate a bootstrap sample
-+ compute shortest covergage intervals for the LMM parameters
-+ plot densities of bootstrapped parameter estimates for residual, fixed effects, variance components, and correlation parameters
+  - generate a bootstrap sample
+  - compute shortest covergage intervals for the LMM parameters
+  - plot densities of bootstrapped parameter estimates for residual, fixed effects, variance components, and correlation parameters
 
 ### Generate a bootstrap sample
 
@@ -307,11 +297,7 @@ We generate 2500 samples for the 15 model parameters (4 fixed effect, 4 VCs, 6 C
 ```{julia}
 #| code-fold: true
 Random.seed!(1234321)
-samp = parametricbootstrap(
-  2500,
-  m1;
-  hide_progress=true,
-)
+samp = parametricbootstrap(2500, m1; hide_progress=true)
 dat2 = DataFrame(samp.allpars)
 first(dat2, 10)
 ```
@@ -331,16 +317,16 @@ The other intervals do not exhibit such pathologies; they appear to be ok.
 DataFrame(shortestcovint(samp))
 ```
 
-### Comparative density plots of bootstrapped parameter estimates 
+### Comparative density plots of bootstrapped parameter estimates
 
-#### Residual 
+#### Residual
 
 ```{julia}
 #| code-fold: true
 #| label: fig-residstddevdens
 draw(
-	data(@subset(dat2, :type == "σ", ismissing(:names))) * 
-	mapping(:value => "Residual standard deviation") *
+  data(@subset(dat2, :type == "σ", ismissing(:names))) *
+  mapping(:value => "Residual standard deviation") *
   density();
 )
 ```
@@ -355,13 +341,13 @@ To keep the plot range small we do not inlcude its density here.
 #| fig-cap: "Comparative density plots of the fixed-effects parameters for model m1"
 #| label: fig-m1fixedeffdens
 labels = [
-	"CTR: sod" => "spatial effect",
-	"CTR: dos" => "object effect",
-	"CTR: dod" => "attraction effect",
+  "CTR: sod" => "spatial effect",
+  "CTR: dos" => "object effect",
+  "CTR: dod" => "attraction effect",
   "(Intercept)" => "grand mean",
 ]
 draw(
-  data(@subset(dat2, :type == "β" && :names ≠ "(Intercept)")) * 
+  data(@subset(dat2, :type == "β" && :names ≠ "(Intercept)")) *
   mapping(
     :value => "Experimental effect size [ms]";
     color=:names => renamer(labels) => "Experimental effects",
@@ -379,16 +365,16 @@ The densitiies correspond nicely with the shortest coverage intervals.
 #| fig-cap: "Comparative density plots of the variance components for model m1"
 #| label: fig-m1varcompdens
 draw(
-  data(@subset(dat2, :type == "σ" && :group == "Subj")) * 
-	mapping(
+  data(@subset(dat2, :type == "σ" && :group == "Subj")) *
+  mapping(
     :value => "Standard deviations [ms]";
-	  color=:names => renamer(labels) => "Variance components",
-    ) *
+    color=:names => renamer(labels) => "Variance components",
+  ) *
   density();
 )
 ```
 
-The VC are all very nicely defined. 
+The VC are all very nicely defined.
 
 #### Correlation parameters (CPs)
 
@@ -397,21 +383,21 @@ The VC are all very nicely defined.
 #| label: fig-m1corrdens
 #| fig-cap: "Comparative density plots of the correlation parameters for model m1"
 let
-	labels = [
-		"(Intercept), CTR: sod" => "GM, spatial",
-		"(Intercept), CTR: dos" => "GM, object",
-		"CTR: sod, CTR: dos" => "spatial, object",
-		"(Intercept), CTR: dod" => "GM, attraction",
-		"CTR: sod, CTR: dod" => "spatial, attraction",
-		"CTR: dos, CTR: dod" => "object, attraction",
+  labels = [
+    "(Intercept), CTR: sod" => "GM, spatial",
+    "(Intercept), CTR: dos" => "GM, object",
+    "CTR: sod, CTR: dos" => "spatial, object",
+    "(Intercept), CTR: dod" => "GM, attraction",
+    "CTR: sod, CTR: dod" => "spatial, attraction",
+    "CTR: dos, CTR: dod" => "object, attraction",
   ]
-	draw(
-    data(@subset(dat2, :type == "ρ")) * 
-	  mapping(
+  draw(
+    data(@subset(dat2, :type == "ρ")) *
+    mapping(
       :value => "Correlation";
       color=:names => renamer(labels) => "Correlation parameters",
     ) *
-	  density();
+    density();
   )
 end
 ```
@@ -419,7 +405,7 @@ end
 Two of the CPs stand out positively.
 First, the correlation between GM and the spatial effect is well defined.
 Second, as discussed throughout this script, the CP between spatial and attraction effect is close to the 1.0 border and clearly not well defined.
-Therefore, this CP will be replicated with a larger sample in script `kkl15.jl` [@Kliegl2015]. 
+Therefore, this CP will be replicated with a larger sample in script `kkl15.jl` [@Kliegl2015].
 
 ::: {#refs}
 :::

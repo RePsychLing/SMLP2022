@@ -32,7 +32,7 @@ using MixedModelsMakie # diagnostic plots
 using Random           # random number generators
 using RCall            # call R from Julia
 
-CairoMakie.activate!(type="svg")
+CairoMakie.activate!(; type="svg")
 ```
 
 The `sleepstudy` data are one of the datasets available with the `MixedModels` package.
@@ -74,7 +74,7 @@ There are some deviations from linearity within the panels but the deviations ar
 contrasts = Dict(:subj => Grouping())
 progress = false
 m1 = let
-  form = @formula(reaction ~ 1+days+(1+days|subj))
+  form = @formula(reaction ~ 1 + days + (1 + days | subj))
   fit(MixedModel, form, sleepstudy; contrasts, progress)
 end
 ```
@@ -118,7 +118,7 @@ The `zerocorr` function applied to a random-effects term creates uncorrelated ve
 ```{julia}
 #| lst-label: m2
 m2 = let
-  form = @formula reaction ~ 1 + days + zerocorr(1+days|subj)
+  form = @formula reaction ~ 1 + days + zerocorr(1 + days | subj)
   fit(MixedModel, form, sleepstudy; contrasts, progress)
 end
 ```
@@ -141,7 +141,7 @@ Alternatively, the AIC or BIC values can be compared.
 ```{julia}
 #| code-fold: true
 let mods = [m2, m1]
-  DataFrame(
+  DataFrame(;
     model=[:m2, :m1],
     pars=dof.(mods),
     geomdof=(sum ∘ leverage).(mods),
@@ -186,7 +186,7 @@ If the BLUPs are strongly shrunk towards zero then the additional complexity in 
 #| code-fold: true
 #| fig-cap: Shrinkage plot of means of the random effects in model m1
 #| label: fig-m1shrinkage
-shrinkageplot!(Figure(; resolution=(500,500)), m1)
+shrinkageplot!(Figure(; resolution=(500, 500)), m1)
 ```
 
 ::: {.callout-note}
@@ -228,16 +228,16 @@ An empirical density plot of the estimates for the fixed-effects coefficients, @
 #| fig-cap: 'Empirical density plots of bootstrap replications of fixed-effects parameter estimates'
 #| label: fig-bsbetadensity
 begin
-	f1 = Figure(; resolution=(1000, 400))
-	CairoMakie.density!(
-		Axis(f1[1,1], xlabel="Intercept [ms]"),
-		@subset(allpars, :type=="β" && :names=="(Intercept)").value,
-	)
-	CairoMakie.density!(
-		Axis(f1[1,2], xlabel="Coefficient of days [ms/day]"),
-		@subset(allpars, :type=="β" && :names=="days").value,
-	)
-	f1
+  f1 = Figure(; resolution=(1000, 400))
+  CairoMakie.density!(
+    Axis(f1[1, 1]; xlabel="Intercept [ms]"),
+    @subset(allpars, :type == "β" && :names == "(Intercept)").value,
+  )
+  CairoMakie.density!(
+    Axis(f1[1, 2]; xlabel="Coefficient of days [ms/day]"),
+    @subset(allpars, :type == "β" && :names == "days").value,
+  )
+  f1
 end
 ```
 
@@ -254,7 +254,7 @@ It turns out that the estimates of ρ have a great deal of variability.
 Even more alarming, some of these ρ values are undefined (denoted `NaN`) because the way ρ is calculated can create a division by zero.
 
 ```{julia}
-describe(@select(@subset(allpars, :type=="ρ"), :value))
+describe(@select(@subset(allpars, :type == "ρ"), :value))
 ```
 
 Because there are several values on the boundary (`ρ = 1.0`) and a *pulse* like this is not handled well by a density plot, we plot this sample as a histogram, @fig-correlationhist.
@@ -264,10 +264,10 @@ Because there are several values on the boundary (`ρ = 1.0`) and a *pulse* like
 #| fig-cap: 'Histogram of bootstrap replications of the within-subject correlation parameter'
 #| label: fig-correlationhist
 hist(
-	@subset(allpars, :type == "ρ", isfinite(:value)).value,
-	bins=40,
-	axis=(; xlabel="Estimated correlation of the random effects"),
-	figure=(; resolution=(500, 500)),
+  @subset(allpars, :type == "ρ", isfinite(:value)).value;
+  bins=40,
+  axis=(; xlabel="Estimated correlation of the random effects"),
+  figure=(; resolution=(500, 500)),
 )
 ```
 
@@ -278,28 +278,28 @@ Finally, density plots for the variance components (but on the scale of the stan
 #| fig-cap: 'Empirical density plots of bootstrap replicates of standard deviation estimates'
 #| label: fig-bssigmadensity
 begin
-	σs = @subset(allpars, :type=="σ")
-	f2 = Figure(; resolution=(1000, 300))
-	CairoMakie.density!(
-		Axis(f2[1,1], xlabel="Residual σ"),
-		@subset(σs, :group=="residual").value,
-	)
-	CairoMakie.density!(
-		Axis(f2[1,2], xlabel="subj-Intercept σ"),
-		@subset(σs, :group=="subj" && :names=="(Intercept)").value,
-	)
-	CairoMakie.density!(
-		Axis(f2[1,3], xlabel="subj-slope σ"),
-		@subset(σs, :group=="subj" && :names=="days").value,
-	)
-	f2
+  σs = @subset(allpars, :type == "σ")
+  f2 = Figure(; resolution=(1000, 300))
+  CairoMakie.density!(
+    Axis(f2[1, 1]; xlabel="Residual σ"),
+    @subset(σs, :group == "residual").value,
+  )
+  CairoMakie.density!(
+    Axis(f2[1, 2]; xlabel="subj-Intercept σ"),
+    @subset(σs, :group == "subj" && :names == "(Intercept)").value,
+  )
+  CairoMakie.density!(
+    Axis(f2[1, 3]; xlabel="subj-slope σ"),
+    @subset(σs, :group == "subj" && :names == "days").value,
+  )
+  f2
 end
 ```
 
 The estimates of the coefficients, β₁ and β₂, are not highly correlated as shown in a scatterplot of the bootstrap estimates, @fig-bsbetacontours .
 
 ```{julia}
-vcov(m1, corr=true)  # correlation estimate from the model
+vcov(m1; corr=true)  # correlation estimate from the model
 ```
 
 ```{julia}
@@ -310,16 +310,15 @@ let
   vals = disallowmissing(
     Array(
       select(
-        unstack(DataFrame(m1bstp.β), :iter, :coefname, :β), Not(:iter),
+        unstack(DataFrame(m1bstp.β), :iter, :coefname, :β),
+        Not(:iter),
       ),
     ),
   )
   scatter(
     vals;
     color=(:blue, 0.20),
-    axis=(;
-      xlabel="Intercept", ylabel="Coefficient of days"
-    ),
+    axis=(; xlabel="Intercept", ylabel="Coefficient of days"),
     figure=(; resolution=(500, 500)),
   )
   contour!(kde(vals))
@@ -329,4 +328,3 @@ end
 
 ::: {#refs}
 :::
-

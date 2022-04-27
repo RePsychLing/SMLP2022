@@ -14,6 +14,7 @@ The columns can be of different types including numeric values, character string
 An Arrow file can be read or written from R, Python, Julia and many other languages.  Somewhat confusingly in R and Python the name `feather`, which refers to an earlier version of the storage format, is used in some function names like `read_feather`.
 
 ## The Emotikon data
+
 The [SMLP2021 repository](https://github.com/RePsychling/SMLP2021) contains a version of the data from @Fuehner2021 in `notebooks/data/fggk21.arrow`.
 After that file was created there were changes in the master RDS file on the [osf.io site](https://osf.io/2d8rj/) for the project.
 We will recreate the Arrow file here then split it into two separate tables, one with a row for each child in the study and one with a row for each test result.
@@ -40,16 +41,14 @@ using PyCall  # show reading Arrow in Python
 using RCall   # show reading Arrow in R
 using StatsBase
 
-CairoMakie.activate!(type="svg")
+CairoMakie.activate!(; type="svg")
 using AlgebraOfGraphics: density
 ```
-
 
 ## Downloading and importing the RDS file
 
 This is similar to some of the code shown by Julius Krumbiegel on Monday.
 In the data directory of the emotikon project on osf.io under Data, the url for the rds data file is found to be [https://osf.io/xawdb/].  Note that we want version 2 of this file.
-
 
 ```{julia}
 fn = Downloads.download("https://osf.io/xawdb/download?version=2");
@@ -60,7 +59,6 @@ dfrm = rcopy(R"readRDS($fn)")
 ```
 
 Now write this file as a Arrow file and read it back in.
-
 
 ```{julia}
 arrowfn = joinpath("data", "fggk21.arrow")
@@ -75,7 +73,6 @@ filesize(arrowfn)
 ```{julia}
 df = DataFrame(tbl)
 ```
-
 
 ## Avoiding needless repetition
 
@@ -97,7 +94,6 @@ It is important to note that the main advantage of using smaller tables that are
 
 ## Creating the smaller table
 
-
 ```{julia}
 Child = unique(select(df, :Child, :School, :Cohort, :Sex, :age))
 ```
@@ -107,18 +103,20 @@ length(unique(Child.Child))  # should be 108295
 ```
 
 ```{julia}
-filesize(Arrow.write("./data/fggk21_Child.arrow", Child; compress=:zstd))
-```
-
-```{julia}
-filesize(Arrow.write(
-		"./data/fggk21_Score.arrow",
-		select(df, :Child, :Test, :score);
-		compress=:zstd,
-    )
+filesize(
+  Arrow.write("./data/fggk21_Child.arrow", Child; compress=:zstd)
 )
 ```
 
+```{julia}
+filesize(
+  Arrow.write(
+    "./data/fggk21_Score.arrow",
+    select(df, :Child, :Test, :score);
+    compress=:zstd,
+  ),
+)
+```
 
 ::: {.callout-note}
 A careful examination of the file sizes versus that of `./data/fggk21.arrow` will show that the separate tables combined take up more space than the original because of the compression.  Compression algorithms are often more successful when applied to larger files.
@@ -165,7 +163,6 @@ Now create a table of the number of children with 1, 2, ..., 5 test scores.
 combine(groupby(nobsChild, :ntest), nrow)
 ```
 
-
 A natural question at this point is whether there is something about those students who have few observations.
 For example, are they from only a few schools?
 
@@ -173,7 +170,9 @@ One approach to examining properties like is to add the number of observations f
 Later we can group the table according to this `:ntest` to look at properties of `:Child` by `:ntest`.
 
 ```{julia}
-gdf = groupby(disallowmissing!(leftjoin(Child, nobsChild; on=:Child)), :ntest)
+gdf = groupby(
+  disallowmissing!(leftjoin(Child, nobsChild; on=:Child)), :ntest
+)
 ```
 
 Are the sexes represented more-or-less equally?
@@ -198,42 +197,54 @@ A ridge plot is stacked plot of densities for a given variable (`densvar`) group
 The non-mutating method creates a Figure before calling the method for Figure.
 The method for Figure places the ridge plot in the grid position specified by `pos`, default is (1,1).
 """
-function ridgeplot!(ax::Axis, df::AbstractDataFrame, densvar::Symbol, group::Symbol; normalize=false)
-	# `normalize` makes it so that the max density is always 1
-	# `normalize` works on the density not the area/mass
-	gdf = groupby(df, group)
-	dens = combine(gdf, densvar => kde => :kde)
-	sort!(dens, group)
-	spacing = normalize ? 1.0 :  0.9 * maximum(dens[!, :kde]) do val
-		return maximum(val.density)
-	end
-	
-	nticks = length(gdf)
-	
-	for (idx, row) in enumerate(eachrow(dens))
-		dd = normalize ? row.kde.density ./ maximum(row.kde.density) : row.kde.density
-		
-		offset =  idx * spacing
-		
-		lower = Node(Point2f.(row.kde.x, offset))
-		upper = Node(Point2f.(row.kde.x, dd .+ offset))
-		band!(ax, lower, upper; color=(:black, 0.3))
-		lines!(ax, upper; color=(:black, 1.0))
-	end
-	
-    ax.yticks[] = (1:spacing:(nticks*spacing), string.(dens[!, group]))
-    ylims!(ax, 0, (nticks + 2) * spacing)
-	ax.xlabel[] = string(densvar)
-	ax.ylabel[] = string(group)
-	
-	ax
+function ridgeplot!(
+  ax::Axis,
+  df::AbstractDataFrame,
+  densvar::Symbol,
+  group::Symbol;
+  normalize=false,
+)
+  # `normalize` makes it so that the max density is always 1
+  # `normalize` works on the density not the area/mass
+  gdf = groupby(df, group)
+  dens = combine(gdf, densvar => kde => :kde)
+  sort!(dens, group)
+  spacing = normalize ? 1.0 : 0.9 * maximum(dens[!, :kde]) do val
+    return maximum(val.density)
+  end
+
+  nticks = length(gdf)
+
+  for (idx, row) in enumerate(eachrow(dens))
+    dd = if normalize
+      row.kde.density ./ maximum(row.kde.density)
+    else
+      row.kde.density
+    end
+
+    offset = idx * spacing
+
+    lower = Node(Point2f.(row.kde.x, offset))
+    upper = Node(Point2f.(row.kde.x, dd .+ offset))
+    band!(ax, lower, upper; color=(:black, 0.3))
+    lines!(ax, upper; color=(:black, 1.0))
+  end
+
+  ax.yticks[] = (
+    1:spacing:(nticks * spacing), string.(dens[!, group])
+  )
+  ylims!(ax, 0, (nticks + 2) * spacing)
+  ax.xlabel[] = string(densvar)
+  ax.ylabel[] = string(group)
+
+  return ax
 end
 ```
 
 ```{julia}
-function ridgeplot!(f::Figure, args...; pos=(1,1), kwargs...) 
-	ridgeplot!(Axis(f[pos...]), args...; kwargs...)
-	return f
+function ridgeplot!(f::Figure, args...; pos=(1, 1), kwargs...)
+  ridgeplot!(Axis(f[pos...]), args...; kwargs...)
+  return f
 end
 ```
 
@@ -242,7 +253,9 @@ end
 	ridgeplot(args...; kwargs...)
 See [ridgeplot!](@ref).
 """
-ridgeplot(args...; kwargs...) = ridgeplot!(Figure(), args...; kwargs...)
+function ridgeplot(args...; kwargs...)
+  return ridgeplot!(Figure(), args...; kwargs...)
+end
 ```
 
 ```{julia}
@@ -255,9 +268,9 @@ parent(gdf)
 ```
 
 ## Reading Arrow files in other languages
+
 There are Arrow implementations for R (the `arrow` package) and for Python (`pyarrow`).
 They can be accessed within Julia using the `RCall` and `PyCall` packages.
-
 
 ```{julia}
 feather = pyimport("pyarrow.feather");

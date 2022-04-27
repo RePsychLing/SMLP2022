@@ -6,13 +6,12 @@ jupyter: julia-1.7
 ---
 
 Unlike R, Julia does not immediately expose a huge number of functions, but instead requires loading packages (whether from the standard library or from the broader package ecosystem) for a lot of relevant functionality for statistical analysis.
-There are technical reasons for this, but one further motivation is that Julia is at a broader "technical computing" audience (like MATLAB or perhaps Python) and less at a "statistical analysis" audience. 
+There are technical reasons for this, but one further motivation is that Julia is at a broader "technical computing" audience (like MATLAB or perhaps Python) and less at a "statistical analysis" audience.
 
 This has two important implications:
 
-1. Even relatively simple programs will often load several packages.
-2. Packages are often focused on adding a relatively narrow set of functionality, which means that "basic" functionality (e.g. reading a CSV file and manipuating it as a DataFrame) is often split across multiple packages. In other words, **see the the first point!**
-
+ 1. Even relatively simple programs will often load several packages.
+ 2. Packages are often focused on adding a relatively narrow set of functionality, which means that "basic" functionality (e.g. reading a CSV file and manipuating it as a DataFrame) is often split across multiple packages. In other words, **see the the first point!**
 
 This notebook is not intended to be an exhaustive list of packages, but rather to highlight a few packages that I suspect will be particularly useful.
 Before getting onto the packages, I have one final hint: take advantage of how easy and first-class package management in Julia is. Having good package management makes reproducible analyses much easier and avoids breaking old analyses when you start a new one. Pluto helpfully installs and manages for you, but the package-manager REPL mode (activated by typing `]` at the `julia>` prompt) is very useful.
@@ -21,42 +20,47 @@ Before getting onto the packages, I have one final hint: take advantage of how e
 
 ### Reading data
 
-- [Arrow.jl](https://arrow.juliadata.org/dev/manual/) a high performance format for data storage, accessible in R via the [`arrow` package](https://arrow.apache.org/docs/r/) and in Python via `pyarrow`. (Confusingly, the function for reading and writing Arrow format files in R is called `read_feather` and `write_feather`, but the modern Arrow format is distinct from the older Feather format provided by the `feather` package.) This is the format that we store the example and test datasets in for MixedModels.jl.
+  - [Arrow.jl](https://arrow.juliadata.org/dev/manual/) a high performance format for data storage, accessible in R via the [`arrow` package](https://arrow.apache.org/docs/r/) and in Python via `pyarrow`. (Confusingly, the function for reading and writing Arrow format files in R is called `read_feather` and `write_feather`, but the modern Arrow format is distinct from the older Feather format provided by the `feather` package.) This is the format that we store the example and test datasets in for MixedModels.jl.
 
-- [CSV.jl](https://csv.juliadata.org/stable/index.html) useful for reading comma-separated values, tab-separated values and basically everything handled by the `read.csv` and `read.table` family of functions in R. 
+  - [CSV.jl](https://csv.juliadata.org/stable/index.html) useful for reading comma-separated values, tab-separated values and basically everything handled by the `read.csv` and `read.table` family of functions in R.
 
 Note that by default both Arrow.jl and CSV.jl do not return a DataFrame, but rather "column tables" -- named tuples of column vectors.
 
 ### DataFrames
 
-Unlike in R, DataFrames are not part of the base language, nor the standard library. 
+Unlike in R, DataFrames are not part of the base language, nor the standard library.
 
 [DataFrames.jl](https://dataframes.juliadata.org/stable/) provides the basic infrastructure around DataFrames, as well as its own [mini language](https://bkamins.github.io/julialang/2020/12/24/minilanguage.html) for doing the split-apply-combine approach that underlies R's `dplyr` and much of the tidyverse.  The DataFrames.jl documentation is the place to for looking at how to e.g. read in a [CSV or Arrow file as a DataFrame](https://dataframes.juliadata.org/stable/man/importing_and_exporting/). Note that DataFrames.jl by default depends on [CategoricalArrays.jl](https://categoricalarrays.juliadata.org/stable/) to handle the equivalent of `factor` in the R world, but there is an alternative package for `factor`-like array type in Julia, [PooledArrays.jl](https://github.com/JuliaData/PooledArrays.jl/). PooledArrays are simpler, but more limited than CategoricalArrays and we (Phillip and Doug) sometimes use them in our examples and simulations.
 
-DataFrame.jl's mini language can be a bit daunting, if you're used to manipulations in the style of base R or the tidyverse. For that, there are several options; recently, we'e had particularly nice experiences with [DataFrameMacros.jl](https://github.com/jkrumbiegel/DataFrameMacros.jl) and [Chain.jl](https://github.com/jkrumbiegel/Chain.jl) for a convenient syntax to connect or "pipe" together successive operations. It's your choice whether and which of these add-ons you want to use! Phillip tends to write his code using raw DataFrames.jl, but Doug really enjoys DataFrameMacros.jl. 
+DataFrame.jl's mini language can be a bit daunting, if you're used to manipulations in the style of base R or the tidyverse. For that, there are several options; recently, we'e had particularly nice experiences with [DataFrameMacros.jl](https://github.com/jkrumbiegel/DataFrameMacros.jl) and [Chain.jl](https://github.com/jkrumbiegel/Chain.jl) for a convenient syntax to connect or "pipe" together successive operations. It's your choice whether and which of these add-ons you want to use! Phillip tends to write his code using raw DataFrames.jl, but Doug really enjoys DataFrameMacros.jl.
 
 ## Regression
 
-Unlike in R, neither formula processing nor basic regression are part of the base language or the standard library. 
+Unlike in R, neither formula processing nor basic regression are part of the base language or the standard library.
 
 The formula syntax and basic contrast-coding schemes in Julia is provided by [StatsModels.jl](https://juliastats.org/StatsModels.jl/v0.6/). By default, MixedModels.jl re-exports the `@formula` macro and most commonly used contrast schemes from StatsModels.jl, so you often don't have to worry about loading StatsModels.jl directly. The same is true for [GLM.jl](https://juliastats.org/GLM.jl/dev/manual/), which provides basic linear and generalized linear models, such as ordinary least squares (OLS) regression and logistic regression, i.e. the classical, non mixed regression models.
 
 The basic functionality looks quite similar to R, e.g.
 
 ```julia
-julia> lm(@formula(y ~ 1 + x), data)
-julia> glm(@formula(y ~ 1 + x), data, Binomial(), LogitLink())
+julia > lm(@formula(y ~ 1 + x), data)
+julia > glm(@formula(y ~ 1 + x), data, Binomial(), LogitLink())
 ```
 
 but the more general modelling API (also used by MixedModels.jl) is also supported:
 
 ```julia
-julia> fit(LinearModel, @formula(y ~ 1 + x), mydata)
-julia> fit(GeneralizedLinearModel, @formula(y ~ 1 + x), data, Binomial(), LogitLink())
+julia > fit(LinearModel, @formula(y ~ 1 + x), mydata)
+julia > fit(
+  GeneralizedLinearModel,
+  @formula(y ~ 1 + x),
+  data,
+  Binomial(),
+  LogitLink(),
+)
 ```
 
 (You can also specify your model matrices directly and skip the formula interface, but we don't recommend this as it's easy to mess up in really subtle but very probelmatic ways.)
-
 
 ### `@formula`, macros and domain-specific languages
 
@@ -64,7 +68,7 @@ As a sidebar: why is `@formula` a macro and not a normal function? Well, that's 
 
 ### Extensions to the formula syntax
 
-There are several ongoing efforts to extend the formula syntax to include some of the "extras" available in R, e.g. [RegressionFormulae.jl](https://github.com/kleinschmidt/RegressionFormulae.jl) to use the caret (`^`) notation to limit interactions to a certain order (`(a+b+c)^2` generates `a + b + c + a&b + a&c + b&c`, but not `a&b&c`). 
+There are several ongoing efforts to extend the formula syntax to include some of the "extras" available in R, e.g. [RegressionFormulae.jl](https://github.com/kleinschmidt/RegressionFormulae.jl) to use the caret (`^`) notation to limit interactions to a certain order (`(a+b+c)^2` generates `a + b + c + a&b + a&c + b&c`, but not `a&b&c`).
 Note also that Julia uses `&` to express interactions, not `:` like in R.
 
 ### Standardizing Predictors
@@ -107,16 +111,13 @@ There are many [other graphics packages available in Julia](https://juliapackage
 
 ## Connecting to Other Languages
 
-Using Julia doesn't mean you have to leave all the packages you knew in other languages behind. In Julia, it's often possible to even easily and quickly invoke code from other languages *from within Julia*. 
-
+Using Julia doesn't mean you have to leave all the packages you knew in other languages behind. In Julia, it's often possible to even easily and quickly invoke code from other languages *from within Julia*.
 
 [RCall.jl](https://juliainterop.github.io/RCall.jl/stable/gettingstarted/) provides a very convenient interface for interacting with R. [JellyMe4.jl](https://github.com/palday/JellyMe4.jl/) add support for moving MixedModels.jl and `lme4` models back and forth between the languages (which means that you can use `emmeans`, `sjtools`, `DHARMa`, `car`, etc. to examine MixedModels.jl models!). [RData.jl](https://github.com/JuliaData/RData.jl) provides support for reading `.rds` and `.rda` files from Julia, while [RDatasets.jl](https://github.com/JuliaStats/RDatasets.jl) provides convenient access to many of the standard datasets provided by R and various R packages.
 
-[PyCall.jl](https://github.com/JuliaPy/PyCall.jl/) provides a very convenient way for interacting with Python code and packages. [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl) builds upon this foundation to provide support for Python's `matplotlib`. Similarly, [PyMNE.jl](
-https://github.com/beacon-biosignals/PyMNE.jl) and [PyFOOOF.jl](https://github.com/beacon-biosignals/pyfooof.jl) provide some additional functionality to make interacting with MNE-Python and FOOOF from within Julia even easier than with vanilla PyCall. 
+[PyCall.jl](https://github.com/JuliaPy/PyCall.jl/) provides a very convenient way for interacting with Python code and packages. [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl) builds upon this foundation to provide support for Python's `matplotlib`. Similarly, [PyMNE.jl](https://github.com/beacon-biosignals/PyMNE.jl) and [PyFOOOF.jl](https://github.com/beacon-biosignals/pyfooof.jl) provide some additional functionality to make interacting with MNE-Python and FOOOF from within Julia even easier than with vanilla PyCall.
 
 For MATLAB users, there is also [MATLAB.jl](https://github.com/JuliaInterop/MATLAB.jl)
-
 
 [Cxx.jl](https://juliainterop.github.io/Cxx.jl/stable/) provides interoperability with C++. It also provides a C++ REPL mode, making it possible to treating C++ much more like a dynamic language than the traditional compiler toolchain would allow.
 

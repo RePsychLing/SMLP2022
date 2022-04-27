@@ -4,6 +4,7 @@ jupyter: julia-1.7
 ---
 
 Begin by loading the packages to be used.
+
 ```{julia}
 #| code-fold: true
 using AlgebraOfGraphics
@@ -13,14 +14,14 @@ using DataFrames
 using MixedModels
 using Random
 
-CairoMakie.activate!(type="svg") # use SVG (other options include PNG)
+CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
 ```
 
 Provide a short alias for `AlgebraOfGraphics`.
+
 ```{julia}
 const AOG = AlgebraOfGraphics;
 ```
-
 
 ## Data set and model
 
@@ -31,6 +32,7 @@ kb07 = MixedModels.dataset(:kb07)
 ```
 
 Convert the table to a DataFrame for summary.
+
 ```{julia}
 kb07 = DataFrame(kb07)
 describe(kb07)
@@ -53,19 +55,24 @@ contrasts = merge(
 ```
 
 The display of an initial model fit
+
 ```{julia}
 kbm01 = let
   form = @formula(
-    rt_trunc ~ 1 + spkr * prec * load +
-	(1+spkr+prec+load|subj) +
-	(1+spkr+prec+load|item)
+    rt_trunc ~
+      1 +
+      spkr * prec * load +
+      (1 + spkr + prec + load | subj) +
+      (1 + spkr + prec + load | item)
   )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
+
 does not include the estimated correlations of the random effects.
 
 The `VarCorr` extractor displays these.
+
 ```{julia}
 VarCorr(kbm01)
 ```
@@ -75,7 +82,10 @@ In the random-effects terms only the scalar random effects and the `prec` random
 
 ```{julia}
 kbm02 = let
-  form = @formula(rt_trunc ~ 1+spkr+prec+load+(1|subj)+(1+prec|item))
+  form = @formula(
+    rt_trunc ~
+      1 + spkr + prec + load + (1 | subj) + (1 + prec | item)
+  )
   fit(MixedModel, form, kb07; contrasts, progress)
 end
 ```
@@ -85,6 +95,7 @@ VarCorr(kbm02)
 ```
 
 These two models are nested and can be compared with a likelihood-ratio test.
+
 ```{julia}
 MixedModels.likelihoodratiotest(kbm02, kbm01)
 ```
@@ -117,7 +128,7 @@ For the fixed-effects parameters the estimators are close to being normally dist
 #| label: fig-kbm02fedens
 draw(
   data(kbm02samp.β) * mapping(:β; color=:coefname) * AOG.density();
-  figure=(; resolution=(800,450)),
+  figure=(; resolution=(800, 450)),
 )
 ```
 
@@ -126,8 +137,12 @@ draw(
 #| fig-cap: "Density plot of bootstrap samples standard deviation of random effects"
 #| label: fig-kbm02sampsigmadens
 draw(
-  data(filter(:column => ==(Symbol("(Intercept)")), DataFrame(kbm02samp.σs))) *
-  mapping(:σ, color = :group) *
+  data(
+    filter(
+      :column => ==(Symbol("(Intercept)")), DataFrame(kbm02samp.σs)
+    ),
+  ) *
+  mapping(:σ; color=:group) *
   AOG.density();
   figure=(; resolution=(800, 450)),
 )
@@ -141,7 +156,7 @@ draw(
   data(filter(:type => ==("ρ"), DataFrame(kbm02samp.allpars))) *
   mapping(:value => "Correlation"; color=:names) *
   AOG.density();
-  figure=(; resolution=(800, 450))
+  figure=(; resolution=(800, 450)),
 )
 ```
 

@@ -15,7 +15,7 @@ using DataFrames
 using Statistics
 using StatsBase
 
-CairoMakie.activate!(type="svg") # use SVG (other options include PNG)
+CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
 datadir = joinpath(@__DIR__, "data");
 ```
 
@@ -31,7 +31,6 @@ typeof(tbl)
 df = DataFrame(tbl)
 typeof(df)
 ```
-
 
 ## Creating a summary data frame
 
@@ -49,16 +48,15 @@ The other expression can be pairs (created with the `=>` operator) of the form `
 
 In this case the function is an anonymous function of the form `round.(x, digits=1)` where "dot-broadcasting" is used to apply to the entire column (see [this documentation](https://docs.julialang.org/en/v1/manual/functions/#man-vectorized) for details).
 
-
 ```{julia}
 transform!(df, :age, :age => (x -> x .- 8.5) => :a1) # centered age (linear)
-select!(groupby(df,  :Test), :, :score => zscore => :zScore) # z-score
+select!(groupby(df, :Test), :, :score => zscore => :zScore) # z-score
 tlabels = [     # establish order and labels of tbl.Test
-	"Run" => "Endurance",
-	"Star_r" => "Coordination",
-	"S20_r" => "Speed",
-	"SLJ" => "PowerLOW",	
-	"BPT" => "PowerUP",
+  "Run" => "Endurance",
+  "Star_r" => "Coordination",
+  "S20_r" => "Speed",
+  "SLJ" => "PowerLOW",
+  "BPT" => "PowerUP",
 ];
 ```
 
@@ -66,12 +64,12 @@ The next stage is a *group-apply-combine* operation to group the rows by `Sex`, 
 
 ```{julia}
 df2 = combine(
-	groupby(
-		select(df, :, :age => ByRow(x -> round(x; digits=1)) => :age),
-		[:Sex, :Test, :age],
-	),
-	:zScore => mean => :zScore,
-	:zScore => length => :n,
+  groupby(
+    select(df, :, :age => ByRow(x -> round(x; digits=1)) => :age),
+    [:Sex, :Test, :age],
+  ),
+  :zScore => mean => :zScore,
+  :zScore => length => :n,
 )
 ```
 
@@ -79,21 +77,19 @@ df2 = combine(
 
 The `AlgebraOfGraphics` package applies operators to the results of functions such as `data` (specify the data table to be used), `mapping` (designate the roles of columns), and `visual` (type of visual presentation).
 
-
 ```{julia}
 let
-	design = mapping(:age, :zScore; color = :Sex, col = :Test)
-	lines = design * linear()
-	means = design * visual(Scatter, markersize=5)
-	data(df2) * means + data(df) * lines |> draw
+  design = mapping(:age, :zScore; color=:Sex, col=:Test)
+  lines = design * linear()
+  means = design * visual(Scatter; markersize=5)
+  draw(data(df2) * means + data(df) * lines)
 end
 ```
 
-
-+ TBD: Relabel factor levels (Boys, Girls; fitness components for Test)
-+ TBD: Relevel factors; why not levels from Tables?
-+ TBD: Set range (7.8 to 9.2 and tick marks (8, 8.5, 9) of axes.
-+ TBD: Move legend in plot? 
+  - TBD: Relabel factor levels (Boys, Girls; fitness components for Test)
+  - TBD: Relevel factors; why not levels from Tables?
+  - TBD: Set range (7.8 to 9.2 and tick marks (8, 8.5, 9) of axes.
+  - TBD: Move legend in plot?
 
 ::: {#refs}
 :::
