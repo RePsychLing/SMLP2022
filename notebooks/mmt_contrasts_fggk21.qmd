@@ -54,6 +54,7 @@ using StatsBase
 Number of scores: 525126
 
  1. Cohort: 9 levels; 2011-2019
+
  2. School: 515 levels
  3. Child: 108295 levels; all children are between 8.0 and 8.99 years old
  4. Sex: "Girls" (n=55,086), "Boys" (n= 53,209)

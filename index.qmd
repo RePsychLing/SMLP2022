@@ -5,13 +5,13 @@ author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
 
 ## Notebooks for the course
 
-- [Useful packages](notebooks/useful_packages.qmd)
-- [Sleepstudy](notebooks/mmt_sleepstudy.qmd)
-- [Sleepstudy2](notebooks/mmt_sleepstudy_speed.qmd)
-- [Arrow](notebooks/Arrow.qmd)
-- [Model-building](notebooks/mmt_kb07.qmd)
-- [GLMM](notebooks/glmm.qmd)
+  - [Useful packages](notebooks/useful_packages.qmd)
+  - [Sleepstudy](notebooks/mmt_sleepstudy.qmd)
+  - [Sleepstudy2](notebooks/mmt_sleepstudy_speed.qmd)
+  - [Arrow](notebooks/Arrow.qmd)
+  - [Model-building](notebooks/mmt_kb07.qmd)
+  - [GLMM](notebooks/glmm.qmd)
 
 This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+To learn more about Quarto websites visit [https://quarto.org/docs/websites](https://quarto.org/docs/websites).

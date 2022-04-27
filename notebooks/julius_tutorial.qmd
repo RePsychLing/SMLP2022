@@ -33,16 +33,18 @@ datadir = joinpath(@__DIR__, "data")
 Number of scores: 525126
 
  1. Cohort: 9 levels; 2011-2019
- 2. School: 515 levels 
+
+ 2. School: 515 levels
  3. Child: 108295 levels; all children are between 8.0 and 8.99 years old
  4. Sex: "Girls" (n=55,086), "Boys" (n= 53,209)
- 5. age: testdate - middle of month of birthdate 
+ 5. age: testdate - middle of month of birthdate
  6. Test: 5 levels
-     + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
-     + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
-     + Speed(`S20_r`): 20-meters sprint [m/s]
-     + Muscle power low (`SLJ`): standing long jump [cm] 
-     + Muscle power up (`BPT`): 1-kg medicine ball push test [m] 
+    
+      + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
+      + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
+      + Speed(`S20_r`): 20-meters sprint [m/s]
+      + Muscle power low (`SLJ`): standing long jump [cm]
+      + Muscle power up (`BPT`): 1-kg medicine ball push test [m]
  7. score - see units
 
 ## Read the data
@@ -58,9 +60,9 @@ We extract a random sample of 5 children from the Sex (2) x Test (5) cells of th
 
 ```{julia}
 dat = @chain df begin
-    @transform(:Sex2 = :Sex == "Girls" ? "female" : "male")
-   	@groupby(:Test, :Sex)
-   	combine(x -> x[sample(1:nrow(x), 5), :])
+  @transform(:Sex2 = :Sex == "Girls" ? "female" : "male")
+  @groupby(:Test, :Sex)
+  combine(x -> x[sample(1:nrow(x), 5), :])
 end
 ```
 
@@ -68,12 +70,13 @@ end
 
 ### transform and @transform -- also note the ternary operator for ifelse
 
-
 ### long
 
 ```{julia}
-transform(dat, :Sex =>
-    ByRow(bla -> bla == "female" ? "girl" : "boy") => :Sex2)
+transform(
+  dat,
+  :Sex => ByRow(bla -> bla == "female" ? "girl" : "boy") => :Sex2,
+)
 ```
 
 ```{julia}
@@ -95,24 +98,25 @@ transform(dat, :age => (col -> col .+ 1) => :ageplus)
 ```
 
 ### version 1 - traditional Julia style
+
 ```jl
 df1 = DataFrame(Arrow.Table(Downloads.download(url)));
 describe(df1)
 ```
+
 ## groupby and @groupby
 
 ```{julia}
 @groupby(dat, :Age = round(Int, :age))
 ```
 
-## @chain  -- 
+## @chain  --
 
 ### reference to a file
 
 ```{julia}
 url = "https://github.com/RePsychLing/SMLP2021/raw/main/notebooks/data/fggk21.arrow"
 ```
-
 
 ### version 1 - traditional Julia style
 
@@ -122,23 +126,25 @@ describe(df1)
 ```
 
 ### version 2 - with Chain
+
 ```{julia}
 df2 = @chain url begin
-    Downloads.download
-    Arrow.Table
-    DataFrame
-    @groupby(:Test, :Sex)
-    combine(x -> x[sample(1:nrow(x), 2), :])
-    @aside CSV.write("test.csv", _)
+  Downloads.download
+  Arrow.Table
+  DataFrame
+  @groupby(:Test, :Sex)
+  combine(x -> x[sample(1:nrow(x), 2), :])
+  @aside CSV.write("test.csv", _)
 end;
 describe(df2)
 ```
 
 ### look behind the scene
+
 ```{julia}
-@macroexpand(@chain url begin
-    Downloads.download
-    Arrow.Table
-    DataFrame
-    end) |> prettify
+prettify(@macroexpand(@chain url begin
+  Downloads.download
+  Arrow.Table
+  DataFrame
+end))
 ```
