@@ -1,6 +1,5 @@
 ---
 title: Contrast Coding of Visual Attention Effects
-jupyter: julia-1.7
 ---
 
 ```{julia}
@@ -9,9 +8,12 @@ using Arrow
 using Chain
 using DataFrames
 using MixedModels
+using ProgressMeter
 using StatsBase
 using StatsModels
 using StatsModels: ContrastsCoding
+
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 ## Example data {#sec-data}
@@ -52,14 +54,13 @@ cellmeans = combine(
 This contrast corresponds to `MASS::contr.sdif()` in R.
 
 ```{julia}
-progress = false       # suppress progress bar in notebooks
 form = @formula rt ~ 1 + CTR + (1 + CTR | Subj)
 levels = ["val", "sod", "dos", "dod"]
 m1 = let
   contrasts = Dict(
     :CTR => SeqDiffCoding(; levels), :Subj => Grouping()
   )
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -81,7 +82,7 @@ m1b = let
       labels=["spt", "obj", "grv"],
     ),
   )
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -99,7 +100,7 @@ Thi contrast corresponds to `contr.treatment()` in R
 ```{julia}
 m2 = let
   contrasts = Dict(:CTR => DummyCoding(; base="val"))
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -124,7 +125,7 @@ m2b = let
       levels,
     )
   )
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -135,7 +136,7 @@ Just relevel the factor or move the column with -1s for a different base.
 ```{julia}
 m3 = let
   contrasts = Dict(:CTR => EffectsCoding(; base="dod"))
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -144,7 +145,7 @@ end
 ```{julia}
 m4 = let
   contrasts = Dict(:CTR => HelmertCoding())
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -154,7 +155,7 @@ end
 m4b = let
   levels = reverse(StatsModels.levels(dat1.CTR))
   contrasts = Dict(:CTR => HelmertCoding(; levels))
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -182,7 +183,7 @@ m5 = let
       labels=["A", "B", "AxB"],
     ),
   )
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
@@ -230,7 +231,7 @@ m8 = let
       labels=["do_so", "spt", "grv"],
     ),
   )
-  fit(MixedModel, form, dat1; contrasts, progress)
+  fit(MixedModel, form, dat1; contrasts)
 end
 ```
 

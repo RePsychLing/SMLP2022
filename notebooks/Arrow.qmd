@@ -185,6 +185,7 @@ combine(groupby(last(gdf), :Sex), nrow => :nchild)
 What about the distribution of ages?
 
 ```{julia}
+#| eval: false
 """
 	ridgeplot!(ax::Axis, df::AbstractDataFrame, densvar::Symbol, group::Symbol; normalize=false)
 	ridgeplot!(f::Figure, args...; pos=(1,1) kwargs...)
@@ -239,6 +240,7 @@ end
 ```
 
 ```{julia}
+#| eval: false
 function ridgeplot!(f::Figure, args...; pos=(1, 1), kwargs...)
   ridgeplot!(Axis(f[pos...]), args...; kwargs...)
   return f
@@ -246,6 +248,7 @@ end
 ```
 
 ```{julia}
+#| eval: false
 """
 	ridgeplot(args...; kwargs...)
 See [ridgeplot!](@ref).

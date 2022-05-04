@@ -36,6 +36,10 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie   # plots specific to mixed-effects models using Makie
+using ProgressMeter
+
+CairoMakie.activate!(; type="svg")
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 ## Preprocessing
@@ -105,10 +109,9 @@ end
 
 ```{julia}
 contrasts = Dict(:Subj => Grouping())
-progress = false
 m1 = let
   form = @formula speed ~ 1 + day + (1 + day | Subj)
-  fit(MixedModel, form, df; contrasts, progress)
+  fit(MixedModel, form, df; contrasts)
 end
 ```
 
@@ -125,7 +128,7 @@ The `zerocorr` function applied to a random-effects term estimates one parameter
 ```{julia}
 m2 = let
   form = @formula speed ~ 1 + day + zerocorr(1 + day | Subj)
-  fit(MixedModel, form, df; contrasts, progress)
+  fit(MixedModel, form, df; contrasts)
 end
 ```
 

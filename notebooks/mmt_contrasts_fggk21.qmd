@@ -1,6 +1,5 @@
 ---
 title: "Mixed Models Tutorial: Contrast Coding"
-jupyter: julia-1.7
 ---
 
 Ths script uses a subset of data reported in Fühner, Golle, Granacher, & Kliegl (2021).
@@ -45,8 +44,11 @@ using CategoricalArrays
 using DataFrames
 using DataFrameMacros
 using MixedModels
+using ProgressMeter
 using Statistics
 using StatsBase
+
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 ### 1.1 Readme for './data/fggk21.rds'
@@ -174,9 +176,9 @@ In this case, any differences between tests identified by the contrasts would be
 The primary interest in this study related to interactions of the test contrasts with and `age` and `Sex`. We start with age (linear) and its interaction with the four test contrasts.
 
 ```{julia}
-begin
-  f_ovi_2 = @formula zScore ~ 1 + Test * a1 + (1 | Child)
-  m_ovi_SeqDiff_2 = fit(MixedModel, f_ovi_2, dat; contrasts=contr1)
+m_ovi_SeqDiff_2 = let
+  form = @formula zScore ~ 1 + Test * a1 + (1 | Child)
+  fit(MixedModel, form, dat; contrasts=contr1)
 end
 ```
 
@@ -187,9 +189,9 @@ P**lease note that standard errors of this LMM are anti-conservative because the
 Next we add the main effect of `Sex` and its interaction with the four test contrasts.
 
 ```{julia}
-begin
-  f_ovi_3 = @formula zScore ~ 1 + Test * (a1 + Sex) + (1 | Child)
-  m_ovi_SeqDiff_3 = fit(MixedModel, f_ovi_3, dat; contrasts=contr1)
+m_ovi_SeqDiff_3 = let
+  form = @formula zScore ~ 1 + Test * (a1 + Sex) + (1 | Child)
+  fit(MixedModel, form, dat; contrasts=contr1)
 end
 ```
 
@@ -198,10 +200,8 @@ The significant interactions with `Sex` reflect mostly differences related to mu
 The final step in this first series is to add the interactions between the three covariates. A significant interaction between any of the four `Test` contrasts and age (linear) x `Sex` was hypothesized to reflect a prepubertal signal (i.e., hormones start to rise in girls' ninth year of life). However, this hypothesis is linked to a specific shape of the interaction: Girls would need to gain more than boys in tests of muscular power.
 
 ```{julia}
-begin
-  f_ovi = @formula zScore ~ 1 + Test * a1 * Sex + (1 | Child)
-  m_ovi_SeqDiff = fit(MixedModel, f_ovi, dat; contrasts=contr1)
-end
+f_ovi = @formula zScore ~ 1 + Test * a1 * Sex + (1 | Child)
+m_ovi_SeqDiff = fit(MixedModel, f_ovi, dat; contrasts=contr1)
 ```
 
 The results are very clear: Despite an abundance of statistical power there is no evidence for the differences between boys and girls in how much they gain in the ninth year of life in these five tests. The authors argue that, in this case, absence of evidence looks very much like evidence of absence of a hypothesized interaction.
@@ -230,13 +230,13 @@ Finally, HeC1 contrasts the fitness components Endurance, indicated best by Run 
 The statistical advantage of _HelmertCoding_ is that the resulting contrasts are orthogonal (uncorrelated). This allows for optimal partitioning of variance and statistical power. It is also more efficient to estimate "orthogonal" than "non-orthogonal" random-effect structures.
 
 ```{julia}
-contr2 = merge(
-  Dict(nm => Grouping() for nm in (:School, :Child, :Cohort)),
-  Dict(
-    :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
-    :Test => HelmertCoding(;
-      levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"]
-    ),
+contr2 = Dict(
+  :School => Grouping(),
+  :Child => Grouping(),
+  :Cohort => Grouping(),
+  :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
+  :Test => HelmertCoding(;
+    levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
   ),
 );
 ```
@@ -263,20 +263,20 @@ The third set of contrasts uses _HypothesisCoding_. _Hypothesis coding_ allows t
   - HyC4: `S20_r` - `SLJ`
 
 ```{julia}
-contr3 = merge(
-  Dict(nm => Grouping() for nm in (:School, :Child, :Cohort)),
-  Dict(
-    :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
-    :Test => HypothesisCoding(
-      [
-        -1 -1 -1 -1 +4
-        -1 +1 0 0 0
-        0 -1 +1 0 0
-        0 0 -1 +1 0
-      ];
-      levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
-      labels=["BPT-other", "Star-End", "S20-Star", "SLJ-S20"],
-    ),
+contr3 = Dict(
+  :School => Grouping(),
+  :Child => Grouping(),
+  :Cohort => Grouping(),
+  :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
+  :Test => HypothesisCoding(
+    [
+      -1 -1 -1 -1 +4
+      -1 +1 0 0 0
+       0 -1 +1 0 0
+       0 0 -1 +1 0
+    ];
+    levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
+    labels=["BPT-other", "Star-End", "S20-Star", "SLJ-S20"],
   ),
 );
 ```
@@ -290,20 +290,20 @@ With _HypothesisCoding_ we must generate our own labels for the contrasts. The d
 Anyway, none of the interactions between `age` x `Sex` with the four `Test` contrasts was significant for these contrasts.
 
 ```{julia}
-contr1b = merge(
-  Dict(nm => Grouping() for nm in (:School, :Child, :Cohort)),
-  Dict(
-    :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
-    :Test => HypothesisCoding(
-      [
-        -1 +1 0 0 0
-        0 -1 +1 0 0
-        0 0 -1 +1 0
-        0 0 0 -1 +1
-      ];
-      levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
-      labels=["Star-Run", "S20-Star", "SLJ-S20", "BPT-SLJ"],
-    ),
+contr1b = Dict(
+  :School => Grouping(),
+  :Child => Grouping(),
+  :Cohort => Grouping(),
+  :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
+  :Test => HypothesisCoding(
+    [
+      -1 +1 0 0 0
+      0 -1 +1 0 0
+      0 0 -1 +1 0
+      0 0 0 -1 +1
+    ];
+    levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
+    labels=["Star-Run", "S20-Star", "SLJ-S20", "BPT-SLJ"],
   ),
 );
 ```
@@ -313,26 +313,29 @@ m_ovi_SeqDiff_v2 = fit(MixedModel, f_ovi, dat; contrasts=contr1b)
 ```
 
 ```{julia}
-begin
-  f_zcp_1 = @formula zScore ~
-    1 + Test * a1 * Sex + zerocorr(1 + Test | Child)
-  m_zcp_SeqD = fit(MixedModel, f_zcp_1, dat; contrasts=contr1b)
+m_zcp_SeqD = let
+  form = @formula(
+    zScore ~ 1 + Test * a1 * Sex + zerocorr(1 + Test | Child)
+  )
+  fit(MixedModel, form, dat; contrasts=contr1b)
 end
 ```
 
 ```{julia}
-begin
-  f_zcp_0 = @formula zScore ~
-    1 + Test * a1 * Sex + (0 + Test | Child)
-  m_zcp_SeqD_2 = fit(MixedModel, f_zcp_0, dat; contrasts=contr1b)
+m_zcp_SeqD_2 = let
+  form = @formula(
+    zScore ~ 1 + Test * a1 * Sex + (0 + Test | Child)
+  )
+  fit(MixedModel, form, dat; contrasts=contr1b)
 end
 ```
 
 ```{julia}
-begin
-  f_cpx_0 = @formula zScore ~
-    1 + Test * a1 * Sex + (0 + Test | Child)
-  m_cpx_0_SeqDiff = fit(MixedModel, f_cpx_0, dat; contrasts=contr1b)
+m_cpx_0_SeqDiff = let
+  f_cpx_0 = @formula(
+    zScore ~ 1 + Test * a1 * Sex + (0 + Test | Child)
+  )
+  fit(MixedModel, f_cpx_0, dat; contrasts=contr1b)
 end
 ```
 
@@ -341,19 +344,19 @@ VarCorr(m_cpx_0_SeqDiff)
 ```
 
 ```{julia}
-MixedModels.PCA(m_cpx_0_SeqDiff)
+m_cpx_0_SeqDiff.PCA
 ```
 
 ```{julia}
-begin
-  f_cpx_1 = @formula zScore ~
-    1 + Test * a1 * Sex + (1 + Test | Child)
-  m_cpx_1_SeqDiff = fit(MixedModel, f_cpx_1, dat; contrasts=contr1b)
-end
+f_cpx_1 = @formula(
+  zScore ~ 1 + Test * a1 * Sex + (1 + Test | Child)
+)
+m_cpx_1_SeqDiff =
+fit(MixedModel, f_cpx_1, dat; contrasts=contr1b)
 ```
 
 ```{julia}
-MixedModels.PCA(m_cpx_1_SeqDiff)
+m_cpx_1_SeqDiff.PCA
 ```
 
 ### 2.4 _PCA-based HypothesisCoding_: `contr4`
@@ -368,20 +371,20 @@ The fourth set of contrasts uses _HypothesisCoding_ to specify the set of contra
 PC1 contrasts the worst and the best indicator of physical **health**; PC2 contrasts these two against the core indicators of **physical fitness**; PC3 contrasts the cognitive and the physical tests within the narrow set of physical fitness components; and PC4, finally, contrasts two types of lower muscular fitness differing in speed and power.
 
 ```{julia}
-contr4 = merge(
-  Dict(nm => Grouping() for nm in (:School, :Child, :Cohort)),
-  Dict(
-    :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
-    :Test => HypothesisCoding(
-      [
-        -1 0 0 0 +1
-        -3 +2 +2 +2 -3
-        0 +2 -1 -1 0
-        0 0 +1 -1 0
-      ];
-      levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
-      labels=["c5.1", "c234.15", "c2.34", "c3.4"],
-    ),
+contr4 = Dict(
+  :School => Grouping(),
+  :Child => Grouping(),
+  :Cohort => Grouping(),
+  :Sex => EffectsCoding(; levels=["Girls", "Boys"]),
+  :Test => HypothesisCoding(
+    [
+      -1 0 0 0 +1
+      -3 +2 +2 +2 -3
+      0 +2 -1 -1 0
+      0 0 +1 -1 0
+    ];
+    levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
+    labels=["c5.1", "c234.15", "c2.34", "c3.4"],
   ),
 );
 ```
@@ -395,7 +398,7 @@ VarCorr(m_cpx_1_PC)
 ```
 
 ```{julia}
-MixedModels.PCA(m_cpx_1_PC)
+m_cpx_1_PC.PCA
 ```
 
 There is a numerical interaction with a z-value > 2.0 for the first PCA (i.e., `BPT` - `Run_r`).  This interaction would really need to be replicated to be taken seriously. It is probably due to larger "unfitness" gains in boys than girls (i.e., in `BPT`)  relative to the slightly larger health-related "fitness" gains of girls than boys (i.e., in `Run_r`).
@@ -420,10 +423,6 @@ contr4b = merge(
 ```
 
 ```{julia}
-
-```
-
-```{julia}
 m_cpx_1_PC_2 = fit(MixedModel, f_cpx_1, dat; contrasts=contr4b)
 ```
 
@@ -432,7 +431,7 @@ VarCorr(m_cpx_1_PC_2)
 ```
 
 ```{julia}
-MixedModels.PCA(m_cpx_1_PC_2)
+m_cpx_1_PC_2.PCA
 ```
 
 ```{julia}
