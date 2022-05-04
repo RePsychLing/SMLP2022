@@ -1,10 +1,6 @@
 ---
 title: "Introduction to Chain and DataFrameMacros packages"
 author: "Julius Krumbiegel"
-format:
-  html:
-    toc: true
-jupyter: julia-1.7
 ---
 
 This script uses a subset of data reported in Fühner, Golle, Granacher, & Kliegl (2021). Physical fitness in third grade of primary school: A mixed model analysis of 108,295 children and 515 schools.

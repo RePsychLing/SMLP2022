@@ -1,8 +1,5 @@
 ---
 title: "Useful packages"
-execute: 
-  keep-ipynb: true
-jupyter: julia-1.7
 ---
 
 Unlike R, Julia does not immediately expose a huge number of functions, but instead requires loading packages (whether from the standard library or from the broader package ecosystem) for a lot of relevant functionality for statistical analysis.

@@ -1,6 +1,5 @@
 ---
 title: "More on shrinkage plots"
-jupyter: julia-1.7
 ---
 
   - I have stated that the likelihood criterion used to fit linear mixed-effects can be considered as balancing fidelity to the data (i.e. fits the observed data well) versus model complexity.

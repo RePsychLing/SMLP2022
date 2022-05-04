@@ -1,8 +1,5 @@
 ---
 title: "Generalized linear mixed models"
-execute: 
-  keep-ipynb: true
-jupyter: julia-1.7
 ---
 
 Load the packages to be used

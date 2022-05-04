@@ -1,12 +1,5 @@
 ---
 title: "RePsychLing Kliegl et al. (2010)"
-author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
-date: today
-format:
-  html:
-    toc: true
-bibliography: references.bib
-jupyter: julia-1.7
 ---
 
 ## Background

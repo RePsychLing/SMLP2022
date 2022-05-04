@@ -44,4 +44,4 @@ format:
     number-sections: true
     css: styles.css
 
-jupyter: julia-1.7
+jupyter: julia-1.8

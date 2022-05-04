@@ -1,8 +1,5 @@
 ---
 title: "Notes on saved data files"
-execute: 
-  keep-ipynb: true
-jupyter: julia-1.7
 ---
 
 ## The Arrow storage format
@@ -281,10 +278,12 @@ feather.read_table("./data/fggk21.arrow")
 ```
 
 ```{julia}
+#| eval: false
 R"""require("arrow", quietly=TRUE)""";
 ```
 
 ```{julia}
+#| eval: false
 R"""
 fggk21 <- read_feather("./data/fggk21.arrow")
 nrow(fggk21)
@@ -292,10 +291,12 @@ nrow(fggk21)
 ```
 
 ```{julia}
+#| eval: false
 R"names(fggk21)"
 ```
 
 ```{julia}
+#| eval: false
 R"""
 require("tibble", quietly=TRUE)
 glimpse(fggk21)

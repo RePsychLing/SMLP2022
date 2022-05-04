@@ -1,6 +1,6 @@
 name = "SMLP2022"
-authors = ["Phillip Alday <me@phillipalday.com>", "Douglas Bates <dmbates@gmail.com>", "Reinhold Kliegl <reinhold.kliegl@gmail.com>", "Julius Krumbiegel <julius.krumbiegel@gmail.com>"]
 uuid = "dc5ec7c6-28fd-4523-b102-f28df6bb352f"
+authors = ["Phillip Alday <me@phillipalday.com>", "Douglas Bates <dmbates@gmail.com>", "Reinhold Kliegl <reinhold.kliegl@gmail.com>", "Julius Krumbiegel <julius.krumbiegel@gmail.com>"]
 version = "0.1.0"
 
 [deps]
@@ -21,6 +21,7 @@ ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 RCall = "6f49c342-dc21-5d91-9882-a32aef131414"
 StandardizedPredictors = "5064a6a7-f8c2-40e2-8bdc-797ec6f1ae18"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
 AlgebraOfGraphics = "0.6"

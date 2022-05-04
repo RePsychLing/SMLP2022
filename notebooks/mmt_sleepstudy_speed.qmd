@@ -1,8 +1,5 @@
 ---
 title: "The sleepstudy: Speed - for a change ..."
-execute: 
-  keep-ipynb: true
-jupyter: julia-1.7
 ---
 
 ## Background

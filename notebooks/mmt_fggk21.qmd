@@ -1,6 +1,5 @@
 ---
 title: Basics with Emotikon Project
-jupyter: julia-1.7
 ---
 
 This script uses a subset of data reported in @Fuehner2021.
