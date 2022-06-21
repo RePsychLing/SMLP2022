@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-99.9.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
+<meta name="dcterms.date" content="2022-06-21">
+
+<title>SMLP2022 - Bootstrapping a fitted model</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./glmm.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">SMLP2022</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/RePsychLing/SMLP2022"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Bootstrapping a fitted model</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">SMLP2022 - Advanced frequentist methods</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./useful_packages.html" class="sidebar-item-text sidebar-link">Useful packages</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy.html" class="sidebar-item-text sidebar-link">Analysis of the sleepstudy data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy_speed.html" class="sidebar-item-text sidebar-link">The sleepstudy: Speed - for a change …</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Arrow.html" class="sidebar-item-text sidebar-link">Notes on saved data files</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glmm.html" class="sidebar-item-text sidebar-link">Generalized linear mixed models</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kb07.html" class="sidebar-item-text sidebar-link active">Bootstrapping a fitted model</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-set-and-model" id="toc-data-set-and-model" class="nav-link active" data-scroll-target="#data-set-and-model">Data set and model</a></li>
+  <li><a href="#a-bootstrap-sample" id="toc-a-bootstrap-sample" class="nav-link" data-scroll-target="#a-bootstrap-sample">A bootstrap sample</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Bootstrapping a fitted model</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2022-06-21</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p>Begin by loading the packages to be used.</p>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">contains</span>(<span class="fu">first</span>(<span class="bu">Sys</span>.<span class="fu">cpu_info</span>()).model, <span class="st">"Intel"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="im">using</span> <span class="bu">MKL             </span><span class="co"># faster LAPACK on Intel processors</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>);</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p>Provide a short alias for <code>AlgebraOfGraphics</code>.</p>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> AOG <span class="op">=</span> AlgebraOfGraphics;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="data-set-and-model" class="level2">
+<h2 class="anchored" data-anchor-id="data-set-and-model">Data set and model</h2>
+<p>The <code>kb07</code> data <span class="citation" data-cites="Kronmueller2007">(<a href="#ref-Kronmueller2007" role="doc-biblioref">Kronmüller and Barr 2007</a>)</span> are one of the datasets provided by the <code>MixedModels</code> package.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>Arrow.Table with 1789 rows, 7 columns, and schema:
+ :subj      String
+ :item      String
+ :spkr      String
+ :prec      String
+ :load      String
+ :rt_trunc  Int16
+ :rt_raw    Int16</code></pre>
+</div>
+</div>
+<p>Convert the table to a DataFrame for summary.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> <span class="fu">DataFrame</span>(kb07)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+
+<div class="data-frame"><p>7 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="DataType">DataType</th></tr></thead><tbody><tr><th>1</th><td>subj</td><td></td><td>S030</td><td></td><td>S103</td><td>0</td><td>String</td></tr><tr><th>2</th><td>item</td><td></td><td>I01</td><td></td><td>I32</td><td>0</td><td>String</td></tr><tr><th>3</th><td>spkr</td><td></td><td>new</td><td></td><td>old</td><td>0</td><td>String</td></tr><tr><th>4</th><td>prec</td><td></td><td>break</td><td></td><td>maintain</td><td>0</td><td>String</td></tr><tr><th>5</th><td>load</td><td></td><td>no</td><td></td><td>yes</td><td>0</td><td>String</td></tr><tr><th>6</th><td>rt_trunc</td><td>2182.2</td><td>579</td><td>1940.0</td><td>5171</td><td>0</td><td>Int16</td></tr><tr><th>7</th><td>rt_raw</td><td>2226.24</td><td>579</td><td>1940.0</td><td>15923</td><td>0</td><td>Int16</td></tr></tbody></table></div>
+</div>
+</div>
+<p>The experimental factors; <code>spkr</code>, <code>prec</code>, and <code>load</code>, are two-level factors. The <code>EffectsCoding</code> contrast is used with these to create a <span class="math inline">\(\pm1\)</span> encoding. Furthermore, <code>Grouping</code> constrasts are assigned to the <code>subj</code> and <code>item</code> factors. This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix. For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.</p>
+<p>It is not important in these cases but a good practice in any case.</p>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">merge</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dict</span>(nm <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>() <span class="cf">for</span> nm <span class="kw">in</span> (<span class="op">:</span>spkr, <span class="op">:</span>prec, <span class="op">:</span>load)),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dict</span>(nm <span class="op">=&gt;</span> <span class="fu">Grouping</span>() <span class="cf">for</span> nm <span class="kw">in</span> (<span class="op">:</span>subj, <span class="op">:</span>item)),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The display of an initial model fit</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>kbm01 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      spkr <span class="op">*</span> prec <span class="op">*</span> load <span class="op">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> subj) <span class="op">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> item)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Minimizing 723   Time: 0:00:00 ( 0.29 ms/it)
+  objective:  28637.1393507629</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_subj</th>
+<th style="text-align: right;">σ_item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2181.6750</td>
+<td style="text-align: right;">77.3042</td>
+<td style="text-align: right;">28.22</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">301.8457</td>
+<td style="text-align: right;">362.1769</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spkr: old</td>
+<td style="text-align: right;">67.7490</td>
+<td style="text-align: right;">18.2846</td>
+<td style="text-align: right;">3.71</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">43.0723</td>
+<td style="text-align: right;">40.5401</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">prec: maintain</td>
+<td style="text-align: right;">-333.9206</td>
+<td style="text-align: right;">47.1549</td>
+<td style="text-align: right;">-7.08</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">62.1055</td>
+<td style="text-align: right;">246.8926</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">load: yes</td>
+<td style="text-align: right;">78.7681</td>
+<td style="text-align: right;">19.5218</td>
+<td style="text-align: right;">4.03</td>
+<td style="text-align: right;">&lt;1e-04</td>
+<td style="text-align: right;">65.1378</td>
+<td style="text-align: right;">42.1405</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">spkr: old &amp; prec: maintain</td>
+<td style="text-align: right;">-21.9634</td>
+<td style="text-align: right;">15.8063</td>
+<td style="text-align: right;">-1.39</td>
+<td style="text-align: right;">0.1647</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spkr: old &amp; load: yes</td>
+<td style="text-align: right;">18.3838</td>
+<td style="text-align: right;">15.8063</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">0.2448</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">prec: maintain &amp; load: yes</td>
+<td style="text-align: right;">4.5334</td>
+<td style="text-align: right;">15.8063</td>
+<td style="text-align: right;">0.29</td>
+<td style="text-align: right;">0.7743</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spkr: old &amp; prec: maintain &amp; load: yes</td>
+<td style="text-align: right;">23.6051</td>
+<td style="text-align: right;">15.8063</td>
+<td style="text-align: right;">1.49</td>
+<td style="text-align: right;">0.1353</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">668.5074</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>does not include the estimated correlations of the random effects.</p>
+<p>The <code>VarCorr</code> extractor displays these.</p>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(kbm01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 23%">
+<col style="width: 19%">
+<col style="width: 14%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Column</th>
+<th style="text-align: right;">Variance</th>
+<th style="text-align: right;">Std.Dev</th>
+<th style="text-align: right;">Corr.</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">subj</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">91110.8185</td>
+<td style="text-align: right;">301.8457</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">spkr: old</td>
+<td style="text-align: right;">1855.2224</td>
+<td style="text-align: right;">43.0723</td>
+<td style="text-align: right;">+0.78</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">prec: maintain</td>
+<td style="text-align: right;">3857.0961</td>
+<td style="text-align: right;">62.1055</td>
+<td style="text-align: right;">-0.59</td>
+<td style="text-align: right;">+0.02</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">load: yes</td>
+<td style="text-align: right;">4242.9381</td>
+<td style="text-align: right;">65.1378</td>
+<td style="text-align: right;">+0.36</td>
+<td style="text-align: right;">+0.82</td>
+<td style="text-align: right;">+0.53</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">item</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">131172.1058</td>
+<td style="text-align: right;">362.1769</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">spkr: old</td>
+<td style="text-align: right;">1643.4957</td>
+<td style="text-align: right;">40.5401</td>
+<td style="text-align: right;">+0.44</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">prec: maintain</td>
+<td style="text-align: right;">60955.9375</td>
+<td style="text-align: right;">246.8926</td>
+<td style="text-align: right;">-0.69</td>
+<td style="text-align: right;">+0.35</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">load: yes</td>
+<td style="text-align: right;">1775.8252</td>
+<td style="text-align: right;">42.1405</td>
+<td style="text-align: right;">+0.32</td>
+<td style="text-align: right;">+0.23</td>
+<td style="text-align: right;">-0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">446902.1445</td>
+<td style="text-align: right;">668.5074</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>None of the two-factor or three-factor interaction terms in the fixed-effects are significant. In the random-effects terms only the scalar random effects and the <code>prec</code> random effect for <code>item</code> appear to be warranted, leading to the reduced formula</p>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>kbm02 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_item</th>
+<th style="text-align: right;">σ_subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2181.8526</td>
+<td style="text-align: right;">77.4681</td>
+<td style="text-align: right;">28.16</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">364.7125</td>
+<td style="text-align: right;">298.0259</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spkr: old</td>
+<td style="text-align: right;">67.8790</td>
+<td style="text-align: right;">16.0785</td>
+<td style="text-align: right;">4.22</td>
+<td style="text-align: right;">&lt;1e-04</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">prec: maintain</td>
+<td style="text-align: right;">-333.7906</td>
+<td style="text-align: right;">47.4472</td>
+<td style="text-align: right;">-7.03</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">252.5212</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">load: yes</td>
+<td style="text-align: right;">78.5904</td>
+<td style="text-align: right;">16.0785</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: right;">&lt;1e-05</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">680.0319</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(kbm02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Column</th>
+<th style="text-align: right;">Variance</th>
+<th style="text-align: right;">Std.Dev</th>
+<th style="text-align: right;">Corr.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">item</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">133015.240</td>
+<td style="text-align: right;">364.713</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">prec: maintain</td>
+<td style="text-align: right;">63766.936</td>
+<td style="text-align: right;">252.521</td>
+<td style="text-align: right;">-0.70</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">subj</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">88819.437</td>
+<td style="text-align: right;">298.026</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">462443.388</td>
+<td style="text-align: right;">680.032</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>These two models are nested and can be compared with a likelihood-ratio test.</p>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(kbm02, kbm01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<colgroup>
+<col style="width: 81%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 1%">
+<col style="width: 3%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">model-dof</th>
+<th style="text-align: right;">deviance</th>
+<th style="text-align: right;">χ²</th>
+<th style="text-align: right;">χ²-dof</th>
+<th style="text-align: left;">P(&gt;χ²)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">rt_trunc ~ 1 + spkr + prec + load + (1 | subj) + (1 + prec | item)</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">28664</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rt_trunc ~ 1 + spkr + prec + load + spkr &amp; prec + spkr &amp; load + prec &amp; load + spkr &amp; prec &amp; load + (1 + spkr + prec + load | subj) + (1 + spkr + prec + load | item)</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">28637</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">0.1436</td>
+</tr>
+</tbody>
+</table>
+<p>The p-value of approximately 14% leads us to prefer the simpler model, <code>kbm02</code>, to the more complex, <code>kbm01</code>.</p>
+</section>
+<section id="a-bootstrap-sample" class="level2">
+<h2 class="anchored" data-anchor-id="a-bootstrap-sample">A bootstrap sample</h2>
+<p>Create a bootstrap sample of a few thousand parameter estimates from the reduced model. The pseudo-random number generator is initialized to a fixed value for reproducibility.</p>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1234321</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>hide_progress <span class="op">=</span> <span class="cn">true</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>kbm02samp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(<span class="fl">2000</span>, kbm02; hide_progress);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>One of the uses of such a sample is to form “confidence intervals” on the parameters by obtaining the shortest interval that covers a given proportion (95%, by default) of the sample.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(kbm02samp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+
+<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2028.01</td><td>2337.92</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>38.431</td><td>99.5944</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-439.321</td><td>-245.864</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>46.0262</td><td>107.511</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>261.196</td><td>448.51</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>175.489</td><td>312.038</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.89799</td><td>-0.445595</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>228.099</td><td>357.789</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>655.249</td><td>701.497</td></tr></tbody></table></div>
+</div>
+</div>
+<p>A sample like this can be used for more than just creating an interval because it approximates the distribution of the estimator. For the fixed-effects parameters the estimators are close to being normally distributed, <a href="#fig-kbm02fedens">Figure&nbsp;1</a>.</p>
+<div class="cell" data-execution_count="13">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(kbm02samp.β) <span class="op">*</span> <span class="fu">mapping</span>(<span class="op">:</span>β; color<span class="op">=:</span>coefname) <span class="op">*</span> AOG.<span class="fu">density</span>();</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<div id="fig-kbm02fedens" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="kb07_files/figure-html/fig-kbm02fedens-output-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1: Comparative densities of the fixed-effects coefficients in kbm02samp</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>column <span class="op">=&gt;</span> <span class="op">==</span>(<span class="fu">Symbol</span>(<span class="st">"(Intercept)"</span>)), <span class="fu">DataFrame</span>(kbm02samp.σs)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">*</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mapping</span>(<span class="op">:</span>σ; color<span class="op">=:</span>group) <span class="op">*</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  AOG.<span class="fu">density</span>();</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<div id="fig-kbm02sampsigmadens" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="kb07_files/figure-html/fig-kbm02sampsigmadens-output-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2: Density plot of bootstrap samples standard deviation of random effects</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="15">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="fu">filter</span>(<span class="op">:</span><span class="kw">type</span> <span class="op">=&gt;</span> <span class="op">==</span>(<span class="st">"ρ"</span>), <span class="fu">DataFrame</span>(kbm02samp.allpars))) <span class="op">*</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mapping</span>(<span class="op">:</span>value <span class="op">=&gt;</span> <span class="st">"Correlation"</span>; color<span class="op">=:</span>names) <span class="op">*</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  AOG.<span class="fu">density</span>();</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div id="fig-kbm02sampcorrdens" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="kb07_files/figure-html/fig-kbm02sampcorrdens-output-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3: Density plot of correlation parameters in bootstrap sample from model kbm02</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-Kronmueller2007" class="csl-entry" role="doc-biblioentry">
+Kronmüller, Edmundo, and Dale J. Barr. 2007. <span>“Perspective-Free Pragmatics: Broken Precedents and the Recovery-from-Preemption Hypothesis<span></span>.”</span> <em>Journal of Memory and Language</em> 56 (3): 436–55. <a href="https://doi.org/10.1016/j.jml.2006.05.002">https://doi.org/10.1016/j.jml.2006.05.002</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./glmm.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Generalized linear mixed models</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

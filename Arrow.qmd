@@ -1,5 +1,6 @@
 ---
 title: "Notes on saved data files"
+jupyter: julia-1.8
 ---
 
 ## The Arrow storage format
@@ -59,7 +60,7 @@ Now write this file as a Arrow file and read it back in.
 
 ```{julia}
 arrowfn = joinpath("data", "fggk21.arrow")
-Arrow.write(arrowfn, dfrm; compress=:zstd)
+Arrow.write(arrowfn, dfrm; compress=:lz4)
 tbl = Arrow.Table(arrowfn)
 ```
 
@@ -101,7 +102,7 @@ length(unique(Child.Child))  # should be 108295
 
 ```{julia}
 filesize(
-  Arrow.write("./data/fggk21_Child.arrow", Child; compress=:zstd)
+  Arrow.write("./data/fggk21_Child.arrow", Child; compress=:lz4)
 )
 ```
 
@@ -110,7 +111,7 @@ filesize(
   Arrow.write(
     "./data/fggk21_Score.arrow",
     select(df, :Child, :Test, :score);
-    compress=:zstd,
+    compress=:lz4,
   ),
 )
 ```
@@ -260,7 +261,7 @@ end
 
 ```{julia}
 #| eval: false
-#ridgeplot(parent(gdf), :age, :ntest)
+ridgeplot(parent(gdf), :age, :ntest)
 ```
 
 ```{julia}
@@ -281,30 +282,17 @@ feather.read_table("./data/fggk21.arrow")
 ```
 
 ```{julia}
-#| eval: false
-R"""require("arrow", quietly=TRUE)""";
-```
-
-```{julia}
-#| eval: false
 R"""
-fggk21 <- read_feather("./data/fggk21.arrow")
+fggk21 <- arrow::read_feather("./data/fggk21.arrow")
 nrow(fggk21)
 """
 ```
 
 ```{julia}
-#| eval: false
-R"names(fggk21)"
+R"tibble::glimpse(fggk21)";
 ```
 
-```{julia}
-#| eval: false
-R"""
-require("tibble", quietly=TRUE)
-glimpse(fggk21)
-"""
-```
+# References
 
 ::: {#refs}
 :::

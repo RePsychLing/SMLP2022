@@ -2,5 +2,5 @@ author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
 format:
   html:
     toc: true
-    number-sections: true
+
 bibliography: references.bib

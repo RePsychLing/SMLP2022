@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-99.9.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
+<meta name="dcterms.date" content="2022-06-21">
+
+<title>SMLP2022 - The sleepstudy: Speed - for a change …</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Arrow.html" rel="next">
+<link href="./sleepstudy.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">SMLP2022</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/RePsychLing/SMLP2022"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">The sleepstudy: Speed - for a change …</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">SMLP2022 - Advanced frequentist methods</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./useful_packages.html" class="sidebar-item-text sidebar-link">Useful packages</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy.html" class="sidebar-item-text sidebar-link">Analysis of the sleepstudy data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy_speed.html" class="sidebar-item-text sidebar-link active">The sleepstudy: Speed - for a change …</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Arrow.html" class="sidebar-item-text sidebar-link">Notes on saved data files</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glmm.html" class="sidebar-item-text sidebar-link">Generalized linear mixed models</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kb07.html" class="sidebar-item-text sidebar-link">Bootstrapping a fitted model</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background"> <span class="header-section-number">0.1</span> Background</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"> <span class="header-section-number">0.2</span> Setup</a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"> <span class="header-section-number">0.3</span> Preprocessing</a></li>
+  <li><a href="#estimates-for-pooled-data" id="toc-estimates-for-pooled-data" class="nav-link" data-scroll-target="#estimates-for-pooled-data"> <span class="header-section-number">0.4</span> Estimates for pooled data</a></li>
+  <li><a href="#within-subject-effects" id="toc-within-subject-effects" class="nav-link" data-scroll-target="#within-subject-effects"> <span class="header-section-number">0.5</span> Within-subject effects</a>
+  <ul class="collapse">
+  <li><a href="#within-subject-simple-regressions" id="toc-within-subject-simple-regressions" class="nav-link" data-scroll-target="#within-subject-simple-regressions"> <span class="header-section-number">0.5.1</span> Within-subject simple regressions</a></li>
+  </ul></li>
+  <li><a href="#basic-lmm" id="toc-basic-lmm" class="nav-link" data-scroll-target="#basic-lmm"> <span class="header-section-number">0.6</span> Basic LMM</a></li>
+  <li><a href="#no-correlation-parameter-zcp-lmm" id="toc-no-correlation-parameter-zcp-lmm" class="nav-link" data-scroll-target="#no-correlation-parameter-zcp-lmm"> <span class="header-section-number">0.7</span> No correlation parameter: zcp LMM</a></li>
+  <li><a href="#conditional-modes-of-the-random-effects" id="toc-conditional-modes-of-the-random-effects" class="nav-link" data-scroll-target="#conditional-modes-of-the-random-effects"> <span class="header-section-number">0.8</span> Conditional modes of the random effects</a></li>
+  <li><a href="#caterpillar-plots-effect-profiles" id="toc-caterpillar-plots-effect-profiles" class="nav-link" data-scroll-target="#caterpillar-plots-effect-profiles"> <span class="header-section-number">0.9</span> Caterpillar plots (effect profiles)</a></li>
+  <li><a href="#shrinkage-plot" id="toc-shrinkage-plot" class="nav-link" data-scroll-target="#shrinkage-plot"> <span class="header-section-number">0.10</span> Shrinkage plot</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"> <span class="header-section-number">1</span> References</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">The sleepstudy: Speed - for a change …</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2022-06-21</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="background" class="level2" data-number="0.1">
+<h2 data-number="0.1" class="anchored" data-anchor-id="background"><span class="header-section-number">0.1</span> Background</h2>
+<p><span class="citation" data-cites="Belenky2003">Belenky et al. (<a href="#ref-Belenky2003" role="doc-biblioref">2003</a>)</span> reported effects of sleep deprivation across a 14-day study of 30-to-40-year old men and women holding commercial vehicle driving licenses. Their analyses are based on a subset of tasks and ratings from very large and comprehensive test and questionnaire battery <span class="citation" data-cites="Balkin2000">(<a href="#ref-Balkin2000" role="doc-biblioref">Balkin et al. 2000</a>)</span>.</p>
+<p>Initially 66 subjects were assigned to one of four time-in-bed (TIB) groups with 9 hours (22:00-07:00) of sleep augmentation or 7 hours (24:00-07:00), 5 hours (02:00-07:00), and 3 hours (04:00-0:00) of sleep restrictions per night, respectively. The final sample comprised 56 subjects. The Psychomotor Vigilance Test (PVT) measures simple reaction time to a visual stimulus, presented approximately 10 times ⁄ minute (interstimulus interval varied from 2 to 10 s in 2-s increments) for 10 min and implemented in a thumb-operated, hand-held device <span class="citation" data-cites="Dinges1985">(<a href="#ref-Dinges1985" role="doc-biblioref">Dinges and Powell 1985</a>)</span>.</p>
+<p><strong>Design</strong></p>
+<p>The study comprised 2 training days (T1, T2), one day with baseline measures (B), seven days with sleep deprivation (E1 to E7), and four recovery days (R1 to R4). T1 and T2 were devoted to training on the performance tests and familiarization with study procedures. PVT baseline testing commenced on the morning of the third day (B) and testing continued for the duration of the study (E1–E7, R1–R3; no measures were taken on R4). Bed times during T, B, and R days were 8 hours (23:00-07:00).</p>
+<p><strong>Test schedule within days</strong></p>
+<p>The PVT (along with the Stanford Sleepiness Scale) was administered as a battery four times per day (09:00, 12:00, 15:00, and 21:00 h); the battery included other tests not reported here <span class="citation" data-cites="Balkin2000">(see <a href="#ref-Balkin2000" role="doc-biblioref">Balkin et al. 2000</a>)</span>. The sleep latency test was administered at 09:40 and 15:30 h for all groups. Subjects in the 3- and 5-h TIB groups performed an additional battery at 00:00 h and 02:00 h to occupy their additional time awake. The PVT and SSS were administered in this battery; however, as data from the 00:00 and 02:00 h sessions were not common to all TIB groups, these data were not included in the statistical analyses reported in the paper.</p>
+<p><strong>Statistical analyses</strong></p>
+<p>The authors analyzed response speed, that is (1/RT)*1000 – completely warranted according to a Box-Cox check of the current data – with mixed-model ANOVAs using group as between- and day as within-subject factors. The ANOVA was followed up with simple tests of the design effects implemented over days for each of the four groups.</p>
+<p><strong>Current data</strong></p>
+<p>The current data distributed with the <em>RData</em> collection is attributed to the 3-hour TIB group, but the means do not agree at all with those reported for this group in <span class="citation" data-cites="Belenky2003">(<a href="#ref-Belenky2003" role="doc-biblioref">Belenky et al. 2003, fig. 3</a>)</span> where the 3-hour TIB group is also based on only 13 (not 18) subjects. Specifically, the current data show a much smaller slow-down of response speed across E1 to E7 and do not reflect the recovery during R1 to R3. The currrent data also cover only 10 not 11 days, but it looks like only R3 is missing. The closest match of the current means was with the average of the 3-hour and 7-hour TIB groups; if only males were included, this would amount to 18 subjects. (This conjecture is based only on visual inspection of graphs.)</p>
+</section>
+<section id="setup" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">0.2</span> Setup</h2>
+<p>First we attach the various packages needed, define a few helper functions, read the data, and get everything in the desired shape.</p>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie         </span><span class="co"># device driver for static (SVG, PDF, PNG) plots</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain              </span><span class="co"># like pipes but cleaner</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie   </span><span class="co"># plots specific to mixed-effects models using Makie</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">contains</span>(<span class="fu">first</span>(<span class="bu">Sys</span>.<span class="fu">cpu_info</span>()).model, <span class="st">"Intel"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="im">using</span> <span class="bu">MKL             </span><span class="co"># faster LAPACK on Intel processors</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<section id="preprocessing" class="level2" data-number="0.3">
+<h2 data-number="0.3" class="anchored" data-anchor-id="preprocessing"><span class="header-section-number">0.3</span> Preprocessing</h2>
+<p>The <code>sleepstudy</code> data are one of the datasets available with recent versions of the <code>MixedModels</code> package. We carry out some preprocessing to have the dataframe in the desired shape:</p>
+<ul>
+<li>Capitalize random factor <code>Subj</code></li>
+<li>Compute <code>speed</code> as an alternative dependent variable from <code>reaction</code>, warranted by a ‘boxcox’ check of residuals.</li>
+<li>Create a <code>GroupedDataFrame</code> by levels of <code>Subj</code> (the original dataframe is available as <code>gdf.parent</code>, which we name <code>df</code>)</li>
+</ul>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> <span class="pp">@chain</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>sleepstudy) <span class="cf">begin</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename!</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="op">:</span>Subj, <span class="op">:</span>days <span class="op">=&gt;</span> <span class="op">:</span>day)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@transform</span>!(<span class="op">:</span>speed <span class="op">=</span> <span class="fl">1000</span> <span class="op">/</span> <span class="op">:</span>reaction)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">groupby</span>(<span class="op">:</span>Subj)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<p><b>GroupedDataFrame with 18 groups based on key: Subj</b></p><p><i>First Group (10 rows): Subj = "S308"</i></p><div class="data-frame"><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Subj</th><th>day</th><th>reaction</th><th>speed</th></tr><tr><th></th><th title="String">String</th><th title="Int8">Int8</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>S308</td><td>0</td><td>249.56</td><td>4.00705</td></tr><tr><th>2</th><td>S308</td><td>1</td><td>258.705</td><td>3.86541</td></tr><tr><th>3</th><td>S308</td><td>2</td><td>250.801</td><td>3.98723</td></tr><tr><th>4</th><td>S308</td><td>3</td><td>321.44</td><td>3.111</td></tr><tr><th>5</th><td>S308</td><td>4</td><td>356.852</td><td>2.80228</td></tr><tr><th>6</th><td>S308</td><td>5</td><td>414.69</td><td>2.41144</td></tr><tr><th>7</th><td>S308</td><td>6</td><td>382.204</td><td>2.61641</td></tr><tr><th>8</th><td>S308</td><td>7</td><td>290.149</td><td>3.44651</td></tr><tr><th>9</th><td>S308</td><td>8</td><td>430.585</td><td>2.32242</td></tr><tr><th>10</th><td>S308</td><td>9</td><td>466.353</td><td>2.1443</td></tr></tbody></table></div><p>⋮</p><p><i>Last Group (10 rows): Subj = "S372"</i></p><div class="data-frame"><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Subj</th><th>day</th><th>reaction</th><th>speed</th></tr><tr><th></th><th title="String">String</th><th title="Int8">Int8</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>S372</td><td>0</td><td>269.412</td><td>3.71179</td></tr><tr><th>2</th><td>S372</td><td>1</td><td>273.474</td><td>3.65665</td></tr><tr><th>3</th><td>S372</td><td>2</td><td>297.597</td><td>3.36025</td></tr><tr><th>4</th><td>S372</td><td>3</td><td>310.632</td><td>3.21925</td></tr><tr><th>5</th><td>S372</td><td>4</td><td>287.173</td><td>3.48223</td></tr><tr><th>6</th><td>S372</td><td>5</td><td>329.608</td><td>3.03391</td></tr><tr><th>7</th><td>S372</td><td>6</td><td>334.482</td><td>2.9897</td></tr><tr><th>8</th><td>S372</td><td>7</td><td>343.22</td><td>2.91358</td></tr><tr><th>9</th><td>S372</td><td>8</td><td>369.142</td><td>2.70899</td></tr><tr><th>10</th><td>S372</td><td>9</td><td>364.124</td><td>2.74632</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> gdf.parent</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div class="data-frame"><p>4 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="DataType">DataType</th></tr></thead><tbody><tr><th>1</th><td>Subj</td><td></td><td>S308</td><td></td><td>S372</td><td>0</td><td>String</td></tr><tr><th>2</th><td>day</td><td>4.5</td><td>0</td><td>4.5</td><td>9</td><td>0</td><td>Int8</td></tr><tr><th>3</th><td>reaction</td><td>298.508</td><td>194.332</td><td>288.651</td><td>466.353</td><td>0</td><td>Float64</td></tr><tr><th>4</th><td>speed</td><td>3.46634</td><td>2.1443</td><td>3.46443</td><td>5.14583</td><td>0</td><td>Float64</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="estimates-for-pooled-data" class="level2" data-number="0.4">
+<h2 data-number="0.4" class="anchored" data-anchor-id="estimates-for-pooled-data"><span class="header-section-number">0.4</span> Estimates for pooled data</h2>
+<p>In the first analysis we ignore the dependency of observations due to repeated measures from the same subjects. We pool all the data and estimate the regression of 180 speed scores on the nine days of the experiment.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pooledcoef <span class="op">=</span> <span class="fu">simplelinreg</span>(df.day, df.speed)  <span class="co"># produces a Tuple</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>(3.96581197478315, -0.11099359232199725)</code></pre>
+</div>
+</div>
+</section>
+<section id="within-subject-effects" class="level2" data-number="0.5">
+<h2 data-number="0.5" class="anchored" data-anchor-id="within-subject-effects"><span class="header-section-number">0.5</span> Within-subject effects</h2>
+<p>In the second analysis we estimate coefficients for each <code>Subj</code> without regard of the information available from the complete set of data. We do not “borrow strength” to adjust for differences due to between-<code>Subj</code> variability and due to being far from the population mean.</p>
+<section id="within-subject-simple-regressions" class="level3" data-number="0.5.1">
+<h3 data-number="0.5.1" class="anchored" data-anchor-id="within-subject-simple-regressions"><span class="header-section-number">0.5.1</span> Within-subject simple regressions</h3>
+<p>Applying <code>combine</code> to a grouped data frame like <code>gdf</code> produces a <code>DataFrame</code> with a row for each group. The permutation <code>ord</code> provides an ordering for the groups by increasing intercept (predicted response at day 0).</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>within <span class="op">=</span> <span class="fu">combine</span>(gdf, [<span class="op">:</span>day, <span class="op">:</span>speed] <span class="op">=&gt;</span> simplelinreg <span class="op">=&gt;</span> <span class="op">:</span>coef)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+
+<div class="data-frame"><p>18 rows × 2 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Subj</th><th>coef</th></tr><tr><th></th><th title="String">String</th><th title="Tuple{Float64, Float64}">Tuple…</th></tr></thead><tbody><tr><th>1</th><td>S308</td><td>(3.94806, -0.194812)</td></tr><tr><th>2</th><td>S309</td><td>(4.87022, -0.0475185)</td></tr><tr><th>3</th><td>S310</td><td>(4.90606, -0.120054)</td></tr><tr><th>4</th><td>S330</td><td>(3.4449, -0.0291309)</td></tr><tr><th>5</th><td>S331</td><td>(3.47647, -0.0498047)</td></tr><tr><th>6</th><td>S332</td><td>(3.84436, -0.105511)</td></tr><tr><th>7</th><td>S333</td><td>(3.60159, -0.0917378)</td></tr><tr><th>8</th><td>S334</td><td>(4.04528, -0.133527)</td></tr><tr><th>9</th><td>S335</td><td>(3.80451, 0.0455771)</td></tr><tr><th>10</th><td>S337</td><td>(3.34374, -0.137744)</td></tr><tr><th>11</th><td>S349</td><td>(4.46855, -0.170885)</td></tr><tr><th>12</th><td>S350</td><td>(4.21414, -0.20151)</td></tr><tr><th>13</th><td>S351</td><td>(3.80469, -0.0728582)</td></tr><tr><th>14</th><td>S352</td><td>(3.68634, -0.144957)</td></tr><tr><th>15</th><td>S369</td><td>(3.85384, -0.120531)</td></tr><tr><th>16</th><td>S370</td><td>(4.52679, -0.215965)</td></tr><tr><th>17</th><td>S371</td><td>(3.853, -0.0936243)</td></tr><tr><th>18</th><td>S372</td><td>(3.69208, -0.113292)</td></tr></tbody></table></div>
+</div>
+</div>
+<p><a href="#fig-xyplotsleepspeed">Figure&nbsp;1</a> shows the reaction speed versus days of sleep deprivation by subject. The panels are arranged by increasing initial reaction speed starting at the lower left and proceeding across rows.</p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  ord <span class="op">=</span> <span class="fu">sortperm</span>(<span class="fu">first</span>.(within.coef))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  labs <span class="op">=</span> <span class="fu">values</span>(<span class="fu">only</span>.(<span class="fu">keys</span>(gdf)))[ord]       <span class="co"># labels for panels</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  f <span class="op">=</span> <span class="fu">clevelandaxes!</span>(<span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">750</span>)), labs, (<span class="fl">2</span>, <span class="fl">9</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (axs, sdf) <span class="kw">in</span> <span class="fu">zip</span>(f.content, gdf[ord]) <span class="co"># iterate over the panels and groups</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scatter!</span>(axs, sdf.day, sdf.speed)      <span class="co"># add the points</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    coef <span class="op">=</span> <span class="fu">simplelinreg</span>(sdf.day, sdf.speed)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abline!</span>(axs, <span class="fu">first</span>(coef), <span class="fu">last</span>(coef))  <span class="co"># add the regression line</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  f</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>┌ Warning: abline! is deprecated and will be removed in the future. Use ablines / ablines! instead.
+│   caller = top-level scope at In[7]:8
+└ @ Core ./In[7]:8</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div id="fig-xyplotsleepspeed" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="sleepstudy_speed_files/figure-html/fig-xyplotsleepspeed-output-2.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1: Reaction speed (s⁻¹) versus days of sleep deprivation by subject</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="basic-lmm" class="level2" data-number="0.6">
+<h2 data-number="0.6" class="anchored" data-anchor-id="basic-lmm"><span class="header-section-number">0.6</span> Basic LMM</h2>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>Subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>())</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> day <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> day <span class="op">|</span> Subj)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Minimizing 70    Time: 0:00:00 ( 4.78 ms/it)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.9658</td>
+<td style="text-align: right;">0.1056</td>
+<td style="text-align: right;">37.55</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">0.4190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">day</td>
+<td style="text-align: right;">-0.1110</td>
+<td style="text-align: right;">0.0151</td>
+<td style="text-align: right;">-7.37</td>
+<td style="text-align: right;">&lt;1e-12</td>
+<td style="text-align: right;">0.0566</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.2698</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This model includes fixed effects for the intercept which estimates the average speed on the baseline day of the experiment prior to sleep deprivation, and the slowing per day of sleep deprivation. In this case about -0.11/second.</p>
+<p>The random effects represent shifts from the typical behavior for each subject.The shift in the intercept has a standard deviation of about 0.42/s.</p>
+<p>The within-subject correlation of the random effects for intercept and slope is small, -0.18, indicating that a simpler model with a correlation parameter (CP) forced to/ assumed to be zero may be sufficient.</p>
+</section>
+<section id="no-correlation-parameter-zcp-lmm" class="level2" data-number="0.7">
+<h2 data-number="0.7" class="anchored" data-anchor-id="no-correlation-parameter-zcp-lmm"><span class="header-section-number">0.7</span> No correlation parameter: zcp LMM</h2>
+<p>The <code>zerocorr</code> function applied to a random-effects term estimates one parameter less than LMM <code>m1</code>– the CP is now fixed to zero.</p>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> day <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> day <span class="op">|</span> Subj)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.9658</td>
+<td style="text-align: right;">0.1033</td>
+<td style="text-align: right;">38.38</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">0.4085</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">day</td>
+<td style="text-align: right;">-0.1110</td>
+<td style="text-align: right;">0.0147</td>
+<td style="text-align: right;">-7.53</td>
+<td style="text-align: right;">&lt;1e-13</td>
+<td style="text-align: right;">0.0550</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.2706</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>LMM <code>m2</code> has a slghtly lower log-likelihood than LMM <code>m1</code> but also one fewer parameters. A likelihood-ratio test is used to compare these nested models.</p>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m2, m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<table class="table">
+<colgroup>
+<col style="width: 61%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">model-dof</th>
+<th style="text-align: right;">deviance</th>
+<th style="text-align: right;">χ²</th>
+<th style="text-align: right;">χ²-dof</th>
+<th style="text-align: left;">P(&gt;χ²)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">speed ~ 1 + day + MixedModels.ZeroCorr((1 + day | Subj))</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">speed ~ 1 + day + (1 + day | Subj)</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">0.5192</td>
+</tr>
+</tbody>
+</table>
+<p>Alternatively, the AIC, AICc, and BIC values can be compared. They are on a scale where “smaller is better”. All three model-fit statistics prefer the zcpLMM <code>m2</code>.</p>
+<div class="cell" data-execution_count="10">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  mods <span class="op">=</span> [m2, m1]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(;</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    dof<span class="op">=</span><span class="fu">dof</span>.(mods),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    deviance<span class="op">=</span><span class="fu">deviance</span>.(mods),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">bic</span>.(mods),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="11">
+
+<div class="data-frame"><p>2 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>dof</th><th>deviance</th><th>AIC</th><th>AICc</th><th>BIC</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>5</td><td>125.379</td><td>135.379</td><td>135.724</td><td>151.344</td></tr><tr><th>2</th><td>6</td><td>124.964</td><td>136.964</td><td>137.45</td><td>156.122</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="conditional-modes-of-the-random-effects" class="level2" data-number="0.8">
+<h2 data-number="0.8" class="anchored" data-anchor-id="conditional-modes-of-the-random-effects"><span class="header-section-number">0.8</span> Conditional modes of the random effects</h2>
+<p>The third set of estimates are their conditional modes. They represent a compromise between their own data and the model parameters. When distributional assumptions hold, predictions based on these estimates are more accurate than either the pooled or the within-subject estimates. Here we “borrow strength” to improve the accuracy of prediction.</p>
+</section>
+<section id="caterpillar-plots-effect-profiles" class="level2" data-number="0.9">
+<h2 data-number="0.9" class="anchored" data-anchor-id="caterpillar-plots-effect-profiles"><span class="header-section-number">0.9</span> Caterpillar plots (effect profiles)</h2>
+<div class="cell" data-execution_count="11">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div id="fig-caterpillarm2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="sleepstudy_speed_files/figure-html/fig-caterpillarm2-output-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2: Prediction intervals on the random effects in model m2</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="shrinkage-plot" class="level2" data-number="0.10">
+<h2 data-number="0.10" class="anchored" data-anchor-id="shrinkage-plot"><span class="header-section-number">0.10</span> Shrinkage plot</h2>
+<div class="cell" data-execution_count="12">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot!</span>(<span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">500</span>, <span class="fl">500</span>)), m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div id="fig-shrinkagem2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="sleepstudy_speed_files/figure-html/fig-shrinkagem2-output-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3: Shrinkage plot of the means of the random effects in model m2</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-Balkin2000" class="csl-entry" role="doc-biblioentry">
+Balkin, T., D. Thome, H. Sing, M. Thomas, D. Redmond, N. Wesensten, J. Williams, S. Hall, and G. Belenky. 2000. <span>“Effects of Sleep Schedules on Commercial Motor Vehicle Driver Performance.”</span> DOT-MC-00-133. Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
+</div>
+<div id="ref-Belenky2003" class="csl-entry" role="doc-biblioentry">
+Belenky, Gregory, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo, and Thomas J. Balkin. 2003. <span>“Patterns of Performance Degradation and Restoration During Sleep Restriction and Subsequent Recovery: A Sleep Dose-Response Study.”</span> <em>Journal of Sleep Research</em> 12 (1): 1–12. <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">https://doi.org/10.1046/j.1365-2869.2003.00337.x</a>.
+</div>
+<div id="ref-Dinges1985" class="csl-entry" role="doc-biblioentry">
+Dinges, David F., and John W. Powell. 1985. <span>“Microcomputer Analyses of Performance on a Portable, Simple Visual <span>RT</span> Task During Sustained Operations.”</span> <em>Behavior Research Methods, Instruments, and Computers</em> 17 (6): 652–55. <a href="https://doi.org/10.3758/bf03200977">https://doi.org/10.3758/bf03200977</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./sleepstudy.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Analysis of the sleepstudy data</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Arrow.html" class="pagination-link">
+        <span class="nav-page-text">Notes on saved data files</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

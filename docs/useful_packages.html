@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-99.9.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
+<meta name="dcterms.date" content="2022-06-21">
+
+<title>SMLP2022 - Useful packages</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./sleepstudy.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">SMLP2022</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/RePsychLing/SMLP2022"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Useful packages</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">SMLP2022 - Advanced frequentist methods</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./useful_packages.html" class="sidebar-item-text sidebar-link active">Useful packages</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy.html" class="sidebar-item-text sidebar-link">Analysis of the sleepstudy data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleepstudy_speed.html" class="sidebar-item-text sidebar-link">The sleepstudy: Speed - for a change …</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Arrow.html" class="sidebar-item-text sidebar-link">Notes on saved data files</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glmm.html" class="sidebar-item-text sidebar-link">Generalized linear mixed models</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kb07.html" class="sidebar-item-text sidebar-link">Bootstrapping a fitted model</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link active" data-scroll-target="#data-wrangling"> <span class="header-section-number">1</span> Data wrangling</a>
+  <ul class="collapse">
+  <li><a href="#reading-data" id="toc-reading-data" class="nav-link" data-scroll-target="#reading-data"> <span class="header-section-number">1.1</span> Reading data</a></li>
+  <li><a href="#dataframes" id="toc-dataframes" class="nav-link" data-scroll-target="#dataframes"> <span class="header-section-number">1.2</span> DataFrames</a></li>
+  </ul></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"> <span class="header-section-number">2</span> Regression</a>
+  <ul class="collapse">
+  <li><a href="#formula-macros-and-domain-specific-languages" id="toc-formula-macros-and-domain-specific-languages" class="nav-link" data-scroll-target="#formula-macros-and-domain-specific-languages"> <span class="header-section-number">2.1</span> <code>@formula</code>, macros and domain-specific languages</a></li>
+  <li><a href="#extensions-to-the-formula-syntax" id="toc-extensions-to-the-formula-syntax" class="nav-link" data-scroll-target="#extensions-to-the-formula-syntax"> <span class="header-section-number">2.2</span> Extensions to the formula syntax</a></li>
+  <li><a href="#standardizing-predictors" id="toc-standardizing-predictors" class="nav-link" data-scroll-target="#standardizing-predictors"> <span class="header-section-number">2.3</span> Standardizing Predictors</a></li>
+  <li><a href="#effects" id="toc-effects" class="nav-link" data-scroll-target="#effects"> <span class="header-section-number">2.4</span> Effects</a></li>
+  <li><a href="#estimated-marginal-least-square-means" id="toc-estimated-marginal-least-square-means" class="nav-link" data-scroll-target="#estimated-marginal-least-square-means"> <span class="header-section-number">2.5</span> Estimated Marginal / Least Square Means</a></li>
+  </ul></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"> <span class="header-section-number">3</span> Hypothesis Testing</a></li>
+  <li><a href="#plotting-ecosystem" id="toc-plotting-ecosystem" class="nav-link" data-scroll-target="#plotting-ecosystem"> <span class="header-section-number">4</span> Plotting ecosystem</a>
+  <ul class="collapse">
+  <li><a href="#makie" id="toc-makie" class="nav-link" data-scroll-target="#makie"> <span class="header-section-number">4.1</span> Makie</a></li>
+  <li><a href="#plots.jl" id="toc-plots.jl" class="nav-link" data-scroll-target="#plots.jl"> <span class="header-section-number">4.2</span> Plots.jl</a></li>
+  <li><a href="#gadfly" id="toc-gadfly" class="nav-link" data-scroll-target="#gadfly"> <span class="header-section-number">4.3</span> Gadfly</a></li>
+  <li><a href="#others" id="toc-others" class="nav-link" data-scroll-target="#others"> <span class="header-section-number">4.4</span> Others</a></li>
+  </ul></li>
+  <li><a href="#connecting-to-other-languages" id="toc-connecting-to-other-languages" class="nav-link" data-scroll-target="#connecting-to-other-languages"> <span class="header-section-number">5</span> Connecting to Other Languages</a></li>
+  <li><a href="#notebooks-and-webpages" id="toc-notebooks-and-webpages" class="nav-link" data-scroll-target="#notebooks-and-webpages"> <span class="header-section-number">6</span> Notebooks and Webpages</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Useful packages</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2022-06-21</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p>Unlike R, Julia does not immediately expose a huge number of functions, but instead requires loading packages (whether from the standard library or from the broader package ecosystem) for a lot of relevant functionality for statistical analysis. There are technical reasons for this, but one further motivation is that Julia is at a broader “technical computing” audience (like MATLAB or perhaps Python) and less at a “statistical analysis” audience.</p>
+<p>This has two important implications:</p>
+<ol type="1">
+<li>Even relatively simple programs will often load several packages.</li>
+<li>Packages are often focused on adding a relatively narrow set of functionality, which means that “basic” functionality (e.g.&nbsp;reading a CSV file and manipuating it as a DataFrame) is often split across multiple packages. In other words, <strong>see the the first point!</strong></li>
+</ol>
+<p>This notebook is not intended to be an exhaustive list of packages, but rather to highlight a few packages that I suspect will be particularly useful. Before getting onto the packages, I have one final hint: take advantage of how easy and first-class package management in Julia is. Having good package management makes reproducible analyses much easier and avoids breaking old analyses when you start a new one. Pluto helpfully installs and manages for you, but the package-manager REPL mode (activated by typing <code>]</code> at the <code>julia&gt;</code> prompt) is very useful.</p>
+<section id="data-wrangling" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="data-wrangling"><span class="header-section-number">1</span> Data wrangling</h2>
+<section id="reading-data" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="reading-data"><span class="header-section-number">1.1</span> Reading data</h3>
+<ul>
+<li><p><a href="https://arrow.juliadata.org/dev/manual/">Arrow.jl</a> a high performance format for data storage, accessible in R via the <a href="https://arrow.apache.org/docs/r/"><code>arrow</code> package</a> and in Python via <code>pyarrow</code>. (Confusingly, the function for reading and writing Arrow format files in R is called <code>read_feather</code> and <code>write_feather</code>, but the modern Arrow format is distinct from the older Feather format provided by the <code>feather</code> package.) This is the format that we store the example and test datasets in for MixedModels.jl.</p></li>
+<li><p><a href="https://csv.juliadata.org/stable/index.html">CSV.jl</a> useful for reading comma-separated values, tab-separated values and basically everything handled by the <code>read.csv</code> and <code>read.table</code> family of functions in R.</p></li>
+</ul>
+<p>Note that by default both Arrow.jl and CSV.jl do not return a DataFrame, but rather “column tables” – named tuples of column vectors.</p>
+</section>
+<section id="dataframes" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="dataframes"><span class="header-section-number">1.2</span> DataFrames</h3>
+<p>Unlike in R, DataFrames are not part of the base language, nor the standard library.</p>
+<p><a href="https://dataframes.juliadata.org/stable/">DataFrames.jl</a> provides the basic infrastructure around DataFrames, as well as its own <a href="https://bkamins.github.io/julialang/2020/12/24/minilanguage.html">mini language</a> for doing the split-apply-combine approach that underlies R’s <code>dplyr</code> and much of the tidyverse. The DataFrames.jl documentation is the place to for looking at how to e.g.&nbsp;read in a <a href="https://dataframes.juliadata.org/stable/man/importing_and_exporting/">CSV or Arrow file as a DataFrame</a>. Note that DataFrames.jl by default depends on <a href="https://categoricalarrays.juliadata.org/stable/">CategoricalArrays.jl</a> to handle the equivalent of <code>factor</code> in the R world, but there is an alternative package for <code>factor</code>-like array type in Julia, <a href="https://github.com/JuliaData/PooledArrays.jl/">PooledArrays.jl</a>. PooledArrays are simpler, but more limited than CategoricalArrays and we (Phillip and Doug) sometimes use them in our examples and simulations.</p>
+<p>DataFrame.jl’s mini language can be a bit daunting, if you’re used to manipulations in the style of base R or the tidyverse. For that, there are several options; recently, we’e had particularly nice experiences with <a href="https://github.com/jkrumbiegel/DataFrameMacros.jl">DataFrameMacros.jl</a> and <a href="https://github.com/jkrumbiegel/Chain.jl">Chain.jl</a> for a convenient syntax to connect or “pipe” together successive operations. It’s your choice whether and which of these add-ons you want to use! Phillip tends to write his code using raw DataFrames.jl, but Doug really enjoys DataFrameMacros.jl.</p>
+</section>
+</section>
+<section id="regression" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="regression"><span class="header-section-number">2</span> Regression</h2>
+<p>Unlike in R, neither formula processing nor basic regression are part of the base language or the standard library.</p>
+<p>The formula syntax and basic contrast-coding schemes in Julia is provided by <a href="https://juliastats.org/StatsModels.jl/v0.6/">StatsModels.jl</a>. By default, MixedModels.jl re-exports the <code>@formula</code> macro and most commonly used contrast schemes from StatsModels.jl, so you often don’t have to worry about loading StatsModels.jl directly. The same is true for <a href="https://juliastats.org/GLM.jl/dev/manual/">GLM.jl</a>, which provides basic linear and generalized linear models, such as ordinary least squares (OLS) regression and logistic regression, i.e.&nbsp;the classical, non mixed regression models.</p>
+<p>The basic functionality looks quite similar to R, e.g.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>julia <span class="op">&gt;</span> <span class="fu">lm</span>(<span class="pp">@formula</span>(y <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> x), data)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>julia <span class="op">&gt;</span> <span class="fu">glm</span>(<span class="pp">@formula</span>(y <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> x), data, <span class="fu">Binomial</span>(), <span class="fu">LogitLink</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>but the more general modelling API (also used by MixedModels.jl) is also supported:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>julia <span class="op">&gt;</span> <span class="fu">fit</span>(LinearModel, <span class="pp">@formula</span>(y <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> x), mydata)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>julia <span class="op">&gt;</span> <span class="fu">fit</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  GeneralizedLinearModel,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@formula</span>(y <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> x),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  data,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Binomial</span>(),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">LogitLink</span>(),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(You can also specify your model matrices directly and skip the formula interface, but we don’t recommend this as it’s easy to mess up in really subtle but very probelmatic ways.)</p>
+<section id="formula-macros-and-domain-specific-languages" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="formula-macros-and-domain-specific-languages"><span class="header-section-number">2.1</span> <code>@formula</code>, macros and domain-specific languages</h3>
+<p>As a sidebar: why is <code>@formula</code> a macro and not a normal function? Well, that’s because formulas are essentially their own domain-specific language (a variant of <a href="https://www.jstor.org/stable/2346786">Wilkinson-Roger notation</a>) and macros are used for manipulating the language itself – or in this case, handling an entirely new, embedded language! This is also why macros are used by packages like <a href="https://turing.ml/">Turing.jl</a> and <a href="https://cscherrer.github.io/Soss.jl/stable/">Soss.jl</a> that define a language for Bayesian probabilistic programming like <a href="https://docs.pymc.io/">PyMC3</a> or <a href="https://mc-stan.org/">Stan</a>.</p>
+</section>
+<section id="extensions-to-the-formula-syntax" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="extensions-to-the-formula-syntax"><span class="header-section-number">2.2</span> Extensions to the formula syntax</h3>
+<p>There are several ongoing efforts to extend the formula syntax to include some of the “extras” available in R, e.g.&nbsp;<a href="https://github.com/kleinschmidt/RegressionFormulae.jl">RegressionFormulae.jl</a> to use the caret (<code>^</code>) notation to limit interactions to a certain order (<code>(a+b+c)^2</code> generates <code>a + b + c + a&amp;b + a&amp;c + b&amp;c</code>, but not <code>a&amp;b&amp;c</code>). Note also that Julia uses <code>&amp;</code> to express interactions, not <code>:</code> like in R.</p>
+</section>
+<section id="standardizing-predictors" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="standardizing-predictors"><span class="header-section-number">2.3</span> Standardizing Predictors</h3>
+<p>Although function calls such as <code>log</code> can be used within Julia formulae, they must act on a rowwise basis, i.e.&nbsp;on observations. Transformations such as z-scoring or centering (often done with <code>scale</code> in R) require knowledge of the entire column. <a href="https://beacon-biosignals.github.io/StandardizedPredictors.jl/stable/">StandardizedPredictors.jl</a> provides functions for centering, scaling, and z-scoring within the formula. These are treated as pseudo-contrasts and computed on demand, meaning that <code>predict</code> and <code>effects</code> (see next) computations will handle these transformations on new data (e.g.&nbsp;centering new data <em>around the mean computed during fitting the original data</em>) correctly and automatically.</p>
+</section>
+<section id="effects" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="effects"><span class="header-section-number">2.4</span> Effects</h3>
+<p>John Fox’s <code>effects</code> package in R (and the related <code>ggeffects</code> package for plotting these using <code>ggplot2</code>) provides a nice way to visualize a model’s overall view of the data. This functionality is provided by <a href="https://beacon-biosignals.github.io/Effects.jl/stable/"><code>Effects.jl</code></a> and works out-of-the-box with most regression model packages in Julia (including MixedModels.jl). Support for formulae with embedded functions (such as <code>log</code>) is not yet complete, but we’re working on it!</p>
+</section>
+<section id="estimated-marginal-least-square-means" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="estimated-marginal-least-square-means"><span class="header-section-number">2.5</span> Estimated Marginal / Least Square Means</h3>
+<p>To our knowledge, There is currently nothing like the R package <code>emmeans</code> package in Julia. However, it is often better to use sensible, hypothesis-driven contrast coding than to compute all pairwise comparisons after the fact. 😃</p>
+</section>
+</section>
+<section id="hypothesis-testing" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3</span> Hypothesis Testing</h2>
+<p>Classical statistical tests such as the t-test can be found in the package <a href="https://github.com/JuliaStats/HypothesisTests.jl/">HypothesisTests.jl</a>.</p>
+</section>
+<section id="plotting-ecosystem" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="plotting-ecosystem"><span class="header-section-number">4</span> Plotting ecosystem</h2>
+<p>Throughtout this course, we have used the Makie ecosystem for plotting, but there are several alternatives in Julia.</p>
+<section id="makie" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="makie"><span class="header-section-number">4.1</span> Makie</h3>
+<p>The <a href="https://makie.juliaplots.org/stable/">Makie ecosystem</a> is a relatively new take on graphics that aims to be both powerful and easy to use. Makie.jl itself only provides abstract definitions for many components (and is used in e.g.&nbsp;MixedModelsMakie.jl to define plot types for MixedModels.jl). The actual plotting and rendering is handled by a backend package such as CairoMakie.jl (good for Pluto notebooks or rending static 2D images) and GLMakie.jl (good for dynamic, interactive visuals and 3D images). AlgebraOfGraphics.jl builds a grammar of graphics upon the Makie framework. It’s a great way to get good plots very quickly, but extensive customization is still best achieved by using Makie directly.</p>
+</section>
+<section id="plots.jl" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="plots.jl"><span class="header-section-number">4.2</span> Plots.jl</h3>
+<p><a href="https://docs.juliaplots.org/latest/">Plots.jl</a> is the original plotting package in Julia, but we often find it difficult to work with compared to some of the other alternatives. <a href="https://github.com/JuliaPlots/StatsPlots.jl">StatsPlots.jl</a> builds on this, adding common statistical plots, while <a href="https://github.com/Evizero/UnicodePlots.jl">UnicodePlots.jl</a> renders plots as Unicode characters directly in the REPL.</p>
+<p><a href="https://kristofferc.github.io/PGFPlotsX.jl/stable/">PGFPlotsX.jl</a> is a very new package that writes directly to PGF (the format used by LaTeX’s tikz framework) and can stand alone or be used as a rendering backend for the Plots.jl ecosystem.</p>
+</section>
+<section id="gadfly" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="gadfly"><span class="header-section-number">4.3</span> Gadfly</h3>
+<p><a href="https://gadflyjl.org/stable/">Gadfly.jl</a> was the original attempt to create a plotting system in Julia based on the grammar of graphics (the “gg” in <code>ggplot2</code>). Development has largely stalled, but some functionality still exceeds AlgebraOfGraphics.jl, which has taken up the grammar of graphics mantle. Notably, the MixedModels.jl documentation still uses Gadfly as of this writing (early September 2021).</p>
+</section>
+<section id="others" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="others"><span class="header-section-number">4.4</span> Others</h3>
+<p>There are many <a href="https://juliapackages.com/c/graphics">other graphics packages available in Julia</a>, often wrapping well-established frameworks such as <a href="https://www.queryverse.org/VegaLite.jl/stable/">VegaLite</a>.</p>
+</section>
+</section>
+<section id="connecting-to-other-languages" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="connecting-to-other-languages"><span class="header-section-number">5</span> Connecting to Other Languages</h2>
+<p>Using Julia doesn’t mean you have to leave all the packages you knew in other languages behind. In Julia, it’s often possible to even easily and quickly invoke code from other languages <em>from within Julia</em>.</p>
+<p><a href="https://juliainterop.github.io/RCall.jl/stable/gettingstarted/">RCall.jl</a> provides a very convenient interface for interacting with R. <a href="https://github.com/palday/JellyMe4.jl/">JellyMe4.jl</a> add support for moving MixedModels.jl and <code>lme4</code> models back and forth between the languages (which means that you can use <code>emmeans</code>, <code>sjtools</code>, <code>DHARMa</code>, <code>car</code>, etc. to examine MixedModels.jl models!). <a href="https://github.com/JuliaData/RData.jl">RData.jl</a> provides support for reading <code>.rds</code> and <code>.rda</code> files from Julia, while <a href="https://github.com/JuliaStats/RDatasets.jl">RDatasets.jl</a> provides convenient access to many of the standard datasets provided by R and various R packages.</p>
+<p><a href="https://github.com/JuliaPy/PyCall.jl/">PyCall.jl</a> provides a very convenient way for interacting with Python code and packages. <a href="https://github.com/JuliaPy/PyPlot.jl">PyPlot.jl</a> builds upon this foundation to provide support for Python’s <code>matplotlib</code>. Similarly, <a href="https://github.com/beacon-biosignals/PyMNE.jl">PyMNE.jl</a> and <a href="https://github.com/beacon-biosignals/pyfooof.jl">PyFOOOF.jl</a> provide some additional functionality to make interacting with MNE-Python and FOOOF from within Julia even easier than with vanilla PyCall.</p>
+<p>For MATLAB users, there is also <a href="https://github.com/JuliaInterop/MATLAB.jl">MATLAB.jl</a></p>
+<p><a href="https://juliainterop.github.io/Cxx.jl/stable/">Cxx.jl</a> provides interoperability with C++. It also provides a C++ REPL mode, making it possible to treating C++ much more like a dynamic language than the traditional compiler toolchain would allow.</p>
+<p>Support for calling C and Fortran is <a href="https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/">part of the Julia standard library</a>.</p>
+</section>
+<section id="notebooks-and-webpages" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="notebooks-and-webpages"><span class="header-section-number">6</span> Notebooks and Webpages</h2>
+<p>We haved <a href="https://github.com/fonsp/Pluto.jl/">Pluto.jl</a> throughout this course because it provides a nice, easy way to interact with Julia, including automatic package management. <a href="https://github.com/fonsp/PlutoUI.jl">PlutoUI.jl</a> provides some nice tools for interacting with Pluto notebooks and making them more dynamic (including the <code>TableOfContents()</code> in this one!). We also like that Pluto notebooks are essentially normal Julia code stored in plain text under the hood, which means that they play quite nice with version control systems such as Git. Sometimes, however, the reactive nature of Pluto (update any one cell and the changes propogate to all impacted cells) is not desireable.</p>
+<p>An alternative notebook interface is provide by <a href="https://jupyter.org/">Jupyter</a>, formerly IPython. Indeed, the “Ju” actually stands for Julia. Jupyter support is provided by the package <a href="https://julialang.github.io/IJulia.jl/stable/">IJulia.jl</a>.</p>
+<p>The <a href="https://weavejl.mpastell.com/stable/">Weave.jl</a> package provides “Julia markdown”, which is similar to knitr/RMarkdown or the the Sweave formats in R. Notably, Weave also provides support for converting between <code>jmd</code> files and Jupyter notebooks.</p>
+<p>Similarly, <a href="https://fredrikekre.github.io/Literate.jl/v2/">Literate.jl</a> is a simple package for literate programming (i.e.&nbsp;programming where documentation and code are “woven” together) and can generate Markdown, plain code and Jupyter notebook output. It is designed for simplicity and speed and is less extensive than Weave.jl and Documenter.jl.</p>
+<p><a href="https://juliadocs.github.io/Documenter.jl/stable/">Documenter.jl</a> is the standard tool for building webpages from Julia documentation</p>
+<p><a href="https://rikhuijzer.github.io/Books.jl/">Books.jl</a> is a package designed to offer somewhat similar functionality to the <code>bookdown</code> package in R.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">SMLP2022 - Advanced frequentist methods</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./sleepstudy.html" class="pagination-link">
+        <span class="nav-page-text">Analysis of the sleepstudy data</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

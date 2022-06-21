@@ -1,5 +1,6 @@
 ---
 title: "Bootstrapping a fitted model"
+jupyter: julia-1.8
 ---
 
 Begin by loading the packages to be used.
@@ -11,9 +12,14 @@ using CairoMakie
 using DataFrameMacros
 using DataFrames
 using MixedModels
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
 using Random
 
-CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
+CairoMakie.activate!(; type="svg");
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 Provide a short alias for `AlgebraOfGraphics`.
@@ -46,7 +52,6 @@ For large numbers of levels in a grouping factor, an attempt to create a contras
 It is not important in these cases but a good practice in any case.
 
 ```{julia}
-progress = false
 contrasts = merge(
   Dict(nm => EffectsCoding() for nm in (:spkr, :prec, :load)),
   Dict(nm => Grouping() for nm in (:subj, :item)),
@@ -64,7 +69,7 @@ kbm01 = let
       (1 + spkr + prec + load | subj) +
       (1 + spkr + prec + load | item)
   )
-  fit(MixedModel, form, kb07; contrasts, progress)
+  fit(MixedModel, form, kb07; contrasts)
 end
 ```
 
@@ -85,7 +90,7 @@ kbm02 = let
     rt_trunc ~
       1 + spkr + prec + load + (1 | subj) + (1 + prec | item)
   )
-  fit(MixedModel, form, kb07; contrasts, progress)
+  fit(MixedModel, form, kb07; contrasts)
 end
 ```
 
@@ -158,6 +163,8 @@ draw(
   figure=(; resolution=(800, 450)),
 )
 ```
+
+# References
 
 ::: {#refs}
 :::

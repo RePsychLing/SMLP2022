@@ -1,5 +1,6 @@
 ---
 title: "Generalized linear mixed models"
+jupyter: julia-1.8
 ---
 
 Load the packages to be used
@@ -12,8 +13,13 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
 
-CairoMakie.activate!(; type="svg")
+CairoMakie.activate!(; type="svg");
+ProgressMeter.ijulia_behavior(:clear);
 datadir = joinpath(@__DIR__, "data");
 ```
 
@@ -29,11 +35,10 @@ sleepstudy = DataFrame(MixedModels.dataset(:sleepstudy))
 ```
 
 ```{julia}
+contrasts = Dict(:subj => Grouping())
 m1 = let
-  contrasts = Dict(:subj => Grouping())
-  progress = false
   form = @formula(reaction ~ 1 + days + (1 + days | subj))
-  fit(MixedModel, form, sleepstudy; contrasts, progress)
+  fit(MixedModel, form, sleepstudy; contrasts)
 end
 println(m1)
 ```
@@ -167,10 +172,8 @@ For later use we define a Julia `logistic` function.
 See [this presentation](https://github.com/dmbates/JSM2021/blob/main/notebooks/2compilation.jl) for more information than you could possible want to know on how Julia converts code like this to run on the processor.
 
 ```{julia}
-function logistic(η)
-  expmeta = exp(-η)
-  return inv(one(expmeta) + expmeta)
-end
+increment(x) = x + one(x)
+logistic(η) = inv(increment(exp(-η)))
 ```
 
 To reiterate, the probability model for a Generalized Linear Mixed Model (GLMM) is
@@ -234,14 +237,13 @@ contrasts = Dict(
   :urban => HelmertCoding(),
   :children => HelmertCoding(),
 )
-progress = false
 nAGQ = 9
 dist = Bernoulli()
 gm1 = let
   form = @formula(
     use ~ 1 + age + abs2(age) + urban + livch + (1 | dist)
   )
-  fit(MixedModel, form, contra, dist; nAGQ, contrasts, progress)
+  fit(MixedModel, form, contra, dist; nAGQ, contrasts)
 end
 ```
 
@@ -279,7 +281,7 @@ gm2 = let
       urban +
       (1 | dist)
   )
-  fit(MixedModel, form, contra, dist; nAGQ, contrasts, progress)
+  fit(MixedModel, form, contra, dist; nAGQ, contrasts)
 end
 ```
 
@@ -321,7 +323,7 @@ gm3 = let
       urban +
       (1 | urban & dist)
   )
-  fit(MixedModel, form, contra, dist; nAGQ, contrasts, progress)
+  fit(MixedModel, form, contra, dist; nAGQ, contrasts)
 end
 ```
 

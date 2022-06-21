@@ -44,12 +44,11 @@ The `sleepstudy` data are one of the datasets available with the `MixedModels` p
 sleepstudy = MixedModels.dataset("sleepstudy")
 ```
 
-@fig-xyplotsleep displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using the [RCall](https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13) package for Julia.
+The following plot displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using the [RCall](https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13) package for Julia.
 
 ```{julia}
 #| code-fold: true
 #| fig-cap: Average response time versus days of sleep deprivation by subject
-#| label: fig-xyplotsleep
 RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=4.5)
 R"""
 require("lattice", quietly=TRUE)
@@ -327,6 +326,8 @@ let
   current_figure()
 end
 ```
+
+# References
 
 ::: {#refs}
 :::

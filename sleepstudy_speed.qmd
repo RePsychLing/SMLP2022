@@ -1,5 +1,6 @@
 ---
 title: "The sleepstudy: Speed - for a change ..."
+jupyter: julia-1.8
 ---
 
 ## Background
@@ -36,6 +37,9 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie   # plots specific to mixed-effects models using Makie
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using ProgressMeter
 
 CairoMakie.activate!(; type="svg")
@@ -179,6 +183,8 @@ caterpillar(m2)
 #| label: fig-shrinkagem2
 shrinkageplot!(Figure(; resolution=(500, 500)), m2)
 ```
+
+# References
 
 ::: {#refs}
 :::
