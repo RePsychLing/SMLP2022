@@ -243,12 +243,12 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link active" data-scroll-target="#loading-the-data"> <span class="header-section-number">0.1</span> Loading the data</a></li>
-  <li><a href="#fitting-an-initial-model" id="toc-fitting-an-initial-model" class="nav-link" data-scroll-target="#fitting-an-initial-model"> <span class="header-section-number">0.2</span> Fitting an initial model</a></li>
-  <li><a href="#a-model-with-uncorrelated-random-effects" id="toc-a-model-with-uncorrelated-random-effects" class="nav-link" data-scroll-target="#a-model-with-uncorrelated-random-effects"> <span class="header-section-number">0.3</span> A model with uncorrelated random effects</a></li>
-  <li><a href="#some-diagnostic-plots" id="toc-some-diagnostic-plots" class="nav-link" data-scroll-target="#some-diagnostic-plots"> <span class="header-section-number">0.4</span> Some diagnostic plots</a></li>
-  <li><a href="#assessing-variability-by-bootstrapping" id="toc-assessing-variability-by-bootstrapping" class="nav-link" data-scroll-target="#assessing-variability-by-bootstrapping"> <span class="header-section-number">0.5</span> Assessing variability by bootstrapping</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"> <span class="header-section-number">1</span> References</a></li>
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link active" data-scroll-target="#loading-the-data">Loading the data</a></li>
+  <li><a href="#fitting-an-initial-model" id="toc-fitting-an-initial-model" class="nav-link" data-scroll-target="#fitting-an-initial-model">Fitting an initial model</a></li>
+  <li><a href="#a-model-with-uncorrelated-random-effects" id="toc-a-model-with-uncorrelated-random-effects" class="nav-link" data-scroll-target="#a-model-with-uncorrelated-random-effects">A model with uncorrelated random effects</a></li>
+  <li><a href="#some-diagnostic-plots" id="toc-some-diagnostic-plots" class="nav-link" data-scroll-target="#some-diagnostic-plots">Some diagnostic plots</a></li>
+  <li><a href="#assessing-variability-by-bootstrapping" id="toc-assessing-variability-by-bootstrapping" class="nav-link" data-scroll-target="#assessing-variability-by-bootstrapping">Assessing variability by bootstrapping</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -297,8 +297,8 @@ Note
 <p>This description is inaccurate. In fact the first two days were acclimatization, the third was a baseline and sleep deprivation was only enforced after day 2. To allow for comparison with earlier analyses of these data we retain the old data description for this notebook only.</p>
 </div>
 </div>
-<section id="loading-the-data" class="level2" data-number="0.1">
-<h2 data-number="0.1" class="anchored" data-anchor-id="loading-the-data"><span class="header-section-number">0.1</span> Loading the data</h2>
+<section id="loading-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-data">Loading the data</h2>
 <p>First attach the MixedModels package and other packages for plotting. The CairoMakie package allows the Makie graphics system <span class="citation" data-cites="Danisch2021">(<a href="#ref-Danisch2021" role="doc-biblioref">Danisch and Krumbiegel 2021</a>)</span> to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.</p>
 <details>
 <summary>Code</summary>
@@ -361,8 +361,8 @@ Note
 <p>Each panel shows the data from one subject and a line fit by least squares to that subject’s data. Starting at the lower left panel and proceeding across rows, the panels are ordered by increasing intercept of the least squares line.</p>
 <p>There are some deviations from linearity within the panels but the deviations are neither substantial nor systematic.</p>
 </section>
-<section id="fitting-an-initial-model" class="level2" data-number="0.2">
-<h2 data-number="0.2" class="anchored" data-anchor-id="fitting-an-initial-model"><span class="header-section-number">0.2</span> Fitting an initial model</h2>
+<section id="fitting-an-initial-model" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-an-initial-model">Fitting an initial model</h2>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="m1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m1-1"><a href="#m1-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>())</span>
 <span id="m1-2"><a href="#m1-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
@@ -370,7 +370,7 @@ Note
 <span id="m1-4"><a href="#m1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, sleepstudy; contrasts)</span>
 <span id="m1-5"><a href="#m1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 58    Time: 0:00:00 ( 5.82 ms/it)</code></pre>
+<pre><code>Minimizing 58    Time: 0:00:00 ( 5.98 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <table class="table table-sm table-striped">
@@ -469,8 +469,8 @@ Note
 </div>
 <p><a href="#fig-m1caterpillar">Figure&nbsp;1</a> reinforces the conclusion that there is little correlation between the random effect for intercept and the random effect for slope.</p>
 </section>
-<section id="a-model-with-uncorrelated-random-effects" class="level2" data-number="0.3">
-<h2 data-number="0.3" class="anchored" data-anchor-id="a-model-with-uncorrelated-random-effects"><span class="header-section-number">0.3</span> A model with uncorrelated random effects</h2>
+<section id="a-model-with-uncorrelated-random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="a-model-with-uncorrelated-random-effects">A model with uncorrelated random effects</h2>
 <p>The <code>zerocorr</code> function applied to a random-effects term creates uncorrelated vector-valued per-subject random effects.</p>
 <div class="sourceCode cell-code" id="m2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m2-1"><a href="#m2-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
 <span id="m2-2"><a href="#m2-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> reaction <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> days <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> days <span class="op">|</span> subj)</span>
@@ -630,8 +630,8 @@ Note
 </div>
 <p>This comparison does show, however, that a simple count of the parameters in a mixed-effects model can underestimate, sometimes drastically, the model complexity. This is because a single variance component or multiple components can add many dimensions to the linear predictor.</p>
 </section>
-<section id="some-diagnostic-plots" class="level2" data-number="0.4">
-<h2 data-number="0.4" class="anchored" data-anchor-id="some-diagnostic-plots"><span class="header-section-number">0.4</span> Some diagnostic plots</h2>
+<section id="some-diagnostic-plots" class="level2">
+<h2 class="anchored" data-anchor-id="some-diagnostic-plots">Some diagnostic plots</h2>
 <p>In mixed-effects models the <em>linear predictor</em> expression incorporates <em>fixed-effects parameters</em>, which summarize trends for the population or certain well-defined subpopulations, and <em>random effects</em> which represent deviations associated with the <em>experimental units</em> or <em>observational units</em> - individual subjects, in this case. The random effects are modeled as unobserved random variables.</p>
 <p>The conditional means of these random variables, sometimes called the BLUPs or <em>Best Linear Unbiased Predictors</em>, are not simply the least squares estimates. They are attenuated or <em>shrunk</em> towards zero to reflect the fact that the individuals are assumed to come from a population. A <em>shrinkage plot</em>, <a href="#fig-m1shrinkage">Figure&nbsp;2</a>, shows the BLUPs from the model fit compared to the values without any shrinkage. If the BLUPs are similar to the unshrunk values then the more complicated model accounting for individual differences is supported. If the BLUPs are strongly shrunk towards zero then the additional complexity in the model to account for individual differences is not providing sufficient increase in fidelity to the data to warrant inclusion.</p>
 <div class="cell" data-execution_count="11">
@@ -665,8 +665,8 @@ Note
 <p>If the shrinkage were primarily in one direction - for example, if the arrows from the unshrunk values to the shrunk values were mostly in the vertical direction - then we would get an indication that we could drop the random effect for slope and revert to a simpler model. This is not the case here.</p>
 <p>As would be expected, the unshrunk values that are further from the origin tend to be shrunk more toward the origin. That is, the arrows that originate furthest from the origin are longer. However, that is not always the case. The arrow in the upper right corner, from <code>S337</code>, is relatively short. Examination of the panel for <code>S337</code> in the data plot shows a strong linear trend, even though both the intercept and the slope are unusually large. The neighboring panels in the data plot, <code>S330</code> and <code>S331</code>, have more variability around the least squares line and are subject to a greater amount of shrinkage in the model. (They correspond to the two arrows on the right hand side of the figure around -5 on the vertical scale.)</p>
 </section>
-<section id="assessing-variability-by-bootstrapping" class="level2" data-number="0.5">
-<h2 data-number="0.5" class="anchored" data-anchor-id="assessing-variability-by-bootstrapping"><span class="header-section-number">0.5</span> Assessing variability by bootstrapping</h2>
+<section id="assessing-variability-by-bootstrapping" class="level2">
+<h2 class="anchored" data-anchor-id="assessing-variability-by-bootstrapping">Assessing variability by bootstrapping</h2>
 <p>The speed of fitting linear mixed-effects models using <code>MixedModels.jl</code> allows for using simulation-based approaches to inference instead of relying on approximate standard errors. A <em>parametric bootstrap sample</em> for model <code>m</code> is a collection of models of the same form as <code>m</code> fit to data values simulated from <code>m</code>. That is, we pretend that <code>m</code> and its parameter values are the <em>true</em> parameter values, simulate data from these values, and estimate parameters from the simulated data.</p>
 <p>Simulating and fitting a substantial number of model fits, 5000 in this case, takes only a few seconds, following which we extract a data frame of the parameter estimates and plot densities of some of these estimates.</p>
 <div class="cell" data-execution_count="12">
@@ -813,8 +813,8 @@ Note
 </div>
 </div>
 </section>
-<section id="references" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> References</h1>
+<section id="references" class="level1">
+<h1>References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-Balkin2000" class="csl-entry" role="doc-biblioentry">
 Balkin, T., D. Thome, H. Sing, M. Thomas, D. Redmond, N. Wesensten, J. Williams, S. Hall, and G. Belenky. 2000. <span>“Effects of Sleep Schedules on Commercial Motor Vehicle Driver Performance.”</span> DOT-MC-00-133. Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
