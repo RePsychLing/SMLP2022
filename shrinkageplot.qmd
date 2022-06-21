@@ -1,5 +1,6 @@
 ---
 title: "More on shrinkage plots"
+jupyter: julia-1.8
 ---
 
   - I have stated that the likelihood criterion used to fit linear mixed-effects can be considered as balancing fidelity to the data (i.e. fits the observed data well) versus model complexity.
@@ -15,7 +16,13 @@ using DataFrames
 using LinearAlgebra
 using MixedModels
 using MixedModelsMakie
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using Random
+using ProgressMeter
+
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 Load the kb07 data set (don't tell Reinhold that I used these data).
@@ -32,7 +39,6 @@ contrasts = Dict(
   :prec => HelmertCoding(),
   :load => HelmertCoding(),
 )
-progress = false
 m1 = let
   form = @formula(
     rt_trunc ~
@@ -41,7 +47,7 @@ m1 = let
       (1 + spkr + prec + load | subj) +
       (1 + spkr + prec + load | item)
   )
-  fit(MixedModel, form, kb07; contrasts, progress)
+  fit(MixedModel, form, kb07; contrasts)
 end
 ```
 
@@ -127,7 +133,7 @@ m2 = let
     rt_trunc ~
       1 + prec * spkr * load + (1 | subj) + (1 + prec | item)
   )
-  fit(MixedModel, form, kb07; contrasts, progress)
+  fit(MixedModel, form, kb07; contrasts)
 end
 ```
 
@@ -149,7 +155,7 @@ m3 = let
     rt_trunc ~
       1 + prec + spkr + load + (1 | subj) + (1 + prec | item)
   )
-  fit(MixedModel, form, kb07; contrasts, progress)
+  fit(MixedModel, form, kb07; contrasts)
 end
 ```
 
@@ -178,6 +184,7 @@ ridgeplot(m3btstrp)
 ```{julia}
 #| label: fig-ridgeplotnoint
 #| fig-cap: 'Ridge plot of the fixed-effects coefficients from the bootstrap sample (with the intercept)'
+#| eval: false
 ridgeplot(m3btstrp; show_intercept=false)
 ```
 
@@ -187,7 +194,7 @@ m4 = let
     rt_trunc ~
       1 + prec + spkr + load + (1 + prec | item) + (1 | subj)
   )
-  fit(MixedModel, form, kb07; contrasts, progress)
+  fit(MixedModel, form, kb07; contrasts)
 end
 ```
 

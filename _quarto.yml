@@ -14,6 +14,7 @@ project:
     - kb07.qmd
     - kwdyz11.qmd
     - kkl15.qmd
+    - shrinkageplot.qmd
 
 website:
   title: "SMLP2022"
@@ -42,6 +43,7 @@ website:
       - kb07.qmd
       - kwdyz11.qmd
       - kkl15.qmd
+      - shrinkageplot.qmd
   page-navigation: true
 
 date: today
