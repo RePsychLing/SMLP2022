@@ -2,16 +2,16 @@ project:
   type: website
   title: "SMLP2022"
   execute-dir: project
-  output-dir: _site
+  output-dir: docs
   render:
     - index.qmd
     - about.qmd
-    - notebooks/useful_packages.qmd
-    - notebooks/mmt_sleepstudy.qmd
-    - notebooks/mmt_sleepstudy_speed.qmd
-    - notebooks/Arrow.qmd
-    - notebooks/glmm.qmd
-    - notebooks/mmt_kb07.qmd
+    - useful_packages.qmd
+    - sleepstudy.qmd
+    - sleepstudy_speed.qmd
+    - Arrow.qmd
+    - glmm.qmd
+    - kb07.qmd
 
 website:
   title: "SMLP2022"
@@ -23,16 +23,22 @@ website:
     left:
       - text: "Home"
         href: index.qmd
-      - text: "Packages"
-        href: notebooks/useful_packages.qmd
-      - text: "Sleepstudy"
-        href: notebooks/mmt_sleepstudy.qmd
+      - about.qmd
     right:
       - icon: github
         href: https://github.com/RePsychLing/SMLP2022
-
-execute: 
-  keep-ipynb: true
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - index.qmd
+      - useful_packages.qmd
+      - sleepstudy.qmd
+      - sleepstudy_speed.qmd
+      - Arrow.qmd
+      - glmm.qmd
+      - kb07.qmd
+  page-navigation: true
 
 date: today
 date-format: iso
@@ -43,5 +49,3 @@ format:
     toc: true
     number-sections: true
     css: styles.css
-
-jupyter: julia-1.8

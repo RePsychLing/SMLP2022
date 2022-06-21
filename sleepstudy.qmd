@@ -1,5 +1,6 @@
 ---
 title: Analysis of the sleepstudy data
+jupyter: julia-1.8
 ---
 
 The `sleepstudy` data are from a study of the effects of sleep deprivation on response time reported in  @Balkin2000 and in @Belenky2003.
@@ -26,6 +27,9 @@ using DataFrames
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
@@ -71,10 +75,9 @@ There are some deviations from linearity within the panels but the deviations ar
 ```{julia}
 #| lst-label: m1
 contrasts = Dict(:subj => Grouping())
-progress = false
 m1 = let
   form = @formula(reaction ~ 1 + days + (1 + days | subj))
-  fit(MixedModel, form, sleepstudy; contrasts, progress)
+  fit(MixedModel, form, sleepstudy; contrasts)
 end
 ```
 
@@ -118,7 +121,7 @@ The `zerocorr` function applied to a random-effects term creates uncorrelated ve
 #| lst-label: m2
 m2 = let
   form = @formula reaction ~ 1 + days + zerocorr(1 + days | subj)
-  fit(MixedModel, form, sleepstudy; contrasts, progress)
+  fit(MixedModel, form, sleepstudy; contrasts)
 end
 ```
 
