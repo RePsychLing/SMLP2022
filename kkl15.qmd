@@ -1,5 +1,6 @@
 ---
 title: 'RePsychLing Kliegl, Kuschela, & Laubrock (2015)'
+jupyter: julia-1.8
 ---
 
 ## Background
@@ -43,6 +44,9 @@ using DataFrameMacros
 using DataFrames
 using MixedModels
 using MixedModelsMakie
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using Random
 using ProgressMeter
 using Statistics
@@ -54,9 +58,9 @@ using MixedModelsMakie: qqnorm
 using MixedModelsMakie: ridgeplot
 using MixedModelsMakie: scatter
 const datadir = joinpath(@__DIR__, "data")
-ProgressMeter.ijulia_behavior(:clear)
 
-CairoMakie.activate!(; type="png") # there are plots with many points here so SVG doesn't work well
+ProgressMeter.ijulia_behavior(:clear)
+CairoMakie.activate!(; type="png")
 ```
 
 ## Read data, compute and plot means
@@ -564,7 +568,7 @@ The three remaining CPs are not well defined for log-transformed reaction times;
 It is also possible that fitting the complex experimental design (including target size and rectangle orientation) will lead to more acceptable estimates.
 The corresponding plot based on LMM `m1_rt` for raw reaction times still shows them with very wide distributions, but acceptable.
 
-**That's it for now. Have fun!**
+# References
 
 ::: {#refs}
 :::

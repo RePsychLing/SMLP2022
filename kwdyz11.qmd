@@ -1,5 +1,6 @@
 ---
 title: "RePsychLing Kliegl et al. (2010)"
+jupyter: julia-1.8
 ---
 
 ## Background
@@ -28,13 +29,17 @@ In this and the complementary `kkl15.jl` scripts, we provide some corresponding 
 #| code-fold: true
 using Arrow
 using AlgebraOfGraphics
-using CairoMakie   # for displaying static plots in a Pluto notebook
+using CairoMakie
 using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros
 using MixedModels
 using MixedModelsMakie
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
 using Random
 using StatsBase
 using Statistics
@@ -42,6 +47,7 @@ using AlgebraOfGraphics: density
 using AlgebraOfGraphics: boxplot
 
 CairoMakie.activate!(; type="svg")
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 ## Read data, compute and plot densities and means
@@ -141,10 +147,9 @@ contrasts = Dict(
   :CTR => SeqDiffCoding(; levels=["val", "sod", "dos", "dod"]),
   :Subj => Grouping(),
 )
-progress = false
 m1 = let
   form = @formula(lrt ~ 1 + CTR + (1 + CTR | Subj))
-  fit(MixedModel, form, dat; contrasts, progress)
+  fit(MixedModel, form, dat; contrasts)
 end
 ```
 
@@ -195,7 +200,7 @@ Contour plots or heatmaps may be an alternative.
 #| code-fold: true
 #| fig-cap: Heatmap of residuals versus fitted values for model m1
 #| label: fig-resvsfittedhm
-CairoMakie.activate!(; type="svg")
+CairoMakie.activate!(; type="png")
 draw(
   data((; f=fitted(m1), r=residuals(m1))) *
   mapping(
@@ -399,6 +404,8 @@ Two of the CPs stand out positively.
 First, the correlation between GM and the spatial effect is well defined.
 Second, as discussed throughout this script, the CP between spatial and attraction effect is close to the 1.0 border and clearly not well defined.
 Therefore, this CP will be replicated with a larger sample in script `kkl15.jl` [@Kliegl2015].
+
+# References
 
 ::: {#refs}
 :::
