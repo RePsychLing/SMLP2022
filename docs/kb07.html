@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-06-21">
+<meta name="dcterms.date" content="2022-06-22">
 
 <title>SMLP2022 - Bootstrapping a fitted model</title>
 <style>
@@ -240,6 +240,16 @@ div.csl-indent {
   <a href="./kwdyz11.html" class="sidebar-item-text sidebar-link">RePsychLing Kliegl et al.&nbsp;(2010)</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kkl15.html" class="sidebar-item-text sidebar-link">RePsychLing Kliegl, Kuschela, &amp; Laubrock (2015)</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./shrinkageplot.html" class="sidebar-item-text sidebar-link">More on shrinkage plots</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -277,7 +287,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-06-21</p>
+      <p class="date">2022-06-22</p>
     </div>
   </div>
     
@@ -310,7 +320,7 @@ div.csl-indent {
 <p>The <code>kb07</code> data <span class="citation" data-cites="Kronmueller2007">(<a href="#ref-Kronmueller2007" role="doc-biblioref">Kronmüller and Barr 2007</a>)</span> are one of the datasets provided by the <code>MixedModels</code> package.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Arrow.Table with 1789 rows, 7 columns, and schema:
  :subj      String
  :item      String
@@ -325,7 +335,7 @@ div.csl-indent {
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> <span class="fu">DataFrame</span>(kb07)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="5">
 
 <div class="data-frame"><p>7 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="DataType">DataType</th></tr></thead><tbody><tr><th>1</th><td>subj</td><td></td><td>S030</td><td></td><td>S103</td><td>0</td><td>String</td></tr><tr><th>2</th><td>item</td><td></td><td>I01</td><td></td><td>I32</td><td>0</td><td>String</td></tr><tr><th>3</th><td>spkr</td><td></td><td>new</td><td></td><td>old</td><td>0</td><td>String</td></tr><tr><th>4</th><td>prec</td><td></td><td>break</td><td></td><td>maintain</td><td>0</td><td>String</td></tr><tr><th>5</th><td>load</td><td></td><td>no</td><td></td><td>yes</td><td>0</td><td>String</td></tr><tr><th>6</th><td>rt_trunc</td><td>2182.2</td><td>579</td><td>1940.0</td><td>5171</td><td>0</td><td>Int16</td></tr><tr><th>7</th><td>rt_raw</td><td>2226.24</td><td>579</td><td>1940.0</td><td>15923</td><td>0</td><td>Int16</td></tr></tbody></table></div>
 </div>
@@ -349,10 +359,10 @@ div.csl-indent {
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 723   Time: 0:00:00 ( 0.29 ms/it)
+<pre><code>Minimizing 723   Time: 0:00:01 ( 1.74 ms/it)
   objective:  28637.1393507629</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 44%">
@@ -738,7 +748,7 @@ div.csl-indent {
 <p>One of the uses of such a sample is to form “confidence intervals” on the parameters by obtaining the shortest interval that covers a given proportion (95%, by default) of the sample.</p>
 <div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(kbm02samp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="13">
 
 <div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2028.01</td><td>2337.92</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>38.431</td><td>99.5944</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-439.321</td><td>-245.864</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>46.0262</td><td>107.511</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>261.196</td><td>448.51</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>175.489</td><td>312.038</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.89799</td><td>-0.445595</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>228.099</td><td>357.789</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>655.249</td><td>701.497</td></tr></tbody></table></div>
 </div>
@@ -752,7 +762,7 @@ div.csl-indent {
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div id="fig-kbm02fedens" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="kb07_files/figure-html/fig-kbm02fedens-output-1.svg" class="img-fluid figure-img"></p>
@@ -775,7 +785,7 @@ div.csl-indent {
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="32">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div id="fig-kbm02sampsigmadens" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="kb07_files/figure-html/fig-kbm02sampsigmadens-output-1.svg" class="img-fluid figure-img"></p>
@@ -794,7 +804,7 @@ div.csl-indent {
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  figure<span class="op">=</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">450</span>)),</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="33">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <div id="fig-kbm02sampcorrdens" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="kb07_files/figure-html/fig-kbm02sampcorrdens-output-1.svg" class="img-fluid figure-img"></p>
