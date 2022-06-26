@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-06-22">
+<meta name="dcterms.date" content="2022-06-26">
 
 <title>SMLP2022 - Analysis of the sleepstudy data</title>
 <style>
@@ -289,7 +289,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-06-22</p>
+      <p class="date">2022-06-26</p>
     </div>
   </div>
     
@@ -314,7 +314,7 @@ Note
 </div>
 <section id="loading-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-data">Loading the data</h2>
-<p>First attach the MixedModels package and other packages for plotting. The CairoMakie package allows the Makie graphics system <span class="citation" data-cites="Danisch2021">(<a href="#ref-Danisch2021" role="doc-biblioref">Danisch and Krumbiegel 2021</a>)</span> to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.</p>
+<p>First attach the MixedModels package and other packages for plotting. The CairoMakie package allows the Makie graphics system <span class="citation" data-cites="Danisch2021">(<a href="#ref-Danisch2021" role="doc-biblioref">Danisch &amp; Krumbiegel, 2021</a>)</span> to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.</p>
 <div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
@@ -349,7 +349,7 @@ Note
  :reaction  Float64</code></pre>
 </div>
 </div>
-<p>The following plot displays the data in a multi-panel plot created with the <code>lattice</code> package in <code>R</code> <span class="citation" data-cites="Sarkar2008">(<a href="#ref-Sarkar2008" role="doc-biblioref">Sarkar 2008</a>)</span>, using the <a href="https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13">RCall</a> package for Julia.</p>
+<p>The following plot displays the data in a multi-panel plot created with the <code>lattice</code> package in <code>R</code> <span class="citation" data-cites="Sarkar2008">(<a href="#ref-Sarkar2008" role="doc-biblioref">Sarkar, 2008</a>)</span>, using the <a href="https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13">RCall</a> package for Julia.</p>
 <div class="cell" data-execution_count="3">
 <details>
 <summary>Code</summary>
@@ -391,7 +391,7 @@ Note
 <span id="m1-4"><a href="#m1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, sleepstudy; contrasts)</span>
 <span id="m1-5"><a href="#m1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 58    Time: 0:00:00 ( 5.93 ms/it)</code></pre>
+<pre><code>Minimizing 58    Time: 0:00:00 ( 6.02 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <table class="table table-sm table-striped">
@@ -836,18 +836,18 @@ Note
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
 <div id="ref-Balkin2000" class="csl-entry" role="doc-biblioentry">
-Balkin, T., D. Thome, H. Sing, M. Thomas, D. Redmond, N. Wesensten, J. Williams, S. Hall, and G. Belenky. 2000. <span>“Effects of Sleep Schedules on Commercial Motor Vehicle Driver Performance.”</span> DOT-MC-00-133. Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
+Balkin, T., Thome, D., Sing, H., Thomas, M., Redmond, D., Wesensten, N., Williams, J., Hall, S., &amp; Belenky, G. (2000). <em>Effects of sleep schedules on commercial motor vehicle driver performance</em> (DOT-MC-00-133). Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
 </div>
 <div id="ref-Belenky2003" class="csl-entry" role="doc-biblioentry">
-Belenky, Gregory, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo, and Thomas J. Balkin. 2003. <span>“Patterns of Performance Degradation and Restoration During Sleep Restriction and Subsequent Recovery: A Sleep Dose-Response Study.”</span> <em>Journal of Sleep Research</em> 12 (1): 1–12. <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">https://doi.org/10.1046/j.1365-2869.2003.00337.x</a>.
+Belenky, G., Wesensten, N. J., Thorne, D. R., Thomas, M. L., Sing, H. C., Redmond, D. P., Russo, M. B., &amp; Balkin, T. J. (2003). Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: A sleep dose-response study. <em>Journal of Sleep Research</em>, <em>12</em>(1), 1–12. <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">https://doi.org/10.1046/j.1365-2869.2003.00337.x</a>
 </div>
 <div id="ref-Danisch2021" class="csl-entry" role="doc-biblioentry">
-Danisch, Simon, and Julius Krumbiegel. 2021. <span>“Makie.jl: Flexible High-Performance Data Visualization for Julia.”</span> <em>Journal of Open Source Software</em> 6 (65): 3349. <a href="https://doi.org/10.21105/joss.03349">https://doi.org/10.21105/joss.03349</a>.
+Danisch, S., &amp; Krumbiegel, J. (2021). Makie.jl: Flexible high-performance data visualization for julia. <em>Journal of Open Source Software</em>, <em>6</em>(65), 3349. <a href="https://doi.org/10.21105/joss.03349">https://doi.org/10.21105/joss.03349</a>
 </div>
 <div id="ref-Sarkar2008" class="csl-entry" role="doc-biblioentry">
-Sarkar, Deepayan. 2008. <em>Lattice: Mutivariate Data Visualization with r</em>. Springer-Verlag GmbH. <a href="https://www.ebook.de/de/product/11429038/deepayan_sarkar_lattice.html">https://www.ebook.de/de/product/11429038/deepayan_sarkar_lattice.html</a>.
+Sarkar, D. (2008). <em>Lattice: Mutivariate data visualization with r</em>. Springer-Verlag GmbH. <a href="https://www.ebook.de/de/product/11429038/deepayan_sarkar_lattice.html">https://www.ebook.de/de/product/11429038/deepayan_sarkar_lattice.html</a>
 </div>
 </div>
 

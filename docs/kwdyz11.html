@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-06-22">
+<meta name="dcterms.date" content="2022-06-26">
 
 <title>SMLP2022 - RePsychLing Kliegl et al.&nbsp;(2010)</title>
 <style>
@@ -307,7 +307,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-06-22</p>
+      <p class="date">2022-06-26</p>
     </div>
   </div>
     
@@ -318,10 +318,10 @@ div.csl-indent {
 
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>We take the <code>kwdyz11.arrow</code> dataset <span class="citation" data-cites="Kliegl2010">(<a href="#ref-Kliegl2010" role="doc-biblioref">Reinhold Kliegl et al. 2010</a>)</span> from an experiment looking at three effects of visual cueing under four different cue-target relations (CTRs). Two horizontal rectangles are displayed above and below a central fixation point or they displayed in vertical orientation to the left and right of the fixation point. Subjects react to the onset of a small visual target occuring at one of the four ends of the two rectangles. The target is cued validly on 70% of trials by a brief flash of the corner of the rectangle at which it appears; it is cued invalidly at the three other locations 10% of the trials each.</p>
+<p>We take the <code>kwdyz11.arrow</code> dataset <span class="citation" data-cites="Kliegl2010">(<a href="#ref-Kliegl2010" role="doc-biblioref">Kliegl et al., 2010</a>)</span> from an experiment looking at three effects of visual cueing under four different cue-target relations (CTRs). Two horizontal rectangles are displayed above and below a central fixation point or they displayed in vertical orientation to the left and right of the fixation point. Subjects react to the onset of a small visual target occuring at one of the four ends of the two rectangles. The target is cued validly on 70% of trials by a brief flash of the corner of the rectangle at which it appears; it is cued invalidly at the three other locations 10% of the trials each.</p>
 <p>We specify three contrasts for the four-level factor CTR that are derived from spatial, object-based, and attractor-like features of attention. They map onto sequential differences between appropriately ordered factor levels. At the level of fixed effects, there is the noteworthy result, that the attraction effect was estimated at 2 ms, that is clearly not significant. Nevertheless, there was a highly reliable variance component (VC) estimated for this effect. Moreover, the reliable individual differences in the attraction effect were negatively correlated with those in the spatial effect.</p>
-<p>Unfortunately, a few years after the publication, we determined that the reported LMM is actually singular and that the singularity is linked to a theoretically critical correlation parameter (CP) between the spatial effect and the attraction effect. Fortunately, there is also a larger dataset <code>kkl15.arrow</code> from a replication and extension of this study <span class="citation" data-cites="Kliegl2015">(<a href="#ref-Kliegl2015" role="doc-biblioref">R. Kliegl, Kushela, and Laubrock 2015</a>)</span>, analyzed with <code>kkl15.jl</code> notebook. The critical CP (along with other fixed effects and CPs) was replicated in this study.</p>
-<p>A more comprehensive analysis was reported in the parsimonious mixed-model paper <span class="citation" data-cites="Bates2015">(<a href="#ref-Bates2015" role="doc-biblioref">Bates et al. 2015</a>)</span>. Data and R scripts are also available in <a href="https://github.com/dmbates/RePsychLing/tree/master/data/">R-package RePsychLing</a>. In this and the complementary <code>kkl15.jl</code> scripts, we provide some corresponding analyses with <em>MixedModels.jl</em>.</p>
+<p>Unfortunately, a few years after the publication, we determined that the reported LMM is actually singular and that the singularity is linked to a theoretically critical correlation parameter (CP) between the spatial effect and the attraction effect. Fortunately, there is also a larger dataset <code>kkl15.arrow</code> from a replication and extension of this study <span class="citation" data-cites="Kliegl2015">(<a href="#ref-Kliegl2015" role="doc-biblioref">Kliegl et al., 2015</a>)</span>, analyzed with <code>kkl15.jl</code> notebook. The critical CP (along with other fixed effects and CPs) was replicated in this study.</p>
+<p>A more comprehensive analysis was reported in the parsimonious mixed-model paper <span class="citation" data-cites="Bates2015">(<a href="#ref-Bates2015" role="doc-biblioref">Bates et al., 2015</a>)</span>. Data and R scripts are also available in <a href="https://github.com/dmbates/RePsychLing/tree/master/data/">R-package RePsychLing</a>. In this and the complementary <code>kkl15.jl</code> scripts, we provide some corresponding analyses with <em>MixedModels.jl</em>.</p>
 </section>
 <section id="packages" class="level2">
 <h2 class="anchored" data-anchor-id="packages">Packages</h2>
@@ -376,7 +376,7 @@ div.csl-indent {
 </div>
 <p>We recommend to code the levels/units of random factor / grouping variable not as a number, but as a string starting with a letter and of the same length for all levels/units.</p>
 <p>We also recommend to sort levels of factors into a meaningful order, that is overwrite the default alphabetic ordering. This is also a good place to choose alternative names for variables in the context of the present analysis.</p>
-<p>The LMM analysis is based on log-transformed reaction times <code>lrt</code>, indicated by a <em>boxcox()</em> check of model residuals. With the exception of diagnostic plots of model residuals, the analysis of untransformed reaction times did not lead to different results and exhibited the same problems of model identification <span class="citation" data-cites="Kliegl2010">(see <a href="#ref-Kliegl2010" role="doc-biblioref">Reinhold Kliegl et al. 2010</a>)</span>.</p>
+<p>The LMM analysis is based on log-transformed reaction times <code>lrt</code>, indicated by a <em>boxcox()</em> check of model residuals. With the exception of diagnostic plots of model residuals, the analysis of untransformed reaction times did not lead to different results and exhibited the same problems of model identification <span class="citation" data-cites="Kliegl2010">(see <a href="#ref-Kliegl2010" role="doc-biblioref">Kliegl et al., 2010</a>)</span>.</p>
 <p>Comparative density plots of all response times by cue-target relation, <a href="#fig-comparativedensity">Figure&nbsp;1</a>, show the times for valid cues to be faster than for the other conditions.</p>
 <div class="cell" data-execution_count="3">
 <details>
@@ -924,21 +924,21 @@ Component loadings
 </div>
 </div>
 </div>
-<p>Two of the CPs stand out positively. First, the correlation between GM and the spatial effect is well defined. Second, as discussed throughout this script, the CP between spatial and attraction effect is close to the 1.0 border and clearly not well defined. Therefore, this CP will be replicated with a larger sample in script <code>kkl15.jl</code> <span class="citation" data-cites="Kliegl2015">(<a href="#ref-Kliegl2015" role="doc-biblioref">R. Kliegl, Kushela, and Laubrock 2015</a>)</span>.</p>
+<p>Two of the CPs stand out positively. First, the correlation between GM and the spatial effect is well defined. Second, as discussed throughout this script, the CP between spatial and attraction effect is close to the 1.0 border and clearly not well defined. Therefore, this CP will be replicated with a larger sample in script <code>kkl15.jl</code> <span class="citation" data-cites="Kliegl2015">(<a href="#ref-Kliegl2015" role="doc-biblioref">Kliegl et al., 2015</a>)</span>.</p>
 </section>
 </section>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
 <div id="ref-Bates2015" class="csl-entry" role="doc-biblioentry">
-Bates, Douglas, Reinhold Kliegl, Shravan Vasishth, and Harald Baayen. 2015. <span>“Parsimonious Mixed Models.”</span> arXiv. <a href="https://doi.org/10.48550/ARXIV.1506.04967">https://doi.org/10.48550/ARXIV.1506.04967</a>.
-</div>
-<div id="ref-Kliegl2010" class="csl-entry" role="doc-biblioentry">
-Kliegl, Reinhold, Ping Wei, Michael Dambacher, Ming Yan, and Xiaolin Zhou. 2010. <span>“Experimental Effects and Individual Differences in Linear Mixed Models: Estimating the Relationship Between Spatial, Object, and Attraction Effects in Visual Attention.”</span> <em>Frontiers in Psychology</em>. <a href="https://doi.org/10.3389/fpsyg.2010.00238">https://doi.org/10.3389/fpsyg.2010.00238</a>.
+Bates, D., Kliegl, R., Vasishth, S., &amp; Baayen, H. (2015). <em>Parsimonious mixed models</em>. arXiv. <a href="https://doi.org/10.48550/ARXIV.1506.04967">https://doi.org/10.48550/ARXIV.1506.04967</a>
 </div>
 <div id="ref-Kliegl2015" class="csl-entry" role="doc-biblioentry">
-Kliegl, R., J. Kushela, and J. Laubrock. 2015. <span>“Object Orientation and Target Size Modulate the Speed of Visual Attention.”</span> Department of Psychology, University of Potsdam.
+Kliegl, R., Kushela, J., &amp; Laubrock, J. (2015). <em>Object orientation and target size modulate the speed of visual attention</em>. Department of Psychology, University of Potsdam.
+</div>
+<div id="ref-Kliegl2010" class="csl-entry" role="doc-biblioentry">
+Kliegl, R., Wei, P., Dambacher, M., Yan, M., &amp; Zhou, X. (2010). Experimental effects and individual differences in linear mixed models: Estimating the relationship between spatial, object, and attraction effects in visual attention. <em>Frontiers in Psychology</em>. <a href="https://doi.org/10.3389/fpsyg.2010.00238">https://doi.org/10.3389/fpsyg.2010.00238</a>
 </div>
 </div>
 

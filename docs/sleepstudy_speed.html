@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-06-22">
+<meta name="dcterms.date" content="2022-06-26">
 
 <title>SMLP2022 - The sleepstudy: Speed - for a change …</title>
 <style>
@@ -297,7 +297,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-06-22</p>
+      <p class="date">2022-06-26</p>
     </div>
   </div>
     
@@ -308,16 +308,16 @@ div.csl-indent {
 
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
-<p><span class="citation" data-cites="Belenky2003">Belenky et al. (<a href="#ref-Belenky2003" role="doc-biblioref">2003</a>)</span> reported effects of sleep deprivation across a 14-day study of 30-to-40-year old men and women holding commercial vehicle driving licenses. Their analyses are based on a subset of tasks and ratings from very large and comprehensive test and questionnaire battery <span class="citation" data-cites="Balkin2000">(<a href="#ref-Balkin2000" role="doc-biblioref">Balkin et al. 2000</a>)</span>.</p>
-<p>Initially 66 subjects were assigned to one of four time-in-bed (TIB) groups with 9 hours (22:00-07:00) of sleep augmentation or 7 hours (24:00-07:00), 5 hours (02:00-07:00), and 3 hours (04:00-0:00) of sleep restrictions per night, respectively. The final sample comprised 56 subjects. The Psychomotor Vigilance Test (PVT) measures simple reaction time to a visual stimulus, presented approximately 10 times ⁄ minute (interstimulus interval varied from 2 to 10 s in 2-s increments) for 10 min and implemented in a thumb-operated, hand-held device <span class="citation" data-cites="Dinges1985">(<a href="#ref-Dinges1985" role="doc-biblioref">Dinges and Powell 1985</a>)</span>.</p>
+<p><span class="citation" data-cites="Belenky2003">Belenky et al. (<a href="#ref-Belenky2003" role="doc-biblioref">2003</a>)</span> reported effects of sleep deprivation across a 14-day study of 30-to-40-year old men and women holding commercial vehicle driving licenses. Their analyses are based on a subset of tasks and ratings from very large and comprehensive test and questionnaire battery <span class="citation" data-cites="Balkin2000">(<a href="#ref-Balkin2000" role="doc-biblioref">Balkin et al., 2000</a>)</span>.</p>
+<p>Initially 66 subjects were assigned to one of four time-in-bed (TIB) groups with 9 hours (22:00-07:00) of sleep augmentation or 7 hours (24:00-07:00), 5 hours (02:00-07:00), and 3 hours (04:00-0:00) of sleep restrictions per night, respectively. The final sample comprised 56 subjects. The Psychomotor Vigilance Test (PVT) measures simple reaction time to a visual stimulus, presented approximately 10 times ⁄ minute (interstimulus interval varied from 2 to 10 s in 2-s increments) for 10 min and implemented in a thumb-operated, hand-held device <span class="citation" data-cites="Dinges1985">(<a href="#ref-Dinges1985" role="doc-biblioref">Dinges &amp; Powell, 1985</a>)</span>.</p>
 <p><strong>Design</strong></p>
 <p>The study comprised 2 training days (T1, T2), one day with baseline measures (B), seven days with sleep deprivation (E1 to E7), and four recovery days (R1 to R4). T1 and T2 were devoted to training on the performance tests and familiarization with study procedures. PVT baseline testing commenced on the morning of the third day (B) and testing continued for the duration of the study (E1–E7, R1–R3; no measures were taken on R4). Bed times during T, B, and R days were 8 hours (23:00-07:00).</p>
 <p><strong>Test schedule within days</strong></p>
-<p>The PVT (along with the Stanford Sleepiness Scale) was administered as a battery four times per day (09:00, 12:00, 15:00, and 21:00 h); the battery included other tests not reported here <span class="citation" data-cites="Balkin2000">(see <a href="#ref-Balkin2000" role="doc-biblioref">Balkin et al. 2000</a>)</span>. The sleep latency test was administered at 09:40 and 15:30 h for all groups. Subjects in the 3- and 5-h TIB groups performed an additional battery at 00:00 h and 02:00 h to occupy their additional time awake. The PVT and SSS were administered in this battery; however, as data from the 00:00 and 02:00 h sessions were not common to all TIB groups, these data were not included in the statistical analyses reported in the paper.</p>
+<p>The PVT (along with the Stanford Sleepiness Scale) was administered as a battery four times per day (09:00, 12:00, 15:00, and 21:00 h); the battery included other tests not reported here <span class="citation" data-cites="Balkin2000">(see <a href="#ref-Balkin2000" role="doc-biblioref">Balkin et al., 2000</a>)</span>. The sleep latency test was administered at 09:40 and 15:30 h for all groups. Subjects in the 3- and 5-h TIB groups performed an additional battery at 00:00 h and 02:00 h to occupy their additional time awake. The PVT and SSS were administered in this battery; however, as data from the 00:00 and 02:00 h sessions were not common to all TIB groups, these data were not included in the statistical analyses reported in the paper.</p>
 <p><strong>Statistical analyses</strong></p>
 <p>The authors analyzed response speed, that is (1/RT)*1000 – completely warranted according to a Box-Cox check of the current data – with mixed-model ANOVAs using group as between- and day as within-subject factors. The ANOVA was followed up with simple tests of the design effects implemented over days for each of the four groups.</p>
 <p><strong>Current data</strong></p>
-<p>The current data distributed with the <em>RData</em> collection is attributed to the 3-hour TIB group, but the means do not agree at all with those reported for this group in <span class="citation" data-cites="Belenky2003">(<a href="#ref-Belenky2003" role="doc-biblioref">Belenky et al. 2003, fig. 3</a>)</span> where the 3-hour TIB group is also based on only 13 (not 18) subjects. Specifically, the current data show a much smaller slow-down of response speed across E1 to E7 and do not reflect the recovery during R1 to R3. The currrent data also cover only 10 not 11 days, but it looks like only R3 is missing. The closest match of the current means was with the average of the 3-hour and 7-hour TIB groups; if only males were included, this would amount to 18 subjects. (This conjecture is based only on visual inspection of graphs.)</p>
+<p>The current data distributed with the <em>RData</em> collection is attributed to the 3-hour TIB group, but the means do not agree at all with those reported for this group in <span class="citation" data-cites="Belenky2003">(<a href="#ref-Belenky2003" role="doc-biblioref">Belenky et al., 2003, fig. 3</a>)</span> where the 3-hour TIB group is also based on only 13 (not 18) subjects. Specifically, the current data show a much smaller slow-down of response speed across E1 to E7 and do not reflect the recovery during R1 to R3. The currrent data also cover only 10 not 11 days, but it looks like only R3 is missing. The closest match of the current means was with the average of the 3-hour and 7-hour TIB groups; if only males were included, this would amount to 18 subjects. (This conjecture is based only on visual inspection of graphs.)</p>
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
@@ -432,7 +432,7 @@ div.csl-indent {
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 70    Time: 0:00:00 ( 4.89 ms/it)</code></pre>
+<pre><code>Minimizing 70    Time: 0:00:00 ( 4.78 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <table class="table table-sm table-striped">
@@ -628,15 +628,15 @@ div.csl-indent {
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
 <div id="ref-Balkin2000" class="csl-entry" role="doc-biblioentry">
-Balkin, T., D. Thome, H. Sing, M. Thomas, D. Redmond, N. Wesensten, J. Williams, S. Hall, and G. Belenky. 2000. <span>“Effects of Sleep Schedules on Commercial Motor Vehicle Driver Performance.”</span> DOT-MC-00-133. Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
+Balkin, T., Thome, D., Sing, H., Thomas, M., Redmond, D., Wesensten, N., Williams, J., Hall, S., &amp; Belenky, G. (2000). <em>Effects of sleep schedules on commercial motor vehicle driver performance</em> (DOT-MC-00-133). Federal Motor Carrier Safety Administration. <a href="https://doi.org/10.21949/1503015.">https://doi.org/10.21949/1503015.</a>
 </div>
 <div id="ref-Belenky2003" class="csl-entry" role="doc-biblioentry">
-Belenky, Gregory, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo, and Thomas J. Balkin. 2003. <span>“Patterns of Performance Degradation and Restoration During Sleep Restriction and Subsequent Recovery: A Sleep Dose-Response Study.”</span> <em>Journal of Sleep Research</em> 12 (1): 1–12. <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">https://doi.org/10.1046/j.1365-2869.2003.00337.x</a>.
+Belenky, G., Wesensten, N. J., Thorne, D. R., Thomas, M. L., Sing, H. C., Redmond, D. P., Russo, M. B., &amp; Balkin, T. J. (2003). Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: A sleep dose-response study. <em>Journal of Sleep Research</em>, <em>12</em>(1), 1–12. <a href="https://doi.org/10.1046/j.1365-2869.2003.00337.x">https://doi.org/10.1046/j.1365-2869.2003.00337.x</a>
 </div>
 <div id="ref-Dinges1985" class="csl-entry" role="doc-biblioentry">
-Dinges, David F., and John W. Powell. 1985. <span>“Microcomputer Analyses of Performance on a Portable, Simple Visual <span>RT</span> Task During Sustained Operations.”</span> <em>Behavior Research Methods, Instruments, and Computers</em> 17 (6): 652–55. <a href="https://doi.org/10.3758/bf03200977">https://doi.org/10.3758/bf03200977</a>.
+Dinges, D. F., &amp; Powell, J. W. (1985). Microcomputer analyses of performance on a portable, simple visual <span>RT</span> task during sustained operations. <em>Behavior Research Methods, Instruments, and Computers</em>, <em>17</em>(6), 652–655. <a href="https://doi.org/10.3758/bf03200977">https://doi.org/10.3758/bf03200977</a>
 </div>
 </div>
 

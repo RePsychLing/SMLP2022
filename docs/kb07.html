@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-06-22">
+<meta name="dcterms.date" content="2022-06-26">
 
 <title>SMLP2022 - Bootstrapping a fitted model</title>
 <style>
@@ -287,7 +287,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-06-22</p>
+      <p class="date">2022-06-26</p>
     </div>
   </div>
     
@@ -317,7 +317,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> AOG <span class="op">=</span> AlgebraOfGraphics;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="data-set-and-model" class="level2">
 <h2 class="anchored" data-anchor-id="data-set-and-model">Data set and model</h2>
-<p>The <code>kb07</code> data <span class="citation" data-cites="Kronmueller2007">(<a href="#ref-Kronmueller2007" role="doc-biblioref">Kronmüller and Barr 2007</a>)</span> are one of the datasets provided by the <code>MixedModels</code> package.</p>
+<p>The <code>kb07</code> data <span class="citation" data-cites="Kronmueller2007">(<a href="#ref-Kronmueller2007" role="doc-biblioref">Kronmüller &amp; Barr, 2007</a>)</span> are one of the datasets provided by the <code>MixedModels</code> package.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kb07 <span class="op">=</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>kb07)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -359,7 +359,7 @@ div.csl-indent {
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 723   Time: 0:00:01 ( 1.85 ms/it)
+<pre><code>Minimizing 723   Time: 0:00:01 ( 1.74 ms/it)
   objective:  28637.1393507629</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
@@ -816,9 +816,9 @@ div.csl-indent {
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
 <div id="ref-Kronmueller2007" class="csl-entry" role="doc-biblioentry">
-Kronmüller, Edmundo, and Dale J. Barr. 2007. <span>“Perspective-Free Pragmatics: Broken Precedents and the Recovery-from-Preemption Hypothesis<span></span>.”</span> <em>Journal of Memory and Language</em> 56 (3): 436–55. <a href="https://doi.org/10.1016/j.jml.2006.05.002">https://doi.org/10.1016/j.jml.2006.05.002</a>.
+Kronmüller, E., &amp; Barr, D. J. (2007). Perspective-free pragmatics: Broken precedents and the recovery-from-preemption hypothesis<span></span>. <em>Journal of Memory and Language</em>, <em>56</em>(3), 436–455. <a href="https://doi.org/10.1016/j.jml.2006.05.002">https://doi.org/10.1016/j.jml.2006.05.002</a>
 </div>
 </div>
 

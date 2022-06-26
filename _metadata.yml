@@ -4,3 +4,4 @@ format:
     toc: true
 
 bibliography: references.bib
+csl: apa-annotated-bibliography.csl
