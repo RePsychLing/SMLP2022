@@ -15,6 +15,7 @@ project:
     - kwdyz11.qmd
     - kkl15.qmd
     - shrinkageplot.qmd
+    - fggk21.qmd
 
 website:
   title: "SMLP2022"
@@ -35,6 +36,7 @@ website:
     search: true
     contents:
       - index.qmd
+      - about.qmd
       - useful_packages.qmd
       - sleepstudy.qmd
       - sleepstudy_speed.qmd
@@ -44,6 +46,7 @@ website:
       - kwdyz11.qmd
       - kkl15.qmd
       - shrinkageplot.qmd
+      - fggk21.qmd
   page-navigation: true
 
 date: today

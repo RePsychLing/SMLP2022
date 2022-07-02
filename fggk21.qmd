@@ -1,5 +1,6 @@
 ---
 title: Basics with Emotikon Project
+jupyter: julia-1.8
 ---
 
 This script uses a subset of data reported in @Fuehner2021.
@@ -28,7 +29,9 @@ using DataFrames
 using MixedModels
 using MixedModelsMakie
 using MixedModelsMakie: simplelinreg
-using MKL
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using ProgressMeter
 using Random
 using Statistics
@@ -73,7 +76,7 @@ df = @chain "fggk21.arrow" begin
     :Test => categorical => :Test,
   )
 end
-levels!(df.Sex, ["Boys", "Girls"])
+#levels!(df.Sex, ["Boys", "Girls"])
 levels!(df.Test, ["Run", "Star_r", "S20_r", "SLJ", "BPT"])
 recode!(
   df.Test,
@@ -955,6 +958,8 @@ shrinkageplot!(Figure(; resolution=(800, 800)), m1, :Cohort)
 #| fig-cap: Shrinkage plot of the random effects for Cohort in model m2
 shrinkageplot!(Figure(; resolution=(800, 800)), m2, :Cohort)
 ```
+
+# References
 
 ::: {#refs}
 :::
