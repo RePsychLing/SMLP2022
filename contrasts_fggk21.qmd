@@ -1,9 +1,9 @@
 ---
-title: "Mixed Models Tutorial: Contrast Coding"
+title: "Contrast Coding"
+jupyter: julia-1.8
 ---
 
-Ths script uses a subset of data reported in Fühner, Golle, Granacher, & Kliegl (2021).
-Age and sex effects in physical fitness components of 108,295 third graders including 515 primary schools and 9 cohorts. [@Fuenher2021]
+Ths script uses a subset of data reported in @Fuehner2021.
 
 To circumvent delays associated with model fitting we work with models that are less complex than those in the reference publication.
 All the data to reproduce the models in the publication are used here, too; the script requires only a few changes to specify the more complex models in the paper.
@@ -44,11 +44,15 @@ using CategoricalArrays
 using DataFrames
 using DataFrameMacros
 using MixedModels
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using ProgressMeter
 using Statistics
 using StatsBase
 
 ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
 ```
 
 ### 1.1 Readme for './data/fggk21.rds'
@@ -435,14 +439,17 @@ m_cpx_1_PC_2.PCA
 ```
 
 ```{julia}
+#| eval: false
 m_zcp_1_PC_2 = fit(MixedModel, f_zcp_1, dat; contrasts=contr4b)
 ```
 
 ```{julia}
+#| eval: false
 VarCorr(m_zcp_1_PC_2)
 ```
 
 ```{julia}
+#| eval: false
 MixedModels.likelihoodratiotest(m_zcp_1_PC_2, m_cpx_1_PC_2)
 ```
 

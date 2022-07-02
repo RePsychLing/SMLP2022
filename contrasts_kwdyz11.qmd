@@ -1,5 +1,6 @@
 ---
 title: Contrast Coding of Visual Attention Effects
+jupyter: julia-1.8
 ---
 
 ```{julia}
@@ -8,6 +9,9 @@ using Arrow
 using Chain
 using DataFrames
 using MixedModels
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
 using ProgressMeter
 using StatsBase
 using StatsModels
