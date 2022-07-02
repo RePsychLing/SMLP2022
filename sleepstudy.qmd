@@ -34,8 +34,8 @@ using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
 
-ProgressMeter.ijulia_behavior(:clear)
-CairoMakie.activate!(; type="svg")
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
 ```
 
 The `sleepstudy` data are one of the datasets available with the `MixedModels` package.
@@ -44,15 +44,16 @@ The `sleepstudy` data are one of the datasets available with the `MixedModels` p
 sleepstudy = MixedModels.dataset("sleepstudy")
 ```
 
-The following plot displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using the [RCall](https://juliahub.com/ui/Packages/RCall/8GFyb/0.13.13) package for Julia.
+@fig-reaction_vs_days_by_subject displays the data in a multi-panel plot created with the `lattice` package in `R` [@Sarkar2008], using [RCall.jl](https://github.com/JuliaInterop/RCall.jl).
 
 ```{julia}
 #| code-fold: true
+#| label: fig-reaction_vs_days_by_subject
 #| fig-cap: Average response time versus days of sleep deprivation by subject
 RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=4.5)
 R"""
 require("lattice", quietly=TRUE)
-xyplot(reaction ~ days | subj,
+print(xyplot(reaction ~ days | subj,
   $(DataFrame(sleepstudy)),
   aspect="xy",
   layout=c(9,2),
@@ -60,8 +61,8 @@ xyplot(reaction ~ days | subj,
   index.cond=function(x,y) coef(lm(y ~ x))[1],
   xlab = "Days of sleep deprivation",
   ylab = "Average reaction time (ms)"
-)
-"""
+))
+""";
 ```
 
 Each panel shows the data from one subject and a line fit by least squares to that subject's data.
