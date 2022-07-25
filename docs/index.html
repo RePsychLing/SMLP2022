@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-07-02">
+<meta name="dcterms.date" content="2022-07-25">
 
-<title>SMLP2022 - SMLP2022 - Advanced frequentist methods</title>
+<title>SMLP2022 - Sixth Summer School on Statistical Methods for Linguistics and Psychology</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,6 +17,69 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -36,7 +99,7 @@ ul.task-list{list-style: none;}
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -95,7 +158,7 @@ ul.task-list{list-style: none;}
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">SMLP2022 - Advanced frequentist methods</h1>
+      <h1 class="quarto-secondary-nav-title">Sixth Summer School on Statistical Methods for Linguistics and Psychology</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -115,7 +178,7 @@ ul.task-list{list-style: none;}
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">SMLP2022 - Advanced frequentist methods</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">Sixth Summer School on Statistical Methods for Linguistics and Psychology</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -172,7 +235,13 @@ ul.task-list{list-style: none;}
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#notebooks-for-the-course" id="toc-notebooks-for-the-course" class="nav-link active" data-scroll-target="#notebooks-for-the-course">Notebooks for the course</a></li>
+  <li><a href="#installation-of-tools-prior-to-the-course" id="toc-installation-of-tools-prior-to-the-course" class="nav-link active" data-scroll-target="#installation-of-tools-prior-to-the-course">Installation of tools prior to the course</a>
+  <ul class="collapse">
+  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git">git</a></li>
+  <li><a href="#julia-and-juliaup" id="toc-julia-and-juliaup" class="nav-link" data-scroll-target="#julia-and-juliaup">julia and juliaup</a></li>
+  <li><a href="#configure-julia-packages-to-be-used" id="toc-configure-julia-packages-to-be-used" class="nav-link" data-scroll-target="#configure-julia-packages-to-be-used">Configure Julia packages to be used</a></li>
+  <li><a href="#quarto-and-the-jupyter-kernel" id="toc-quarto-and-the-jupyter-kernel" class="nav-link" data-scroll-target="#quarto-and-the-jupyter-kernel">Quarto and the Jupyter kernel</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -181,7 +250,8 @@ ul.task-list{list-style: none;}
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">SMLP2022 - Advanced frequentist methods</h1>
+<h1 class="title d-none d-lg-block">Sixth Summer School on Statistical Methods for Linguistics and Psychology</h1>
+<p class="subtitle lead">Advanced methods in frequentist statistics with Julia</p>
 </div>
 
 
@@ -198,7 +268,7 @@ ul.task-list{list-style: none;}
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-07-02</p>
+      <p class="date">2022-07-25</p>
     </div>
   </div>
     
@@ -207,25 +277,213 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<section id="notebooks-for-the-course" class="level2">
-<h2 class="anchored" data-anchor-id="notebooks-for-the-course">Notebooks for the course</h2>
+<p>This site provides materials for the “Advanced frequentist methods” section of the Summer School on Statistical Methods to be held at the University of Potsdam, 12-16 September, 2022</p>
+<section id="installation-of-tools-prior-to-the-course" class="level1">
+<h1>Installation of tools prior to the course</h1>
+<p>This section of the summer school will use the <a href="https://julialang.org/">Julia programming language</a> and related tools. Because most students in the course will have more experience with <a href="https://r-project.org">R</a> and the <a href="https://rstudio.com">RStudio</a> integrated development environment (IDE), it may be necessary to install and configure several software systems prior to the course.</p>
+<section id="git" class="level2">
+<h2 class="anchored" data-anchor-id="git">git</h2>
+<p>We will assume that you have git installed and are able to clone a repository from github. If not, <a href="https://happygitwithr.org/">Happy Git with R</a> is a good place to learn about git for data science.</p>
+<p>This website is built using <a href="https://quarto.org">quarto</a>, described below, from the repository https://github.com/RePsychLing/SMLP2022. Clone this repository with, e.g.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/RePsychLing/SMLP2022</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="julia-and-juliaup" class="level2">
+<h2 class="anchored" data-anchor-id="julia-and-juliaup">julia and juliaup</h2>
+<p>Although precompiled versions of Julia for most common operating systems are available at https://julialang.org/downloads we recommend using <a href="https://github.com/JuliaLang/juliaup">juliaup</a> to install and maintain Julia on your computer.</p>
+<p>One advantage of using <code>juliaup</code> to install Julia is that you can maintain multiple releases of Julia on your computer and easily switch between them.</p>
+<p>Windows users can (apparently, we haven’t tested this) install julia/juliaup from the MicroSoft store with</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">winget</span> install julia <span class="at">-s</span> msstore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Mac and Linux users should visit https://install.julialang.org/, which will download an install script, <code>install.sh</code>, to run.</p>
+<p>As mentioned above, juliaup allows a user to have several different releases of julia installed at the same time, and to switch back-and-forth between them. The releases can have specific version numbers or can be designated by “channels”, such as</p>
 <ul>
-<li><a href="./useful_packages.html">Useful packages</a></li>
-<li><a href="./sleepstudy.html">Sleepstudy</a></li>
-<li><a href="./sleepstudy_speed.html">Sleepstudy2</a></li>
-<li><a href="./Arrow.html">Arrow</a></li>
-<li><a href="./kb07.html">Model-building</a></li>
-<li><a href="./glmm.html">GLMM</a></li>
+<li><code>lts</code> the long-term support release</li>
+<li><code>release</code> the current release</li>
+<li><code>beta</code> beta-test versions of the next release</li>
+<li><code>rc</code> release candidates of the next release</li>
 </ul>
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites">https://quarto.org/docs/websites</a>.</p>
+<p>We mention this because we expect to use Julia v1.8.0 in the summer school but it is still in release-candidate status at the time of writing (late July, 2022). We recommend that you add the <code>rc</code> release and make it the default, as shown below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup status   <span class="co"># "status" can be abbreviated to "st"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span>  Channel  Version      Update </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">---------------------------------------</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="ex">*</span>  release  1.7.3+0.x64         </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> julia</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>               <span class="ex">_</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   <span class="ex">_</span>       _ _<span class="er">(</span><span class="ex">_</span><span class="kw">)</span><span class="ex">_</span>     <span class="kw">|</span>  <span class="ex">Documentation:</span> https://docs.julialang.org</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">_</span><span class="kw">)</span>     <span class="kw">|</span> <span class="kw">(</span><span class="ex">_</span><span class="kw">)</span> <span class="kw">(</span><span class="ex">_</span><span class="kw">)</span>    <span class="kw">|</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="ex">_</span> _   _<span class="kw">|</span> <span class="kw">|</span><span class="ex">_</span>  __ _   <span class="kw">|</span>  <span class="ex">Type</span> <span class="st">"?"</span> for help, <span class="st">"]?"</span> for Pkg help.</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span><span class="ex">/</span> _<span class="kw">`</span> <span class="kw">|</span>  <span class="kw">|</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span><span class="ex">_</span><span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">(</span><span class="ex">_</span><span class="kw">|</span> <span class="kw">|</span>  <span class="kw">|</span>  <span class="ex">Version</span> 1.7.3 <span class="er">(</span><span class="ex">2022-05-06</span><span class="kw">)</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">_/</span> <span class="kw">|</span><span class="ex">\__</span><span class="st">'_|_|_|\__'</span><span class="ex">_</span><span class="kw">|</span>  <span class="kw">|</span>  <span class="ex">Official</span> https://julialang.org/ release</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">__/</span>                   <span class="kw">|</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span>   # <span class="op">&lt;</span>ctrl<span class="op">&gt;</span>-D or <span class="kw">`</span><span class="fu">q()</span><span class="kw">`</span> to quit</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup add rc  <span class="co"># add the current release candidate</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Installing</span> Julia 1.8.0-rc3+0.x64 <span class="er">(</span><span class="ex">x64</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup st</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span>  Channel  Version          Update </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>          <span class="ex">rc</span>       1.8.0-rc3+0.x64         </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>       <span class="ex">*</span>  release  1.7.3+0.x64             </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup default rc</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="ex">Configured</span> the default Julia version to be <span class="st">'rc'</span>.</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup st</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span>  Channel  Version          Update </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>       <span class="ex">*</span>  rc       1.8.0-rc3+0.x64         </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>          <span class="ex">release</span>  1.7.3+0.x64             </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> julia</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>               <span class="ex">_</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>   <span class="ex">_</span>       _ _<span class="er">(</span><span class="ex">_</span><span class="kw">)</span><span class="ex">_</span>     <span class="kw">|</span>  <span class="ex">Documentation:</span> https://docs.julialang.org</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">_</span><span class="kw">)</span>     <span class="kw">|</span> <span class="kw">(</span><span class="ex">_</span><span class="kw">)</span> <span class="kw">(</span><span class="ex">_</span><span class="kw">)</span>    <span class="kw">|</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>   <span class="ex">_</span> _   _<span class="kw">|</span> <span class="kw">|</span><span class="ex">_</span>  __ _   <span class="kw">|</span>  <span class="ex">Type</span> <span class="st">"?"</span> for help, <span class="st">"]?"</span> for Pkg help.</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span><span class="ex">/</span> _<span class="kw">`</span> <span class="kw">|</span>  <span class="kw">|</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span><span class="ex">_</span><span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">|</span> <span class="kw">(</span><span class="ex">_</span><span class="kw">|</span> <span class="kw">|</span>  <span class="kw">|</span>  <span class="ex">Version</span> 1.8.0-rc3 <span class="er">(</span><span class="ex">2022-07-13</span><span class="kw">)</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a> <span class="ex">_/</span> <span class="kw">|</span><span class="ex">\__</span><span class="st">'_|_|_|\__'</span><span class="ex">_</span><span class="kw">|</span>  <span class="kw">|</span>  <span class="ex">Official</span> https://julialang.org/ release</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">__/</span>                   <span class="kw">|</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> </span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="configure-julia-packages-to-be-used" class="level2">
+<h2 class="anchored" data-anchor-id="configure-julia-packages-to-be-used">Configure Julia packages to be used</h2>
+<p>Julia packages can be configured (in a file called <code>Project.toml</code>) on a per-project basis. The packaged sources and compiled versions are stored in a central location, e.g.&nbsp;<code>~/.julia/packages</code> and <code>~/.julia/compiled</code> on Linux systems but the configuration of packages to be used can be local to a project. The <code>Pkg</code> package is used to modify the local project’s configuration. (An alternative is “package mode” in the read-eval-print-loop or REPL, which we will show at the summer school.)</p>
+<p>Start julia in the directory of the cloned <code>SMLP2022</code> repository</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg        </span><span class="co"># there's a package called 'Pkg' to manipulate package configs</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>)<span class="co"># activate the current directory as the project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  Activating project at `~/git/SMLP2022`</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()<span class="co"># only needed the first time you work in a project</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">update</span>()     <span class="co"># get the latest package versions compatible with the project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>    Updating registry at `~/.julia/registries/General.toml`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  No Changes to `~/git/SMLP2022/Project.toml`
+  No Changes to `~/git/SMLP2022/Manifest.toml`</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">status</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Project SMLP2022 v0.1.0
+Status `~/git/SMLP2022/Project.toml`
+  [cbdf2221] AlgebraOfGraphics v0.6.9
+  [69666777] Arrow v2.3.0
+  [336ed68f] CSV v0.10.4
+⌃ [13f3f980] CairoMakie v0.8.9
+  [324d7699] CategoricalArrays v0.10.6
+  [8be319e6] Chain v0.5.0
+  [75880514] DataFrameMacros v0.2.1
+  [a93c6f00] DataFrames v1.3.4
+  [8f03c58b] Effects v0.1.6
+  [682c06a0] JSON v0.21.3
+  [5ab0869b] KernelDensity v0.6.4
+  [33e6dc65] MKL v0.5.0
+  [1914dd2f] MacroTools v0.5.9
+  [ff71e718] MixedModels v4.6.4
+  [b12ae82c] MixedModelsMakie v0.3.15
+  [92933f4c] ProgressMeter v1.7.2
+  [438e738f] PyCall v1.93.1
+  [6f49c342] RCall v0.13.13
+  [5064a6a7] StandardizedPredictors v0.1.4
+  [2913bbd2] StatsBase v0.33.19
+  [3eaba693] StatsModels v0.6.30
+Info Packages marked with ⌃ have new versions available</code></pre>
+</div>
+</div>
+<p>Occasionally the <code>Pkg.status</code> function call will give info about new versions being available but blocked by requirements of other packages. This is to be expected - the package system is large and the web of dependencies are complex. Generally the Julia package system is very good at resolving dependencies.</p>
+</section>
+<section id="quarto-and-the-jupyter-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="quarto-and-the-jupyter-kernel">Quarto and the Jupyter kernel</h2>
+<p>The web site and other documents for this course are rendered using a <code>knitr</code>-like system called <a href="https://quarto.org">quarto</a>. This system is very <code>knitr</code>-like because it was created by the same folks at <a href="https://rstudio.com">RStudio</a> who created <a href="https://en.wikipedia.org/wiki/Knitr">knitr</a>, although quarto is not officially an RStudio product.</p>
+<p>In a quarto markdown document (<code>.qmd</code> extension) code cells can be R code or Python code or Julia code. Python code cells and Julia code cells are executed using <a href="https://jupyter.org">Jupyter</a> which means that the Jupyter “kernel” for Julia must be installed. (Jupyter is an interactive notebook system for the browser that can execute code chunks in various languages. The name “Jupyter” is from fragments of the language names: JUlia, PYthon, and R.)</p>
+<p>The Jupyter kernel for Julia is part of <a href="https://github.com/JuliaLang/IJulia.jl">IJulia.jl</a>, a Julia package. (The URL’s of github repositories for Julia packages typically end in <code>.jl</code>. We include that extension to indicate that the name refers to a Julia package.)</p>
+<p>As this package may be used in many different projects, we add it to the project list for the Julia release.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>()    <span class="co"># activate a system-wide configuration</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  Activating project at `~/.julia/environments/v1.8`</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"IJulia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>   Resolving package versions...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  No Changes to `~/.julia/environments/v1.8/Project.toml`
+  No Changes to `~/.julia/environments/v1.8/Manifest.toml`</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>) <span class="co"># activate the local project again</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>  Activating project at `~/git/SMLP2022`</code></pre>
+</div>
+</div>
+<p>The act of adding the <code>IJulia</code> package should create the Julia kernel for Jupyter. As described on the <a href="https://github.com/JuliaLang/IJulia.jl">IJulia.jl</a> repository, if you already have Jupyter installed (and visible on your search path) the installation simply adds a new kernel to that instance of Jupyter. Otherwise, a lightweight version of Conda is installed in a directory with a name like <code>~/.julia/conda/3/</code> and <code>jupyter</code> is installed for this version of Conda.</p>
+<p>The <a href="https://quarto.org/docs/get-started/">quarto installation page</a> provides package download links for common operating systems. Once quarto is installed, run <code>quarto check</code> in the shell to see if it finds the version of Jupyter and the Julia kernel that was installed.</p>
+<p>In my case the output is like</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> quarto check</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Quarto installation......OK</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 99.9.9</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /home/bates/git/quarto-cli/package/dist/bin</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking basic markdown render....OK</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Python 3 installation....OK</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 3.9.13 <span class="er">(</span><span class="ex">Conda</span><span class="kw">)</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /home/bates/bin/python</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Jupyter:</span> 4.11.1</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Kernels:</span> julia-1.7, julia-1.8, julia-1.9, julia-1.6, python3</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Jupyter engine render....OK</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking R installation...........OK</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 4.2.1</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /usr/lib/R</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      <span class="ex">LibPaths:</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /home/bates/R/x86_64-pc-linux-gnu-library/4.2</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/local/lib/R/site-library</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/lib/R/site-library</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/lib/R/library</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>      <span class="ex">rmarkdown:</span> 2.14</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Knitr engine render......OK</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The important thing to check is that Jupyter is located with the correct Julia kernel(s). If not, you need to add <code>python</code>, <code>python3</code> and <code>jupyter</code> from the <code>~/.julia/conda/3/bin/</code> directory to your search path.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
