@@ -30,7 +30,7 @@ Although precompiled versions of Julia for most common operating systems are ava
 
 One advantage of using `juliaup` to install Julia is that you can maintain multiple releases of Julia on your computer and easily switch between them.
 
-Windows users can (apparently, we haven't tested this) install julia/juliaup from the MicroSoft store with
+Windows users can (apparently, we haven't tested this) install julia/juliaup from the Microsoft store with
 
 ```sh
 winget install julia -s msstore
