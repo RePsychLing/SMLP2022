@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-07-02">
+<meta name="dcterms.date" content="2022-07-25">
 
 <title>SMLP2022 - Analysis of the sleepstudy data</title>
 <style>
@@ -119,7 +119,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -201,7 +201,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">SMLP2022 - Advanced frequentist methods</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Sixth Summer School on Statistical Methods for Linguistics and Psychology</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -289,7 +289,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-07-02</p>
+      <p class="date">2022-07-25</p>
     </div>
   </div>
     
@@ -365,7 +365,7 @@ Note
 <div id="fig-reaction_vs_days_by_subject" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-reaction_vs_days_by_subject-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1: Average response time versus days of sleep deprivation by subject</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 1: Average response time versus days of sleep deprivation by subject</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -382,7 +382,7 @@ Note
 <span id="m1-4"><a href="#m1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, sleepstudy; contrasts)</span>
 <span id="m1-5"><a href="#m1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 58    Time: 0:00:00 ( 6.51 ms/it)</code></pre>
+<pre><code>Minimizing 58    Time: 0:00:00 ( 5.88 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <table class="table table-sm table-striped">
@@ -474,7 +474,7 @@ Note
 <div id="fig-m1caterpillar" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-m1caterpillar-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2: Prediction intervals on random effects for model m1</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 2: Prediction intervals on random effects for model m1</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -655,7 +655,7 @@ Note
 <div id="fig-m1shrinkage" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-m1shrinkage-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3: Shrinkage plot of means of the random effects in model m1</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 3: Shrinkage plot of means of the random effects in model m1</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -711,7 +711,7 @@ Note
 <div id="fig-bsbetadensity" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-bsbetadensity-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4: Empirical density plots of bootstrap replications of fixed-effects parameter estimates</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 4: Empirical density plots of bootstrap replications of fixed-effects parameter estimates</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -748,7 +748,7 @@ Note
 <div id="fig-correlationhist" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-correlationhist-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5: Histogram of bootstrap replications of the within-subject correlation parameter</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 5: Histogram of bootstrap replications of the within-subject correlation parameter</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -779,7 +779,7 @@ Note
 <div id="fig-bssigmadensity" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-bssigmadensity-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6: Empirical density plots of bootstrap replicates of standard deviation estimates</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 6: Empirical density plots of bootstrap replicates of standard deviation estimates</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -819,7 +819,7 @@ Note
 <div id="fig-bsbetacontours" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="sleepstudy_files/figure-html/fig-bsbetacontours-output-1.svg" class="img-fluid figure-img"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7: Scatter-plot of bootstrap replicates of fixed-effects estimates with contours</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure 7: Scatter-plot of bootstrap replicates of fixed-effects estimates with contours</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -848,6 +848,24 @@ Sarkar, D. (2008). <em>Lattice: Mutivariate data visualization with r</em>. Spri
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
