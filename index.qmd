@@ -3,40 +3,53 @@ title: "Sixth Summer School on Statistical Methods for Linguistics and Psycholog
 subtitle: "Advanced methods in frequentist statistics with Julia"
 author: "Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel"
 jupyter: julia-1.8
+callout-appearance: minimal
 ---
 
 This site provides materials for the "Advanced frequentist methods" section of the Summer School on Statistical Methods to be held at the University of Potsdam, 12-16 September, 2022
 
+::: {.callout-note collapse="false"}
+### Background information
+
+Boxes like this contain additional background information on some of the tools.
+The character in the upper right corner is a toggle to collapse or expand the contents.
+Try clicking on it.
+:::
+
 # Installation of tools prior to the course
 
 This section of the summer school will use the [Julia programming language](https://julialang.org/) and related tools.
-Because most students in the course will have more experience with [R](https://r-project.org) and the [RStudio](https://rstudio.com) integrated development environment (IDE), it may be necessary to install and configure several software systems prior to the course.
+Because most students in the course have experience with [R](https://r-project.org) and the [RStudio](https://www.rstudio.com/products/rstudio/) integrated development environment (IDE) we will assume you have those tools installed.
+Here we list some other tools to install and configure prior to the course.
 
-## git
+## Git
 
 We will assume that you have git installed and are able to clone a repository from github.
-If not, [Happy Git with R](https://happygitwithr.org/) is a good place to learn about git for data science.
+If not, [Happy Git with R](https://happygitwithr.com/) is a good place to learn about git for data science.
 
-This website is built using [quarto](https://quarto.org), described below, from the repository https://github.com/RePsychLing/SMLP2022.
-Clone this repository with, e.g.
+The [quarto](https://quarto.org) sources for the website are available in a github [repository](https://github.com/RePsychLing/SMLP2022).
+Clone this repository in a directory of your choice using
 
 ```sh
 git clone https://github.com/RePsychLing/SMLP2022
 ```
 
-## julia and juliaup
+or whatever your favorite git front-end is.
 
-Although precompiled versions of Julia for most common operating systems are available at https://julialang.org/downloads we recommend using [juliaup](https://github.com/JuliaLang/juliaup) to install and maintain Julia on your computer.
+## Julia and juliaup
+
+Although precompiled versions of Julia for most common operating systems are available at the [Julia download site](https://julialang.org/downloads), we recommend using [juliaup](https://github.com/JuliaLang/juliaup) to install and maintain Julia on your computer.
 
 One advantage of using `juliaup` to install Julia is that you can maintain multiple releases of Julia on your computer and easily switch between them.
 
-Windows users can (apparently, we haven't tested this) install julia/juliaup from the Microsoft store with
+Windows users can install julia/juliaup from the Microsoft store with
 
 ```sh
 winget install julia -s msstore
 ```
 
-Mac and Linux users should visit https://install.julialang.org/, which will download an install script, `install.sh`, to run.
+Mac and Linux users should visit [https://install.julialang.org/] in a browser. 
+Doing so will download an install script, `install.sh`, to run.
 
 As mentioned above, juliaup allows a user to have several different releases of julia installed at the same time, and to switch back-and-forth between them.
 The releases can have specific version numbers or can be designated by "channels", such as
@@ -46,7 +59,7 @@ The releases can have specific version numbers or can be designated by "channels
 - `beta` beta-test versions of the next release
 - `rc` release candidates of the next release
 
-We mention this because we expect to use Julia v1.8.0 in the summer school but it is still in release-candidate status at the time of writing (late July, 2022).
+We mention this because we expect to use Julia v1.8.0 in the summer school but it is still at release-candidate status at the time of writing this intro (late July, 2022).
 We recommend that you add the `rc` release and make it the default, as shown below.
 
 ```bash
@@ -64,7 +77,7 @@ $ julia
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 
-julia>   # <ctrl>-D or `q()` to quit
+julia>   # <ctrl>-D or `q()<Enter>` to quit
 
 julia> 
 $ juliaup add rc  # add the current release candidate
@@ -75,7 +88,7 @@ $ juliaup st
           rc       1.8.0-rc3+0.x64         
        *  release  1.7.3+0.x64             
 $ juliaup default rc
-Configured the default Julia version to be 'rc'.
+Configure 'rc' to be the default Julia version.
 $ juliaup st
  Default  Channel  Version          Update 
 -------------------------------------------
@@ -95,23 +108,30 @@ julia>
 $
 ```
 
-## Configure Julia packages to be used
+## Configure Julia packages for this project
 
 Julia packages can be configured (in a file called `Project.toml`) on a per-project basis.
-The packaged sources and compiled versions are stored in a central location, e.g. `~/.julia/packages` and `~/.julia/compiled` on Linux systems but the configuration of packages to be used can be local to a project.
+The packaged sources and compiled versions are stored in a central location, e.g. `~/.julia/packages` and `~/.julia/compiled` on Linux systems, but the configuration of packages to be used can be local to a project.
 The `Pkg` package is used to modify the local project's configuration.
-(An alternative is "package mode" in the read-eval-print-loop or REPL, which we will show at the summer school.)
+
+:::{.callout-note collapse="true"}
+### "Package mode" in the REPL as an alternative
+
+An alternative to calling `Pkg.` functions directly is "package mode" in the read-eval-print-loop or REPL, which we will show at the summer school.
+Typing `]` as the first character in a line switches the REPL into "package mode".
+A backspace as the first character in a line switches the REPL back into "Julia mode".
+:::
 
 Start julia in the directory of the cloned `SMLP2022` repository
 
 ```{julia}
-using Pkg        # there's a package called 'Pkg' to manipulate package configs
-Pkg.activate(".")# activate the current directory as the project
+using Pkg         # the stdlib has a package called 'Pkg' for package configs
+Pkg.activate(".") # activate the current directory as the project
 ```
 
 ```{julia}
-Pkg.instantiate()# only needed the first time you work in a project
-Pkg.update()     # get the latest package versions compatible with the project
+Pkg.instantiate() # only needed the first time you work in a project
+Pkg.update()      # get the latest package versions compatible with the project
 ```
 
 ```{julia}
@@ -119,20 +139,38 @@ Pkg.status()
 ```
 
 Occasionally the `Pkg.status` function call will give info about new versions being available but blocked by requirements of other packages.
-This is to be expected - the package system is large and the web of dependencies are complex.
+This is to be expected - the Julia package system is large and the web of dependencies is complex.
 Generally the Julia package system is very good at resolving dependencies.
 
 ## Quarto and the Jupyter kernel
 
 The web site and other documents for this course are rendered using a `knitr`-like system called [quarto](https://quarto.org).
-This system is very `knitr`-like because it was created by the same folks at [RStudio](https://rstudio.com) who created [knitr](https://en.wikipedia.org/wiki/Knitr), although quarto is not officially an RStudio product.
+
+::: {.callout-note collapse="true"}
+### Quarto and knitr
+
+The reason `quarto` is very `knitr`-like is because it was created by the same folks at [RStudio](https://rstudio.com) who created [knitr](https://en.wikipedia.org/wiki/Knitr), although quarto is not officially an RStudio product.
+:::
 
 In a quarto markdown document (`.qmd` extension) code cells can be R code or Python code or Julia code.
 Python code cells and Julia code cells are executed using [Jupyter](https://jupyter.org) which means that the Jupyter "kernel" for Julia must be installed.
-(Jupyter is an interactive notebook system for the browser that can execute code chunks in various languages. The name "Jupyter" is from fragments of the language names: JUlia, PYthon, and R.)
+
+::: {.callout-note collapse="true"}
+### Jupyter
+
+[Jupyter](https://jupyter.org) is an interactive notebook system for the browser that can execute code chunks in various languages.
+The name "Jupyter" is from fragments of the language names: `JU`lia, `PY`thon, and `R`.
+The process of rendering a Quarto document with Python or Julia code chunks begins by converting it to a Jupyter notebook.
+:::
 
 The Jupyter kernel for Julia is part of [IJulia.jl](https://github.com/JuliaLang/IJulia.jl), a Julia package.
-(The URL's of github repositories for Julia packages typically end in `.jl`.  We include that extension to indicate that the name refers to a Julia package.)
+
+::: {.callout-note collapse="true"}
+### Julia package repository's names end in .jl
+
+The URL's of github repositories for Julia packages typically end in `.jl`.
+We include that extension as part of the package name to indicate that the name refers to a Julia package.
+:::
 
 As this package may be used in many different projects, we add it to the project list for the Julia release.
 
@@ -142,6 +180,7 @@ Pkg.activate()    # activate a system-wide configuration
 
 ```{julia}
 Pkg.add("IJulia")
+Pkg.build("IJulia")
 ```
 
 ```{julia}
@@ -187,5 +226,12 @@ $ quarto check
 [✓] Checking Knitr engine render......OK
 ```
 
-The important thing to check is that Jupyter is located with the correct Julia kernel(s).
+The important thing to check is that Jupyter has been located and that is has the expected Julia kernel(s).
 If not, you need to add `python`, `python3` and `jupyter` from the `~/.julia/conda/3/bin/` directory to your search path.
+
+## VS Code
+
+The most popular editor for Julia code and Quarto documents with code chunks other than R is [VS Code](https://code.visualstudio.com).
+We recommend installing VS Code from the packages for your operating system at the [download site](https://code.visualstudio.com/download).
+
+After starting VS Code add the Julia and Quarto extensions; click on the icon in the left margin that looks like a block being added to a stack of blocks (fourth from the top usually).

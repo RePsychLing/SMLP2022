@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, Reinhold Kliegl, and Julius Krumbiegel">
-<meta name="dcterms.date" content="2022-07-25">
+<meta name="dcterms.date" content="2022-07-26">
 
 <title>SMLP2022 - Sixth Summer School on Statistical Methods for Linguistics and Psychology</title>
 <style>
@@ -237,10 +237,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#installation-of-tools-prior-to-the-course" id="toc-installation-of-tools-prior-to-the-course" class="nav-link active" data-scroll-target="#installation-of-tools-prior-to-the-course">Installation of tools prior to the course</a>
   <ul class="collapse">
-  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git">git</a></li>
-  <li><a href="#julia-and-juliaup" id="toc-julia-and-juliaup" class="nav-link" data-scroll-target="#julia-and-juliaup">julia and juliaup</a></li>
-  <li><a href="#configure-julia-packages-to-be-used" id="toc-configure-julia-packages-to-be-used" class="nav-link" data-scroll-target="#configure-julia-packages-to-be-used">Configure Julia packages to be used</a></li>
+  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git">Git</a></li>
+  <li><a href="#julia-and-juliaup" id="toc-julia-and-juliaup" class="nav-link" data-scroll-target="#julia-and-juliaup">Julia and juliaup</a></li>
+  <li><a href="#configure-julia-packages-for-this-project" id="toc-configure-julia-packages-for-this-project" class="nav-link" data-scroll-target="#configure-julia-packages-for-this-project">Configure Julia packages for this project</a></li>
   <li><a href="#quarto-and-the-jupyter-kernel" id="toc-quarto-and-the-jupyter-kernel" class="nav-link" data-scroll-target="#quarto-and-the-jupyter-kernel">Quarto and the Jupyter kernel</a></li>
+  <li><a href="#vs-code" id="toc-vs-code" class="nav-link" data-scroll-target="#vs-code">VS Code</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -268,7 +269,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-07-25</p>
+      <p class="date">2022-07-26</p>
     </div>
   </div>
     
@@ -278,22 +279,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <p>This site provides materials for the “Advanced frequentist methods” section of the Summer School on Statistical Methods to be held at the University of Potsdam, 12-16 September, 2022</p>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Background information
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Boxes like this contain additional background information on some of the tools. The character in the upper right corner is a toggle to collapse or expand the contents. Try clicking on it.</p>
+</div>
+</div>
+</div>
 <section id="installation-of-tools-prior-to-the-course" class="level1">
 <h1>Installation of tools prior to the course</h1>
-<p>This section of the summer school will use the <a href="https://julialang.org/">Julia programming language</a> and related tools. Because most students in the course will have more experience with <a href="https://r-project.org">R</a> and the <a href="https://rstudio.com">RStudio</a> integrated development environment (IDE), it may be necessary to install and configure several software systems prior to the course.</p>
+<p>This section of the summer school will use the <a href="https://julialang.org/">Julia programming language</a> and related tools. Because most students in the course have experience with <a href="https://r-project.org">R</a> and the <a href="https://www.rstudio.com/products/rstudio/">RStudio</a> integrated development environment (IDE) we will assume you have those tools installed. Here we list some other tools to install and configure prior to the course.</p>
 <section id="git" class="level2">
-<h2 class="anchored" data-anchor-id="git">git</h2>
-<p>We will assume that you have git installed and are able to clone a repository from github. If not, <a href="https://happygitwithr.org/">Happy Git with R</a> is a good place to learn about git for data science.</p>
-<p>This website is built using <a href="https://quarto.org">quarto</a>, described below, from the repository https://github.com/RePsychLing/SMLP2022. Clone this repository with, e.g.</p>
+<h2 class="anchored" data-anchor-id="git">Git</h2>
+<p>We will assume that you have git installed and are able to clone a repository from github. If not, <a href="https://happygitwithr.com/">Happy Git with R</a> is a good place to learn about git for data science.</p>
+<p>The <a href="https://quarto.org">quarto</a> sources for the website are available in a github <a href="https://github.com/RePsychLing/SMLP2022">repository</a>. Clone this repository in a directory of your choice using</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/RePsychLing/SMLP2022</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or whatever your favorite git front-end is.</p>
 </section>
 <section id="julia-and-juliaup" class="level2">
-<h2 class="anchored" data-anchor-id="julia-and-juliaup">julia and juliaup</h2>
-<p>Although precompiled versions of Julia for most common operating systems are available at https://julialang.org/downloads we recommend using <a href="https://github.com/JuliaLang/juliaup">juliaup</a> to install and maintain Julia on your computer.</p>
+<h2 class="anchored" data-anchor-id="julia-and-juliaup">Julia and juliaup</h2>
+<p>Although precompiled versions of Julia for most common operating systems are available at the <a href="https://julialang.org/downloads">Julia download site</a>, we recommend using <a href="https://github.com/JuliaLang/juliaup">juliaup</a> to install and maintain Julia on your computer.</p>
 <p>One advantage of using <code>juliaup</code> to install Julia is that you can maintain multiple releases of Julia on your computer and easily switch between them.</p>
-<p>Windows users can (apparently, we haven’t tested this) install julia/juliaup from the MicroSoft store with</p>
+<p>Windows users can install julia/juliaup from the Microsoft store with</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">winget</span> install julia <span class="at">-s</span> msstore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Mac and Linux users should visit https://install.julialang.org/, which will download an install script, <code>install.sh</code>, to run.</p>
+<p>Mac and Linux users should visit [https://install.julialang.org/] in a browser. Doing so will download an install script, <code>install.sh</code>, to run.</p>
 <p>As mentioned above, juliaup allows a user to have several different releases of julia installed at the same time, and to switch back-and-forth between them. The releases can have specific version numbers or can be designated by “channels”, such as</p>
 <ul>
 <li><code>lts</code> the long-term support release</li>
@@ -301,7 +319,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>beta</code> beta-test versions of the next release</li>
 <li><code>rc</code> release candidates of the next release</li>
 </ul>
-<p>We mention this because we expect to use Julia v1.8.0 in the summer school but it is still in release-candidate status at the time of writing (late July, 2022). We recommend that you add the <code>rc</code> release and make it the default, as shown below.</p>
+<p>We mention this because we expect to use Julia v1.8.0 in the summer school but it is still at release-candidate status at the time of writing this intro (late July, 2022). We recommend that you add the <code>rc</code> release and make it the default, as shown below.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup status   <span class="co"># "status" can be abbreviated to "st"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span>  Channel  Version      Update </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">---------------------------------------</span></span>
@@ -316,7 +334,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">_/</span> <span class="kw">|</span><span class="ex">\__</span><span class="st">'_|_|_|\__'</span><span class="ex">_</span><span class="kw">|</span>  <span class="kw">|</span>  <span class="ex">Official</span> https://julialang.org/ release</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">__/</span>                   <span class="kw">|</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span>   # <span class="op">&lt;</span>ctrl<span class="op">&gt;</span>-D or <span class="kw">`</span><span class="fu">q()</span><span class="kw">`</span> to quit</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span>   # <span class="op">&lt;</span>ctrl<span class="op">&gt;</span>-D or <span class="kw">`</span><span class="fu">q()</span><span class="op">&lt;</span>Enter<span class="op">&gt;</span><span class="kw">`</span> to quit</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> </span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup add rc  <span class="co"># add the current release candidate</span></span>
@@ -327,7 +345,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>          <span class="ex">rc</span>       1.8.0-rc3+0.x64         </span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>       <span class="ex">*</span>  release  1.7.3+0.x64             </span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup default rc</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="ex">Configured</span> the default Julia version to be <span class="st">'rc'</span>.</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="ex">Configure</span> <span class="st">'rc'</span> to be the default Julia version.</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> juliaup st</span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span>  Channel  Version          Update </span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------</span></span>
@@ -346,20 +364,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span><span class="op">&gt;</span> </span>
 <span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="configure-julia-packages-to-be-used" class="level2">
-<h2 class="anchored" data-anchor-id="configure-julia-packages-to-be-used">Configure Julia packages to be used</h2>
-<p>Julia packages can be configured (in a file called <code>Project.toml</code>) on a per-project basis. The packaged sources and compiled versions are stored in a central location, e.g.&nbsp;<code>~/.julia/packages</code> and <code>~/.julia/compiled</code> on Linux systems but the configuration of packages to be used can be local to a project. The <code>Pkg</code> package is used to modify the local project’s configuration. (An alternative is “package mode” in the read-eval-print-loop or REPL, which we will show at the summer school.)</p>
+<section id="configure-julia-packages-for-this-project" class="level2">
+<h2 class="anchored" data-anchor-id="configure-julia-packages-for-this-project">Configure Julia packages for this project</h2>
+<p>Julia packages can be configured (in a file called <code>Project.toml</code>) on a per-project basis. The packaged sources and compiled versions are stored in a central location, e.g.&nbsp;<code>~/.julia/packages</code> and <code>~/.julia/compiled</code> on Linux systems, but the configuration of packages to be used can be local to a project. The <code>Pkg</code> package is used to modify the local project’s configuration.</p>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+“Package mode” in the REPL as an alternative
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>An alternative to calling <code>Pkg.</code> functions directly is “package mode” in the read-eval-print-loop or REPL, which we will show at the summer school. Typing <code>]</code> as the first character in a line switches the REPL into “package mode”. A backspace as the first character in a line switches the REPL back into “Julia mode”.</p>
+</div>
+</div>
+</div>
 <p>Start julia in the directory of the cloned <code>SMLP2022</code> repository</p>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg        </span><span class="co"># there's a package called 'Pkg' to manipulate package configs</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>)<span class="co"># activate the current directory as the project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg         </span><span class="co"># the stdlib has a package called 'Pkg' for package configs</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>) <span class="co"># activate the current directory as the project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>  Activating project at `~/git/SMLP2022`</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>()<span class="co"># only needed the first time you work in a project</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">update</span>()     <span class="co"># get the latest package versions compatible with the project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">instantiate</span>() <span class="co"># only needed the first time you work in a project</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">update</span>()      <span class="co"># get the latest package versions compatible with the project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>    Updating registry at `~/.julia/registries/General.toml`</code></pre>
 </div>
@@ -392,18 +426,66 @@ Status `~/git/SMLP2022/Project.toml`
   [438e738f] PyCall v1.93.1
   [6f49c342] RCall v0.13.13
   [5064a6a7] StandardizedPredictors v0.1.4
-  [2913bbd2] StatsBase v0.33.19
+  [2913bbd2] StatsBase v0.33.20
   [3eaba693] StatsModels v0.6.30
 Info Packages marked with ⌃ have new versions available</code></pre>
 </div>
 </div>
-<p>Occasionally the <code>Pkg.status</code> function call will give info about new versions being available but blocked by requirements of other packages. This is to be expected - the package system is large and the web of dependencies are complex. Generally the Julia package system is very good at resolving dependencies.</p>
+<p>Occasionally the <code>Pkg.status</code> function call will give info about new versions being available but blocked by requirements of other packages. This is to be expected - the Julia package system is large and the web of dependencies is complex. Generally the Julia package system is very good at resolving dependencies.</p>
 </section>
 <section id="quarto-and-the-jupyter-kernel" class="level2">
 <h2 class="anchored" data-anchor-id="quarto-and-the-jupyter-kernel">Quarto and the Jupyter kernel</h2>
-<p>The web site and other documents for this course are rendered using a <code>knitr</code>-like system called <a href="https://quarto.org">quarto</a>. This system is very <code>knitr</code>-like because it was created by the same folks at <a href="https://rstudio.com">RStudio</a> who created <a href="https://en.wikipedia.org/wiki/Knitr">knitr</a>, although quarto is not officially an RStudio product.</p>
-<p>In a quarto markdown document (<code>.qmd</code> extension) code cells can be R code or Python code or Julia code. Python code cells and Julia code cells are executed using <a href="https://jupyter.org">Jupyter</a> which means that the Jupyter “kernel” for Julia must be installed. (Jupyter is an interactive notebook system for the browser that can execute code chunks in various languages. The name “Jupyter” is from fragments of the language names: JUlia, PYthon, and R.)</p>
-<p>The Jupyter kernel for Julia is part of <a href="https://github.com/JuliaLang/IJulia.jl">IJulia.jl</a>, a Julia package. (The URL’s of github repositories for Julia packages typically end in <code>.jl</code>. We include that extension to indicate that the name refers to a Julia package.)</p>
+<p>The web site and other documents for this course are rendered using a <code>knitr</code>-like system called <a href="https://quarto.org">quarto</a>.</p>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Quarto and knitr
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The reason <code>quarto</code> is very <code>knitr</code>-like is because it was created by the same folks at <a href="https://rstudio.com">RStudio</a> who created <a href="https://en.wikipedia.org/wiki/Knitr">knitr</a>, although quarto is not officially an RStudio product.</p>
+</div>
+</div>
+</div>
+<p>In a quarto markdown document (<code>.qmd</code> extension) code cells can be R code or Python code or Julia code. Python code cells and Julia code cells are executed using <a href="https://jupyter.org">Jupyter</a> which means that the Jupyter “kernel” for Julia must be installed.</p>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Jupyter
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://jupyter.org">Jupyter</a> is an interactive notebook system for the browser that can execute code chunks in various languages. The name “Jupyter” is from fragments of the language names: <code>JU</code>lia, <code>PY</code>thon, and <code>R</code>. The process of rendering a Quarto document with Python or Julia code chunks begins by converting it to a Jupyter notebook.</p>
+</div>
+</div>
+</div>
+<p>The Jupyter kernel for Julia is part of <a href="https://github.com/JuliaLang/IJulia.jl">IJulia.jl</a>, a Julia package.</p>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Julia package repository’s names end in .jl
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The URL’s of github repositories for Julia packages typically end in <code>.jl</code>. We include that extension as part of the package name to indicate that the name refers to a Julia package.</p>
+</div>
+</div>
+</div>
 <p>As this package may be used in many different projects, we add it to the project list for the Julia release.</p>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>()    <span class="co"># activate a system-wide configuration</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -412,7 +494,8 @@ Info Packages marked with ⌃ have new versions available</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"IJulia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">add</span>(<span class="st">"IJulia"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">build</span>(<span class="st">"IJulia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>   Resolving package versions...</code></pre>
 </div>
@@ -420,9 +503,15 @@ Info Packages marked with ⌃ have new versions available</code></pre>
 <pre><code>  No Changes to `~/.julia/environments/v1.8/Project.toml`
   No Changes to `~/.julia/environments/v1.8/Manifest.toml`</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>    Building Conda ─→ `~/.julia/scratchspaces/44cfe95a-1eb2-52ea-b672-e2afdf69b78f/6e47d11ea2776bc5627421d59cdcc1296c058071/build.log`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>    Building IJulia → `~/.julia/scratchspaces/44cfe95a-1eb2-52ea-b672-e2afdf69b78f/98ab633acb0fe071b671f6c1785c46cd70bb86bd/build.log`</code></pre>
+</div>
 </div>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>) <span class="co"># activate the local project again</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Pkg</span>.<span class="fu">activate</span>(<span class="st">"."</span>) <span class="co"># activate the local project again</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>  Activating project at `~/git/SMLP2022`</code></pre>
 </div>
@@ -430,34 +519,39 @@ Info Packages marked with ⌃ have new versions available</code></pre>
 <p>The act of adding the <code>IJulia</code> package should create the Julia kernel for Jupyter. As described on the <a href="https://github.com/JuliaLang/IJulia.jl">IJulia.jl</a> repository, if you already have Jupyter installed (and visible on your search path) the installation simply adds a new kernel to that instance of Jupyter. Otherwise, a lightweight version of Conda is installed in a directory with a name like <code>~/.julia/conda/3/</code> and <code>jupyter</code> is installed for this version of Conda.</p>
 <p>The <a href="https://quarto.org/docs/get-started/">quarto installation page</a> provides package download links for common operating systems. Once quarto is installed, run <code>quarto check</code> in the shell to see if it finds the version of Jupyter and the Julia kernel that was installed.</p>
 <p>In my case the output is like</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> quarto check</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Quarto installation......OK</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 99.9.9</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /home/bates/git/quarto-cli/package/dist/bin</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking basic markdown render....OK</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Python 3 installation....OK</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 3.9.13 <span class="er">(</span><span class="ex">Conda</span><span class="kw">)</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /home/bates/bin/python</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Jupyter:</span> 4.11.1</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Kernels:</span> julia-1.7, julia-1.8, julia-1.9, julia-1.6, python3</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Jupyter engine render....OK</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking R installation...........OK</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 4.2.1</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /usr/lib/R</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      <span class="ex">LibPaths:</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /home/bates/R/x86_64-pc-linux-gnu-library/4.2</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/local/lib/R/site-library</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/lib/R/site-library</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/lib/R/library</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>      <span class="ex">rmarkdown:</span> 2.14</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Knitr engine render......OK</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The important thing to check is that Jupyter is located with the correct Julia kernel(s). If not, you need to add <code>python</code>, <code>python3</code> and <code>jupyter</code> from the <code>~/.julia/conda/3/bin/</code> directory to your search path.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> quarto check</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Quarto installation......OK</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 99.9.9</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /home/bates/git/quarto-cli/package/dist/bin</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking basic markdown render....OK</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Python 3 installation....OK</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 3.9.13 <span class="er">(</span><span class="ex">Conda</span><span class="kw">)</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /home/bates/bin/python</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Jupyter:</span> 4.11.1</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Kernels:</span> julia-1.7, julia-1.8, julia-1.9, julia-1.6, python3</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Jupyter engine render....OK</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking R installation...........OK</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Version:</span> 4.2.1</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>      <span class="ex">Path:</span> /usr/lib/R</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>      <span class="ex">LibPaths:</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /home/bates/R/x86_64-pc-linux-gnu-library/4.2</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/local/lib/R/site-library</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/lib/R/site-library</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>        <span class="ex">-</span> /usr/lib/R/library</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>      <span class="ex">rmarkdown:</span> 2.14</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="ex">[✓]</span> Checking Knitr engine render......OK</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The important thing to check is that Jupyter has been located and that is has the expected Julia kernel(s). If not, you need to add <code>python</code>, <code>python3</code> and <code>jupyter</code> from the <code>~/.julia/conda/3/bin/</code> directory to your search path.</p>
+</section>
+<section id="vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="vs-code">VS Code</h2>
+<p>The most popular editor for Julia code and Quarto documents with code chunks other than R is <a href="https://code.visualstudio.com">VS Code</a>. We recommend installing VS Code from the packages for your operating system at the <a href="https://code.visualstudio.com/download">download site</a>.</p>
+<p>After starting VS Code add the Julia and Quarto extensions; click on the icon in the left margin that looks like a block being added to a stack of blocks (fourth from the top usually).</p>
 
 
 </section>
