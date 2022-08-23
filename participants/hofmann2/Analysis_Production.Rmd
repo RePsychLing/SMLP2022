@@ -1,0 +1,1830 @@
+---
+title: "Analysis_Production_Exp7"
+author: "Andrea Hofmann"
+date: "30.09.2021 updated `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    df_print: paged
+    toc: true # table of content true
+    toc_float: true #always be visible even when the document is scrolled
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    number_sections: true  ## if you want number sections at each table header
+    theme: united  # many options for theme, this one is my favorite.
+    highlight: tango  # specifies the syntax highlighting style
+editor_options: 
+  chunk_output_type: console
+---
+  
+# Setup  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+# clear current environment
+rm (list=ls())
+library(plyr)
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+library(ggpubr)
+```
+  
+# *Import*  
+```{r import data set, echo=TRUE, message=FALSE, warning=FALSE}
+data <- read.csv2("data/d.csv", header = TRUE)
+```
+
+# Analysis  
+*Just a short information on the amount of pause values to be found in the ungrouped condition to find out, if it is reasonable to model pause data for this condition.*  
+```{r pause in ungrouped, echo=TRUE, message=FALSE, warning=FALSE}
+# how many not zero pauses do we have in the ungrouped condition  ---------------------------------
+grou <- subset(data, data$condition=="grouped")
+colSums(grou != 0)
+rm(grou)
+un_grou <- subset(data, data$condition=="ungrouped")
+colSums(un_grou != 0)
+rm(un_grou)
+```
+    
+* non-zero pause values in ungrouped condition:  
+  + data points overall: 643  
+    + pause1: 118  
+    + pause2: 38  
+    + pause3: 186 (29% of data points overall in ungrouped condition)  
+    + pause4: 65  
+  
+* non-zero pause values in grouped condition:  
+  + data points overall: 658    
+    + pause1: 80  
+    + pause2: 53  
+    + pause3: 522 (79% of data points overall in grouped condition)  
+    + pause4: 141  
+  
+*I would suggest, it makes sense to include pause3 in both conditions.*  
+  
+## *Contrast coding*  
++ assign scaled sum contrast to all factors - all have two levels (0.5, -0.5)  
++ intercept estimates average effects  
++ slopes estimate difference between factor levels  
+```{r contrast coding, echo=TRUE, message=FALSE, warning=FALSE}
+# Contrast coding  ---------------------------------
+## we have 4 predictors / factors with two levels (condition, group, exp, accuracy)
+## therefore it is best to use sum contrast with 0.5 / -0.5
+## within each predictor this compares averages of each level against each other - mean of these contrasts is 0
+## interactions between predictors estimate average effects (estimates are at mean which is 0 = averaged)
+# Prepare data  ---------------------------------
+## Subset for patient data - only RHDP / LHDP =================================
+## model stimuli (stimuli that had to be repeated) will be "removed"
+pDat <- subset(data, data$group!="model_stimuli")
+### Factorize predictors variables #############################
+########################################### condition
+class(pDat$condition) #character
+pDat$condition <- as.factor(pDat$condition)
+## check level order 
+levels(pDat$condition) # "grouped" "ungrouped"
+########################################### group
+class(pDat$group) #character 
+pDat$group <- as.factor(pDat$group)
+## check level order 
+levels(pDat$group) # "LHDP", "RHDP" 
+########################################### exp
+class(pDat$exp) # character
+pDat$exp <- as.factor(pDat$exp)
+## check level order
+levels(pDat$exp) # "reading_aloud" "repetition" 
+########################################### accuracy
+class(pDat$accuracy) # "character"
+## factorize "accuracy"
+pDat$accuracy <- as.factor(as.character(pDat$accuracy))
+## check level order
+levels(pDat$accuracy) # "correct"   "incorrect"
+### contrast code predictor variables #############################
+########################################### condition
+contrasts(pDat$condition) <- contr.sum(2)/2
+contrasts(pDat$condition)
+#             [,1]
+# grouped     0.5
+# ungrouped -0.5
+########################################### group
+## define sum contrast for group
+contrasts(pDat$group) <- contr.sum(2)/2
+contrasts(pDat$group)
+#       [,1]
+# LHDP  0.5
+# RHDP -0.5
+########################################### exp
+## assign sum contrast to experiment
+contrasts(pDat$exp) <- contr.sum(2)/2
+contrasts(pDat$exp)
+#             [,1]
+# reading_aloud      0.5
+# repetition  -0.5
+########################################### accuracy
+## define sum contrast for accuracy
+contrasts(pDat$accuracy) <- contr.sum(2)/2
+contrasts(pDat$accuracy)
+#           [,1]
+# correct    0.5
+# incorrect -0.5
+```
+  
+## Find correct / interpretable / parsimonious model to analyze data  
+### *Maximally complex model based on our hyoptheses*  
+- the random effects structure is reduced iteratively in the next step to avoid overparameterization as best as possible  
+```{r max model, echo=TRUE, message=FALSE, warning=FALSE}
+# Max models based on hypotheses ---------------------------------
+## FL name2 =================================
+summary(FL2_h <- lmer(s8reln2 ~ condition*accuracy+condition*group*exp+
+              group*exp*accuracy+
+              (1+condition*accuracy+exp*accuracy+condition*exp|Subj)+
+              (1+group*accuracy|item),
+            REML=TRUE,pDat))
+# Model failed to converge with max|grad| = 0.0250477 (tol = 0.002, component 1)
+# reduction needed
+## F0 name2 =================================
+summary(F02_h <- lmer(f0_range2 ~ condition*accuracy+condition*group*exp+
+              group*exp*accuracy+
+              (1+condition*accuracy+exp*accuracy+condition*exp|Subj)+
+              (1+group*accuracy|item),
+            REML=TRUE,pDat))
+# isSingular
+# reduction needed
+## Pause3 =================================
+summary(P_h <- lmer(pause3 ~ condition*accuracy+condition*group*exp+
+            group*exp*accuracy+
+            (1+condition*accuracy+exp*accuracy+condition*exp|Subj)+
+            (1+group*accuracy|item),REML=TRUE,pDat))
+# isSingular
+# reduction needed
+```  
+  
+# *rePCA*  
+## Indicator variables for all parameters    
+*Create model.matrix dependent on model specification to merge these cols for all indicator variables with data.frame to model data*  
+```{r model matrix, echo=TRUE, message=FALSE, warning=FALSE}
+# generate model matrix  ---------------------------------
+pDat_mm <- pDat
+mm <- model.matrix(~condition*accuracy+condition*group*exp+group*exp*accuracy, pDat)
+colnames(mm)
+## create new col in pDat from mm cols =================================
+# I renamed the col to reflect the level comparisons
+## condition1 - grpd.ungr
+## accuracy1 - cor.inc
+## group1 - lhd.rhd
+## exp1 - rd.rpt
+pDat_mm$grpd.ungr                 <-mm[,2]
+pDat_mm$cor.inc                   <-mm[,3]
+pDat_mm$lhd.rhd                   <-mm[,4]
+pDat_mm$rd.rpt                    <-mm[,5]
+pDat_mm$grpd.ungr_cor.inc         <-mm[,6]
+pDat_mm$grpd.ungr_lhd.rhd         <-mm[,7]
+pDat_mm$grpd.ungr_rd.rpt          <-mm[,8]
+pDat_mm$lhd.rhd_rd.rpt            <-mm[,9]
+pDat_mm$cor.inc_lhd.rhd           <-mm[,10]
+pDat_mm$cor.inc_rd.rpt            <-mm[,11]
+pDat_mm$grpd.ungr_lhd.rhd_rd.rpt  <-mm[,12]
+pDat_mm$cor.inc_lhd.rhd_rd.rpt    <-mm[,13]
+# Clean workspace ---------------------------------
+rm(mm)
+```  
+  
+## Model reduction - final lengthening (FL2)  
+```{r rePCA fl2, echo=TRUE, message=FALSE, warning=FALSE}
+# all "REML = FALSE" to use ANOVA model comparison later on
+# INITIAL model with indicator variables ---------------------------------
+summary(m0_FL2 <- lmer(s8reln2 ~ 
+                         1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                         grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                         cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                         lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                         grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                         (1+cor.inc+grpd.ungr+rd.rpt+
+                            grpd.ungr_cor.inc+
+                            cor.inc_rd.rpt+
+                            grpd.ungr_rd.rpt|Subj)+
+                         (1+lhd.rhd+cor.inc+
+                            cor.inc_lhd.rhd|item),
+                       REML = FALSE, pDat_mm))
+# isSingular
+# correlations seem okay for Subj
+# but not perfect for items
+    'item     (Intercept)      6.750   2.598                                       
+              lhd.rhd          4.960   2.227    -1.00             #not optimal                             
+              cor.inc          2.834   1.683     0.88 -0.92                        
+              cor.inc_lhd.rhd  8.860   2.977     0.95 -0.97  0.99 #not optimal'
+## check rePCA output =================================
+summary(rePCA(m0_FL2))
+# 5 of 7 components for Subj | 2 of 4 components for item contribute (variance)
+# try model reduction of randEff ---------------------------------
+## start with ZERO CORRELATION model =================================
+summary(zcp_FL2 <- lmer(s8reln2 ~ 
+                          1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                          grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                          cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                          lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                          grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                          (1+cor.inc+grpd.ungr+rd.rpt+
+                             grpd.ungr_cor.inc+
+                             cor.inc_rd.rpt+
+                             grpd.ungr_rd.rpt||Subj)+
+                          (1+lhd.rhd+cor.inc+
+                             cor.inc_lhd.rhd||item),
+                        REML = FALSE,pDat_mm))
+# isSingular
+    'Random effects:
+     Groups   Name            Variance  Std.Dev. 
+     Subj     (Intercept)       1.596e+01 3.9944841
+     Subj.1   cor.inc           0.000e+00 0.0000000 #no variance
+     Subj.2   grpd.ungr         7.065e+00 2.6579804
+     Subj.3   rd.rpt            1.214e+01 3.4847284
+     Subj.4   grpd.ungr_cor.inc 6.059e+01 7.7837605
+     Subj.5   cor.inc_rd.rpt    9.206e+00 3.0340750
+     Subj.6   grpd.ungr_rd.rpt  1.050e+01 3.2398369
+     item     (Intercept)       9.081e+00 3.0134095
+     item.1   lhd.rhd           2.418e+00 1.5549853
+     item.2   cor.inc           1.152e+00 1.0732468
+     item.3   cor.inc_lhd.rhd   3.940e-08 0.0001985 #no variance
+     Residual                   2.858e+01 5.3458264
+    Number of obs: 1289, groups:  Subj, 32; item, 24'
+## ANOVA model comparison - initial and zcp model =================================
+anova(m0_FL2, zcp_FL2)
+# m0_FL2 has signif. better fit - removing all correlations too harsh
+## back to initial model =================================
+# try exclusion of randEff slopes with regards to zcp + initial model output
+### FIRST #############################
+# try exclusion of "cor.inc" as slope per Subj
+summary(m1_FL2 <- lmer(s8reln2 ~ 
+                         1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                         grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                         cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                         lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                         grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                         (1+grpd.ungr+rd.rpt+
+                            grpd.ungr_cor.inc+
+                            cor.inc_rd.rpt+
+                            grpd.ungr_rd.rpt|Subj)+
+                         (1+lhd.rhd+cor.inc+
+                            cor.inc_lhd.rhd|item),
+                       REML = FALSE, pDat_mm))
+# isSingular
+# Model failed to converge with 1 negative eigenvalue: -7.0e-01
+### SECOND #############################
+# back to initial model
+# try exclusion of "cor.inc_lhd.rhd" as slope per item
+summary(m2_FL2 <- lmer(s8reln2 ~ 
+                         1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                         grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                         cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                         lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                         grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                         (1+cor.inc+grpd.ungr+rd.rpt+
+                            grpd.ungr_cor.inc+
+                            cor.inc_rd.rpt+
+                            grpd.ungr_rd.rpt|Subj)+
+                         (1+lhd.rhd+cor.inc|item),
+                       REML = FALSE, pDat_mm))
+# isSingular
+# Model failed to converge with 1 negative eigenvalue: -4.8e-03
+### THIRD #############################
+# back to initial model
+# try exclude "lhd.rhd" as slope for item - had corr of -1 in "m0_FL2"
+summary(m3_FL2 <- lmer(s8reln2 ~ 
+                         1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                         grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                         cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                         lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                         grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                         (1+cor.inc+grpd.ungr+rd.rpt+
+                            grpd.ungr_cor.inc+
+                            cor.inc_rd.rpt+
+                            grpd.ungr_rd.rpt|Subj)+
+                         (1+cor.inc+
+                            cor.inc_lhd.rhd|item),
+                       REML = FALSE, pDat_mm))
+# isSingular / Model failed to converge with 1 negative eigenvalue: -1.3e-03
+# FINAL model ---------------------------------
+## use initial model as final model =================================
+# all model reduction steps lead to convergence fails
+## initial model with factors and * for fixed effects =================================
+# use REML=TRUE
+summary(FL2 <- lmer(s8reln2 ~ 
+                      condition*accuracy+condition*group*exp+
+                      group*exp*accuracy+
+                      (1+cor.inc+grpd.ungr+rd.rpt+
+                         grpd.ungr_cor.inc+
+                         cor.inc_rd.rpt+
+                         grpd.ungr_rd.rpt|Subj)+
+                      (1+lhd.rhd+cor.inc+
+                         cor.inc_lhd.rhd|item),
+                    REML = TRUE, pDat_mm))
+# isSingular
+save(FL2, file = "FL2.Rdata")
+# *Nice table output* ---------------------------------
+# sjPlot::tab_model((FL2), show.se = TRUE, show.stat = TRUE, collapse.ci=TRUE, file="FL2.doc")
+# clean workspace ---------------------------------
+# ls()
+rm(m0_FL2, m1_FL2, m2_FL2, m3_FL2, zcp_FL2)
+```  
+  
+## Model reduction - f0-range (F02)  
+```{r rePCA f02, echo=TRUE, message=FALSE, warning=FALSE}
+# all "REML = FALSE" to use ANOVA model comparison later on
+# INITIAL model with indicator variables ---------------------------------
+summary(m0_F02 <- lmer(f0_range2 ~ 
+                         1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                         grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                         cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                         lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                         grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                         (1+cor.inc+grpd.ungr+rd.rpt+
+                            grpd.ungr_cor.inc+
+                            cor.inc_rd.rpt+
+                            grpd.ungr_rd.rpt|Subj)+
+                         (1+lhd.rhd+cor.inc+
+                            cor.inc_lhd.rhd|item),
+                       REML = FALSE,pDat_mm))
+# isSingular
+# Model failed to converge with 2 negative eigenvalues: -1.5e-03 -1.6e+01
+summary(rePCA(m0_F02))
+# 5 of 7 components for Subj | 2 of 4 components for item contribute (variance)
+# try model reduction of randEff ---------------------------------
+## start with ZERO CORRELATION model =================================
+summary(zcp_F02 <- lmer(f0_range2 ~ 
+                          1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                          grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                          cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                          lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                          grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                          (1+cor.inc+grpd.ungr+rd.rpt+
+                             grpd.ungr_cor.inc+
+                             cor.inc_rd.rpt+
+                             grpd.ungr_rd.rpt||Subj)+
+                          (1+lhd.rhd+cor.inc+
+                             cor.inc_lhd.rhd||item),
+                        REML = FALSE,pDat_mm))
+# isSingular
+summary(zcp_F02)
+    'Random effects:
+     Groups   Name            Variance  Std.Dev. 
+     Subj     (Intercept)       3.238e+00 1.7993344
+     Subj.1   cor.inc           0.000e+00 0.0000000 # no variance
+     Subj.2   grpd.ungr         1.220e+00 1.1043709
+     Subj.3   rd.rpt            1.469e+00 1.2118683
+     Subj.4   grpd.ungr_cor.inc 5.502e+00 2.3457306
+     Subj.5   cor.inc_rd.rpt    1.047e+00 1.0231915 # mean var. + sd almost equal
+     Subj.6   grpd.ungr_rd.rpt  4.087e-01 0.6392808 # mean var. smaller than sd
+     item     (Intercept)       4.275e-02 0.2067492
+     item.1   lhd.rhd           4.676e-01 0.6838274
+     item.2   cor.inc           8.172e-08 0.0002859 # no variance
+     item.3   cor.inc_lhd.rhd   0.000e+00 0.0000000 # no variance
+     Residual                   5.631e+00 2.3728895
+    Number of obs: 1241, groups:  Subj, 32; item, 24'
+## ANOVA model comparison - initial - zcp model =================================
+anova(m0_F02, zcp_F02)
+# initial model m0_F02 significantly better variance resolution
+# BUT zcp_F02 has smaller AIC - therefore better model fit
+# reasonable to look further into zcp model
+## iterative reduction of randEff =================================
+### FIRST #############################
+# try exclusion of "cor.inc" as slope per Subj
+summary(zcp1_F02 <- lmer(f0_range2 ~ 
+                           1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                           grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                           cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                           lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                           grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                           (1+grpd.ungr+rd.rpt+
+                              grpd.ungr_cor.inc+
+                              cor.inc_rd.rpt+
+                              grpd.ungr_rd.rpt||Subj)+
+                           (1+lhd.rhd+cor.inc+
+                              cor.inc_lhd.rhd||item),
+                         REML = FALSE,pDat_mm))
+# isSingular
+    'Random effects:
+     Groups   Name            Variance Std.Dev.
+     Subj     (Intercept)       3.23828  1.7995  
+     Subj.1   grpd.ungr         1.21951  1.1043  
+     Subj.2   rd.rpt            1.46867  1.2119  
+     Subj.3   grpd.ungr_cor.inc 5.50127  2.3455  
+     Subj.4   cor.inc_rd.rpt    1.04691  1.0232 # mean var. + sd almost equal 
+     Subj.5   grpd.ungr_rd.rpt  0.40879  0.6394 # mean var. smaller than sd 
+     item     (Intercept)       0.04276  0.2068  
+     item.1   lhd.rhd           0.46757  0.6838  
+     item.2   cor.inc           0.00000  0.0000 # no variance 
+     item.3   cor.inc_lhd.rhd   0.00000  0.0000 # no variance
+     Residual                   5.63059  2.3729  
+    Number of obs: 1241, groups:  Subj, 32; item, 24'
+summary(rePCA(zcp1_F02))
+# components for Subj seem okay | 2 of 4 components for item have zero variance
+### ANOVA model comparison - reduced zcp - zcp model #############################
+anova(zcp_F02, zcp1_F02)
+# not significant, AIC smaller for zcp1_F02 - preferred
+### SECOND #############################
+# try also exclusion also of "cor.inc_lhd.rhd" as slope per item
+summary(zcp2_F02 <- lmer(f0_range2 ~ 
+                           1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                           grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                           cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                           lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                           grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                           (1+grpd.ungr+rd.rpt+
+                              grpd.ungr_cor.inc+
+                              cor.inc_rd.rpt+
+                              grpd.ungr_rd.rpt||Subj)+
+                           (1+lhd.rhd+cor.inc||item),
+                         REML = FALSE,pDat_mm))
+# isSingular
+    'Random effects:
+     Groups   Name            Variance Std.Dev.
+     Subj     (Intercept)       3.23777  1.7994  
+     Subj.1   grpd.ungr         1.21950  1.1043  
+     Subj.2   rd.rpt            1.46869  1.2119  
+     Subj.3   grpd.ungr_cor.inc 5.50204  2.3456  
+     Subj.4   cor.inc_rd.rpt    1.04707  1.0233 # mean var. + sd almost equal  
+     Subj.5   grpd.ungr_rd.rpt  0.40879  0.6394 # mean var. smaller than sd
+     item     (Intercept)       0.04275  0.2068  
+     item.1   lhd.rhd           0.46755  0.6838  
+     item.2   cor.inc           0.00000  0.0000 # no variance
+     Residual                   5.63061  2.3729  
+    Number of obs: 1241, groups:  Subj, 32; item, 24'
+summary(rePCA(zcp2_F02))
+# components for Subj seem okay - 1 of 3 components for item has zero variance
+### ANOVA model comparison - reduced 2nd zcp - reduced 1st zcp model #############################
+anova(zcp2_F02, zcp1_F02)
+# not significant and AIC smaller for zcp2_F02 - preferred
+### THIRD #############################
+# try exclusion also of "cor.inc" as slope per item
+summary(zcp3_F02 <- lmer(f0_range2 ~ 
+                           1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                           grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                           cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                           lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                           grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                           (1+grpd.ungr+rd.rpt+
+                              grpd.ungr_cor.inc+
+                              cor.inc_rd.rpt+
+                              grpd.ungr_rd.rpt||Subj)+
+                           (1+lhd.rhd||item),
+                         REML = FALSE,pDat_mm))
+    'Random effects:
+     Groups   Name            Variance Std.Dev.
+     Subj     (Intercept)       3.23788  1.7994  
+     Subj.1   grpd.ungr         1.21961  1.1044  
+     Subj.2   rd.rpt            1.46866  1.2119  
+     Subj.3   grpd.ungr_cor.inc 5.50221  2.3457  
+     Subj.4   cor.inc_rd.rpt    1.04710  1.0233 # mean var. + sd almost equal 
+     Subj.5   grpd.ungr_rd.rpt  0.40869  0.6393 # mean var. smaller than sd 
+     item     (Intercept)       0.04274  0.2067  
+     item.1   lhd.rhd           0.46756  0.6838  
+     Residual                   5.63060  2.3729  
+    Number of obs: 1241, groups:  Subj, 32; item, 24'
+summary(rePCA(zcp3_F02))
+# all components seem okay
+### ANOVA model comparison - reduced 3rd zcp - reduced 2nd zcp model #############################
+anova(zcp3_F02, zcp2_F02)
+# not significant and AIC smaller for zcp3_F02 - preferred
+### FOURTH #############################
+# try exclusion also of "grpd.ungr_rd.rpt" as slope per Subj
+summary(zcp4_F02 <- lmer(f0_range2 ~ 
+                           1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                           grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                           cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                           lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                           grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                           (1+grpd.ungr+rd.rpt+
+                              grpd.ungr_cor.inc+
+                              cor.inc_rd.rpt||Subj)+
+                           (1+lhd.rhd||item),
+                         REML = FALSE,pDat_mm))
+    'Random effects:
+     Groups   Name            Variance Std.Dev.
+     Subj     (Intercept)       3.23610  1.7989  
+     Subj.1   grpd.ungr         1.20739  1.0988  
+     Subj.2   rd.rpt            1.44618  1.2026  
+     Subj.3   grpd.ungr_cor.inc 5.47603  2.3401  
+     Subj.4   cor.inc_rd.rpt    1.11054  1.0538 # mean var. + sd almost equal 
+     item     (Intercept)       0.04183  0.2045  
+     item.1   lhd.rhd           0.46619  0.6828  
+     Residual                   5.65429  2.3779  
+    Number of obs: 1241, groups:  Subj, 32; item, 24'
+summary(rePCA(zcp4_F02))
+# all components seem okay
+### ANOVA model comparison - reduced 4th zcp - reduced 3rd zcp model #############################
+anova(zcp4_F02, zcp3_F02)
+# not significant and AIC smaller for zcp4_F02 - preferred
+### FIFTH #############################
+# try exclusion also of "cor.inc_rd.rpt" as slope per Subj
+summary(zcp5_F02 <- lmer(f0_range2 ~ 
+                           1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                           grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                           cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                           lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                           grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                           (1+grpd.ungr+rd.rpt+
+                              grpd.ungr_cor.inc||Subj)+
+                           (1+lhd.rhd||item),
+                         REML = FALSE,pDat_mm))
+    'Random effects:
+     Groups   Name            Variance Std.Dev.
+     Subj     (Intercept)       3.29999  1.8166  
+     Subj.1   grpd.ungr         1.16990  1.0816  
+     Subj.2   rd.rpt            1.59736  1.2639  
+     Subj.3   grpd.ungr_cor.inc 5.49785  2.3447  
+     item     (Intercept)       0.04001  0.2000  
+     item.1   lhd.rhd           0.45381  0.6737  
+     Residual                   5.69227  2.3858  
+    Number of obs: 1241, groups:  Subj, 32; item, 24'
+summary(rePCA(zcp5_F02))
+# all components seem okay
+### ANOVA model comparison - reduced 5th zcp - reduced 4th zcp model #############################
+anova(zcp5_F02, zcp4_F02)
+# not significant and AIC smaller for zcp5_F02 - preferred
+# I go with zcp5_F02 as final zcp model and check correlations now
+## REDUCED FINAL model with correlations =================================
+summary(corr5_F02 <- lmer(f0_range2 ~ 
+                            1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                            grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                            cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                            lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                            grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                            (1+grpd.ungr+rd.rpt+
+                               grpd.ungr_cor.inc|Subj)+
+                            (1+lhd.rhd|item),
+                          REML = FALSE,pDat_mm))
+# isSingular
+### ANOVA model comparison - reduced final model with correlation - initial model #############################
+anova(corr5_F02, m0_F02)
+# not significant and AIC smaller for corr5_F02 - preferred
+# initial model does not accumulate more information
+# FINAL model ---------------------------------
+## model with factors and * for fixed effects =================================
+# use REML=TRUE
+summary(F02 <- lmer(f0_range2 ~ 
+                      condition*accuracy+condition*group*exp+group*exp*accuracy+
+                      (1+grpd.ungr+rd.rpt+
+                         grpd.ungr_cor.inc|Subj)+
+                      (1+lhd.rhd|item),
+                    REML = TRUE,pDat_mm))
+# no warnings
+save(F02, file = "F02.Rdata")
+#*Nice table output*---------------------------------
+# sjPlot::tab_model((F02), show.se = TRUE, show.stat = TRUE, collapse.ci=TRUE, file="F02.doc")
+# clean workspace ---------------------------------
+# ls()
+rm(corr5_F02, m0_F02, zcp_F02, zcp1_F02, zcp2_F02, zcp3_F02, zcp4_F02, zcp5_F02)
+```
+    
+## Model reduction - pause (P)  
+```{r rePCA p3, echo=TRUE, message=FALSE, warning=FALSE}
+# all "REML = FALSE" to use ANOVA model comparison later on
+# INITIAL model with indicator variables ---------------------------------
+summary(m0_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          cor.inc_rd.rpt+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+lhd.rhd+cor.inc+
+                          cor.inc_lhd.rhd|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+# correlations seem okay for Subj and for items
+summary(rePCA(m0_P))
+# 5 of 7 components for Subj | 2 of 4 components for item contribute (variance)
+# try model reduction of randEff ---------------------------------
+## start with ZERO CORRELATION model =================================
+summary(zcp_P <- lmer(pause3 ~ 
+                        1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                        grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                        cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                        lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                        grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                        (1+cor.inc+grpd.ungr+rd.rpt+
+                           grpd.ungr_cor.inc+
+                           cor.inc_rd.rpt+
+                           grpd.ungr_rd.rpt||Subj)+
+                        (1+lhd.rhd+cor.inc+
+                           cor.inc_lhd.rhd||item),
+                      REML = FALSE,pDat_mm))
+# isSingular
+    'Random effects:
+     Groups   Name            Variance Std.Dev.
+     Subj     (Intercept)         7.848   2.801   
+     Subj.1   cor.inc             4.978   2.231   
+     Subj.2   grpd.ungr           9.762   3.124   
+     Subj.3   rd.rpt              8.867   2.978   
+     Subj.4   grpd.ungr_cor.inc   44.529   6.673   
+     Subj.5   cor.inc_rd.rpt      0.000   0.000 # no variance
+     Subj.6   grpd.ungr_rd.rpt    21.651   4.653   
+     item     (Intercept)         0.000   0.000   
+     item.1   lhd.rhd             0.000   0.000 # no variance 
+     item.2   cor.inc             0.000   0.000 # no variance
+     item.3   cor.inc_lhd.rhd     3.171   1.781   
+     Residual                 23.585   4.856   
+    Number of obs: 1289, groups:  Subj, 32; item, 24'
+## ANOVA model comparison - initial model - zcp model =================================
+anova(m0_P, zcp_P)
+# m0_P has signif. better fit - removing all correlations too harsh
+## back to initial model =================================
+# try exclusion of randEff slopes with regards to zcp
+### FIRST #############################
+# try exclusion of "cor.inc_rd.rpt" as slope per Subj
+summary(m1_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+lhd.rhd+cor.inc+
+                          cor.inc_lhd.rhd|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+summary(rePCA(m1_P))
+# 1 of 6 components for Subj | 2 of 4 components for item have zero variance
+### ANOVA model comparison - initial model - reduced model #############################
+anova(m0_P, m1_P)
+# not significant and AIC smaller for m1_P - preferred
+### SECOND #############################
+# try exclusion also of "lhd.rhd" as slope per item
+summary(m2_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+cor.inc+
+                          cor.inc_lhd.rhd|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+# Model failed to converge with 1 negative eigenvalue: -1.7e+01
+### THIRD #############################
+# back to FIRST REDUCED model
+# try exclusion also of "cor.inc" as slope per item
+summary(m3_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+lhd.rhd+
+                          cor.inc_lhd.rhd|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+# Model failed to converge with max|grad| = 0.0207696 (tol = 0.002, component 1)
+### FOURTH #############################
+# back to FIRST REDUCED model
+# try exclusion also of "cor.inc_lhd.rhd" as slope per item
+summary(m4_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+lhd.rhd+cor.inc|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+summary(rePCA(m4_P))
+# 1 of 6 components for Subj | 2 of 3 components for item have zero variance
+### ANOVA model comparison - initial model - reduced model #############################
+anova(m0_P, m4_P)
+# not significant and AIC smaller for m4_P - preferred
+### FIFTH #############################
+# try exclusion also of "lhd.rhd" as slope per item
+summary(m5_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+cor.inc|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+summary(rePCA(m5_P))
+# 1 of 6 components for Subj | 1 of 2 components for item have zero variance
+### ANOVA model comparison - m4_P - m5_P #############################
+anova(m4_P, m5_P)
+# not significant and AIC smaller for m5_P - preferred
+### SIXTH #############################
+# try exclusion also of "cor.inc" as slope per item - intercept only
+summary(m6_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+# Model failed to converge with 1 negative eigenvalue: -6.1e+00
+### SEVENTH #############################
+# BACK to m4_P
+# try exclusion of "cor.inc" as slope per item instead of "lhd.rhd"
+summary(m7_P <- lmer(pause3 ~ 
+                       1+grpd.ungr+lhd.rhd+cor.inc+rd.rpt+
+                       grpd.ungr_lhd.rhd+grpd.ungr_cor.inc+
+                       cor.inc_lhd.rhd+grpd.ungr_rd.rpt+
+                       lhd.rhd_rd.rpt+cor.inc_rd.rpt+
+                       grpd.ungr_lhd.rhd_rd.rpt+cor.inc_lhd.rhd_rd.rpt+
+                       (1+cor.inc+grpd.ungr+rd.rpt+
+                          grpd.ungr_cor.inc+
+                          grpd.ungr_rd.rpt|Subj)+
+                       (1+lhd.rhd|item),
+                     REML = FALSE,pDat_mm))
+# isSingular
+summary(rePCA(m7_P))
+# 1 of 6 components for Subj | 1 of 2 components for item have zero variance
+# same for m5_P
+### ANOVA model comparison - initial model - m7_P #############################
+anova(m0_P, m7_P)
+# not significant and AIC smaller for m7_P - preferred
+### ANOVA model comparison - initial model - m5_P #############################
+anova(m0_P, m5_P)
+# not significant and AIC smaller for m7_P - preferred
+# both ANOVAs obtain almost identical measures
+# stay with m7_P
+# FINAL model ---------------------------------
+## model with factors and * for fixed effects =================================
+# use REML=TRUE
+summary(P <- lmer(pause3 ~ 
+                    condition*accuracy+condition*group*exp+
+                    group*exp*accuracy+
+                    (1+cor.inc+grpd.ungr+rd.rpt+
+                       grpd.ungr_cor.inc+
+                       grpd.ungr_rd.rpt|Subj)+
+                    (1+lhd.rhd|item),
+                  REML = TRUE,pDat_mm))
+# isSingular
+save(P, file = "P.Rdata")
+# *Nice table output* ---------------------------------
+# sjPlot::tab_model((P), show.se = TRUE, show.stat = TRUE, collapse.ci=TRUE, file="P.doc")
+# clean workspace ---------------------------------
+# ls()
+rm(m0_P, m1_P, m2_P, m3_P, m4_P, m5_P, m6_P, m7_P, zcp_P)
+```  
+ 
+# *Final lengthening model (FL2) for name2*  
+## Visualizations and Post-Hoc-Tests    
+```{r vis post hoc fl2, echo=TRUE, message=FALSE, warning=FALSE}
+# interaction visualization ---------------------------------
+# condition:accuracy =================================
+### condition ~ accuracy #############################
+load("FL2.Rdata")
+emmeans::emmip(FL2, condition ~ accuracy, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % final lengthening on name2 \n(relative to duration of name2)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### accuracy ~ condition #############################
+emmeans::emmip(FL2, accuracy ~ condition, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % final lengthening on name2 \n(relative to duration of name2)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(FL2, pairwise ~ condition*accuracy) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+# interaction visualization ---------------------------------
+# group:exp =================================
+### group ~ exp #############################
+emmeans::emmip(FL2, group ~ exp, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % final lengthening on name2 \n(relative to duration of name2)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### exp ~ group #############################
+emmeans::emmip(FL2, exp ~ group, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % final lengthening on name2 \n(relative to duration of name2)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(FL2, pairwise ~ group*exp) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+```
+  
+# *F0_range model (F02) for name2*  
+## Visualizations and Post-Hoc-Tests    
+```{r vis post hoc f02, echo=TRUE, message=FALSE, warning=FALSE}
+# interaction visualization ---------------------------------
+load("F02.Rdata")
+# condition:accuracy =================================
+### condition ~ accuracy #############################
+emmeans::emmip(F02, condition ~ accuracy, 
+               CIs = TRUE, CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - f0 range on name2 in semitones",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### accuracy ~ condition #############################
+emmeans::emmip(F02, accuracy ~ condition, 
+               CIs = TRUE, CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - f0 range on name2 in semitones",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(F02, pairwise ~ condition*accuracy) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+# interaction visualization ---------------------------------
+# condition:exp =================================
+### condition ~ exp #############################
+emmeans::emmip(F02, condition ~ exp, 
+               CIs = TRUE, CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - f0 range on name2 in semitones",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### exp ~ condition #############################
+emmeans::emmip(F02, exp ~ condition, 
+               CIs = TRUE, CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - f0 range on name2 in semitones",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(F02, pairwise ~ condition*exp) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+# interaction visualization ---------------------------------
+# group:exp =================================
+### exp ~ group #############################
+emmeans::emmip(F02, exp ~ group, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - f0 range on name2 in semitones",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### group ~ exp #############################
+emmeans::emmip(F02, group ~ exp, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - f0 range on name2 in semitones",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(F02, pairwise ~ group*exp) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+```  
+  
+# *Pause model (P) for pause after name2*  
+## Visualizations and Post-Hoc-Tests    
+```{r vis post hoc P, echo=TRUE, message=FALSE, warning=FALSE}
+# interaction visualization ---------------------------------
+load("P.Rdata")
+# condition:accuracy =================================
+### condition ~ accuracy #############################
+emmeans::emmip(P, condition ~ accuracy, 
+               CIs = TRUE, CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % pause after name2 \n(relative to utterance duration)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### accuracy ~ condition #############################
+emmeans::emmip(P, accuracy ~ condition, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % pause after name2 \n(relative to utterance duration)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(P, pairwise ~ condition * accuracy) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+# interaction visualization ---------------------------------
+# condition:exp =================================
+### condition ~ exp #############################
+emmeans::emmip(P, condition ~ exp, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % pause after name2 \n(relative to utterance duration)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### exp ~ condition #############################
+emmeans::emmip(P, exp ~ condition, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - % pause after name2 \n(relative to utterance duration)",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(P, pairwise ~ condition * exp) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+```
+  
+# Model reduction - production accuracy  
+```{r prod acc repca, echo=TRUE, message=FALSE, warning=FALSE}
+# INITIAL MAX model ---------------------------------
+summary(rateM_i <- glmer(rate ~ condition*group*exp+
+                           (1+condition*exp|Subj)+
+                           (1+group|item),
+                         family="binomial",
+                         control=glmerControl(optCtrl=list(maxfun=1e5),
+                                              optimizer="bobyqa"),
+                         pDat))
+# 'isSingular'
+# all "REML = FALSE" to use ANOVA model comparison later on
+# INITIAL model with indicator variables ---------------------------------
+summary(m0_rateM <- glmer(rate ~ 1+
+                            grpd.ungr+lhd.rhd+rd.rpt+
+                            grpd.ungr_lhd.rhd+grpd.ungr_rd.rpt+lhd.rhd_rd.rpt+
+                            grpd.ungr_lhd.rhd_rd.rpt+
+                            (1+grpd.ungr+rd.rpt+grpd.ungr_rd.rpt|Subj)+
+                            (1+lhd.rhd|item),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),
+                                               optimizer="bobyqa"),
+                          pDat_mm))
+# same model output
+# two correlations close to 1 for Subj | -1 for items
+summary(rePCA(m0_rateM))
+# 3 of 4 components for Subj | only intercept for item contribute (variance)
+# try model reduction of randEff ---------------------------------
+## start with ZERO CORRELATION model =================================
+summary(zcp_rateM <- glmer(rate ~ 1+
+                             grpd.ungr+lhd.rhd+rd.rpt+
+                             grpd.ungr_lhd.rhd+grpd.ungr_rd.rpt+lhd.rhd_rd.rpt+
+                             grpd.ungr_lhd.rhd_rd.rpt+
+                             (1+grpd.ungr+rd.rpt+grpd.ungr_rd.rpt||Subj)+
+                             (1+lhd.rhd||item),
+                           family="binomial",
+                           control=glmerControl(optCtrl=list(maxfun=1e5),
+                                                optimizer="bobyqa"),
+                           pDat_mm))
+    'Random effects:
+     Groups Name           Variance Std.Dev.
+     Subj   (Intercept)       1.57842  1.2564  
+     Subj.1 grpd.ungr         4.03538  2.0088  
+     Subj.2 rd.rpt            2.28673  1.5122  
+     Subj.3 grpd.ungr_rd.rpt  1.75237  1.3238 # mean var. almost equal to sd 
+     item   (Intercept)       0.01059  0.1029 # almost no variance 
+     item.1 lhd.rhd           0.18332  0.4282 # sd larger than variance  
+    Number of obs: 1289, groups:  Subj, 32; item, 24'
+## ANOVA model comparison - initial model - zcp model =================================
+anova(m0_rateM, zcp_rateM)
+# m0_rateM has signif. better fit - removing all correlations too harsh
+## back to initial model =================================
+# try exclusion of randEff slopes with regards to zcp
+### FIRST #############################
+# try exclusion of "lhd.rhd" as slope per item
+summary(m1_rateM <- glmer(rate ~ 1+
+                            grpd.ungr+lhd.rhd+rd.rpt+
+                            grpd.ungr_lhd.rhd+grpd.ungr_rd.rpt+lhd.rhd_rd.rpt+
+                            grpd.ungr_lhd.rhd_rd.rpt+
+                            (1+grpd.ungr+rd.rpt+grpd.ungr_rd.rpt|Subj)+
+                            (1|item),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),
+                                               optimizer="bobyqa"),
+                          pDat_mm))
+# isSingular
+summary(rePCA(m1_rateM))
+# 1 of 4 components for Subj has zero variance | intercept only for item
+### ANOVA model comparison - initial model - reduced model #############################
+anova(m0_rateM, m1_rateM)
+# not significant, AIC smaller for m1_rateM - preferred
+### SECOND #############################
+# try exclusion of randEff for item altogether
+summary(m2_rateM <- glmer(rate ~ 1+
+                            grpd.ungr+lhd.rhd+rd.rpt+
+                            grpd.ungr_lhd.rhd+grpd.ungr_rd.rpt+lhd.rhd_rd.rpt+
+                            grpd.ungr_lhd.rhd_rd.rpt+
+                            (1+grpd.ungr+rd.rpt+grpd.ungr_rd.rpt|Subj),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),
+                                               optimizer="bobyqa"),
+                          pDat_mm))
+# isSingular
+summary(rePCA(m2_rateM))
+# 1 of 4 components for Subj has zero variance
+### ANOVA model comparison - m2_rateM - m1_rateM #############################
+anova(m1_rateM, m2_rateM)
+# not significant, AIC smaller for m2_rateM - preferred
+### THIRD #############################
+# try exclusion of "rd.rpt" for Subj
+summary(m3_rateM <- glmer(rate ~ 1+
+                            grpd.ungr+lhd.rhd+rd.rpt+
+                            grpd.ungr_lhd.rhd+grpd.ungr_rd.rpt+lhd.rhd_rd.rpt+
+                            grpd.ungr_lhd.rhd_rd.rpt+
+                            (1+grpd.ungr+grpd.ungr_rd.rpt|Subj),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),
+                                               optimizer="bobyqa"),
+                          pDat_mm))
+summary(rePCA(m3_rateM))
+# all components seem okay
+### ANOVA model comparison - m3_rateM - m2_rateM #############################
+anova(m2_rateM, m3_rateM)
+# significant, AIC smaller for m2_rateM - preferred
+### FOURTH #############################
+# back to m2_rateM
+# try exclusion of "grpd.ungr_rd.rpt" for Subj
+summary(m4_rateM <- glmer(rate ~ 1+
+                            grpd.ungr+lhd.rhd+rd.rpt+
+                            grpd.ungr_lhd.rhd+grpd.ungr_rd.rpt+lhd.rhd_rd.rpt+
+                            grpd.ungr_lhd.rhd_rd.rpt+
+                            (1+grpd.ungr+rd.rpt|Subj),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),
+                                               optimizer="bobyqa"),
+                          pDat_mm))
+summary(rePCA(m4_rateM))
+# all components seem okay
+### ANOVA model comparison - m4_rateM - m2_rateM #############################
+anova(m4_rateM, m2_rateM)
+# significant, AIC smaller for m2_rateM - preferred
+# no better model fit achievable
+# use m2_rateM
+# FINAL model ---------------------------------
+## model with factors and * for fixed effects =================================
+# use REML=TRUE
+summary(rateM <- glmer(rate ~ condition*group*exp+
+                         (1+grpd.ungr+rd.rpt+grpd.ungr_rd.rpt|Subj),
+                       family="binomial",
+                       control=glmerControl(optCtrl=list(maxfun=1e5),
+                                            optimizer="bobyqa"),
+                       pDat_mm))
+# isSingular
+save(rateM, file = "rateM.Rdata")
+# *Nice table output* ---------------------------------
+# sjPlot::tab_model((rateM), show.se = TRUE, show.stat = TRUE, collapse.ci=TRUE, transform = NULL, file="rateM.doc")
+# clean workspace ---------------------------------
+# ls()
+rm(m0_rateM, m1_rateM, m2_rateM, m3_rateM, m4_rateM, zcp_rateM)
+```  
+  
+# *Production accuracy model*  
+## Visualizations and Post-Hoc-Tests    
+```{r production accuracy model, echo=TRUE, message=FALSE, warning=FALSE}
+# interaction visualization ---------------------------------
+load("rateM.Rdata")
+# condition:exp =================================
+### condition ~ exp #############################
+emmeans::emmip(rateM, condition ~ exp, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - production accuracy",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+### exp ~ condition #############################
+emmeans::emmip(rateM, exp ~ condition, CIs = TRUE, 
+               CIarg = list(lwd = 1.1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - production accuracy",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(rateM, pairwise ~ condition*exp) %>% 
+    summary(by = NULL, adjust = "bonferroni")
+```
+
+# Raw data plots  
+## Production accuracy  
+```{r raw prod acc plot, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# production accuracy 1=correct, 0=incorrect ---------------------------------
+## summarise over group / exp / condition =================================
+std <- function(x) sd(x)/sqrt(length(x))
+mean_accuracy <-
+pDat %>%
+group_by(group, exp, condition) %>%
+dplyr::summarise(mean = mean(rate), sd = sd(rate), se = std(rate))
+# col mean, sd, se "transformed" into percentages with 2 decimal places
+mean_accuracy$mean_pc <- as.numeric(format(round(((mean_accuracy$mean)*100),2), nsmall=2))
+mean_accuracy$sd_pc <- as.numeric(format(round(((mean_accuracy$sd)*100),2), nsmall=2))
+mean_accuracy$se_pc <- as.numeric(format(round(((mean_accuracy$se)*100),2), nsmall=2))
+## scatterplot =================================
+# split by group - COL wise
+# split by exp - ROW wise
+# condition on x-axis
+# mean_pc accuracy on y-axis
+### y-axis starts at zero #############################
+mean_accuracy %>%
+ggplot(aes(condition,mean_pc, color=condition, shape=condition)) +
+  geom_point(size=4,width=.1) +
+  geom_point() +
+  facet_grid(vars(exp), vars(group)) +
+  geom_errorbar(aes(ymin=mean_pc-se_pc, ymax=mean_pc+se_pc), width=.2) +
+  #geom_hline(yintercept = 81.82, size = 0.8, color="red", linetype="dashed")+
+  scale_y_continuous(limits = c(0,100))+
+  labs(
+    x = "",
+    y = "production accuracy (%)") +
+  theme_bw()+
+  theme(axis.text.x = element_text(size=16), 
+        axis.text.y = element_text(size=16),
+        strip.text.x = element_text(size = 16),
+        strip.text.y = element_text(size = 16),
+        axis.title=element_text(size=16),
+        legend.title = element_text(size=16), legend.text=element_text(size=16)) +
+  theme(legend.position="bottom")
+# ggsave("prod_accuracy_atzero.jpg", width = 18, height = 16, dpi=300, units = "cm")
+### y-axis section smaller - same data #############################
+mean_accuracy %>%
+ggplot(aes(condition,mean_pc, color=condition, shape=condition)) +
+  geom_point(size=4,width=.1) +
+  geom_point() +
+  facet_grid(vars(exp), vars(group)) +
+  geom_errorbar(aes(ymin=mean_pc-se_pc, ymax=mean_pc+se_pc), width=.2) +
+  #geom_hline(yintercept = 81.82, size = 0.8, color="red", linetype="dashed")+
+  #scale_y_continuous(limits = c(0,100))+
+  labs(
+    x = "",
+    y = "production accuracy (%)") +
+  theme_bw()+
+  theme(axis.text.x = element_text(size=16), 
+        axis.text.y = element_text(size=16),
+        strip.text.x = element_text(size = 16),
+        strip.text.y = element_text(size = 16),
+        axis.title=element_text(size=16),
+        legend.title = element_text(size=16), legend.text=element_text(size=16)) +
+  theme(legend.position="bottom")
+# ggsave("prod_accuracy.jpg", width = 18, height = 16, dpi=300, units = "cm")
+### y-axis section smaller - same data #############################
+# red line included to visualize upper chance range level
+mean_accuracy %>%
+ggplot(aes(condition,mean_pc, color=condition, shape=condition)) +
+  geom_point(size=4,width=.1) +
+  geom_point() +
+  facet_grid(vars(exp), vars(group)) +
+  geom_errorbar(aes(ymin=mean_pc-se_pc, ymax=mean_pc+se_pc), width=.2) +
+  geom_segment(aes(x = 1, xend=2, y = 81.82, yend=81.82), size = 0.8, color="red")+
+  labs(
+    x = "",
+    y = "production accuracy (%)") +
+  theme_bw()+
+  theme(axis.text.x = element_text(size=16), 
+        axis.text.y = element_text(size=16),
+        strip.text.x = element_text(size = 16),
+        strip.text.y = element_text(size = 16),
+        axis.title=element_text(size=16),
+        legend.title = element_text(size=16), legend.text=element_text(size=16)) +
+  theme(legend.position="bottom")
+rm(mean_accuracy)
+```
+  
+## Plotting means and error bars  
+*Functions for mean + CI plots*  
++ start with this script chunk "SEsummary" 
++ run it and then go on to the next chunk to plot the data on all cues "cues separately"  
+
+```{r SEsummary, echo=TRUE, message=FALSE, warning=FALSE}
+# summarySE between ---------------------------------
+## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%)
+## data:          a data frame
+## measurevar:    the name of a column that contains the variable to be summarized
+## groupvars:     a vector containing names of columns that contain grouping variables
+## na.rm:         a boolean that indicates whether to ignore NA's
+## conf.interval: the percent range of the confidence interval (default is 95%)
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=TRUE,
+                      conf.interval=.95, .drop=TRUE) {
+  # New version of length which can handle NA's: if na.rm==T, don't count them
+  length2 <- function (x, na.rm=TRUE) {
+    if (na.rm) sum(!is.na(x))
+    else       length(x)
+  }
+  # This does the summary. For each group's data frame, return a vector with
+  # N, mean, and sd
+  datac <- ddply(data, groupvars, .drop=.drop,
+                 .fun = function(xx, col) {
+                   c(N    = length2(xx[[col]], na.rm=na.rm),
+                     mean = mean   (xx[[col]], na.rm=na.rm),
+                     sd   = sd     (xx[[col]], na.rm=na.rm)
+                   )
+                 },
+                 measurevar
+  )
+  # Rename the "mean" column    
+  datac <- plyr::rename(datac, c("mean" = measurevar))
+  datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+  # Confidence interval multiplier for standard error
+  # Calculate t-statistic for confidence interval: 
+  # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+  ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+  datac$ci <- datac$se * ciMult
+  return(datac)
+}
+# normDataWithin ---------------------------------
+## Norms the data within specified groups in a data frame; it normalizes each
+## subject (identified by idvar) so that they have the same mean, within each group
+## specified by betweenvars
+## data:        a data frame.
+## idvar:       the name of a column that identifies each subject (or matched subjects)
+## measurevar:  the name of a column that contains the variable to be summariezed
+## betweenvars: a vector containing names of columns that are between-subjects variables
+## na.rm:       a boolean that indicates whether to ignore NA's
+normDataWithin <- function(data=NULL, idvar, measurevar, betweenvars=NULL,
+                           na.rm=TRUE, .drop=TRUE) {
+  
+  # Measure var on left, idvar + between vars on right of formula
+  data.subjMean <- ddply(data, c(idvar, betweenvars), .drop=.drop,
+                         .fun = function(xx, col, na.rm) {
+                           c(subjMean = mean(xx[,col], na.rm=na.rm))
+                         },
+                         measurevar,
+                         na.rm
+  )
+  
+  # Put the subject means with original data
+  data <- merge(data, data.subjMean)
+  
+  # Get the normalized data in a new column
+  measureNormedVar <- paste(measurevar, "_norm", sep="")
+  data[,measureNormedVar] <- data[,measurevar] - data[,"subjMean"] +
+    mean(data[,measurevar], na.rm=na.rm)
+  
+  # Remove this subject mean column
+  data$subjMean <- NULL
+  
+  return(data)
+}
+# SEsummarywithin ---------------------------------
+## Summarizes data, handling within-subjects variables by removing inter-subject variability.
+## It will still work if there are no within-S variables.
+## Gives count, un-normed mean, normed mean (with same between-group mean),
+## standard deviation, standard error of the mean, and confidence interval.
+## If there are within-subject variables, calculate adjusted values using method from Morey (2008)
+## data:          a data frame.
+## measurevar:    the name of a column that contains the variable to be summariezed
+## betweenvars:   a vector containing names of columns that are between-subjects variables
+## withinvars:    a vector containing names of columns that are within-subjects variables
+## idvar:         the name of a column that identifies each subject (or matched subjects)
+## na.rm:         a boolean that indicates whether to ignore NA's
+## conf.interval: the percent range of the confidence interval (default is 95%)
+summarySEwithin <- function(data=NULL, measurevar, betweenvars=NULL, withinvars=NULL,
+                            idvar=NULL, na.rm=TRUE, conf.interval=.95, .drop=TRUE) {
+  
+  # Ensure that the betweenvars and withinvars are factors
+  factorvars <- vapply(data[, c(betweenvars, withinvars), drop=FALSE],
+                       FUN=is.factor, FUN.VALUE=logical(1))
+  
+  if (!all(factorvars)) {
+    nonfactorvars <- names(factorvars)[!factorvars]
+    message("Automatically converting the following non-factors to factors: ",
+            paste(nonfactorvars, collapse = ", "))
+    data[nonfactorvars] <- lapply(data[nonfactorvars], factor)
+  }
+  
+  # Get the means from the un-normed data
+  datac <- summarySE(data, measurevar, groupvars=c(betweenvars, withinvars),
+                     na.rm=na.rm, conf.interval=conf.interval, .drop=.drop)
+  
+  # Drop all the unused columns (these will be calculated with normed data)
+  datac$sd <- NULL
+  datac$se <- NULL
+  datac$ci <- NULL
+  
+  # Norm each subject's data
+  ndata <- normDataWithin(data, idvar, measurevar, betweenvars, na.rm, .drop=.drop)
+  
+  # This is the name of the new column
+  measurevar_n <- paste(measurevar, "_norm", sep="")
+  
+  # Collapse the normed data - now we can treat between and within vars the same
+  ndatac <- summarySE(ndata, measurevar_n, groupvars=c(betweenvars, withinvars),
+                      na.rm=na.rm, conf.interval=conf.interval, .drop=.drop)
+  
+  # Apply correction from Morey (2008) to the standard error and confidence interval
+  #  Get the product of the number of conditions of within-S variables
+  nWithinGroups    <- prod(vapply(ndatac[,withinvars, drop=FALSE], FUN=nlevels,
+                                  FUN.VALUE=numeric(1)))
+  correctionFactor <- sqrt( nWithinGroups / (nWithinGroups-1) )
+  
+  # Apply the correction factor
+  ndatac$sd <- ndatac$sd * correctionFactor
+  ndatac$se <- ndatac$se * correctionFactor
+  ndatac$ci <- ndatac$ci * correctionFactor
+  
+  # Combine the un-normed means with the normed results
+  merge(datac, ndatac)
+}
+```
+  
+*Mean an CI plot for cues on name2*  
+```{r cues separately, echo=TRUE, message=FALSE, warning=FALSE}
+# Cues ---------------------------------
+Cues <- pDat %>% 
+  dplyr::select(Subj, item, group, exp, condition, accuracy, f0_range2, s8reln2, pause3) %>% 
+  tidyr::gather("variable", "measurement", -Subj, -item, -group, -exp, -condition, -accuracy)
+Cues$group <- as.factor(as.character(Cues$group))
+Cues$exp <- as.factor(as.character(Cues$exp))
+Cues$condition <- as.factor(as.character(Cues$condition))
+Cues$accuracy <- as.factor(as.character(Cues$accuracy))
+Cues$variable <- as.factor(as.character(Cues$variable))
+Cues$measurement <- as.numeric(as.character(Cues$measurement))
+## f0_range =================================
+f0.range <- Cues %>% 
+  filter(variable=="f0_range2") %>% 
+  group_by(Subj, group, exp, condition, accuracy, variable) %>% 
+  summarySEwithin(measurevar = "measurement",
+                  betweenvars = "group",
+                  withinvars = c("variable", "condition", "exp", "accuracy"),
+                  idvar = "Subj") %>% 
+  ggplot(aes(x=accuracy,y=measurement, shape = condition, color=condition)) +
+  geom_point(position = position_dodge2(width = .5)) + 
+  facet_grid(exp~group)+
+  geom_errorbar(aes(ymax = measurement + ci, ymin = measurement - ci), position = position_dodge2(width = .2), width=.5) +
+  theme_bw() +
+  theme(axis.text=element_text(size=14), 
+        axis.title=element_text(size=14),
+        strip.text.x = element_text(size=14),
+        strip.text.y = element_blank(),
+        legend.title=element_text(size=14), 
+        legend.text=element_text(size=14)) +
+  labs(
+    x = "",
+    y = "f0-range on name2 (st)"
+  )
+f0.range
+# ggsave("f0_range2.jpg", width = 18, height = 14, dpi = 300, units = "cm")
+## final lengthening =================================
+fin.length <- Cues %>% 
+  filter(variable=="s8reln2") %>% 
+  group_by(Subj, group, exp, condition, accuracy, variable) %>% 
+  summarySEwithin(measurevar = "measurement",
+                  betweenvars = "group",
+                  withinvars = c("variable", "condition", "exp", "accuracy"),
+                  idvar = "Subj") %>% 
+  ggplot(aes(x=accuracy,y=measurement, shape = condition, color=condition)) +
+  geom_point(position = position_dodge2(width = .5)) + 
+  facet_grid(exp~group)+
+  geom_errorbar(aes(ymax = measurement + ci, ymin = measurement - ci), position = position_dodge2(width = .2), width=.5) +
+  theme_bw() +
+  theme(axis.text=element_text(size=14), 
+        axis.title=element_text(size=14),
+        strip.text.x = element_text(size=14),
+        strip.text.y = element_blank(),
+        legend.title=element_text(size=14), 
+        legend.text=element_text(size=14)) +
+  labs(
+    x = "",
+    y = "final lengthening on name2 (%)"
+  )
+fin.length
+# ggsave("fin-length.jpg", width = 18, height = 14, dpi = 300, units = "cm")
+## pause 3 =================================
+pause3 <- Cues %>% 
+  filter(variable=="pause3") %>% 
+  group_by(Subj, group, exp, condition, accuracy, variable) %>% 
+  summarySEwithin(measurevar = "measurement",
+                  betweenvars = "group",
+                  withinvars = c("variable", "condition", "exp", "accuracy"),
+                  idvar = "Subj") %>% 
+  ggplot(aes(x=accuracy,y=measurement, shape = condition, color=condition)) +
+  geom_point(position = position_dodge2(width = .5)) + 
+  facet_grid(exp~group)+
+  geom_errorbar(aes(ymax = measurement + ci, ymin = measurement - ci), position = position_dodge2(width = .2), width=.5) +
+  theme_bw() +
+  theme(axis.text=element_text(size=14), 
+        axis.title=element_text(size=14),
+        strip.text.x = element_text(size=14),
+        strip.text.y = element_text(size=14),
+        legend.title=element_text(size=14), 
+        legend.text=element_text(size=14)) +
+  labs(
+    x = "",
+    y = "pause after name2 (%)"
+  )
+pause3
+# ggsave("pause3.jpg", width = 18, height = 14, dpi = 300, units = "cm")
+## plot grids =================================
+library(ggpubr)
+pDat_cues <- ggarrange(f0.range,fin.length,pause3, ncol=3, nrow=1, common.legend = TRUE, legend="bottom")
+pDat_cues
+# ggsave("cue_grid.jpg", plot = pDat_cues, width = 18, height = 10, dpi = 300)
+## clean workspace =================================
+rm(Cues, f0.range, fin.length, pause3, pDat_cues, normDataWithin, summarySE, summarySEwithin)
+```
+   
+# Correlations - working memory measures / accuracy  
+```{r working memory corr, echo=TRUE, message=FALSE, warning=FALSE}
+# import working memory data ---------------------------------
+workMem <- read.csv2("data/workMem.csv", header = TRUE)
+# enumerate accuracy variable ---------------------------------
+pDat$rating_match <- as.numeric(as.factor(pDat$rating_match)) -1
+## participant check =================================
+## list first entry for exp for each participant
+pDat %>%
+  group_by(Subj, group, exp) %>%
+  dplyr::summarise(mean = round(mean(rating_match)/11*100, digits=2)) %>% 
+  group_by(Subj) %>%
+  summarise(exp = first(exp)) %>%
+  as.data.frame()
+### RHDP11 only took part in repetition exp
+## list how many entries for exp for each participant exist
+pDat %>%
+  group_by(Subj, group, exp) %>%
+  dplyr::summarise(mean = round(mean(rating_match)/11*100, digits=2)) %>% 
+  group_by(Subj) %>%
+  summarise(exp = n_distinct(exp)) %>%
+  as.data.frame()
+# LHDP01, LHDP02, LHDP08, LHDP12, RHDP19, RHDP20 only took part in reading_aloud
+## working memory subset =================================
+## only individuals that participated in both exp
+workMemBoth <- subset(workMem, 
+                      workMem$Subj=="LHDP03" | workMem$Subj=="LHDP04" | workMem$Subj=="LHDP07" | workMem$Subj=="LHDP09" |
+                        workMem$Subj=="LHDP10" | workMem$Subj=="LHDP11" | workMem$Subj=="LHDP13" | workMem$Subj=="LHDP14" |
+                        workMem$Subj=="LHDP15" | workMem$Subj=="LHDP16" | workMem$Subj=="RHDP01" | workMem$Subj=="RHDP02" |
+                        workMem$Subj=="RHDP03" | workMem$Subj=="RHDP04" | workMem$Subj=="RHDP05" | workMem$Subj=="RHDP08" |
+                        workMem$Subj=="RHDP09" | workMem$Subj=="RHDP12" | workMem$Subj=="RHDP13" | workMem$Subj=="RHDP14" |
+                        workMem$Subj=="RHDP15" | workMem$Subj=="RHDP16" | workMem$Subj=="RHDP17" | workMem$Subj=="RHDP18" |
+                        workMem$Subj=="RHDP22")
+## data subset =================================
+## only individuals that participated in both exp
+meanBoth <-  pDat %>% 
+  group_by(Subj) %>% 
+  filter(n_distinct(exp)==2)
+# data aggregation  ---------------------------------
+### means per Subj, group, exp, condition merged with working memory measures  #############################
+mean_rating_Subj <- meanBoth %>%
+  group_by(Subj, group, exp, condition) %>%
+  dplyr::summarise(mean = round(mean(rating_match)/11*100, digits=2))
+allMeans <- merge(mean_rating_Subj, workMemBoth[, c("Subj", "compDigit")], by=c("Subj"), all.x=TRUE)
+### means per Subj, group, exp - overall conditions merged with working memory measures  #############################
+mean_rating_Subj1 <- meanBoth %>%
+  group_by(Subj, group, exp) %>%
+  dplyr::summarise(mean = round(mean(rating_match)/11*100, digits=2))
+allMeans1 <- merge(mean_rating_Subj1, workMemBoth[, c("Subj", "compDigit")], by=c("Subj"), all.x=TRUE)
+# plots ---------------------------------
+### compDigit - COMPOSITE SCORE DIGIT SPAN forward & backward #############################
+## REPETITION =================================
+# mean accuracy assessment over group and OVERALL conditions
+### these correlational measures are REPORTED IN PAPER ("3.2.3 Effects of Working Memory") ###
+corrRep <- facet(ggscatter(subset(allMeans1, allMeans1$exp=="repetition"), x="mean", y="compDigit", 
+                           add = "reg.line", conf.int = TRUE, 
+                           cor.coef = TRUE, cor.coeff.args = list(size=6, label.x = 50, label.y = 80, label.sep = "\n"), cor.method = "spearman",
+                           xlab = "mean accuracy assessment repetition overall", ylab = "composite score digit span")+
+                   theme_bw(),
+                 facet.by = c("group"),
+                 short.panel.labs = TRUE, # Allow long labels in panels
+                 panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                 panel.labs.font = list(face = NULL, color = "black", size = 20, angle = NULL))+
+  font("xlab", size = 20, color = "black")+
+  font("ylab", size = 20, color = "black")+
+  font("xy.text", size = 19, color = "black")
+corrRep
+# ggsave("correlations_repetition_overall.jpg", plot = corrRep1, width = 18, height = 16, dpi = 300)
+# mean accuracy assessment over condition AND group
+corrRep1 <- facet(ggscatter(subset(allMeans, allMeans$exp=="repetition"), x="mean", y="compDigit", 
+                            add = "reg.line", conf.int = TRUE, 
+                            cor.coef = TRUE, cor.coeff.args = list(size=6, label.x = 25, label.y = 75, label.sep = "\n"), cor.method = "spearman",
+                            xlab = "mean accuracy assessment repetition", ylab = "composite score digit span")+
+                    theme_bw(),
+                  facet.by = c("group","condition"),
+                  short.panel.labs = TRUE, # Allow long labels in panels
+                  panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                  panel.labs.font = list(face = NULL, color = "black", size = 20, angle = NULL))+
+  font("xlab", size = 20, color = "black")+
+  font("ylab", size = 20, color = "black")+
+  font("xy.text", size = 19, color = "black")
+corrRep1
+# ggsave("correlations_repetition.jpg", plot = corrRep, width = 18, height = 16, dpi = 300)
+# READING ALOUD  =================================
+# mean accuracy assessment over group and OVERALL conditions
+corrRead <- facet(ggscatter(subset(allMeans1, allMeans1$exp=="reading_aloud"), x="mean", y="compDigit", 
+                            add = "reg.line", conf.int = TRUE, 
+                            cor.coef = TRUE, cor.coeff.args = list(size=6, label.x = 50, label.y = 80, label.sep = "\n"), cor.method = "spearman",
+                            xlab = "mean accuracy assessment reading_aloud overall", ylab = "composite score digit span")+
+                    theme_bw(),
+                  facet.by = c("group"),
+                  short.panel.labs = TRUE, # Allow long labels in panels
+                  panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                  panel.labs.font = list(face = NULL, color = "black", size = 20, angle = NULL))+
+  font("xlab", size = 20, color = "black")+
+  font("ylab", size = 20, color = "black")+
+  font("xy.text", size = 19, color = "black")
+corrRead
+# ggsave("correlations_reading_aloud_overall.jpg", plot = corrRead1, width = 18, height = 16, dpi = 300)
+# mean accuracy assessment over condition AND group
+corrRead1 <- facet(ggscatter(subset(allMeans, allMeans$exp=="reading_aloud"), x="mean", y="compDigit", 
+                             add = "reg.line", conf.int = TRUE, 
+                             cor.coef = TRUE, cor.coeff.args = list(size=6, label.x = 20, label.y = 75, label.sep = "\n"), cor.method = "spearman",
+                             xlab = "mean accuracy assessment reading_aloud", ylab = "composite score digit span")+
+                     theme_bw(),
+                   facet.by = c("group","condition"),
+                   short.panel.labs = TRUE, # Allow long labels in panels
+                   panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                   panel.labs.font = list(face = NULL, color = "black", size = 20, angle = NULL))+
+  font("xlab", size = 20, color = "black")+
+  font("ylab", size = 20, color = "black")+
+  font("xy.text", size = 19, color = "black")
+corrRead1
+# ggsave("correlations_reading_aloud.jpg", plot = corrRead, width = 18, height = 16, dpi = 300)
+```
+  
+# Summary Tables of Cue Use for Patient Groups and Model-Stimuli  
+```{r cue summary tables, echo=TRUE, message=FALSE, warning=FALSE}
+require(flextable)
+data_corr <- subset(data, data$accuracy=="correct")
+# generate descriptive summary for pause 3 per group (pause3 duration relative to utterance duration in %) ---------------------------------
+pause3group <- data_corr %>%
+  dplyr::group_by(exp, group, condition) %>%
+  dplyr::summarise(mean = round(mean(pause3),3), n = n(), min = round(min(pause3),3), 
+                   max = round(max(pause3),3), sd = round(sd(pause3),3))
+## generate and safe respective table for pause 3 per group =================================
+pause3groupFT <- flextable(pause3group) %>%
+  merge_v(j = c("exp", "group")) %>% 
+  valign(valign = "top") %>% 
+  theme_box() %>% set_table_properties(layout = "autofit")
+pause3groupFT <- add_header_row(
+  x = pause3groupFT, values = c("Descriptive summary for pause3 by patient group and model stimuli
+                                   Only correct production accuracy"),
+  colwidths = c(8))
+pause3groupFT <- align(pause3groupFT, i = 1, part = "header", align = "center")
+pause3groupFT <- bold(pause3groupFT, j = 1, i = ~ !is.na(exp))
+pause3groupFT <- fontsize(pause3groupFT, part = "all", size = 12)
+pause3groupFT <- theme_vanilla(pause3groupFT)
+pause3groupFT
+save_as_docx(
+  "Table Summary Pause Cue" = pause3groupFT, 
+  path = "group_sum_pause.docx")
+rm(pause3group)
+rm(pause3groupFT)
+# F0-range ---------------------------------
+# generate descriptive summary for f0_range2 per group (difference in semitones btw L and H annotated on name2) ---------------------------------
+f0_range2group <- data_corr %>%
+  dplyr::group_by(exp, group, condition) %>%
+  dplyr::summarise(mean = round(mean(f0_range2, na.rm=T),3), n = n(), miss = sum(is.na(f0_range2)), min = round(min(f0_range2, na.rm=T),3), 
+                   max = round(max(f0_range2, na.rm=T),3), sd = round(sd(f0_range2, na.rm=T),3))
+## generate and safe respective table for f0_range2 per group =================================
+f0_range2groupFT <- flextable(f0_range2group) %>%
+  merge_v(j = c("exp", "group")) %>% 
+  valign(valign = "top") %>% 
+  theme_box() %>% set_table_properties(layout = "autofit")
+f0_range2groupFT <- add_header_row(
+  x = f0_range2groupFT, values = c("Descriptive summary for f0-range on name2 by patient group and model stimuli
+                                   Only correct production accuracy"),
+  colwidths = c(9))
+f0_range2groupFT <- align(f0_range2groupFT, i = 1, part = "header", align = "center")
+f0_range2groupFT <- bold(f0_range2groupFT, j = 1, i = ~ !is.na(exp))
+f0_range2groupFT <- fontsize(f0_range2groupFT, part = "all", size = 12)
+f0_range2groupFT <- theme_vanilla(f0_range2groupFT)
+f0_range2groupFT
+save_as_docx(
+  "Table Summary f0-Range Cue" = f0_range2groupFT, 
+  path = "group_sum_f0.docx")
+rm(f0_range2group)
+rm(f0_range2groupFT)
+# Final lengthening ---------------------------------
+# generate descriptive summary for s8reln2 (length of final vowel, s8, in % relative to duration of name2) ---------------------------------
+s8reln2group <- data_corr %>%
+  dplyr::group_by(exp, group, condition) %>%
+  dplyr::summarise(mean = round(mean(s8reln2),3), n = n(), min = round(min(s8reln2),3), 
+                   max = round(max(s8reln2),3), sd = round(sd(s8reln2),3))
+## 8B generate and safe respective table for s8reln2  =================================
+s8reln2groupFT <- flextable(s8reln2group) %>%
+  merge_v(j = c("exp", "group")) %>% 
+  valign(valign = "top") %>% 
+  theme_box() %>% set_table_properties(layout = "autofit")
+s8reln2groupFT <- add_header_row(
+  x = s8reln2groupFT, values = c("Descriptive summary for final lengthening on name2 by patient group and model stimuli
+                                   Only correct production accuracy"),
+  colwidths = c(8))
+s8reln2groupFT <- align(s8reln2groupFT, i = 1, part = "header", align = "center")
+s8reln2groupFT <- bold(s8reln2groupFT, j = 1, i = ~ !is.na(exp))
+s8reln2groupFT <- fontsize(s8reln2groupFT, part = "all", size = 12)
+s8reln2groupFT <- theme_vanilla(s8reln2groupFT)
+s8reln2groupFT
+save_as_docx(
+  "Table Summary Final Lengthening Cue" = s8reln2groupFT, 
+  path = "group_sum_FL.docx")
+rm(s8reln2group)
+rm(s8reln2groupFT)
+```
+  
+# Boxplot model-stimuli  
+```{r boxplot model stimuli, echo=TRUE, message=FALSE, warning=FALSE}
+mod_stim <- subset(data_corr, data_corr$Subj=="model_stimulus")
+# cue value distribution by condition significantly different from each other?
+mod_grou <- subset(mod_stim, mod_stim$condition=="grouped")
+mod_ungrou <- subset(mod_stim, mod_stim$condition=="ungrouped")
+# vectors / groups for cues
+x1 <- mod_grou$f0_range2
+x2 <- mod_ungrou$f0_range2
+
+y1 <- mod_grou$s8reln2
+y2 <- mod_ungrou$s8reln2
+
+z1 <- mod_grou$pause3
+z2 <- mod_ungrou$pause3
+# dependent 2-group Wilcoxon Signed Rank Test
+# where both groups are numeric
+wilcox.test(x1,x2,paired=TRUE) 
+wilcox.test(y1,y2,paired=TRUE)
+wilcox.test(z1,z2,paired=TRUE)
+# boxplot f0-range2
+f0 <- ggplot(mod_stim, aes(condition, f0_range2))
+f0_p <- f0 + geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.1) +
+  labs(
+    title = "F0 range on name2 by condition for model stimuli",
+  ) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title=element_text(size=14)) +
+  annotate("segment", x = 1, xend = 2, y = 11.5, yend = 11.5,
+  colour = "black") +
+  annotate("text", x = 1.5, y = 11, label = "Wilcoxon test
+           p-value = .031 (V=21)")
+# boxplot s8reln2
+fl <- ggplot(mod_stim, aes(condition, s8reln2))
+fl_p <- fl + geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.1) +
+  labs(
+    title = "Final Lengthening on name2 by condition for model stimuli",
+  ) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title=element_text(size=14)) +
+  annotate("segment", x = 1, xend = 2, y = 49, yend = 49,
+  colour = "black") +
+  annotate("text", x = 1.5, y = 48, label = "Wilcoxon test
+           p-value = .031 (V=21)")
+# boxplot pause3
+p3 <- ggplot(mod_stim, aes(condition, pause3))
+p3_p <- p3 + geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.1)+
+  labs(
+    title = "Pause after name2 by condition for model stimuli",
+  ) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title=element_text(size=14)) +
+  annotate("segment", x = 1, xend = 2, y = 24, yend = 24,
+  colour = "black") +
+  annotate("text", x = 1.5, y = 23, label = "Wilcoxon test
+           p-value = .031 (V=21)")
+## plot grids =================================
+require(ggpubr)
+mod_stim_cues <- ggarrange(f0_p,fl_p,p3_p, ncol=3, nrow=1)
+mod_stim_cues
+# ggsave("mod_stim_cue.jpg", plot = mod_stim_cues, width = 18, height = 10, dpi = 300)
+```
+
+  
+# Session information    
+```{r print session info}
+sessionInfo(package = NULL)
+rm(list=ls())
+```

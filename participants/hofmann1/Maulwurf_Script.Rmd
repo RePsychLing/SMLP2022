@@ -1,0 +1,696 @@
+---
+title: "Maulwurf_Preprocessing_Analysis"
+author: "Andrea Hofmann"
+date: "02.09.2021 updated `r format(Sys.time(), '%d %B, %Y')"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(vroom)
+library(lme4)
+library(lmerTest)
+library(car)
+library(ggplot2)
+library(ggeffects)
+library(dplyr)
+library(jtools)
+library(sjPlot)
+```
+  
+# Import data sets  
+
+```{r import data}
+# All ---------------------------------
+# data from all participants that completed at least the SRT task
+data <- vroom("./data/maulwurf.csv", col_types = ("fnnfnfffnfffiiffnff"))
+# Included ---------------------------------
+# subset only with participants included in the analysis
+incl <- vroom("./data/maulwurf_incl.csv", col_types = ("fnnfnfffnfffiiffnff"))
+# SRT all ---------------------------------
+# subset for included participants but only SRT task(correct and incorrect responses)
+# here information about item durations in ms included as well
+SRT <- vroom("./data/incl_SRT.csv", col_types = ("ffnnfnfnfnffnnffnffnn"))
+# SRT correct ---------------------------------
+# subset for included participants but only SRT task and only correct responses
+# here information about item durations in ms included as well
+corrSRT <- vroom("./data/incl_corr_SRT.csv", col_types = ("ffnnfnfnfnffnnffnffnn"))
+# SC ---------------------------------
+# subset for included participants but only SC task
+# two participants less included here bc they left the experiment after the SRT task
+sC <- vroom("./data/incl_SC.csv", col_types = ("fnnfnfffnfffiiffnff"))
+```
+  
+# Preprocessing  
+
+## Outlier exclusion  
+
+### First step: exclude based on zeros, RTs within 20 ms, upper and lower cutOff value  
+
+```{r outlier CutOff rt}
+# Remove zero values ---------------------------------
+# 0 RTs appear bc of a coding error within the experiment
+corrSRT$cutOffZero <- (corrSRT$rt == 0)
+outlier_zero <- subset(corrSRT, corrSRT$cutOffZero == "TRUE")
+percOut_zero <- round(length(outlier_zero$rt)/length(corrSRT$rt)*100,1)
+
+# Remove RTs before stimulus onset ---------------------------------
+# 20ms is the pause at the beginning of each stimulus
+corrSRT$cutOffStimOnset <- corrSRT$rt > 0 & corrSRT$rt < 21
+outlier_StimOnset <- subset(corrSRT, corrSRT$cutOffStimOnset == "TRUE")
+percOut_StimOnset <- round(length(outlier_StimOnset$rt)/length(corrSRT$rt)*100,1)
+
+# Remove RTs that fall within motor response planning ---------------------------------
+# up to 200ms motor response planning + execution
+corrSRT$cutOffRespPlan <- (corrSRT$rt < 221 & corrSRT$rt > 21)
+outlier_RespPlan <- subset(corrSRT, corrSRT$cutOffRespPlan == "TRUE")
+percOut_RespPlan <- round(length(outlier_RespPlan$rt)/length(corrSRT$rt)*100,1)
+
+# Upper cutOff ---------------------------------
+# each upper cutOff is the item duration plus 7 sec
+# everything above this value will be excluded from the analysis
+corrSRT$Upper <- corrSRT$item_dur + 7000
+corrSRT$cutOffUpper <- corrSRT$rt > corrSRT$Upper
+outlier_TimeOut <- subset(corrSRT, corrSRT$cutOffUpper == "TRUE")
+percOut_TimeOut <- round(length(outlier_TimeOut$rt)/length(corrSRT$rt)*100,1)
+
+# general cutOff column with boolean for cutOff = yes / no
+corrSRT$cutOff <- corrSRT$cutOffZero == TRUE | corrSRT$cutOffStimOnset == TRUE | corrSRT$cutOffRespPlan == TRUE | corrSRT$cutOffUpper == TRUE
+
+# Outlier subsets to check amounts ---------------------------------
+outlier <- subset(corrSRT, corrSRT$cutOff == "TRUE")
+# create subsets of outliers per block to check how many data points were excluded per block
+outliers_cutOff1 <- subset(outlier, Block_Nr == "1")
+outliers_cutOff2 <- subset(outlier, Block_Nr == "2")
+outliers_cutOff3 <- subset(outlier, Block_Nr == "3")
+outliers_cutOff4 <- subset(outlier, Block_Nr == "4")
+# Total outliers removed
+Out_cutOff <- round(length(outlier$rt)/length(corrSRT$rt)*100,1)
+
+# Subset without outliers for use in next step ---------------------------------
+outlier_false <- subset(corrSRT, corrSRT$cutOff == "FALSE")
+
+# Clean workspace ---------------------------------
+rm(outlier, outlier_RespPlan, outlier_StimOnset, outlier_TimeOut, outlier_zero, outliers_cutOff1, outliers_cutOff2, outliers_cutOff3, outliers_cutOff4, Out_cutOff, percOut_RespPlan, percOut_StimOnset, percOut_TimeOut, percOut_zero)
+```  
+  
+### Exclude outliers as Lammertink et al. did in their script - but 2.5SDs above the mean for each anon_ID per Block and Target  
+
+```{r outlier Lammertink SD, include=FALSE, message=FALSE, warning=FALSE}
+# Data frame with means and sds in different aggregations ---------------------------------
+# Create dataframe
+sd.out <- aggregate(rt ~ anon_ID + Block_Nr + Target, outlier_false, sd)$rt
+means.out <- aggregate(rt ~ anon_ID + Block_Nr + Target, outlier_false, base::mean)
+# Appropriate naming
+means <- means.out$rt
+Block_Nr <- means.out$Block_Nr
+Target <- means.out$Target
+anon_ID <- as.character(means.out$anon_ID)
+# Create data frame with aggregated data from above
+outliers_SD <- data.frame (
+  Block_Nr = Block_Nr,
+  anon_ID = anon_ID,
+  Target = Target,
+  m = means,
+  sd = sd.out
+)
+# Merge data ---------------------------------
+outliers.SD <- merge(outlier_false,outliers_SD, by=c("anon_ID", "Block_Nr", "Target"))
+# Second step in outlier removal based on SD criterion ---------------------------------
+# Remove outliers that are above or below 2.5 SD for each anon_ID in each Block for each Target 
+outliers.SD$outlier <- outliers.SD$rt > outliers.SD$m + 2.5*outliers.SD$sd |  outliers.SD$rt < outliers.SD$m - 2.5*outliers.SD$sd
+# Outlier subsets to check amounts---------------------------------
+outliersSD_true <- subset(outliers.SD, outlier == "TRUE")
+# create subsets of outliers per block to check how many data points were excluded per block
+outliers_SD1 <- subset(outliersSD_true, Block_Nr == "1")
+outliers_SD2 <- subset(outliersSD_true, Block_Nr == "2")
+outliers_SD3 <- subset(outliersSD_true, Block_Nr == "3")
+outliers_SD4 <- subset(outliersSD_true, Block_Nr == "4")
+# Total outliers removed
+Out_SD <- round(length(outliersSD_true$rt)/length(outlier_false$rt)*100,1)
+# Subset without outliers for use in analysis ---------------------------------
+outliersSD_false <- subset(outliers.SD, outlier == "FALSE")
+# Final analysis data set for SRT task ---------------------------------
+SRT.analysis <- subset(outliersSD_false, Block_Nr == "1" | Block_Nr == "2" | Block_Nr == "3" | Block_Nr == "4")
+# Clean workspace ---------------------------------
+rm(outlier_false, sd.out, means.out, means, Block_Nr, Target, anon_ID, outliers_SD, outliers.SD, outliersSD_true, outliers_SD1, outliers_SD2, outliers_SD3, outliers_SD4, Out_SD, outliersSD_false)
+```  
+  
+# Online measure - word monitoring SRT task  
+  
+## Check for data transformation  
+
+```{r transformation checks}
+# BoxCox to check for need of transformation ---------------------------------
+out <- MASS::boxcox(rt ~ Block_Nr * Target * age + Target * Block_Nr * anon_ID + age * Item, data = SRT.analysis)
+range(out$x[out$y > max(out$y)-qchisq(0.95,1)/2])
+out$x[which.max(out$y)]
+# log transform rts
+SRT.analysis$logRT <- log(SRT.analysis$rt)
+rm(out)
+
+'hist(SRT.analysis$rt, # histogram
+ col="peachpuff", # column color
+ border="black",
+ prob = TRUE, # show densities instead of frequencies
+ xlab = "rt",
+ main = "Density")
+lines(density(SRT.analysis$rt), # density plot
+ lwd = 2, # thickness of line
+ col = "chocolate3")
+
+hist(SRT.analysis$logRT, # histogram
+ col="peachpuff", # column color
+ border="black",
+ prob = TRUE, # show densities instead of frequencies
+ xlab = "rt",
+ main = "Density")
+lines(density(SRT.analysis$logRT), # density plot
+ lwd = 2, # thickness of line
+ col = "chocolate3")'
+```  
+  
+### Analysis  
+
+**Linear mixed model analysis**  
+```{r contrast coding and analysis}
+# Predictor Block_Nr ---------------------------------
+## Repeated contrasts =================================
+### Repeated contrasts successively test neighboring factor levels against each other
+### Block 2-1 = 2nd Learning - 1st Learning = trainingEffect
+### Block 3-2 = Disruption - 2nd learning = disruptionEffect
+### Block 4-3 = Recovery - Disruption = recoveryEffect
+# characterize
+SRT.analysis$Block_Nr <- as.character(SRT.analysis$Block_Nr)
+# apprpiate naming
+SRT.analysis$Block_Nr[SRT.analysis$Block_Nr %in% "1"] <- "1st Learning"
+SRT.analysis$Block_Nr[SRT.analysis$Block_Nr %in% "2"] <- "2nd Learning"
+SRT.analysis$Block_Nr[SRT.analysis$Block_Nr %in% "3"] <- "Disruption"
+SRT.analysis$Block_Nr[SRT.analysis$Block_Nr %in% "4"] <- "Recovery"
+# factorize
+SRT.analysis$Block <- as.factor(as.character(SRT.analysis$Block_Nr))
+SRT.analysis$Block <- factor(SRT.analysis$Block_Nr)
+### Contrast coding #############################
+contrasts(SRT.analysis$Block) <- MASS::contr.sdif(4)
+# apprpriate naming for effects
+colnames(contrasts(SRT.analysis$Block)) <- c("trainingEffect","disruptionEffect", "recoveryEffect")
+# this is what is looks like
+'             trainingEffect disruptionEffect recoveryEffect
+1st_Learning          -0.75             -0.5          -0.25
+2nd_Learning           0.25             -0.5          -0.25
+Disruption             0.25              0.5          -0.25
+Recovery               0.25              0.5           0.75'
+
+# Predictor / covariate Age in years ---------------------------------
+## Mean center =================================
+### Mean is at 0
+SRT.analysis$age <- as.numeric(SRT.analysis$age)
+SRT.analysis$c_age<-scale(SRT.analysis$age, center = TRUE, scale = FALSE)
+
+# Predictor Target ---------------------------------
+## Sum contrast / 2 =================================
+### Estimates difference between target and non-target
+### Mean of these contrasts is grand mean
+### Target present = target item = + 0.5
+### Target absent = non-target item = - 0.5
+SRT.analysis$Target <- as.character(SRT.analysis$Target)
+SRT.analysis$Target[SRT.analysis$Target %in% "present"] <- "Target syllable"
+SRT.analysis$Target[SRT.analysis$Target %in% "absent"] <- "Non-target syllable"
+SRT.analysis$Targetness <- factor(SRT.analysis$Target)
+contrasts(SRT.analysis$Targetness) <- c(-1/2,1/2)
+# apprpriate naming for effect
+colnames(contrasts(SRT.analysis$Targetness)) <- c("targetEffect")
+# this is what is looks like
+'           targetEffect
+Non-target         -0.5
+Target              0.5'
+
+# Maximal model ---------------------------------
+lmax.logRT <-
+  lmer(logRT ~ Block * Targetness * c_age + (1 + Block * Targetness | anon_ID) + (1 + c_age| Item), 
+       control = lmerControl(calc.derivs = FALSE, optCtrl=list(maxfun=100000), optimizer="bobyqa"), data = SRT.analysis)
+```
+  
+**Check normality assumption (with QQplot) for Log RT model**  
+
+**QQplot logRT model**  
+
+```{r Plot residuals of the model to check model assumptions, echo = FALSE}
+# there are still a lot of very long RTs that distort the distribution
+qqPlot(residuals(lmax.logRT))
+```
+  
+**Summary of model estimates**  
+```{r summary logRT model}
+summary(lmax.logRT)
+save(lmax.logRT, file="lmax.logRT.Rdata")
+# load("lmax.logRT.Rdata")
+sigma(lmax.logRT)
+sjPlot::tab_model((lmax.logRT), show.se = TRUE, show.stat = TRUE, file="lmaxlogRT.doc")
+```  
+  
+## Plot effects  
+
+```{r plot marginal effects}
+# marginal main effects ------------------------------------------
+## Block =================================
+pred_block <- ggpredict(lmax.logRT, c("Block"))
+plot(pred_block, connect.lines = TRUE)+
+  labs(
+    x = "Block", 
+    y = "Predicted mean values of log scaled RTs",
+  ) +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+  legend.justification = c("right", "top"),
+  legend.title = element_text(size=11, face="bold"), legend.text=element_text(size=12, face="bold")
+  )
+ggsave("./figures/Block_effect.jpg", width = 18, height = 14, dpi=300, units = "cm")
+
+## Age =================================
+pred_age <- ggpredict(lmax.logRT, c("c_age"))
+plot(pred_age) + theme_apa() + 
+  labs(
+    x = "Age (mean centered)", 
+    y = "Predicted mean values of log scaled RTs", 
+    title = "",
+    colour = "Age (mean centered)"
+  )
+ggsave("Age_Effect.jpg", width = 20, height = 14, dpi=300, units = "cm")
+
+# marginal interactions ------------------------------------------
+## age:targetness =================================
+pred_age_tar <- ggpredict(lmax.logRT, c("c_age", "Targetness"))
+plot(pred_age_tar) +
+  labs(
+    x = "Age (mean centered)", 
+    y = "Predicted mean values of log scaled RTs", 
+    title = "",
+    colour = "Type"
+  )
+ggsave("./figures/age_target.png", width = 20, height = 14, units = "cm")
+
+## targetness:age =================================
+pred_tar_age <- ggpredict(lmax.logRT, c("Targetness", "c_age"))
+plot(pred_tar_age, connect.lines = TRUE) +
+  labs(
+    x = "Target type", 
+    y = "Predicted mean values of log scaled RTs", 
+    title = "",
+    colour = "Age (mean centered)"
+  ) + theme_apa() +
+  theme(axis.text=element_text(size=14, face="bold"),
+        axis.title=element_text(size=14,face="bold"),
+    panel.background = element_rect(fill = "white") # bg of the panel
+    , plot.background = element_rect(fill = "white") # bg of the plot
+    , panel.grid.major = element_blank() # get rid of major grid
+    , panel.grid.minor = element_blank() # get rid of minor grid
+    , legend.background = element_rect(fill = "transparent") # get rid of legend bg
+    , legend.box.background = element_rect(fill = "transparent") # get rid of legend panel bg
+    , legend.position = c(.59, .99),
+  legend.justification = c("right", "top"),
+  legend.title = element_text(size=14, face="bold"), legend.text=element_text(size=14, face="bold")
+  )
+ggsave("./figures/target_age.png", width = 20, height = 14, dpi=300, units = "cm")
+```  
+  
+# Descriptive plots for response time data (SRT task)  
+  
+## Log RTs by target  
+
+```{r log RT per target}
+# Prepare aggregated data ---------------------------------
+logRT.summary <- 
+  SRT.analysis %>% 
+  group_by(Block_Nr, Target) %>%
+    summarize(ysd = sd(logRT), ymean = mean(logRT), n=n(), yse = ysd/sqrt(n))
+
+require(ggsignif)
+require(ggpubr)
+# Plot ---------------------------------
+logRT.plot <- ggplot(logRT.summary, aes(x=Block_Nr, y=ymean, colour=Target,linetype=Target, group=Target)) + 
+  geom_point(size = 2, position = position_dodge(.4)) +
+  geom_errorbar(aes(ymin = ymean-yse, ymax = ymean+yse), position = position_dodge(.4), width=.5) + 
+  geom_line(aes(linetype=Target), position=position_dodge(.4)) +
+  scale_linetype_manual(values=c("dashed", "solid")) +
+  scale_color_grey(end = 0) +
+  xlab("") +
+  ylab("Mean RT from stimulus onset (log scale)")  + 
+  theme_apa() +
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12),
+        panel.background = element_rect(fill = "white") # bg of the panel
+        , plot.background = element_rect(fill = "white") # bg of the plot
+        , panel.grid.major = element_blank() # get rid of major grid
+        , panel.grid.minor = element_blank() # get rid of minor grid
+        , legend.background = element_rect(fill = "transparent") # get rid of legend bg
+        , legend.title = element_blank()) + 
+  stat_summary(fun=mean, colour="black", geom="text", show.legend = FALSE, 
+               vjust=0.5, hjust=-0.35, aes( label=round(..y.., digits=3)), position=position_dodge(.4), size=3) +
+  geom_bracket(
+    xmin = c(1, 2, 3), xmax = c(2, 3, 4),
+    y.position = c(7.78, 7.78, 7.78), label = c("** p < .009", "* p < .05", "n.s."),
+    tip.length = 0.03, inherit.aes = FALSE, label.size = 3
+  )
+ggsave("./figures/Figure_2.jpg", logRT.plot, width = 18, height = 12, dpi = 300, units = "cm")
+```  
+  
+## RTs per age group  
+
+```{r RT plot age}
+# Prepare age grouping ---------------------------------
+SRT.analysis$age_group <- ifelse(SRT.analysis$age < 4.00, '3-year-old', ifelse(SRT.analysis$age < 5.00, '4-year-olds', ifelse(SRT.analysis$age < 6.00, '5-year-olds',ifelse(SRT.analysis$age < 7.00, '6-year-olds', ifelse(SRT.analysis$age < 8.00, '7-year-olds', '8-year-old')))))
+# subset age groups
+fourYear <- subset(SRT.analysis, SRT.analysis$age_group =="4-year-olds")
+fiveYear <- subset(SRT.analysis, SRT.analysis$age_group =="5-year-olds")
+sixYear <- subset(SRT.analysis, SRT.analysis$age_group =="6-year-olds")
+sevenYear <- subset(SRT.analysis, SRT.analysis$age_group =="7-year-olds")
+eightYear <- subset(SRT.analysis, SRT.analysis$age_group =="8-year-old")
+# Plot ---------------------------------
+meanAlllogRT.plot <- ggplot(SRT.analysis, aes(x=logRT, y=age_group)) + 
+    geom_boxplot() +
+  xlab("RT from stimulus onset (log scale)") +
+  ylab("")  + theme_bw(base_size = 9,base_family = "Helvetica") +
+  theme(axis.text=element_text(size=14, face="bold"),
+        axis.title=element_text(size=14,face="bold"),
+    panel.background = element_rect(fill = "white") # bg of the panel
+    , plot.background = element_rect(fill = "white") # bg of the plot
+    , panel.grid.major = element_blank() # get rid of major grid
+    , panel.grid.minor = element_blank() # get rid of minor grid
+    , legend.background = element_rect(fill = "transparent") # get rid of legend bg
+    , legend.box.background = element_rect(fill = "transparent") # get rid of legend panel bg
+  ) +
+  facet_grid(rows = vars(Block_Nr), scales="free_x") +
+    theme(strip.text.x = element_text(size = 14),
+          strip.text.y = element_text(size = 14))
+ggsave("./figures/boxplotanon_ID.png", width = 18, height = 14, dpi=300, units = "cm")
+```  
+  
+# SC model (accuracy data from stem completion task)  
+
+**Generalized mixed model analysis - logit link function**  
+
+```{r acc analysis, eval=TRUE}
+# Appropriate naming for predictor levels ---------------------------------
+# characterize
+sC$Target <- as.character(sC$Target)
+# rename
+sC$Target[sC$Target %in% "present"] <- "Target syllable"
+sC$Target[sC$Target %in% "absent"] <- "Non-target syllable"
+# factorize
+sC$Target <- as.factor(as.character(sC$Target))
+# characterize
+sC$Familiarity <- as.character(sC$Familiarity)
+# rename
+sC$Familiarity[sC$Familiarity %in% "new"] <- "Novel verb stem"
+sC$Familiarity[sC$Familiarity %in% "familiar"] <- "Familiar verb stem"
+# factorize
+sC$Familiarity <- as.factor(as.character(sC$Familiarity))
+
+# Contrast coding ---------------------------------
+## Predictor Familiarity =================================
+### Sum / 2 contrasts #############################
+### Tests the difference between factor levels
+### Mean is at the grand mean
+sC$Familiar <- as.factor(sC$Familiarity)
+contrasts(sC$Familiar) <- c(1/2,-1/2)
+## Predictor / covariate age =================================
+### mean center #############################
+### overall comparisons for average effects
+sC$age <- as.numeric(sC$age)
+sC$c_age<-scale(sC$age, center = TRUE, scale = FALSE)
+## Predictor Targetness =================================
+#### Sum / 2 contrasts #############################
+### Tests the difference between factor levels
+### Mean is at the grand mean
+sC$Targetness <- factor(sC$Target)
+contrasts(sC$Targetness) <- c(-1/2,1/2)
+# Modelling ---------------------------------
+sCAcc <- glmer(Accuracy ~ Targetness * c_age + Familiar * c_age + (1 + Targetness | anon_ID), control=glmerControl(optimizer="bobyqa"), data = sC, family = binomial)
+## Model output =================================
+summary(sCAcc)
+save(sCAcc, file="sCAcc.Rdata")
+tab_model(sCAcc, file="sCOdds.doc")
+tab_model(sCAcc, transform = NULL, auto.label = FALSE, file="sClogOdds.doc")
+sjPlot::tab_model(sCAcc, show.se = TRUE, show.stat = TRUE, file="sCAcc.doc")
+```  
+  
+### Calculate CIs  
+
+```{r compute confidence intervals Accuracy model intercept, warning=FALSE}
+CIs.sCAcc <- data.frame()
+pvalues.sCAcc <- data.frame()
+Intercept.profile <- profile(sCAcc, which = "(Intercept)")
+Intercept.CI <- confint(Intercept.profile)
+CIs.sCAcc <- rbind(CIs.sCAcc, Intercept.CI)
+
+Targetness1.profile <- profile(sCAcc, which = "Targetness1")
+Targetness1.CI <- confint(Targetness1.profile)
+CIs.sCAcc <- rbind(CIs.sCAcc, Targetness1.CI)
+
+c_age.profile <- profile(sCAcc, which = "c_age")
+c_age.CI <- confint(c_age.profile)
+CIs.sCAcc <- rbind(CIs.sCAcc, c_age.CI)
+
+Familiar1.profile <- profile(sCAcc, which = "Familiar1")
+Familiar1.CI <- confint(Familiar1.profile)
+CIs.sCAcc <- rbind(CIs.sCAcc, Familiar1.CI)
+
+Targetness1c_age.profile <- profile(sCAcc, which = "Targetness1:c_age")
+Targetness1c_age.CI <- confint(Targetness1c_age.profile)
+CIs.sCAcc <- rbind(CIs.sCAcc, Targetness1c_age.CI)
+
+c_ageFamiliar1.profile <- profile(sCAcc, which = "c_age:Familiar1")
+c_ageFamiliar1.CI <- confint(c_ageFamiliar1.profile)
+CIs.sCAcc <- rbind(CIs.sCAcc, c_ageFamiliar1.CI)
+
+colnames(CIs.sCAcc) <- c("CIlowLogodds", "CIupLogodds")
+CIs.sCAcc$CIlowLogodds <- round(CIs.sCAcc$CIlowLogodds,2)
+CIs.sCAcc$CIupLogodds <- round(CIs.sCAcc$CIupLogodds,2)
+```
+
+**Odds and probabilities for fixed effects accuracy model**  
+
+```{r Accuracy model compute percentage for glmer intercept (plus range confidence interval)}
+## Log-odds (= model estimate)
+## odds = exp(log-odds) or odds=P/(1-P)
+## probability (P) = odd/(1+odds)
+
+Probability <- function (odds) {
+  odds / (1+odds)
+}
+
+# Calculate odd-ratio's for each effect
+
+table_acc <- as.data.frame(fixef(sCAcc))
+colnames(table_acc) <- "Logodds"
+table_acc$Logodds <- round(table_acc$Logodds,2)
+table_acc$odds <- round(exp(table_acc$Logodds),2)
+table_acc <- cbind(table_acc,CIs.sCAcc)
+colnames(table_acc) <- c("Logodds", "odds", "CIlowLogodds", "CIupLogodds")
+
+table_acc$CIlowOdds <- round(exp(table_acc$CIlowLogodds),2)
+table_acc$CIupOdds <- round(exp(table_acc$CIupLogodds),2)
+
+print(table_acc)
+
+# Calculate probability for intercept only
+Prob_intercept <- round((Probability(table_acc$odds[1])*100),1)
+Prob_intercept_CIL <- round((Probability(table_acc$CIlowOdds[1])*100),1)
+Prob_intercept_CIH <- round((Probability(table_acc$CIupOdds[1])*100),1)
+
+paste("Probability interecept = ",Prob_intercept,"%",sep="")
+paste("Probability interecept 95% CI low = ",Prob_intercept_CIL,"%",sep="")
+paste("Probability interecept 95% CI high = ",Prob_intercept_CIH,"%",sep="")
+```
+  
+## Plot effects  
+
+```{r plot sc model predictions}
+# Plot all coefficients plus intercept with probabilities ---------------------------------
+pred_scAcc <- plot_model(sCAcc, show.intercept = TRUE, scale = TRUE, colors = "bw", show.values = TRUE, show.p=TRUE, transform = "plogis", expand.grid = TRUE) +
+  theme_sjplot2() + 
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12),
+    panel.background = element_rect(fill = "white") # bg of the panel
+    , plot.background = element_rect(fill = "white") # bg of the plot
+    ) +
+  scale_x_discrete(labels=list
+                   (
+    Targetness1 = "Target \nvs.\n non-target syllable", 
+    c_age = "Age (mean centered)",
+    Familiar1 = "Familiar \nvs.\n novel verb stem",
+    'Targetness1:c_age' = "Target / non-target syllable \n: \nage (mean centered)",
+    'c_age:Familiar1' = "Familiar / novel verb stem \n: \nage (mean centered)"
+    )
+  )
+ggsave("./figures/sc_accuracy_model.jpg", pred_scAcc, width = 18, height = 14, dpi = 300, units = "cm")
+
+# Odds ratio ---------------------------------
+plot_model(sCAcc, show.values = TRUE, value.offset = .3)
+```  
+  
+# Descriptive plots for accuracy data (stem completion task)  
+
+```{r plot A overall accuracy B familiarity C targetness scores, echo=FALSE, warning=FALSE}
+require(gridExtra )
+# Figure A: overall response accuracy ---------------------------------
+## Aggregate =================================
+sC$Accuracy <- as.numeric(as.character(sC$Accuracy))
+overall.acc <- aggregate(Accuracy ~ anon_ID, sC, mean)
+## Prepare plot =================================
+plot.acc <- ggplot(overall.acc, aes(x=0, y=Accuracy)) +
+  labs(x= "All responses", y = "Proportion utterances correct") +
+  theme_bw(base_size = 12) + xlim(-1/2,1/2)+ ylim(0,1)+ theme(
+    panel.background = element_rect(fill = "white") # bg of the panel
+    , plot.background = element_rect(fill = "white") # bg of the plot
+    , panel.grid.major = element_blank() # get rid of major grid
+    , panel.grid.minor = element_blank()# get rid of minor grid
+    , axis.text.x = element_blank()
+    , axis.ticks.x = element_blank()
+    #,axis.title.x = element_blank()
+    , legend.background = element_rect(fill = "transparent") # get rid of legend bg
+    , legend.box.background = element_rect(fill = "transparent")) # get rid of legend panel bg
+## violine plot overall =================================
+violin <- plot.acc + geom_violin(trim = FALSE, fill='lightgrey', color = "black", size=0.5) +
+  geom_dotplot(binaxis = "y", stackdir = "center", fill="white", dotsize=0.2, alpha = 0.8)  + 
+  guides(size= "none") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar", size=0.4, width = 0.08) +
+  stat_summary(fun = mean,
+               geom = "point", size=6, shape=4) + 
+  stat_summary(fun.y=mean, colour="black", geom="text", show_guide = FALSE, 
+               vjust=0.26, hjust=-0.42, aes( label=round(..y.., digits=2))) +
+  annotate("text", x = -0.42, y = 1, label = "A",cex=8)
+# Figure B: familiarity ---------------------------------
+## Aggregate =================================
+overall.acc.gen <- aggregate(Accuracy ~ anon_ID + Familiarity, sC, mean)
+overall.acc.gen$Familiarity <- factor(overall.acc.gen$Familiarity, levels=c("familiar", "new"), labels=c("Familiar \nverb stem", "Novel \nverb stem"))
+## Prepare plot =================================
+plot.acc.fam <- ggplot(overall.acc.gen, aes(x= Familiarity,y=Accuracy)) + 
+  labs(x= "", y = "Proportion utterances correct") +
+  theme_bw(base_size = 12) + ylim(0,1)+ 
+  theme(
+    panel.background = element_rect(fill = "white") # bg of the panel
+    , plot.background = element_rect(fill = "white") # bg of the plot
+    , panel.grid.major = element_blank() # get rid of major grid
+    , panel.grid.minor = element_blank()# get rid of minor grid
+    , axis.text.x = element_text(size=12)
+    , axis.ticks.x = element_blank()
+    ,axis.title.x = element_blank()
+    , legend.background = element_rect(fill = "transparent") # get rid of legend bg
+    , legend.box.background = element_rect(fill = "transparent"),
+    axis.title.y=element_blank()
+    ) # get rid of legend panel bg
+## violine plot familiarity =================================
+violin.fam <- plot.acc.fam + 
+  geom_violin(trim = FALSE, fill='lightgrey', color = "black", size=0.5) +
+  geom_dotplot(binaxis = "y", stackdir = "center", fill="white", dotsize=0.2, alpha = 0.8)  + 
+  guides(size= "none") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar", size=0.4, width = 0.08) +
+  stat_summary(fun = mean,
+               geom = "point", size=6, shape=4) +
+  stat_summary(fun.y=mean, colour="black", geom="text", show_guide = FALSE, 
+               vjust=0.26, hjust=-0.42, aes( label=round(..y.., digits=2))) +
+  annotate("text", x = 0.58, y = 1, label = "B",cex=8)
+# Figure C: targetness ---------------------------------
+## Aggregate =================================
+overall.acc.tar <- aggregate(Accuracy ~ anon_ID + Target, sC, mean)
+overall.acc.tar$Target <- factor(overall.acc.tar$Target, levels=c("absent", "present"), labels=c("Non-target \nsyllable", "Target \nsyllable"))
+## Prepare plot =================================
+plot.acc.targetness <- ggplot(overall.acc.tar, aes(x= Target,y=Accuracy)) + 
+  labs(x= "Stem completion task", y = "Proportion utterances correct") +
+  theme_bw(base_size = 12) + ylim(0,1)+ theme(
+    panel.background = element_rect(fill = "white") # bg of the panel
+    , plot.background = element_rect(fill = "white") # bg of the plot
+    , panel.grid.major = element_blank() # get rid of major grid
+    , panel.grid.minor = element_blank()# get rid of minor grid
+    , axis.text.x = element_text(size=12)
+    #, axis.ticks.y = element_blank()
+    , axis.title.x = element_blank()
+    , legend.background = element_rect(fill = "transparent") # get rid of legend bg
+    , legend.box.background = element_rect(fill = "transparent"),
+    axis.title.y=element_blank()
+    ) # get rid of legend panel bg
+## violine plot targetness =================================
+violin.targetness <- plot.acc.targetness + 
+  geom_violin(trim = FALSE, fill='lightgrey', color = "black", size=0.5) +
+  geom_dotplot(binaxis = "y", stackdir = "center", fill="white", dotsize=0.2, alpha = 0.8)  + 
+  guides(size= "none") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar", size=0.4, width = 0.08) +
+  stat_summary(fun = mean,
+               geom = "point", size=6, shape=4) +
+  stat_summary(fun.y=mean, colour="black", geom="text", show_guide = FALSE, 
+               vjust=0.26, hjust=-0.42, aes( label=round(..y.., digits=2))) +
+  annotate("text", x = 0.58, y = 1, label = "C",cex=8)
+# Merge all plots and save ---------------------------------
+violingrid <- grid.arrange(violin,violin.fam, violin.targetness,nrow=1)
+ggsave("./figures/Figure_3.jpg", violingrid, width = 18, height = 14, units = "cm")
+```
+  
+# Learning score  
+
+```{r learning score}
+# remove p12 - left the sc task after two items
+# remove p10 - left after SRT task
+SRT.analysis <- subset(SRT.analysis, SRT.analysis$anon_ID!="p12" & SRT.analysis$anon_ID!="p10")
+# Disruption score ---------------------------------
+# compute individual disruption scores
+# mean of the differences btw 2nd learning block and disruption AND difference btw recovery and disruption
+# this can be thought of as the height of the peak (if there is any) for the disruption block
+DisruptionScore.df <- aggregate(logRT ~ anon_ID + Block_Nr, SRT.analysis,mean)
+DisruptionRegulars.df <- subset(DisruptionScore.df, Block_Nr == "2nd Learning" | Block_Nr == "Recovery")
+
+DisruptionRegulars.df <- aggregate(logRT ~ anon_ID, DisruptionRegulars.df,mean)
+colnames(DisruptionRegulars.df) <- c("anon_ID", "logRTregular")
+
+DisruptionRandom.df <- subset(DisruptionScore.df, Block_Nr == "Disruption")
+DisruptionRandom.df <- subset(DisruptionRandom.df, select = c("anon_ID", "logRT"))
+colnames(DisruptionRandom.df) <- c("anon_ID", "logRTrandom")
+
+DisruptionScore.df <- merge(DisruptionRandom.df,DisruptionRegulars.df, by = c("anon_ID"))
+DisruptionScore.df$DisruptionScore <- DisruptionScore.df$logRTrandom - DisruptionScore.df$logRTregular
+DisruptionScore.df <- subset(DisruptionScore.df, select = c("anon_ID", "DisruptionScore"))
+
+# Accuracy score ---------------------------------
+# compute individual accuracy scores for the stem completion task
+SCScore.df <- aggregate(Accuracy ~ anon_ID, sC, mean)
+colnames(SCScore.df) <- c("anon_ID", "SC_Score")
+
+# Learning score ---------------------------------
+LearningScores.df <- merge(DisruptionScore.df, SCScore.df, by= c("anon_ID"))
+LearningScores.df$DisruptionScore <- round(LearningScores.df$DisruptionScore,4)
+LearningScores.df$SC_Score <- round(LearningScores.df$SC_Score,4)
+
+# Correlation plot ---------------------------------
+Correlate.plot <- ggplot(LearningScores.df, aes(x=DisruptionScore, y=SC_Score)) +
+    geom_point(shape=3, size=2, color="darkred") +    # Use hollow circles
+    geom_smooth(method=lm, se = FALSE) + # Add linear regression line # (by default includes 95% CI)
+    xlab("Disruption Peak") +
+  ylab("Response accuracy in stem completion task")  + theme_bw(base_size = 18, base_family = "Helvetica") + theme(axis.text.x = element_text(size=18),axis.text.y = element_text(size=18))
+print(Correlate.plot)
+# Pearson correlation ---------------------------------
+cor.test(LearningScores.df$DisruptionScore, LearningScores.df$SC_Score)
+```
+
+**Comparison of SRT disruption peak and SC accuracy score by means of a model comparison**  
+```{r correlation SRT and SC learning scores via model comparison, echo =TRUE}
+# Merge learning scores with SRT.analysis ---------------------------------
+SRT.analysis <- merge(SRT.analysis, SCScore.df, by = c("anon_ID"))
+# Scale learning score ---------------------------------
+## Scale SC score as it will be added as a continuous predictor to the RT model
+SRT.analysis$SC_Score_scaled <- scale(SRT.analysis$SC_Score)
+# Run models ---------------------------------
+## Run RT model again with REML = false (otherwise models can't be compared)
+SRT.analysisLmm <- lmer(logRT ~ Block * Targetness * c_age + (1 + Block * Targetness | anon_ID) + (1 + c_age | Item), control = lmerControl(optCtrl=list(maxfun=100000),calc.derivs = FALSE, optimizer="bobyqa"), REML=FALSE, data = SRT.analysis)
+## Run RT model plus learning score as predictor
+SRT.analysisLmmPlus <- lmer(logRT ~ Block * Targetness * c_age + SC_Score_scaled + (1 + Block * Targetness | anon_ID) + (1 + c_age | Item), control = lmerControl(optCtrl=list(maxfun=100000),calc.derivs = FALSE, optimizer="bobyqa"), REML=FALSE, data = SRT.analysis)
+# Anova model comparison ---------------------------------
+anova(SRT.analysisLmm, SRT.analysisLmmPlus)
+```
+
+  

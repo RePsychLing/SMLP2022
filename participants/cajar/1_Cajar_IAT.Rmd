@@ -1,0 +1,146 @@
+---
+title: "Detecting faked IATs via task-switch costs"
+author: Anke Cajar 
+date: (data from André Krügel)
+output:
+  pdf_document:
+    toc: no
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Background on data
+### This is data from an experiment showing that we can reliably detect whether outcomes from the Implicit Association Test (IAT) are faked by analysing task-switch costs in the combined blocks of the IAT.* Every participant performed two IATs: the control group performed the same normative IAT twice and the faking group was instructed to fake the second IAT by deliberately slowing down response times in the compatible block. It has been shown that switches from a target-concept word to an attribute-dimension word between consecutive trials produces stronger switch costs (i.e., response-time differences between task-repetition and task-switch trials) in the incompatible block than in the compatible block. The present data show that even after successful faking of the IAT, these switch costs are preserved (although the true compatible block became the faked incompatible block). Thus, switch costs can be used to detect IAT faking reliably and with high accuracy.
+
+### * Background on the IAT and faking strategies: The IAT measures people's implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories---two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.
+
+
+# Variables needed 
+### 2 x 2 x 2 x 2 factorial mixed design
+### Data table on a trial-by-trial basis:
+* ID: Participant ID
+* Item: ID for presented word
+* Time (within-subject): 
+  + Baseline: first IAT (normative IAT)
+  + Retest: second IAT (normative or faked, depending on Group)
+* Group (between-subject): 
+  + No_Faking: control group, where people took the same normative IAT twice
+  + Faking: experimental group, where people were instructed to fake the retest IAT by slowing down RTs in the compatible block
+* Block (within-subject): 
+  + Compatible: IAT combined block with shorter RTs
+  + Incompatible: IAT combined block with longer RTs
+* TaskSwitch (within-subject): 
+  + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next 
+  + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next 
+* RT: trial response time 
+
+
+# Load packages
+```{r, message=FALSE}
+rm(list=ls())
+
+library(tidyverse)
+library(MASS)
+library(lme4)
+library(car)
+```
+
+# Read data and change factor levels
+```{r}
+iat <- read.table("IAT_data.dat", header=TRUE, stringsAsFactors=TRUE)
+
+iat <- iat %>% mutate(Group = relevel(Group, ref="No_Faking"))
+str(iat)
+```
+
+# Remove RT outliers
+### (see IAT scoring procedure from Greenwald et al., 2003)
+
+```{r}
+iat <- iat %>% 
+  filter(RT >= 400 & RT <= 10000)
+
+summary(iat$RT)
+```
+
+# Plot switch costs
+```{r}
+switch_costs <- iat %>% 
+  group_by(Time, Group, Block, TaskSwitch) %>%
+  summarise(M = mean(RT), SD=sd(RT), N=n(), SE=SD/sqrt(N))
+
+fig_RT <- ggplot(switch_costs, aes(x=TaskSwitch, y=M, color=Block)) +
+  geom_point(size=2) +
+  geom_line(size=0.7, aes(group=Block)) +
+  geom_errorbar(aes(ymin=M-SE, ymax=M+SE), width=.1, size=0.7) +
+  facet_grid(Time~Group) +
+  labs(x="Task switch", y="Response time [ms]") +
+  theme_bw(base_size=13)
+print(fig_RT)
+```
+
+# LMMs for switch costs 
+## Define contrasts
+```{r}
+contrasts(iat$Group) <- contr.treatment(2)
+contrasts(iat$Time) <- contr.treatment(2)
+contrasts(iat$Block) <- contr.sum(2)/-2
+contrasts(iat$TaskSwitch) <- contr.sum(2)/-2
+```
+
+## Transform RTs
+```{r}
+lambdaList <- boxcox(lm(RT ~ Group*Time*Block*TaskSwitch, data=iat))
+(lambda <- lambdaList$x[which.max(lambdaList$y)])
+
+hist(1/iat$RT)
+```
+
+## Run LMMs
+### Models that don't converge (I tried model selection by starting with the maximal model and working my way down to the minimal model):
+```{r}
+# model1 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time*Block*TaskSwitch|ID) + (1 + Time*Block*TaskSwitch|Item), data=iat, REML=FALSE)
+# model2 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time*Block*TaskSwitch||ID) + (1 + Time*Block*TaskSwitch||Item), data=iat, REML=FALSE)
+# model3 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time+Block+TaskSwitch|ID) + (1 + Time+Block+TaskSwitch|Item), data=iat, REML=FALSE)
+# model4 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time+Block+TaskSwitch||ID) + (1 + Time+Block+TaskSwitch||Item), data=iat, REML=FALSE)
+# model5 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time*Block*TaskSwitch|ID) + (1|Item), data=iat, REML=FALSE)
+# model6 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time*Block*TaskSwitch||ID) + (1|Item), data=iat, REML=FALSE)
+# model7 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time+Block+TaskSwitch|ID) + (1|Item), data=iat, REML=FALSE)
+# model8 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time+Block+TaskSwitch||ID) + (1|Item), data=iat, REML=FALSE)
+# model9 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time+TaskSwitch||ID) + (1|Item), data=iat, REML=FALSE)
+# model10 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time||ID) + (1|Item), data=iat, REML=FALSE)
+# model11 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1 + Time||ID) + (1 + Time||Item), data=iat, REML=FALSE)
+```
+
+### Minimal model works:
+```{r}
+model12 <- lmer(1/RT ~ Group*Time*Block*TaskSwitch + (1|ID) + (1|Item), data=iat, REML=FALSE)
+```
+
+### Surprisingly, this one also works (same as model 7, but with different order of factors):
+```{r}
+model13 <- lmer(1/RT ~ Group*Time*TaskSwitch*Block + (1 + Time+TaskSwitch+Block|ID) + (1|Item), data=iat, REML=FALSE)
+summary(model13)
+```
+
+## Regression diagnostics for model 13
+```{r}
+hist(resid(model13))
+
+qqPlot(resid(model13))
+
+qplot(x=fitted(model13), y=resid(model13), geom="point",  shape=I("."), 
+      xlab="Fitted values", ylab="Standardized residuals") + 
+  geom_hline(yintercept=0) + theme_bw() + geom_hex() + geom_density2d(size=1) 
+```
+
+# Analysis/modeling issues:
+* Is the contrast coding appropriate?
+* What is currently the best method for model selection (concerning questions like: from maximal to minimal model, doing rePCA, ...)? Is the stuff from the RePsychLing package and vignettes still the way to do it?
+* How do I make sure that the random effects structure of my selected model is really supported by the data (again, rePCA?)?
+* How do I decide which optimizer to use for model fitting? I heard bobyqa is supposed to be good...
+* It seems that the order in which I put the factors in the formula changes the outcome. How do I decide on the order (most important factor first, than second etc.?)?
+* Model results (model 13) don't really fit the mean response time/switch costs plot, as part of the effects you see in the figure goes into the random effects (By chance, there were more older subjects > 45 years in the no-faking group, who had considerably longer mean response times in the baseline IAT). How do I report this in a paper? Should I plot the fixed effects from the model instead of mean response times (which I'd rather not)?

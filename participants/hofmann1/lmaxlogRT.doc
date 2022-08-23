@@ -1,0 +1,240 @@
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">&nbsp;</th>
+<th colspan="5" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">log RT</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">Predictors</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">std. Error</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">Statistic</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">p</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.66</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.59&nbsp;&ndash;&nbsp;7.74</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">195.18</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>&lt;0.001</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlocktrainingEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.08</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.13&nbsp;&ndash;&nbsp;-0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.74</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.006</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlockdisruptionEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.00&nbsp;&ndash;&nbsp;0.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.041</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlockrecoveryEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.09&nbsp;&ndash;&nbsp;0.00</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.75</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.080</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">TargetnesstargetEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.04&nbsp;&ndash;&nbsp;-0.00</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.31</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.021</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">c age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.16&nbsp;&ndash;&nbsp;-0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.66</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.008</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlocktrainingEffect *<br>TargetnesstargetEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.06&nbsp;&ndash;&nbsp;0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.44</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.662</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlockdisruptionEffect *<br>TargetnesstargetEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.11&nbsp;&ndash;&nbsp;0.06</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.61</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.541</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlockrecoveryEffect *<br>TargetnesstargetEffect</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.08&nbsp;&ndash;&nbsp;0.06</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.30</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.765</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlocktrainingEffect * c<br>age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.01&nbsp;&ndash;&nbsp;0.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.59</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.112</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlockdisruptionEffect * c<br>age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.01&nbsp;&ndash;&nbsp;0.07</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.46</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.143</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">BlockrecoveryEffect * c<br>age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.06&nbsp;&ndash;&nbsp;0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.293</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">TargetnesstargetEffect *<br>c age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.03&nbsp;&ndash;&nbsp;-0.00</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.043</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(BlocktrainingEffect *<br>TargetnesstargetEffect) *<br>c age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.00</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.05&nbsp;&ndash;&nbsp;0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.24</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.813</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(BlockdisruptionEffect *<br>TargetnesstargetEffect) *<br>c age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.04&nbsp;&ndash;&nbsp;0.11</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.87</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.384</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(BlockrecoveryEffect *<br>TargetnesstargetEffect) *<br>c age</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.05&nbsp;&ndash;&nbsp;0.07</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.24</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.808</td>
+</tr>
+<tr>
+<td colspan="6" style="font-weight:bold; text-align:left; padding-top:.8em;">Random Effects</td>
+</tr>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.08</td>
+</tr>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub> <sub>Item</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.00</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub> <sub>anon_ID</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.08</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>Item.c_age</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.00</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.BlocktrainingEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.04</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.BlockdisruptionEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.02</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.BlockrecoveryEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.02</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.00</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.BlocktrainingEffect:TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.01</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.BlockdisruptionEffect:TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.07</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>11</sub> <sub>anon_ID.BlockrecoveryEffect:TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.03</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>Item</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">-0.91</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.BlocktrainingEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.35</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.BlockdisruptionEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.05</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.BlockrecoveryEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">-0.41</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">-0.55</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.BlocktrainingEffect:TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.26</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.BlockdisruptionEffect:TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">-0.39</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&rho;<sub>01</sub> <sub>anon_ID.BlockrecoveryEffect:TargetnesstargetEffect</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.63</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">N <sub>anon_ID</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">52</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">N <sub>Item</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">96</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">Observations</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="5">6335</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">Marginal R<sup>2</sup> / Conditional R<sup>2</sup></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="5">0.152 / NA</td>
+</tr>
+
+</table>
+

@@ -1,0 +1,872 @@
+---
+title: "Analysis_Comprehension_Exp8"
+author: "Andrea Hofmann"
+date: "19.10.2021  updated `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    df_print: paged
+    toc: true # table of content true
+    toc_float: true #always be visible even when the document is scrolled
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    number_sections: true  ## if you want number sections at each table header
+    theme: united  # many options for theme, this one is my favorite.
+    highlight: tango  # specifies the syntax highlighting style
+editor_options: 
+  chunk_output_type: console
+---
+# Setup  
+```{r setup, include=FALSE}
+rm(list=ls())
+library(lmerTest)
+library(vroom)
+library(tidyverse)
+library(MASS)
+library(broom)
+library(ggpubr)
+```
+  
+# *Import*  
+```{r import and wrangle data, echo=TRUE, message=FALSE, warning=FALSE}
+# note compact declaration of variable types
+comp <-  vroom("data/comp.csv", col_types="cffnncfffn")
+```
+  
+# Raw data plot  
+```{r plot raw, echo=TRUE, message=FALSE, warning=FALSE}
+require(gridExtra)
+require(grid)
+require(gridtext)
+# scatterplot for means
+## subsets
+grouped <- subset(comp, comp$condition == "grouped")
+ungrouped <- subset(comp, comp$condition == "ungrouped")
+## function that saves values "percent" scale 
+perc <- function(x, na.rm = FALSE) formatC((x *100))
+numer <- function(x, na.rm = FALSE) as.numeric(x)
+### create data frame that will be used to draw different chance areas later in the plot
+### this is just a hack thus another chance range can be drawn for each condition
+ungr <- data.frame(condition = c("ungrouped"))
+grpd <- data.frame(condition = c("grouped"))
+## summarise data - mean accuracy per manipulation and group for each subset
+## apply "percent" scaling function
+### ungrouped
+mean_perc_grpd <-
+  grouped %>%
+  group_by(manip, group) %>%
+  dplyr::summarise(across(accuracy, list(mean = mean, sd = sd, se = ~sd(.x)/sqrt(length(.x))))) %>%
+  mutate_at(vars(matches("accuracy_")), perc) %>%
+  mutate_at(vars(matches("accuracy_")), numer)
+### ungrouped
+mean_perc_ungrouped <-
+  ungrouped %>%
+  group_by(manip, group) %>%
+  dplyr::summarise(across(accuracy, list(mean = mean, sd = sd, se = ~sd(.x)/sqrt(length(.x))))) %>%
+  mutate_at(vars(matches("accuracy_")), perc) %>%
+  mutate_at(vars(matches("accuracy_")), numer)
+## scatterplot with chance range as rectangle
+### grouped
+grpd.Plot <- mean_perc_grpd %>%
+  ggplot(aes(x = factor(manip, level=c('max3', 'maxLR', 'maxL', 'maxR', 'min3')), y = accuracy_mean)) +
+  ggtitle("grouped") +
+  geom_point(aes(shape=group, color=group), position = position_dodge2(width = .5), size=4) +
+  # geom_line(aes(group=group), size = 1, linetype=c("dashed"), alpha = .5)+
+  scale_shape_manual(values=c(15, 17, 16)) +
+  scale_y_continuous(limits = c(10,100))+
+  #scale_x_discrete(limits=c("mG_max3","oG_min3"))  +
+  geom_errorbar(aes(ymin=accuracy_mean-accuracy_se, ymax=accuracy_mean+accuracy_se), position = position_dodge2(width = .5), width=.5) +
+  geom_rect(data = data.frame(condition = grpd), aes(xmin = 0, xmax = Inf, ymin = 25, ymax = 75), alpha = 0.2, fill="grey", color="black", inherit.aes = FALSE) +
+  labs(
+    x = "",
+    y = "mean % correct identification target condition") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = c(0.5,0.5), size=22),
+        axis.text=element_text(size=20, color="black"), 
+        axis.title=element_text(size=22, color="black"),
+        #axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        legend.title = element_blank(),
+        legend.text=element_text(size=22)) +
+  theme(legend.position="bottom")
+grpd.Plot
+### ungrouped
+ungrouped.Plot <- mean_perc_ungrouped %>%
+  ggplot(aes(x = manip, y = accuracy_mean)) +
+  ggtitle("ungrouped") +
+  geom_point(aes(shape=group, color=group), position = position_dodge2(width = .5), size=4) +
+  # geom_line(aes(group=group), size = 1, linetype=c("dashed"), alpha = .5)+
+  scale_shape_manual(values=c(15, 17, 16)) +
+  scale_x_discrete(limits=c("min3","maxLR"))  +
+  scale_y_continuous(limits = c(10,100))+
+  geom_errorbar(aes(ymin=accuracy_mean-accuracy_se, ymax=accuracy_mean+accuracy_se), position = position_dodge2(width = .5), width=.5) +
+  geom_rect(data = data.frame(condition = ungr), aes(xmin = 0, xmax = Inf, ymin = 26.67, ymax = 73.33), alpha = 0.2, fill="grey", color="black", inherit.aes = FALSE) +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = c(0.5,0.5), size=22),
+        axis.text=element_text(size=20, color="black"), 
+        axis.title=element_text(size=22, color="black"),
+        legend.title=element_blank())
+ungrouped.Plot
+# Remove axis titles from all plots
+p = list(grpd.Plot, ungrouped.Plot) %>% map(~.x + labs(x=NULL, y=NULL)+theme(legend.position="none"))
+# plotmath expressions
+yleft <- textGrob(expression(paste("mean % correct identification target condition")), 
+                  rot = 90, gp = gpar(fontsize = 22))
+
+bottom <- textGrob("levels of manipulation", gp = gpar(fontsize = 22))
+#extract legend
+#https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
+# Lay out plots
+uni <- grid.arrange(arrangeGrob(grobs=p,ncol = 2, nrow = 1, left = yleft), legend=g_legend(grpd.Plot), nrow=2,heights=c(25, 1))
+# ggsave("Accuracy.jpg", plot = uni, width = 12, height = 12, dpi = 300)
+# clean workspace ---------------------------------
+ls()
+rm(bottom, grpd, grpd.Plot, grouped, g_legend, mean_perc_grpd, mean_perc_ungrouped, ungr, ungrouped.Plot, ungrouped, numer, p, perc, uni, yleft)
+```
+
+  
+# Data and analysis description  
+*participant groups*  
+  - RHDP, LHDP, CP  
+
+*conditions*  
+  - grouped (with prosodic boundary), ungrouped (without prosodic boundary)  
+
+*manipulations*  
+
+  - grouped  
+    max3 | maxLR | maxL | maxR | min3  
+
+  - ungrouped  
+    maxLR | min3  
+  
+1. *ungrouped model*  
+  - comparisons  
+    **group**  
+      RHDP vs CP | LHDP vs CP  
+    **manipulation**  
+      ungrouped-min3 vs. ungrouped-maxLR  
+  - interactions  
+      group * manipulation  
+
+2. *grouped model*  
+  **comparisons**  
+      group  
+        RHDP vs CP | LHDP vs CP  
+      manipulation  
+        max3 vs. maxLR | maxLR vs. maxR | maxL vs. maxR | maxL vs. min3  
+  **interactions**  
+        group * manipulation  
+  
+# Analysis  
+## ungrouped data  
+### *Contrast coding*    
+```{r ungr contrasts, echo=TRUE, message=FALSE, warning=FALSE}
+# subset data - only ungrouped ---------------------------------
+data_ungr <- filter(comp, condition %in% c ("ungrouped"))
+# View(data_ungr)
+# summary(data_ungr)
+# Factorize predictors variables ---------------------------------
+################## group
+class(data_ungr$group) # factor 
+# data_ungr$group <- as.factor(data_ungr$group)
+## check level order 
+levels(data_ungr$group) # "CP" "LHDP" "RHDP"
+data_ungr$group <- factor(data_ungr$group, levels = c("LHDP", "CP", "RHDP"))
+################## exp
+class(data_ungr$manip) # factor - still factorize bc its only 2 of 5 levels
+data_ungr$manip <- as.factor(as.character(data_ungr$manip))
+## check level order
+levels(data_ungr$manip) # "maxLR" "min3"
+# contrast code predictor variables ---------------------------------
+################## group
+## assign repeated / sliding difference contrast for group
+contrasts(data_ungr$group) <- contr.sdif(3)
+contrasts(data_ungr$group)
+'           2-1        3-2
+LHDP -0.6666667 -0.3333333
+CP    0.3333333 -0.3333333
+RHDP  0.3333333  0.6666667'
+################## exp
+## assign sum/2 contrast for manipulation
+contrasts(data_ungr$manip) <- contr.sum(2)/2
+contrasts(data_ungr$manip)
+'      [,1]
+maxLR  0.5
+min3  -0.5'
+# generate model matrix  ---------------------------------
+ungr_mm <- data_ungr
+mm <- model.matrix(~manip*group, data_ungr)
+colnames(mm)
+## create new col in all from mm cols =================================
+# I renamed the col to reflect the level comparisons
+# manip1          - max.min
+# group2-1        - cp.lhd
+# group3-2        - rhd.cp
+# manip1:group2-1 - max.min_cp.lhd
+# manip1:group3-2 - max.min_rhd.cp
+ungr_mm$max.min          <-mm[,2]
+ungr_mm$cp.lhd           <-mm[,3]
+ungr_mm$rhd.cp           <-mm[,4]
+ungr_mm$max.min_cp.lhd   <-mm[,5]
+ungr_mm$max.min_rhd.cp   <-mm[,6]
+# clean workspace ---------------------------------
+rm(mm)
+```
+
+### rePCA  
+*ungrouped data model reduction*  
+```{r ungr model reduction, echo=TRUE, message=FALSE, warning=FALSE}
+# INITIAL model ---------------------------------
+summary(ungr_i <- glmer(accuracy ~ manip*group+
+                 (1+manip|Subj)+
+                 (1+group|item),
+               family="binomial",
+               control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+               data_ungr))
+# isSingular
+## INITIAL model with indicator variables =================================
+summary(m0_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.min_rhd.cp+
+                          (1+max.min|Subj)+
+                          (1+cp.lhd+rhd.cp|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        ungr_mm))
+# isSingular
+# correlations seem okay for item
+# but not perfect for Subj
+    'Subj   (Intercept) 3.3041   1.8177              
+            max.min     0.2696   0.5192   -1.00 # not optimal'
+## check rePCA output =================================
+summary(rePCA(m0_ungr))
+# 2 of 3 components for item | 1 of 2 for Subj contribute (variance)
+# try model reduction of randEff ---------------------------------
+## start with ZERO CORRELATION model =================================
+summary(zcp_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.min_rhd.cp+
+                   (1+max.min||Subj)+
+                   (1+cp.lhd+rhd.cp||item),
+                 family="binomial",
+                 control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                 ungr_mm))
+# isSingular
+    'Random effects:
+     Groups Name        Variance  Std.Dev. 
+     Subj   (Intercept) 3.079e+00 1.755e+00
+     Subj.1 max.min     1.127e-14 1.062e-07 # no variance
+     item   (Intercept) 1.737e-01 4.167e-01
+     item.1 cp.lhd      0.000e+00 0.000e+00 # no variance
+     item.2 rhd.cp      4.943e-02 2.223e-01
+    Number of obs: 1620, groups:  Subj, 54; item, 30'
+## ANOVA model comparison - initial and zcp model =================================
+anova(m0_ungr, zcp_ungr)
+# not significant, AIC smaller for zcp_ungr - preferred
+## iterative reduction of randEff =================================
+### FIRST #############################
+# try exclusion of "max.min" as slope per Subj - intercept only
+summary(zcp1_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.min_rhd.cp+
+                            (1|Subj)+
+                            (1+cp.lhd+rhd.cp||item),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                          ungr_mm))
+# isSingular
+    'Random effects:
+     Groups Name        Variance Std.Dev.
+     Subj   (Intercept) 3.07862  1.7546  
+     item   (Intercept) 0.17368  0.4167  
+     item.1 cp.lhd      0.00000  0.0000 # no variance  
+     item.2 rhd.cp      0.04943  0.2223  
+    Number of obs: 1620, groups:  Subj, 54; item, 30'
+## check rePCA output =================================
+summary(rePCA(zcp1_ungr))
+# 1 of 3 components for item has zero variance | Subj intercept has 100% variance
+### ANOVA model comparison - zcp - reduced zcp model #############################
+anova(zcp_ungr, zcp1_ungr)
+# not significant, AIC smaller for zcp1_ungr - preferred
+### SECOND #############################
+# try exclusion of "cp.lhd" as slope per item
+summary(zcp2_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.min_rhd.cp+
+                            (1|Subj)+
+                            (1+rhd.cp||item),
+                          family="binomial",
+                          control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                          ungr_mm))
+'Random effects:
+ Groups Name        Variance Std.Dev.
+ Subj   (Intercept) 3.07862  1.7546  
+ item   (Intercept) 0.17368  0.4167  
+ item.1 rhd.cp      0.04943  0.2223  
+Number of obs: 1620, groups:  Subj, 54; item, 30'
+## check rePCA output =================================
+summary(rePCA(zcp2_ungr))
+# both components for item have reasonable variance resolution
+### ANOVA model comparison - zcp1_ungr - zcp2_ungr #############################
+anova(zcp2_ungr, zcp1_ungr)
+# not significant, AIC smaller for zcp2_ungr - preferred
+# I go with zcp2_ungr as final zcp model and check correlations now
+## REDUCED FINAL model with correlations =================================
+summary(corr2_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.min_rhd.cp+
+                             (1|Subj)+
+                             (1+rhd.cp|item),
+                           family="binomial",
+                           control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                           ungr_mm))
+### ANOVA model comparison - corr2_ungr - initial model #############################
+anova(corr2_ungr, m0_ungr)
+# not significant, AIC smaller for corr2_ungr - preferred
+# FINAL model ---------------------------------
+## model with factors and * for fixed effects =================================
+summary(ungr <- glmer(accuracy ~ manip*group+
+                      (1|Subj)+
+                      (1+rhd.cp|item),
+                    family="binomial",
+                    control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                    ungr_mm))
+save(ungr, file = "ungr.Rdata")
+#*Nice table output*---------------------------------
+# sjPlot::tab_model(ungr, file="ungr.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE, transform = NULL)
+# sjPlot::tab_model(ungr, file="ungr_odds.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE)
+# clean workspace ---------------------------------
+ls()
+rm(corr2_ungr, m0_ungr, ungr_i, zcp_ungr, zcp1_ungr, zcp2_ungr, ungr_mm)
+```
+  
+### Visualizations and Post-Hoc-Tests    
+```{r interaction and comparisons ungr, echo=TRUE, message=FALSE, warning=FALSE}
+# interaction visualization ---------------------------------
+# manip1:group2-1 =================================
+### manip ~ group #############################
+load("ungr.Rdata")
+emmeans::emmip(ungr, group ~ manip, CIs = TRUE, 
+               CIarg = list(lwd = 1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - accuracy",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# ggsave("intGM.jpg",width = 18, height = 18, dpi=300, units = "cm")
+### group ~ manip #############################
+emmeans::emmip(ungr, manip~group, CIs = TRUE, 
+               CIarg = list(lwd = 1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - accuracy",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# ggsave("intMG.jpg",width = 18, height = 18, dpi=300, units = "cm")
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(ungr, pairwise ~ group*manip) %>% 
+  summary(by = NULL, adjust = "bonferroni")
+# nested effects - interaction of interactions
+emm_ungr_gm <- emmeans::emmeans(ungr, pairwise ~ group*manip, adjust = "bonferroni")
+emmeans::contrast(emm_ungr_gm[[1]], "poly","consec")
+# clean workspace
+rm(emm_ungr_gm, data_ungr, ungr)
+```
+  
+*Probabilities*  
+```{r probabilities, echo=TRUE, message=FALSE, warning=FALSE}
+## Log-odds (= model estimate)
+## odds = exp(log-odds) or odds=P/(1-P)
+## probability (P) = odd/(1+odds)
+### x = logodds
+Probability <- function (x) {
+  exp(x) / (1+exp(x))
+}
+# Calculate probability for intercept only
+Prob_intercept <- round((Probability(3.48)*100),1)
+Prob_intercept_CIL <- round((Probability(2.79)*100),1)
+Prob_intercept_CIH <- round((Probability(4.16)*100),1)
+# summary in words
+paste("Probability intercept = ",Prob_intercept,"%",sep="")
+paste("Probability intercept 95% CI low = ",Prob_intercept_CIL,"%",sep="")
+paste("Probability intercept 95% CI high = ",Prob_intercept_CIH,"%",sep="")
+# clean workspace
+rm(Prob_intercept, Prob_intercept_CIH, Prob_intercept_CIL, Probability)
+```  
+  
+## grouped data  
+### *Contrast coding*    
+```{r grpd contrasts, echo=TRUE, message=FALSE, warning=FALSE}
+# subset data - only grouped ---------------------------------
+data_grpd <- filter(comp, condition %in% c ("grouped"))
+# View(data_grpd)
+# summary(data_grpd)
+# Factorize predictors variables ---------------------------------
+################## group
+class(data_grpd$group) # factor 
+# data_grpd$group <- as.factor(data_grpd$group)
+## check level order 
+levels(data_grpd$group) # "CP" "LHDP" "RHDP"
+data_grpd$group <- factor(data_grpd$group, levels = c("LHDP", "CP", "RHDP"))
+################## exp
+class(data_grpd$manip) # factor
+# data_grpd$manip <- as.factor(as.character(data_grpd$manip))
+## check level order
+levels(data_grpd$manip) # "min3"  "maxLR" "maxL"  "max3"  "maxR"
+data_grpd$manip <- factor(data_grpd$manip, levels = c("max3", "maxLR", "maxR", "maxL", "min3"))
+# contrast code predictor variables ---------------------------------
+################## group
+## assign repeated / sliding difference contrast for group
+contrasts(data_grpd$group) <- contr.sdif(3)
+contrasts(data_grpd$group)
+'           2-1        3-2
+LHDP -0.6666667 -0.3333333
+CP    0.3333333 -0.3333333
+RHDP  0.3333333  0.6666667'
+################## exp
+## assign repeated / sliding difference contrast for manipulation
+contrasts(data_grpd$manip) <- contr.sdif(5)
+contrasts(data_grpd$manip)
+'      2-1  3-2  4-3  5-4
+max3  -0.8 -0.6 -0.4 -0.2
+maxLR  0.2 -0.6 -0.4 -0.2
+maxR   0.2  0.4 -0.4 -0.2
+maxL   0.2  0.4  0.6 -0.2
+min3   0.2  0.4  0.6  0.8'
+# generate model matrix  ---------------------------------
+grpd_mm <- data_grpd
+mm <- model.matrix(~manip*group, data_grpd)
+colnames(mm)
+## create new col in all from mm cols =================================
+# I renamed the col to reflect the level comparisons
+# manip2-1          - maxLR.max3
+# manip3-2          - maxR.maxLR
+# manip4-3          - maxL.maxR
+# manip5-4          - min3.maxL
+# group2-1          - cp.lhd
+# group3-2          - rhd.cp
+# manip2-1:group2-1 - maxLR.max3_cp.lhd
+# manip3-2:group2-1 - maxR.maxLR_cp.lhd
+# manip4-3:group2-1 - maxL.maxR_cp.lhd
+# manip5-4:group2-1 - min3.maxL_cp.lhd
+# manip2-1:group3-2 - maxLR.max3_rhd.cp
+# manip3-2:group3-2 - maxR.maxLR_rhd.cp
+# manip4-3:group3-2 - maxL.maxR_rhd.cp
+# manip5-4:group3-2 - min3.maxL_rhd.cp
+grpd_mm$maxLR.max3           <-mm[,2]
+grpd_mm$maxR.maxLR           <-mm[,3]
+grpd_mm$maxL.maxR            <-mm[,4]
+grpd_mm$min3.maxL            <-mm[,5]
+grpd_mm$cp.lhd               <-mm[,6]
+grpd_mm$rhd.cp               <-mm[,7]
+grpd_mm$maxLR.max3_cp.lhd    <-mm[,8]
+grpd_mm$maxR.maxLR_cp.lhd    <-mm[,9]
+grpd_mm$maxL.maxR_cp.lhd     <-mm[,10]
+grpd_mm$min3.maxL_cp.lhd     <-mm[,11]
+grpd_mm$maxLR.max3_rhd.cp    <-mm[,12]
+grpd_mm$maxR.maxLR_rhd.cp    <-mm[,13]
+grpd_mm$maxL.maxR_rhd.cp     <-mm[,14]
+grpd_mm$min3.maxL_rhd.cp     <-mm[,15]
+# clean workspace ---------------------------------
+rm(mm)
+```
+  
+### rePCA  
+*grouped data model reduction*  
+```{r grpd model reduction, echo=TRUE, message=FALSE, warning=FALSE}
+# INITIAL model ---------------------------------
+summary(grpd_i <- glmer(accuracy ~ manip*group+
+                         (1+manip|Subj)+
+                         (1+group|item),
+                       family="binomial",
+                       control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                       data_grpd))
+# isSingular
+## INITIAL model with indicator variables =================================
+summary(m0_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                          maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                          maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                          (1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL|Subj)+
+                          (1+cp.lhd+rhd.cp|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        grpd_mm))
+# isSingular
+# couple correlations for Subj and item randEff are almost 1 or -1
+## check rePCA output =================================
+summary(rePCA(m0_grpd))
+# 2 of 3 components for item | 3 of 5 for Subj contribute (variance)
+# try model reduction of randEff ---------------------------------
+## start with ZERO CORRELATION model =================================
+summary(zcp_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                           maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                           maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                           (1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL||Subj)+
+                           (1+cp.lhd+rhd.cp||item),
+                         family="binomial",
+                         control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                         grpd_mm))
+# isSingular
+'Random effects:
+ Groups Name        Variance  Std.Dev. 
+ item   rhd.cp      2.696e-02 1.642e-01 # mean var. smaller then sd
+ item.1 cp.lhd      4.011e-10 2.003e-05 # no variance
+ item.2 (Intercept) 5.105e-01 7.145e-01
+ Subj   min3.maxL   1.504e-01 3.878e-01
+ Subj.1 maxL.maxR   3.260e-14 1.806e-07 # no variance
+ Subj.2 maxR.maxLR  7.411e-02 2.722e-01 # mean var. smaller then sd
+ Subj.3 maxLR.max3  1.732e+00 1.316e+00
+ Subj.4 (Intercept) 2.632e+00 1.622e+00
+Number of obs: 3240, groups:  item, 60; Subj, 54'
+## ANOVA model comparison - initial and zcp model =================================
+anova(m0_grpd, zcp_grpd)
+# m0_grpd has signif. better fit - removing all correlations too harsh
+## back to initial model =================================
+# try exclusion of randEff slopes with regards to zcp
+### FIRST #############################
+# try exclusion of "maxL.maxR" as slope per Subj
+summary(m1_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                          maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                          maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                          (1+maxLR.max3+maxR.maxLR+min3.maxL|Subj)+
+                          (1+cp.lhd+rhd.cp|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        grpd_mm))
+# isSingular
+## check rePCA output =================================
+summary(rePCA(m1_grpd))
+# 1 of 3 components for item |1 of 4 components for Subj has zero variance
+## ANOVA model comparison - initial and reduced model =================================
+anova(m1_grpd, m0_grpd)
+# significant and AIC still smaller for m0_grpd
+### SECOND #############################
+# back to initial model
+# try exclusion of "cp.lhd" as slope per item instead
+summary(m2_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                          maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                          maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                          (1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL|Subj)+
+                          (1+rhd.cp|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        grpd_mm))
+# isSingular
+## check rePCA output =================================
+summary(rePCA(m2_grpd))
+# 1 of 2 components for item | 2 of 5 components for Subj have zero variance
+## ANOVA model comparison - initial and m2_grpd =================================
+anova(m2_grpd, m0_grpd)
+# significant and AIC still smaller for m0_grpd
+# this did not help either
+### THIRD #############################
+# back to initial model
+# try exclusion of "maxL.maxR" as slope per Subj also
+summary(m3_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                          maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                          maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                          (1+maxLR.max3+maxR.maxLR+min3.maxL|Subj)+
+                          (1+cp.lhd+rhd.cp|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        grpd_mm))
+# isSingular
+## check rePCA output =================================
+summary(rePCA(m3_grpd))
+# 1 of 3 components for item | 1 of 4 components for Subj have zero variance
+## ANOVA model comparison - initial and m3_grpd =================================
+anova(m3_grpd, m0_grpd)
+# significant and AIC still smaller for m0_grpd
+# this did not help either
+### FOURTH #############################
+# back to initial model
+# try exclusion of "rhd.cp" as slope per item
+summary(m4_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                          maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                          maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                          (1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL|Subj)+
+                          (1+cp.lhd|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        grpd_mm))
+# isSingular
+## check rePCA output =================================
+summary(rePCA(m4_grpd))
+# 1 of 2 components for item | 2 of 5 components for Subj have zero variance
+## ANOVA model comparison - initial and m4_grpd =================================
+anova(m0_grpd, m4_grpd)
+# not significant - AIC smaller for m4_grpd - preferred
+### SIXTH #############################
+# try exclusion of "maxL.maxR" as slope per Subj also
+summary(m5_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL+cp.lhd+rhd.cp+
+                          maxLR.max3_cp.lhd+maxR.maxLR_cp.lhd+maxL.maxR_cp.lhd+min3.maxL_cp.lhd+
+                          maxLR.max3_rhd.cp+maxR.maxLR_rhd.cp+maxL.maxR_rhd.cp+min3.maxL_rhd.cp+
+                          (1+maxLR.max3+maxR.maxLR+min3.maxL|Subj)+
+                          (1+cp.lhd|item),
+                        family="binomial",
+                        control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                        grpd_mm))
+# isSingular
+## check rePCA output =================================
+summary(rePCA(m5_grpd))
+# 1 of 2 components for item | 1 of 4 components for Subj have zero variance
+## ANOVA model comparison - m5_grpd and m4_grpd =================================
+anova(m4_grpd, m5_grpd)
+# significant - AIC smaller for m4_grpd - preferred
+# m4_grpd will be final model
+# FINAL model ---------------------------------
+## model with factors and * for fixed effects =================================
+summary(grpd <- glmer(accuracy ~ manip*group+
+                       (1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL|Subj)+
+                       (1+cp.lhd|item),
+                     family="binomial",
+                     control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
+                     grpd_mm))
+save(grpd, file = "grpd.Rdata")
+#*Nice table output*---------------------------------
+# sjPlot::tab_model(grpd, file="grpd.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE, transform = NULL)
+# sjPlot::tab_model(grpd, file="grpd_odds.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE)
+# clean workspace ---------------------------------
+ls()
+rm(grpd_i, m0_grpd, m1_grpd, m2_grpd, m3_grpd, m4_grpd, m5_grpd, zcp_grpd)
+```
+  
+### Visualizations and Post-Hoc-Tests    
+```{r interaction and comparisons grpd, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# interaction visualization ---------------------------------
+# manip1:group2-1 =================================
+### manip ~ group #############################
+load("grpd.Rdata")
+emmeans::emmip(grpd, group ~ manip, CIs = TRUE, 
+               CIarg = list(lwd = 1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - accuracy",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+# ggsave("intMG_grpd.jpg", width = 18, height = 18, dpi=300, units = "cm")
+### group ~ manip #############################
+emmeans::emmip(grpd, manip ~ group, CIs = TRUE, 
+               CIarg = list(lwd = 1, alpha=0.7), 
+               linearg = list(linetype = "dashed", alpha=0)) +
+  labs(
+    y = "Model predictions - accuracy",
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(axis.text=element_text(size=11),
+        axis.title.x=element_text(size=11),
+        axis.title.y=element_text(size=11),
+        legend.justification = c("right", "top"),
+        legend.title = element_text(size=11, face="bold"), 
+        legend.text=element_text(size=11, face="bold")
+  )
+#ggsave("intGM_grpd.jpg", width = 18, height = 18, dpi=300, units = "cm")
+# POST-HOC testing ---------------------------------
+# what are the significant differences
+emmeans::emmeans(grpd, pairwise ~ group * manip) %>% 
+  summary(by = NULL, adjust = "bonferroni")
+# nested effects - interaction of interactions
+emm_grpd_gm <- emmeans::emmeans(grpd, pairwise ~ group*manip, adjust = "bonferroni")
+emmeans::contrast(emm_grpd_gm[[1]], "poly","consec")
+# clean workspace ---------------------------------
+rm(data_grpd, grpd_mm, grpd, emm_grpd_gm)
+```
+  
+*Probabilities*  
+```{r probabilities grpd, echo=TRUE, message=FALSE, warning=FALSE}
+## Log-odds (= model estimate)
+## odds = exp(log-odds) or odds=P/(1-P)
+## probability (P) = odd/(1+odds)
+### x = logodds
+Probability <- function (x) {
+  exp(x) / (1+exp(x))
+}
+# Calculate probability for intercept only
+Prob_interceptB <- round((Probability(1.82)*100),1)
+Prob_intercept_CILB <- round((Probability(1.23)*100),1)
+Prob_intercept_CIHB <- round((Probability(2.40)*100),1)
+# summary in words
+paste("Probability intercept = ",Prob_interceptB,"%",sep="")
+paste("Probability intercept 95% CI low = ",Prob_intercept_CILB,"%",sep="")
+paste("Probability intercept 95% CI high = ",Prob_intercept_CIHB,"%",sep="")
+# clean workspace ---------------------------------
+rm(Prob_interceptB, Prob_intercept_CILB, Prob_intercept_CIHB)
+```    
+  
+# Correlations - working memory measures / accuracy  
+```{r work mem, echo=TRUE, message=FALSE, warning=FALSE}
+# import working memory data ---------------------------------
+workMem <- read.csv2("data/workMem.csv", header = TRUE)
+colnames(comp)[colnames(comp) == 'Subj'] <- 'Subj'
+### create means of interest to merge into big data.frame #############################
+mean_acc_Subj <- comp %>%
+group_by(Subj, group, condition, manip) %>%
+dplyr::summarise(mean = round(mean(accuracy)*100, digits=2))
+allMeansAcc <- merge(mean_acc_Subj, workMem[, c("Subj", "compDigit")], by=c("Subj"), all=TRUE) %>%
+  na.omit(allMeansAcc)
+#### only one mean per subj
+mean_acc_Subj1 <- comp %>%
+group_by(Subj, group) %>%
+dplyr::summarise(mean = round(mean(accuracy)*100, digits=2))
+allMeansAcc1 <- merge(mean_acc_Subj1, workMem[, c("Subj", "compDigit")], by=c("Subj"), all=TRUE) %>%
+  na.omit(allMeansAcc1)
+# plots ---------------------------------
+### compDigit #############################
+### OVERALL conditions and manipulations
+corrAll <- facet(ggscatter(allMeansAcc1, x="mean", y="compDigit", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 80, label.sep = "\n"), cor.method = "spearman",
+          xlab = "mean accuracy overall", ylab = "composite score digit span")+
+        theme_bw(),
+      facet.by = c("group"),
+      short.panel.labs = TRUE, # Allow long labels in panels
+      panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+      panel.labs.font = list(face = NULL, color = "black", size = 19, angle = NULL))
+corrAll
+# ggsave("correlations_comp_overall.jpg", plot = corr1, width = 18, height = 14, dpi = 300)
+### grouped condition - for all groups and manipulations
+corrgrpd <- facet(ggscatter(subset(allMeansAcc, allMeansAcc$condition=="grouped"), x="mean", y="compDigit", 
+                           add = "reg.line", conf.int = TRUE, 
+                           cor.coef = TRUE, cor.coeff.args = list(size=3, label.x = 2, label.y = 75, label.sep = "\n"), cor.method = "spearman",
+                           xlab = "mean accuracy grouped manipulations", ylab = "composite score digit span")+
+                   theme_bw(),
+                 facet.by = c("group","manip"),
+                 short.panel.labs = TRUE, # Allow long labels in panels
+                 panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                 panel.labs.font = list(face = NULL, color = "black", size = 19, angle = NULL))
+corrgrpd
+# ggsave("correlations_grpd_mani.jpg", plot = corrgrpd, width = 22, height = 14, dpi = 300)
+### grouped condition - for all groups and OVERALL manipulations
+corrgrpd1 <- facet(corrgrpd+
+                    theme_bw(),
+                  facet.by = c("group"),
+                  short.panel.labs = TRUE, # Allow long labels in panels
+                  panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                  panel.labs.font = list(face = NULL, color = "black", size = 19, angle = NULL))
+corrgrpd1
+# ggsave("correlations_grpd_mani1.jpg", plot = corrgrpd1, width = 22, height = 14, dpi = 300)
+### ungrouped condition - for all groups and manipulations
+corrungr <- facet(ggscatter(subset(allMeansAcc, allMeansAcc$condition=="ungrouped"), x="mean", y="compDigit", 
+                           add = "reg.line", conf.int = TRUE, 
+                           cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 50, label.sep = "\n"), cor.method = "spearman",
+                           xlab = "mean accuracy ungrouped manipulations", ylab = "composite score digit span")+
+                             theme_bw(),
+                           facet.by = c("group","manip"),
+                           short.panel.labs = TRUE, # Allow long labels in panels
+                           panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                           panel.labs.font = list(face = NULL, color = "black", size = 19, angle = NULL))
+corrungr
+# ggsave("correlations_ungrra_mani.jpg", plot = corrungr, width = 22, height = 14, dpi = 300)
+### ungrouped condition - for all groups and OVERALL manipulations
+corrungr1 <- facet(corrungr+
+                    theme_bw(),
+                  facet.by = c("group"),
+                  short.panel.labs = TRUE, # Allow long labels in panels
+                  panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+                  panel.labs.font = list(face = NULL, color = "black", size = 19, angle = NULL))
+corrungr1
+# ggsave("correlations_ungrra_mani1.jpg", plot = corrungr1, width = 22, height = 14, dpi = 300)
+```
+  
+# Descriptive Look at Individual Variability  
+```{r data}
+# import data sets
+# note compact declaration of variable types
+require(vroom)
+comp <-  vroom("data/comp.csv", col_types="cffnncfffn")
+data <- read.csv2("data/d.csv", header = TRUE)
+## Subset for patient pDat - only RHDP / LHDP =================================
+## model stimuli (stimuli that had to be repeated) will be "removed"
+pDat <- subset(data, data$group!="model_stimuli")
+rm(data)
+```
+    
+## Production Accuracy / Comprehension Accuracy Score  
+```{r prod and comp acc}
+# Relevant summaries and subsets  
+# means for production accuracy  ---------------------------------------------
+# 1 = correct, 0 = incorrect - based on ratings of patient productions
+# aggregated over Subj and condition - within respective exp
+# reading
+mean_acc_read_cond <-
+subset(pDat, pDat$exp=="reading_aloud") %>%
+group_by(Subj, group, condition) %>%
+dplyr::summarise(mean_acc_read = round(mean(rate)*100, digits=2))
+# repetition
+mean_acc_rep_cond <-
+subset(pDat, pDat$exp=="repetition") %>%
+group_by(Subj, group, condition) %>%
+dplyr::summarise(mean_acc_rep = round(mean(rate)*100, digits=2))
+# means for comprehension accuracy ---------------------------------------------
+# aggregated over Subj and condition
+mean_comp_acc_cond <- subset(comp, comp$group!="CP") %>%
+group_by(Subj, group, condition) %>%
+dplyr::summarise(m_comp_acc = round(mean(accuracy)*100, digits=2))
+## combine data.frames by merging =================================
+means_acc_cond <- merge(mean_acc_read_cond, mean_acc_rep_cond, by=c("Subj", "group", "condition"), all=TRUE)  %>%
+  merge(mean_comp_acc_cond, by=c("Subj", "group", "condition"), all=TRUE)
+## subset - patients that participated in both exp =================================
+means_acc_cond <- subset(means_acc_cond, 
+means_acc_cond$Subj=="LHDP03" | means_acc_cond$Subj=="LHDP04" | means_acc_cond$Subj=="LHDP07" |
+means_acc_cond$Subj=="LHDP09" | means_acc_cond$Subj=="LHDP10" | means_acc_cond$Subj=="LHDP11" | 
+means_acc_cond$Subj=="LHDP13" | means_acc_cond$Subj=="LHDP14" | means_acc_cond$Subj=="LHDP15" | 
+means_acc_cond$Subj=="LHDP16" | means_acc_cond$Subj=="RHDP01" | means_acc_cond$Subj=="RHDP02" | 
+means_acc_cond$Subj=="RHDP03" | means_acc_cond$Subj=="RHDP04" | means_acc_cond$Subj=="RHDP05" | 
+means_acc_cond$Subj=="RHDP08" | means_acc_cond$Subj=="RHDP09" | means_acc_cond$Subj=="RHDP12" | 
+means_acc_cond$Subj=="RHDP13" | means_acc_cond$Subj=="RHDP14" | means_acc_cond$Subj=="RHDP15" | 
+means_acc_cond$Subj=="RHDP16" | means_acc_cond$Subj=="RHDP17" | means_acc_cond$Subj=="RHDP18" | means_acc_cond$Subj=="RHDP22")
+### clean environment #############################
+rm(mean_acc_read_cond, mean_acc_rep_cond, mean_comp_acc_cond)
+```
+
+## Correlation Plots - Accuracy Scores  
+```{r corr plot acc}
+# exp - group - condition
+# reading
+read_comp_cond <- 
+  facet(ggscatter(means_acc_cond, x="m_comp_acc", y="mean_acc_read", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 120, label.sep = "\n"), cor.method = "spearman",
+          xlab = "mean comprehension accuracy", ylab = "mean production accuracy for reading")+
+        theme_bw(),
+      facet.by = c("condition","group"),
+      short.panel.labs = TRUE, # Allow long labels in panels
+      panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+      panel.labs.font = list(face = NULL, color = "black", size = 18, angle = NULL))
+read_comp_cond
+ggsave("corr_read_comp_cond.jpg", plot = read_comp_cond, width = 12, height = 12, dpi = 300)
+# repetition
+rep_comp_cond <- 
+  facet(ggscatter(means_acc_cond, x="m_comp_acc", y="mean_acc_rep", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 80, label.sep = "\n"), cor.method = "spearman",
+          xlab = "mean comprehension accuracy", ylab = "mean production accuracy for repetition")+
+        theme_bw(),
+      facet.by = c("condition","group"),
+      short.panel.labs = TRUE, # Allow long labels in panels
+      panel.labs.background = list(fill = "lightgrey", color = "lightgrey"),
+      panel.labs.font = list(face = NULL, color = "black", size = 18, angle = NULL))
+rep_comp_cond
+ggsave("corr_rep_comp_cond.jpg", plot = rep_comp_cond, width = 12, height = 12, dpi = 300)
+```
+
+# Session information    
+```{r print session info}
+sessionInfo(package = NULL)
+rm(list=ls())
+```
