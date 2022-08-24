@@ -1,0 +1,161 @@
+---
+title: "Jochen Laubrock: Eye Movement Control during Reading"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-08-24"
+output: 
+  html:
+    fig-width: 8
+    fig-height: 6
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+  pdf:
+    fig-width: 7
+    fig-height: 5
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+editor_options: 
+  chunk_output_type: console
+jupyter: julia-1.8
+---
+
+# Background 
+
+# Readme 
+
+# Setup
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using KernelDensity    # density estimation
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsModels
+
+using AlgebraOfGraphics: boxplot
+using AlgebraOfGraphics: density
+
+using MixedModelsMakie: qqnorm
+using MixedModelsMakie: ridgeplot
+using MixedModelsMakie: scatter
+using MixedModelsMakie: caterpillar
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
++ The data are available as an arrow file. 
++ Most of preprocessing was done with R in RStudio.
+
+```{julia}
+dat = DataFrame(Arrow.Table("./data/Laubrock_EM.arrow"))
+describe(dat)
+@transform!(dat, :rfl2 = :rfl * :rfl);
+@transform!(dat, :rwn2 = :rwn * :rwn);
+@transform!(dat, :rwn3 = :rwn2 * :rwn);
+
+contrasts = merge(
+      Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W))
+   );
+```
+
+# LMM analysis
+
+# Fit LMM `m_ovi`
+
+```{julia}
+#| lst-label: m_ovi
+f1_ovi = @formula(lfd ~ 1 + lls + rfl + rfl2 + rwn + rwn2 + rwn3 +
+                        f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                       (1 | Subj) + (1 | Sent) 
+                );
+m1_ovi = fit(MixedModel, f1_ovi, dat; contrasts);
+```
+
+### Fit LMM `m_zcp`
+
+`Sent`-related VC `GM` estimated as zero and removed from LMM
+
+```{julia}
+#| lst-label: m_zcp
+f1_zcp = @formula(lfd ~ 1 + lls + + rfl + rfl2 + rwn + rwn2 + rwn3 +
+                        f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+               zerocorr(1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
+               zerocorr(0 + f + f1 + f2 + p + p2 + p2 | Sent) 
+                );
+
+m1_zcp = fit(MixedModel, f1_zcp, dat; contrasts);
+show(issingular(m1_zcp))
+show(VarCorr(m1_zcp))
+MixedModels.likelihoodratiotest(m1_ovi, m1_zcp)
+```
+
+### Fit LMM `m_cpx`
+
+Expand LMM `m_zcp` with CPs.
+
+```{julia}
+#| lst-label: m_cpx
+f1_cpx = @formula(lfd ~ 1 + lls + + rfl + rfl2 + rwn + rwn2 + rwn3 +
+                       f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                      (1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
+                      (0 + f + f1 + f2 + p + p1 + p2 | Sent) 
+                );
+
+m1_cpx = fit(MixedModel, f1_cpx, dat; contrasts);
+show(issingular(m1_cpx))
+show(m1_cpx.PCA[:Subj]) 
+show(m1_cpx.PCA[:Sent])
+show(VarCorr(m1_cpx))
+MixedModels.likelihoodratiotest(m1_ovi, m1_zcp, m1_cpx)
+```
+
+### Fit LMM `m_prsm`
+
+Remove very high CPs (seen in `m1_cpx`) to achieve an model supported by data.
+
+```{julia}
+#| lst-label: m_prsm1
+f1_prsm = @formula(lfd ~ 1 + lls + + rfl + rfl2 + rwn + rwn2 + rwn3 +
+                         f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                        (1 + f      + p      + p2 | Subj) +  zerocorr(0 + f1 + f2 + p1 | Subj) +
+                        (0 + f + f2 + p + p1 + p2 | Sent) +  zerocorr(0 + f1 | Sent) 
+                );
+
+m1_prsm = fit(MixedModel, f1_prsm, dat; contrasts);
+show(issingular(m1_prsm))
+show(m1_prsm.PCA[:Subj]) 
+show(m1_prsm.PCA[:Sent])
+show(VarCorr(m1_prsm))
+MixedModels.likelihoodratiotest(m1_zcp, m1_prsm, m1_cpx)
+```
+ 
++ `Subj`-related CPs 
+     +  `GM` correlates negatively with `f` and `p2`, positively with `p`; could depend lack of on centering
+     +  `f`  correlates negatively with `p` and positively with `p2`
++ `Sent`-related CPs
+     + positive: `f` and `p2`, 
+     + negative: `f` and `f2`,  `f2` and `p2`, `p1` and `p2`
+
+ Question: Are these CPs significant?  Bootstrapping!
+
+
+```{julia}
+versioninfo()
+```
