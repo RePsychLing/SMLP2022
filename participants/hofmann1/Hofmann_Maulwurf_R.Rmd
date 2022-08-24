@@ -1,0 +1,134 @@
+---
+title: "Andrea Hofmann: Maulwurf Analysis"
+author: "Reinhold Kliegl"
+date: "2022-08-24 (last revised: `r format(Sys.time())`)"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    fig_width: 8
+    fig_height: 6
+    fig_caption: true
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    fig_width: 7
+    fig_height: 5
+    fig_caption: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(arrow)
+library(lme4)
+library(tidyverse)
+library(easystats)
+library(summarytools)
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+```
+
+# Background
+
+The file was prepared on the basis of the dataframe used for the original LMM analysis.  (see https://osf.io/3u62p/ )
+
+The data are part of the Master thesis that recorded children's (age: 4-8 years) reaction times during a task teaching them syntactic relations. 
+
+# Variables
+
++ `Subj`: Participant ID (renamed from `ID`; random factor)
++ `Item`: Word ID (random factor)
++ `age`:  4 - 8 years 
++ `Block` (within-Subj/within-Item): 
+     + 1st Learning
+     + 2nd Learning
+     + Disruption
+     + Recovery
++ `Target`(renamend fom targetness)
+     + Non-target syllable 
+     + Target syllable
++ Indicator variables for `Target` and `Block` contrasts
+     + `trgt` : Target syllable - Non-target syllable
+     + `trng` : 2md learning - 1st learning
+     + `drpt` : Disruption - 2nd learning
+     + `rcvr` : Recovery - Disruption 
++ `rt`:  response time 
+
+Box-Cox analysis suggested a log transformation of reaction times.
+
+```{r}
+dat <- 
+  read_feather("./data/Hofmann_Maulwurf_rt.arrow") |> 
+  relocate(trgt:rcvr, .before=rt) |> 
+  mutate(a1 = age - 6.210813,
+         lrt = log(rt))
+```
+
+# LMM analysis
+
+## Original maximal LMM
+
+```
+lmax.logRT <-
+  lmer(logRT ~ Block * Targetness * c_age + (1 + Block * Targetness | anon_ID) + (1 + c_age| Item), 
+       control = lmerControl(calc.derivs = FALSE, optCtrl=list(maxfun=100000), optimizer="bobyqa"), data = SRT.analysis)
+```
+
+```{r}
+load("./fits/lmax.logRT.RData")
+VarCorr(lmax.logRT)
+```
+
+
+## Complex LMM
+
+```{r}
+system.time(
+m_cpx <- lmer(lrt ~ 1 + trgt * (trng+drpt+rcvr) * a1  + 
+                   (1 + trgt * (trng+drpt+rcvr) | Subj) + (1 + a1 | Item),
+               data=dat, REML=FALSE, control = lmerControl(calc.derivs = FALSE))
+)
+VarCorr(m_cpx)
+```
+
+```
+   user  system elapsed 
+ 54.186   8.368  56.758 
+```
+
+## Parsimonious LMM
+
+```{r}
+system.time(
+m_prm2 <- lmer(lrt ~ 1 + trgt * (trng+drpt+rcvr) * a1  + 
+                    (1 + drpt + rcvr + trng + drpt:trgt + rcvr:trgt | Subj) + 
+                    (0 + trgt || Subj) +  (1 + a1 | Item),
+               data=dat, REML=FALSE, control = lmerControl(calc.derivs = FALSE))
+)
+VarCorr(m_prm2)
+```
+
+```
+   user  system elapsed 
+ 20.009   2.432  20.612 
+```
+## Diagnostics
+
+```{r}
+compare_models(m_cpx, m_prm2, effects="fixed", style="se_p")
+
+check_model(m_prm2)
+```
+
+# Appendix
+
+```{r}
+sessionInfo()
+```
+

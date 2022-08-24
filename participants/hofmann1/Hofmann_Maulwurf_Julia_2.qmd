@@ -1,0 +1,356 @@
+---
+title: "Antje Hofmann: Learning Syntactic Relations with the Mole Task (2) "
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-08-24"
+output: 
+  html:
+    fig-width: 8
+    fig-height: 6
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+  pdf:
+    fig-width: 7
+    fig-height: 5
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+editor_options: 
+  chunk_output_type: console
+jupyter: julia-1.8
+---
+
+# Background 
+
+This version removes the outlier subject "p10" found in the version 1.
+
+Children's (age: 4-8 years)reaction times in a task teaching them syntactic relations. 
+
+## Overview 
+
++ Original analysis is by Antje Hofmann.
++ MixedModels.jl version
++ Addition of new chunks illustrate
+    + selection of parsimonious LMM using random-effects PCA 
+    + plotting conditional means 
+    + illustration of borrowing strength 
+    
+# Readme 
+
+## Variables
+
++ `Subj`: Participant ID (renamed from `ID`; random factor)
++ `Item`: Word ID (random factor)
++ `age`:  4 - 8 years 
++ `Block` (within-Subj/within-Item): 
+     + 1st Learning
+     + 2nd Learning
+     + Disruption
+     + Recovery
++ `Target`(renamend fom targetness)
+     + non-syllable target
+     + syllable target
++ `rt`:  response time 
+
+The within-between-Item status of `Block` is not clear. Not all items were shown in the third block.
+
+# Setup
+
+First attach the _MixedModels.jl_ package and other packages for plotting.
+The _CairoMakie.jl_ package allows the Makie graphics system [@Danisch2021] to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using KernelDensity    # density estimation
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsModels
+
+using AlgebraOfGraphics: boxplot
+using AlgebraOfGraphics: density
+
+using MixedModelsMakie: qqnorm
+using MixedModelsMakie: ridgeplot
+using MixedModelsMakie: scatter
+using MixedModelsMakie: caterpillar
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
++ The data are available as an arrow file. 
++ Most of preprocessing was done with R in RStudio (see Hofmann_Maulwurf.Rmd).
++ Order of factor levels should be checked.
+
+```{julia}
+dat = DataFrame(Arrow.Table("./data/Hofmann_Maulwurf_rt.arrow"))
+transform!(dat, 
+    :Target => categorical => :Target,
+    :Block  => categorical => :Block,
+    :age => (x -> x .- 6.210813) => :a1, # centered age (linear)
+    :rt => (x -> log.(x)) => :lrt)
+describe(dat)
+dat = filter(row -> row.Subj != "p10", dat)
+```
+
++ Note: Factor levels can also be set when contrasts are defined (see below).
++ BoxCox check showed that reaction time `rt` [ms] should be transformed to `speed` [1/s] = [Hz]
++ Indicator variables for `Target` and `Block` generated in R. 
+
+# LMM analysis
+
+## Contrasts
+
+```{julia}
+#| lst-label: contrasts
+
+contrasts = merge(
+      Dict(:Target => EffectsCoding()),
+      Dict(:Block => SeqDiffCoding()),
+      Dict(nm => Grouping() for nm in (:Subj, :Item))
+   );
+```
+
+## Varying only intercepts LMM `m_voi`
+
+```{julia}
+#| lst-label: m_voi1
+f_voi1 = @formula(lrt ~  1 + Block * Target * a1 + (1 | Subj) + (1 | Item));
+m_voi1 = fit(MixedModel, f_voi1, dat; contrasts)
+```
+
+Switch to indicator variables. 
+
+```{julia}
+#| lst-label: m_voi2
+f_voi2 = @formula(lrt ~  1 + (trng+drpt+rcvr) * trgt * a1 + (1 | Subj) + (1 | Item));
+m_voi2 = fit(MixedModel, f_voi2, dat; contrasts)
+```
+
+They are equivalent.
+
+## A zero-correlation parameter LMM `m_zcp`
+
+```{julia}
+#| lst-label: m_zcp1
+f_zcp1 = @formula(lrt ~  1 +  Block * Target * a1 + zerocorr(1 + Block * Target | Subj) + (1 + a1 | Item));
+m_zcp1 = fit(MixedModel, f_zcp1, dat; contrasts);
+
+show(issingular(m_zcp1))
+VarCorr(m_zcp1)
+```
+
+Again, check the equivalence.
+
+```{julia}
+#| lst-label: m_zcp2
+f_zcp2 = @formula(lrt ~  1 + (trng+drpt+rcvr) * trgt * a1  + 
+                zerocorr(1 + (trng+drpt+rcvr) * trgt | Subj) + (1 + a1 | Item));
+m_zcp2 = fit(MixedModel, f_zcp2, dat; contrasts);
+
+show(issingular(m_zcp2))
+VarCorr(m_zcp2)
+```
+
+## A complex parameter LMM `m_cpx`
+
+```{julia}
+#| lst-label: m_cpx
+m_cpx = let
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
+                          (1 + trgt * (trng+drpt+rcvr) | Subj) + (1 + a1 | Item));
+    fit(MixedModel, form, dat; contrasts);
+  end;
+
+show(issingular(m_cpx))    # not ok
+show(m_cpx.PCA[:Subj])     # not ok
+show(MixedModels.likelihoodratiotest(m_zcp2, m_cpx)) 
+VarCorr(m_cpx)
+```
+
+The deviance improves, but we end up with an overparameterized LMM.  
+
+## A parsimonious parameter LMM `m_prm`
+
+We remove one of the VC for `trgt`  * `trng` contrast interaction, that is one of the three interaction terms.
+
+```{julia}
+#| lst-label: m_prm1
+m_prm1 = let
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
+                          (1 + trgt *(drpt + rcvr) + trng  | Subj) + 
+                          (1 + a1 | Item));
+    fit(MixedModel, form, dat; contrasts);
+  end;
+
+show(issingular(m_prm1))  # ok
+show(m_prm1.PCA[:Subj])   # not ok
+show(MixedModels.likelihoodratiotest(m_zcp2, m_prm1, m_cpx)) 
+VarCorr(m_prm1)
+```
+
+We don't lose goodness of fit, but are still overparameterized. We remove CPs for `Target`.
+
+```{julia}
+#| lst-label: m_prm2
+m_prm2 = let
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
+                          (1 + drpt + rcvr + trng + drpt&trgt + rcvr&trgt  | Subj) + 
+                  zerocorr(0 + trgt  | Subj) +
+                          (1 + a1 | Item));
+    fit(MixedModel, form, dat; contrasts);
+  end;
+
+show(issingular(m_prm2))  #  ok
+show(m_prm2.PCA[:Subj])   #  ok
+show(MixedModels.likelihoodratiotest(m_zcp2, m_prm2,  m_cpx)) 
+VarCorr(m_prm2)
+```
+
+Check the `Item`-related CP. It is very large, might be spurious.
+
+```{julia}
+#| lst-label: m_prm3
+m_prm3 = let
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
+                          (1 + drpt + rcvr + trng + drpt&trgt + rcvr&trgt  | Subj) + 
+                  zerocorr(0 + trgt  | Subj) +
+                  zerocorr(1 + a1 | Item));
+    fit(MixedModel, form, dat; contrasts);
+  end;
+
+show(issingular(m_prm3))  # ok
+show(m_prm3.PCA[:Subj])   # ok
+show(MixedModels.likelihoodratiotest(m_zcp2, m_prm3, m_prm2, m_cpx)) 
+VarCorr(m_prm3)
+```
+
+Perhaps not. We stay with LMM `m_prm2`
+
+## Compare models with goodness-of-fit statistics.
+
+```{julia}
+let mods = [m_zcp2, m_prm2, m_prm1, m_cpx];
+ DataFrame(;
+    model=[:m_zcp2, :m_prm2, :m_prm1, :m_cpx],
+    pars=dof.(mods),
+    geomdof=round.(Int, (sum ∘ leverage).(mods)),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
+LMM `m_prm2` is a defensible solution according to  $\Delta$ AIC,  $\Delta$ BIC suggests we should not bother with CPs.
+
+```{julia}
+coeftable(m_prm2)
+```
+
+## Diagnostic plots
+
+Various visualizations are used to check whether or not data are _defensibly_ modeled with an LMM. They may lead to removal of outliers, transformations of the dependent variable, and deliver valuable heuristic information to be followed up with exploratory post-hoc analyses or ideally replication of new insights gained this way. In practice, it appears that only severe violations will stop people from reporting a model. 
+
+### Residuals over fitted
+
+```{julia}
+scatter(fitted(m_prm2), residuals(m_prm2))
+```
+
+Looks like we missed some fast response times. 
+
+### Q-Q plot
+
+```{julia}
+qqnorm(m_prm2; qqline=:none)
+```
+
+Hm?
+
+### Residual distributions: observed vs. theoretical
+
+Curves for residulas based on observed and theoretical values should correspond. 
+
+```{julia}
+#| code-fold: true
+#| label: fig-stdresidm1dens
+#| fig-cap: '  Kernel density plot of the standardized residuals for model m1 versus a  standard normal'
+let
+  n = nrow(dat)
+  dat_rz = (;
+    value=vcat(residuals(m_prm2) ./ std(residuals(m_prm2)), randn(n)),
+    curve=repeat(["residual", "normal"]; inner=n),
+  )
+  draw(
+    data(dat_rz) *
+    mapping(:value; color=:curve) *
+    density(; bandwidth=0.1);
+  )
+end
+```
+
+They are a bit too narrow. 
+
+## Conditional means of random effects
+
+### Subject-related conditional means of random effects
+
+```{julia}
+#| fig-cap: Prediction intervals on subject random effects for model m_prm2
+#| label: fig-m2caterpillar-subj
+cm_Subj = first(ranefinfo(m_prm2))
+caterpillar!(Figure(; resolution=(800, 1200)), cm_Subj; orderby=1)
+```
+
+### Borrowing-strength plots
+
+Shrinkage refers to the adjustment of subject-level or item-level predictions by taking population estimates into account. The further a subject's/item's estimate is from the fixed effect or the more variable or less reliable the subject's/item's estimate, the more the prediction will be shrunk towards the population estimate. Alternative terms for shrinkage are "borrowing strength" (Tukey) and regularization. My favorite is actually Tukey's because indeed we borrow strength from the population estimates to make predictions for individual subjects' effects. The goal of this section to illustrate the results of borrowing strength.
+
+Subject-related conditional means of random effects revealed information about individual differences beyond fixed effects. Would these results also be visible in _unconditional_ means, that is when we compute GM and experimental effects _within_ subjects (i.e., as fixed effects) without borrowing strength from the population estimates? 
+
+In the following plots, effect estimates based on alone on each subject's data (i.e., no pooling of data, no borrowing of strength) are plotted in pink and the subjects' conditional means shown in the caterpillar plots are plotted in blue. The arrows indicate how much a subject's prediction is changed by borrowing strength from knowledge of the population estimates.  
+
+```{julia}
+#| code-fold: true
+#| label: fig-shrinkage
+#| fig-cap: Shrinkage plots of the subject random effects in model m_prm2
+shrinkageplot!(Figure(; resolution=(1000, 1200)), m_prm2)
+```
+
+Outlier subject is gone.
+
+```{julia}
+cm = raneftables(m_prm2);   
+sort(DataFrame(cm.Subj), ["(Intercept)", :trng, "drpt & trgt"])
+sort(DataFrame(cm.Subj), :trng)
+```
+
+### Item-related conditional means of random effects
+
+```{julia eval=FALSE}
+#| fig-cap: Prediction intervals on item random effects for model m_prm2
+#| label: fig-2caterpillar-item
+cm_Item = last(ranefinfo(m_prm2))
+caterpillar!(Figure(; resolution=(800, 1200)), cm_Item; orderby=1)
+```
+
+```{julia}
+versioninfo()
+```
+
