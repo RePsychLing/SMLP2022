@@ -9,7 +9,7 @@
 ## Chandra, J., Krügel, A., & Engbert, R. (2020). Modulation of oculomotor control during reading of mirrored and inverted texts. Scientific Reports, 10 (1), 1-15. doi: 10.1038/s41598-020-60833-6
 ## https://osf.io/bmvrx/
 
-load("data2.rda")
+load("./data/data2.rda")
 
 # Full model (e.g. based on Kuperman, V., Dambacher, M., Nuthmann, A., & Kliegl. R. (2010). The effect of word position on eye-movements in sentence and paragraph reading.The Quarterly Journal of Experimental Psychology, 63:9, 1838-1857) )
 #  data_clean
