@@ -44,7 +44,7 @@ This is part of my PhD project which examines the role of mother-infant interper
 
 ```{r} 
 library(readxl) 
-lang_ECG <- read.csv("./data/lang_ECG.csv", header=TRUE, sep=";", dec = ",") 
+lang_ECG <- read.csv("./data/Vanconin_lang_ECG.csv", header=TRUE, sep=";", dec = ",") 
 str(lang_ECG)
 lang_ECG$Participant <- as.factor(lang_ECG$Participant)
 lang_ECG$Phase <- as.factor(lang_ECG$Phase)
