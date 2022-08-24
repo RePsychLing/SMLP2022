@@ -1,0 +1,194 @@
+---
+title: "Jochen Laubrock: Eye Movement Control during Reading (2)"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-08-24"
+output: 
+  html:
+    fig-width: 8
+    fig-height: 6
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+  pdf:
+    fig-width: 7
+    fig-height: 5
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+editor_options: 
+  chunk_output_type: console
+jupyter: julia-1.8
+---
+
+# Background  [OSF-repo](https://osf.io/bmvrx/)
+
+Difference from first version of this script: We center covariates and model fixated-word frequency `f` with a cubic trend. This model supports a much more complex random-effect structure.
+
++  Motivation: use predictability for diagnosis of MCI / early stages of Alzheimer's disease
++ Problem: Cloze predictabilities are costly to obtain
++ Proposed solution: use language models from computational linguistics to extract synthetic predictabilities
++  Here we show that synthetic predictabilities explain eye movements, by re-analyzing eye movement recordings by Chandra et al. (2020)
++ In additional analyses (not reported here), we show that synthetic predictabilities are correlated with cloze predictabilities, and that synthetic predictabilities explain eye movements across several languages and corpora.
+
+Reference: Chandra, J., Krügel, A., & Engbert, R. (2020). Modulation of oculomotor control during reading of mirrored and inverted texts. Scientific Reports, 10 (1), 1-15. doi: 10.1038/s41598-020-60833-6
+
+# Readme 
+
+Grouping variables
+
++ `Subj`: subject
++ `Sent`: sentence
++ `OrdW`: ordinal number of word
+
+Covariates
+
++ `lls`: log launch site
++ `rfl`: relative fixation location in word
++ `rwn`: relative word number
++ `f`, `f1`, `f2`: log frequencies of words n (fixated), n-1, and n+1
++ `l`, `l1`, `l2`: reciprocal length  of words (log2) 
++ `p`, `p1`, `p2`: synthetic predictability of words (logits)
+
+Dependent variable: 
+
++ `lfd`: log of firstpass single fixation duration
+
+# Setup
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using KernelDensity    # density estimation
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsModels
+
+using AlgebraOfGraphics: boxplot
+using AlgebraOfGraphics: density
+
+using MixedModelsMakie: qqnorm
+using MixedModelsMakie: ridgeplot
+using MixedModelsMakie: scatter
+using MixedModelsMakie: caterpillar
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
++ The data are available as an arrow file. 
++ Most of preprocessing was done with R in RStudio.
+
+```{julia}
+dat = DataFrame(Arrow.Table("./data/Laubrock_EM.arrow"))
+# center the covariates
+@transform!(dat, :lls  = :lls  - 2.3,
+                 :f  = :f  - 4.5, :f1 = :f1 - 4.5, :f2 = :f2 - 4.5,
+                 :l =  :l  - .25, :l1 = :l1 - .25, :l2 = :l2 - .25,
+                 :p  = :p  + 5, :p1 = :p1 + 5, :p2 = :p2 + 5);
+show(describe(dat))
+contrasts = merge(
+      Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W))
+   );
+```
+
+# LMM analysis
+
+We use centered covariates and model frequency `f` of the fixated word with a cubic trend.
+
+## Fit LMM `m_ovi`
+
+```{julia}
+#| lst-label: m_ovi
+f2_ovi = @formula(lfd ~ 1 + lls + rfl^2 + rwn^3 +
+                        f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                       (1 | Subj) + (1 | Sent) 
+                );
+m2_ovi = fit(MixedModel, f2_ovi, dat; contrasts);
+```
+
+## Fit LMM `m_zcp`
+
+```{julia}
+#| lst-label: m_zcp
+f2_zcp = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
+                        f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+               zerocorr(1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
+               zerocorr(1 + f + f1 + f2 + p + p2 + p2 | Sent) 
+                );
+
+m2_zcp = fit(MixedModel, f2_zcp, dat; contrasts);
+show(issingular(m2_zcp))
+show(VarCorr(m2_zcp))
+MixedModels.likelihoodratiotest(m2_ovi, m2_zcp)
+```
+
+## Fit LMM `m_cpx`
+
+Expand LMM `m_zcp` with CPs.
+
+```{julia}
+#| lst-label: m_cpx
+f2_cpx = @formula(lfd ~ 1 + lls + rfl^2 + rwn^3 +
+                       f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                      (1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
+                      (1 + f + f1 + f2 + p + p1 + p2 | Sent) 
+                );
+
+m2_cpx = fit(MixedModel, f2_cpx, dat; contrasts);
+
+show(issingular(m2_cpx))
+show(m2_cpx.PCA[:Subj]) 
+show(m2_cpx.PCA[:Sent])
+show(VarCorr(m2_cpx))
+
+MixedModels.likelihoodratiotest(m2_ovi, m2_zcp, m2_cpx)
+```
+
+## Fit LMM `m_prsm`
+
+```{julia}
+#| lst-label: m_prsm1
+f2_prsm = @formula(lfd ~ 1 + lls + rfl^2 + rwn^3 +
+                         f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                        (0 + f + f1 + f2 + p      + p2 | Subj) +  zerocorr(1 + p1 | Subj) +
+                        (1 + f + f1 + f2 + p + p1 + p2 | Sent) 
+                );
+
+m2_prsm = fit(MixedModel, f2_prsm, dat; contrasts);
+show(issingular(m2_prsm))
+show(m2_prsm.PCA[:Subj]) 
+show(m2_prsm.PCA[:Sent])
+show(VarCorr(m2_prsm))
+MixedModels.likelihoodratiotest(m2_zcp, m2_prsm, m2_cpx)
+```
+ 
+# Summary
+
++ `Subj`-related CPs 
+     + positive:
+     + negative:
++ `Sent`-related CPs
+     + positive:
+     + negative: 
+
+**Question:** Are these CPs significant?  Bootstrapping!
+
+# Appendix
+
+```{julia}
+versioninfo()
+```

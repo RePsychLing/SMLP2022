@@ -21,9 +21,36 @@ editor_options:
 jupyter: julia-1.8
 ---
 
-# Background 
+# Background [OSF-repo](https://osf.io/bmvrx/)
+
++ Motivation: use predictability for diagnosis of MCI / early stages of Alzheimer's disease
++ Problem: Cloze predictabilities are costly to obtain
++ Proposed solution: use language models from computational linguistics to extract synthetic predictabilities
++  Here we show that synthetic predictabilities explain eye movements, by re-analyzing eye movement recordings by Chandra et al. (2020)
++ In additional analyses (not reported here), we show that synthetic predictabilities are correlated with cloze predictabilities, and that synthetic predictabilities explain eye movements across several languages and corpora.
+
+Reference: Chandra, J., Krügel, A., & Engbert, R. (2020). Modulation of oculomotor control during reading of mirrored and inverted texts. Scientific Reports, 10 (1), 1-15. doi: 10.1038/s41598-020-60833-6
 
 # Readme 
+
+Grouping variables
+
++ `Subj`: subject
++ `Sent`: sentence
++ `OrdW`: ordinal number of word
+
+Covariates
+
++ `lls`: log launch site
++ `rfl`: relative fixation location in word
++ `rwn`: relative word number
++ `f`, `f1`, `f2`: log frequencies of words n (fixated), n-1, and n+1
++ `l`, `l1`, `l2`: reciprocal length  of words (log2) 
++ `p`, `p1`, `p2`: synthetic predictability of words (logits)
+
+Dependent variable
+
++ `lfd`: log of firstpass single fixation duration
 
 # Setup
 
@@ -66,9 +93,6 @@ CairoMakie.activate!(; type="svg");
 ```{julia}
 dat = DataFrame(Arrow.Table("./data/Laubrock_EM.arrow"))
 describe(dat)
-@transform!(dat, :rfl2 = :rfl * :rfl);
-@transform!(dat, :rwn2 = :rwn * :rwn);
-@transform!(dat, :rwn3 = :rwn2 * :rwn);
 
 contrasts = merge(
       Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W))
@@ -77,24 +101,24 @@ contrasts = merge(
 
 # LMM analysis
 
-# Fit LMM `m_ovi`
+## Fit LMM `m_ovi`
 
 ```{julia}
 #| lst-label: m_ovi
-f1_ovi = @formula(lfd ~ 1 + lls + rfl + rfl2 + rwn + rwn2 + rwn3 +
+f1_ovi = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                         f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                        (1 | Subj) + (1 | Sent) 
                 );
 m1_ovi = fit(MixedModel, f1_ovi, dat; contrasts);
 ```
 
-### Fit LMM `m_zcp`
+## Fit LMM `m_zcp`
 
 `Sent`-related VC `GM` estimated as zero and removed from LMM
 
 ```{julia}
 #| lst-label: m_zcp
-f1_zcp = @formula(lfd ~ 1 + lls + + rfl + rfl2 + rwn + rwn2 + rwn3 +
+f1_zcp = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                         f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                zerocorr(1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
                zerocorr(0 + f + f1 + f2 + p + p2 + p2 | Sent) 
@@ -106,13 +130,13 @@ show(VarCorr(m1_zcp))
 MixedModels.likelihoodratiotest(m1_ovi, m1_zcp)
 ```
 
-### Fit LMM `m_cpx`
+## Fit LMM `m_cpx`
 
 Expand LMM `m_zcp` with CPs.
 
 ```{julia}
 #| lst-label: m_cpx
-f1_cpx = @formula(lfd ~ 1 + lls + + rfl + rfl2 + rwn + rwn2 + rwn3 +
+f1_cpx = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                        f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                       (1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
                       (0 + f + f1 + f2 + p + p1 + p2 | Sent) 
@@ -126,13 +150,13 @@ show(VarCorr(m1_cpx))
 MixedModels.likelihoodratiotest(m1_ovi, m1_zcp, m1_cpx)
 ```
 
-### Fit LMM `m_prsm`
+## Fit LMM `m_prsm`
 
 Remove very high CPs (seen in `m1_cpx`) to achieve an model supported by data.
 
 ```{julia}
 #| lst-label: m_prsm1
-f1_prsm = @formula(lfd ~ 1 + lls + + rfl + rfl2 + rwn + rwn2 + rwn3 +
+f1_prsm = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                          f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                         (1 + f      + p      + p2 | Subj) +  zerocorr(0 + f1 + f2 + p1 | Subj) +
                         (0 + f + f2 + p + p1 + p2 | Sent) +  zerocorr(0 + f1 | Sent) 
@@ -146,6 +170,8 @@ show(VarCorr(m1_prsm))
 MixedModels.likelihoodratiotest(m1_zcp, m1_prsm, m1_cpx)
 ```
  
+# Summary
+
 + `Subj`-related CPs 
      +  `GM` correlates negatively with `f` and `p2`, positively with `p`; could depend lack of on centering
      +  `f`  correlates negatively with `p` and positively with `p2`
@@ -153,8 +179,9 @@ MixedModels.likelihoodratiotest(m1_zcp, m1_prsm, m1_cpx)
      + positive: `f` and `p2`, 
      + negative: `f` and `f2`,  `f2` and `p2`, `p1` and `p2`
 
- Question: Are these CPs significant?  Bootstrapping!
+**Question:** Are these CPs significant?  Bootstrapping!
 
+# Appendix
 
 ```{julia}
 versioninfo()
