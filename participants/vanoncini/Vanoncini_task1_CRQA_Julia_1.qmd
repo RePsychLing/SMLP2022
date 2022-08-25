@@ -1,0 +1,179 @@
+---
+title: "Monica Vanoncini: Cardiac Synchrony and its Role in Language Development"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-08-25"
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+jupyter: julia-1.8
+---
+
+# Background 
+
+## Task 1: Cardiac synchrony 
+
+MV: This is part of my PhD project which examines the role of mother-infant interpersonal synchrony on language development. Specifically, in this script, I test the following RQ. Does mother-infant cardiac synchrony predict infants' word segmentation ability? We include data of 29 dyads who performed two different tasks: 
+
+* **word-segmentation task**: infants underwent an eye-tracking task. During the familiarization phase they were listening to a story containing target words (i.e., familiar words). Then, they were tested with familiar (6 trials) and novel (6 trials) words. We measured their looking time (LT) in msec while listening to novel vs. familiar words. LT was our dependent variable.
+
+* **5-minutes free play interaction**: mothers were asked to play with the baby as they would do at home. During this time we recorded dual ECG. We then followed the following processing steps: 
+1. We extracted offline Interbeat-intervals (IBIs) 
+2. We calculated Respiratory Sinus Arrhythmia (RSA) 
+3. to collect a more continuous measure of RSA, a sliding window of 15 s was used to extract a continuous estimate of cardiac vagal tone for both participants 
+4. to identify coupling/synchrony between mothers' and infants' RSA time-series we used cross-recurrence quantification analysis (CRQA) 
+5. CRQA gave us a bunch of metrics: RR, det, NRLINE, maxline, entropy, lam, TT 
+6. we ran principal component analysis and we decide to include the first two components (pc1 and pc2), which had eigenvalues higher than 1 (Kaiser Rule).
+
+# Setup
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using KernelDensity    # density estimation
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+if contains(first(Sys.cpu_info()).model, "Intel")
+  using MKL             # faster LAPACK on Intel processors
+end
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsBase
+using StatsModels
+
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
+
+```{julia}
+dat = DataFrame(Arrow.Table("./data/Vanoncini_lang_ECG.arrow"));
+
+# transfromations using DataFrameMacros
+@transform!(dat, :Fam = @bycol categorical(:Fam));
+@transform!(dat, :llt = log(:lt));
+@transform!(dat, "{}_c" =  @bycol ({r"^pc"} .- mean({r"^pc"})));
+
+describe(dat)
+
+# last line is shortcut for:
+#@transform!(dat, :pc1_c = @bycol (:pc1 .- mean(:pc1)));
+#@transform!(dat, :pc2_c = @bycol (:pc2 .- mean(:pc2)));
+#@transform!(dat, :pc3_c = @bycol (:pc3 .- mean(:pc3)));
+
+# Alternative: transformations using DataFrames
+#transform!(dat, :Fam => categorical => :Fam,
+#                :lt  => (x -> log.(x)) => :llt);
+
+```
+
+# Further preprocessing with R
+
+```{julia}
+#| label: fig-speed 
+#| fig-cap: Profile likelihood function for power-transformation coefficient λ (Box & Cox, 1964). Also shown is the 95% confidence interval.  A log-transformation is indicated for λ = 0. 
+
+RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=10.0)
+@rput dat;
+#R"summary(dat)"
+
+R"""
+suppressWarnings(suppressMessages(library(tidyverse)))
+
+MASS::boxcox(lt ~ 1 + Fam + Subj, data=dat)
+""";
+```
+
+# Linear mixed models 
+
+## Contrasts
+
+```{julia}
+contrasts = merge(
+      Dict(:Fam => EffectsCoding(base= "familiar"; levels=["familiar", "novel"])),
+      Dict(:Subj => Grouping())
+   );
+```
+
+## LMM analysis
+
+```{julia}
+#| lst-label: m_pc0
+m_pc0 = let 
+    form = @formula(llt ~  1 + Fam + (1 | Subj));
+    fit(MixedModel, form, dat; contrasts);
+  end
+```
+
+```{julia}
+#| lst-label: m_pc1
+m_pc1 = let 
+    form = @formula(llt ~  1 + Fam*pc1_c + (1 | Subj));
+    fit(MixedModel, form, dat; contrasts);
+  end
+```
+
+```{julia}
+#| lst-label: m_pc2
+m_pc2 = let 
+    form = @formula(llt ~  1 + Fam*(pc1_c + pc2_c) + (1 | Subj));
+    fit(MixedModel, form, dat; contrasts);
+  end
+```
+
+```{julia}
+#| lst-label: m_pc3
+m_pc3 = let 
+    form = @formula(llt ~  1 + Fam*(pc1_c + pc2_c + pc3_c)  + (1 | Subj));
+    fit(MixedModel, form, dat; contrasts);
+  end
+```
+
+# Compare models
+
+```{julia}
+display(lrtest(m_pc0, m_pc1, m_pc2, m_pc3))
+
+ lrtest(m_pc0, m_pc3)
+```
+
+```{julia}
+MixedModels.likelihoodratiotest(m_pc0, m_pc1, m_pc2, m_pc3)
+```
+
+```{julia}
+let mods = [m_pc0, m_pc1, m_pc2, m_pc3];
+ DataFrame(;
+    model=[:m_pc0, :m_pc1, :m_pc2, :m_pc3],
+    pars=dof.(mods),
+    geomdof=round.(Int, (sum ∘ leverage).(mods)),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
+Not much evidence for the relevance of the principal-component predictors.
+
+# Appendix
+```{julia}
+versioninfo()
+```
+

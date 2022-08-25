@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-# Task 1: Cardiac synchrony and its role in language development 
+# Task 1: Cardiac synchrony
 
 **MV**: This is part of my PhD project which examines the role of mother-infant interpersonal synchrony on language development. Specifically, in this script, I test the following RQ. Does mother-infant cardiac synchrony predict infants' word segmentation ability? We include data of 29 dyads who performed two different tasks: 
 
