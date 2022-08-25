@@ -3,19 +3,14 @@ title: "Antje Hofmann: Learning Syntactic Relations with the Mole Task (2)"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-24"
-output: 
+format: 
   html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    number-sections: true
     fig-width: 8
     fig-height: 6
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
-  pdf:
-    fig-width: 7
-    fig-height: 5
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
 editor_options: 
   chunk_output_type: console
 jupyter: julia-1.8
@@ -52,8 +47,6 @@ Children's (age: 4-8 years)reaction times in a task teaching them syntactic rela
      + non-syllable target
      + syllable target
 + `rt`:  response time 
-
-The within-between-Item status of `Block` is not clear. Not all items were shown in the third block.
 
 # Setup
 
