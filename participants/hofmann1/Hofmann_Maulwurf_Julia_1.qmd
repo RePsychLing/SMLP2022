@@ -1,5 +1,5 @@
 ---
-title: "Antje Hofmann: Learning Syntactic Relations with the Mole Task "
+title: "Antje Hofmann: Learning Syntactic Relations with the Mole Task"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-24"
@@ -102,12 +102,13 @@ dat = DataFrame(Arrow.Table("./data/Hofmann_Maulwurf_rt.arrow"))
 transform!(dat, 
     :Target => categorical => :Target,
     :Block  => categorical => :Block,
-    :age => (x -> x .- 6.210813) => :a1, # centered age (linear)
+    :age => (x -> x .- 6) => :a1, # center age (linear) at 6 years
     :rt => (x -> log.(x)) => :lrt)
 describe(dat)
 ```
 
-+ Note: Factor levels can also be set when contrasts are defined (see below).
++ Centering age at six years yields an interpretable `GM`  
++ Factor levels can also be set when contrasts are defined (see below).
 + BoxCox check showed that reaction time `rt` [ms] should be transformed to `speed` [1/s] = [Hz]
 + Indicator variables for `Target` and `Block` generated in R. 
 
@@ -133,7 +134,18 @@ f_voi1 = @formula(lrt ~  1 + Block * Target * a1 + (1 | Subj) + (1 | Item));
 m_voi1 = fit(MixedModel, f_voi1, dat; contrasts)
 ```
 
-Switch to indicator variables. 
+## Extract indicator variables
+
+```{julia}
+X = modelmatrix(m_voi1)
+dat.trng = X[:,2];
+dat.drpt = X[:,3];
+dat.rcvr = X[:,4];
+dat.trgt = X[:,5];
+describe(dat)
+```
+
+Switch to indicator variables and refit the model. 
 
 ```{julia}
 #| lst-label: m_voi2
@@ -221,7 +233,6 @@ show(MixedModels.likelihoodratiotest(m_zcp2, m_prm2,  m_cpx))
 VarCorr(m_prm2)
 ```
 
-
 Check the `Item`-related CP. It is very large, might be spurious.
 
 ```{julia}
@@ -258,7 +269,6 @@ end
 ```
 
 LMM `m_prm2` is a defensible solution according to  $\Delta$ AIC,  $\Delta$ BIC suggests we should not bother with CPs.
-
 
 ```{julia}
 coeftable(m_prm2)
@@ -314,7 +324,6 @@ They are a bit too narrow.
 
 ## Conditional means of random effects
 
-
 ### Subject-related conditional means of random effects
 
 ```{julia}
@@ -360,4 +369,3 @@ caterpillar!(Figure(; resolution=(800, 1200)), cm_Item; orderby=1)
 ```{julia}
 versioninfo()
 ```
-

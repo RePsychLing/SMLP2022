@@ -154,34 +154,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Non-target syllable</li>
 <li>Target syllable</li>
 </ul></li>
-<li>Indicator variables for <code>Target</code> and <code>Block</code> contrasts
-<ul>
-<li><code>trgt</code> : Target syllable - Non-target syllable</li>
-<li><code>trng</code> : 2md learning - 1st learning</li>
-<li><code>drpt</code> : Disruption - 2nd learning</li>
-<li><code>rcvr</code> : Recovery - Disruption</li>
-</ul></li>
 <li><code>rt</code>: response time</li>
 </ul>
-<p>Box-Cox analysis suggested a log transformation of reaction times.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_feather</span>(<span class="st">"./data/Hofmann_Maulwurf_rt.arrow"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(trgt<span class="sc">:</span>rcvr, <span class="at">.before=</span>rt) <span class="sc">|&gt;</span> </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">a1 =</span> age <span class="sc">-</span> <span class="fl">6.210813</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">lrt =</span> <span class="fu">log</span>(rt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">a1 =</span> age <span class="sc">-</span> <span class="fl">6.210813</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">lrt =</span> <span class="fu">log</span>(rt)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(a1, <span class="at">.before=</span>Block)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<ul>
+<li><code>age</code> is centered at mean; using a round number of years (i.e., 6), rather than the mean yields a more meaningul <code>GM</code>. We keep it for compatibility with original fit.</li>
+<li>Box-Cox analysis suggested a log transformation of reaction times <code>rt</code></li>
+</ul>
 </section>
 <section id="lmm-analysis" class="level1">
 <h1>LMM analysis</h1>
+<section id="contrasts-and-indicator-variables" class="level2">
+<h2 class="anchored" data-anchor-id="contrasts-and-indicator-variables">Contrasts and indicator variables</h2>
+<p>Indicator variables for <code>Target</code> and <code>Block</code> contrasts + <code>trgt</code> : Target syllable - Non-target syllable + <code>trng</code> : 2md learning - 1st learning + <code>drpt</code> : Disruption - 2nd learning + <code>rcvr</code> : Recovery - Disruption</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(dat<span class="sc">$</span>Target) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(dat<span class="sc">$</span>Block) <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">contr.sdif</span>(<span class="dv">4</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mm <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Target<span class="sc">*</span>Block, <span class="at">data=</span>dat)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>trgt <span class="ot">&lt;-</span> mm[,<span class="dv">2</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>trng <span class="ot">&lt;-</span> mm[,<span class="dv">3</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>drpt <span class="ot">&lt;-</span> mm[,<span class="dv">4</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rcvr <span class="ot">&lt;-</span> mm[,<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="original-maximal-lmm" class="level2">
 <h2 class="anchored" data-anchor-id="original-maximal-lmm">Original maximal LMM</h2>
 <pre><code>lmax.logRT &lt;-
   lmer(logRT ~ Block * Targetness * c_age + (1 + Block * Targetness | anon_ID) + (1 + c_age| Item), 
        control = lmerControl(calc.derivs = FALSE, optCtrl=list(maxfun=100000), optimizer="bobyqa"), data = SRT.analysis)</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"./fits/lmax.logRT.RData"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(lmax.logRT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"./fits/lmax.logRT.RData"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(lmax.logRT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: lmerTest</code></pre>
 </div>
@@ -230,31 +239,31 @@ Attaching package: 'lmerTest'</code></pre>
 <section id="complex-lmm" class="level2">
 <h2 class="anchored" data-anchor-id="complex-lmm">Complex LMM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m_cpx <span class="ot">&lt;-</span> <span class="fu">lmer</span>(lrt <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> trgt <span class="sc">*</span> (trng<span class="sc">+</span>drpt<span class="sc">+</span>rcvr) <span class="sc">*</span> a1  <span class="sc">+</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span> <span class="sc">+</span> trgt <span class="sc">*</span> (trng<span class="sc">+</span>drpt<span class="sc">+</span>rcvr) <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> a1 <span class="sc">|</span> Item),</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">data=</span>dat, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m_cpx <span class="ot">&lt;-</span> <span class="fu">lmer</span>(lrt <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> trgt <span class="sc">*</span> (trng<span class="sc">+</span>drpt<span class="sc">+</span>rcvr) <span class="sc">*</span> a1  <span class="sc">+</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span> <span class="sc">+</span> trgt <span class="sc">*</span> (trng<span class="sc">+</span>drpt<span class="sc">+</span>rcvr) <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> a1 <span class="sc">|</span> Item),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">data=</span>dat, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>boundary (singular) fit: see help('isSingular')</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
- 53.704   8.064  55.250 </code></pre>
+ 53.812   8.512  55.818 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Groups   Name        Std.Dev. Corr                                            
  Item     (Intercept) 0.023834                                                 
           a1          0.025278 -0.909                                          
  Subj     (Intercept) 0.275063                                                 
-          trgt        0.018417 -0.567                                          
-          trng        0.183480  0.346 -0.154                                   
-          drpt        0.140402  0.051 -0.200  0.346                            
-          rcvr        0.137678 -0.415  0.194 -0.236 -0.476                     
-          trgt:trng   0.046490  0.267 -0.763 -0.130  0.098 -0.138              
-          trgt:drpt   0.125041 -0.398  0.449 -0.085  0.128 -0.026 -0.789       
-          trgt:rcvr   0.089855  0.633 -0.276  0.168  0.058 -0.286  0.540 -0.856
+          trgt        0.018417  0.567                                          
+          trng        0.183480  0.346  0.154                                   
+          drpt        0.140402  0.051  0.200  0.346                            
+          rcvr        0.137678 -0.415 -0.194 -0.236 -0.476                     
+          trgt:trng   0.046490 -0.267 -0.763  0.130 -0.098  0.138              
+          trgt:drpt   0.125041  0.398  0.449  0.085 -0.128  0.026 -0.789       
+          trgt:rcvr   0.089855 -0.633 -0.276 -0.168 -0.058  0.286  0.540 -0.856
  Residual             0.275413                                                 </code></pre>
 </div>
 </div>
@@ -264,17 +273,17 @@ Attaching package: 'lmerTest'</code></pre>
 <section id="parsimonious-lmm" class="level2">
 <h2 class="anchored" data-anchor-id="parsimonious-lmm">Parsimonious LMM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>m_prm2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(lrt <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> trgt <span class="sc">*</span> (trng<span class="sc">+</span>drpt<span class="sc">+</span>rcvr) <span class="sc">*</span> a1  <span class="sc">+</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">1</span> <span class="sc">+</span> drpt <span class="sc">+</span> rcvr <span class="sc">+</span> trng <span class="sc">+</span> drpt<span class="sc">:</span>trgt <span class="sc">+</span> rcvr<span class="sc">:</span>trgt <span class="sc">|</span> Subj) <span class="sc">+</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">0</span> <span class="sc">+</span> trgt <span class="sc">||</span> Subj) <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">+</span> a1 <span class="sc">|</span> Item),</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">data=</span>dat, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>m_prm2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(lrt <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> trgt <span class="sc">*</span> (trng<span class="sc">+</span>drpt<span class="sc">+</span>rcvr) <span class="sc">*</span> a1  <span class="sc">+</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">1</span> <span class="sc">+</span> drpt <span class="sc">+</span> rcvr <span class="sc">+</span> trng <span class="sc">+</span> drpt<span class="sc">:</span>trgt <span class="sc">+</span> rcvr<span class="sc">:</span>trgt <span class="sc">|</span> Subj) <span class="sc">+</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="dv">0</span> <span class="sc">+</span> trgt <span class="sc">||</span> Subj) <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">+</span> a1 <span class="sc">|</span> Item),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">data=</span>dat, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
- 19.846   2.277  20.246 </code></pre>
+ 20.040   2.499  20.608 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Groups   Name        Std.Dev. Corr                              
  Item     (Intercept) 0.023764                                   
@@ -284,8 +293,8 @@ Attaching package: 'lmerTest'</code></pre>
           drpt        0.139214  0.037                            
           rcvr        0.137298 -0.412 -0.469                     
           trng        0.187426  0.327  0.335 -0.219              
-          drpt:trgt   0.099721 -0.361  0.261 -0.097 -0.069       
-          rcvr:trgt   0.081477  0.590 -0.006 -0.272  0.124 -0.869
+          drpt:trgt   0.099721  0.361 -0.261  0.097  0.069       
+          rcvr:trgt   0.081477 -0.590  0.006  0.272 -0.124 -0.869
  Residual             0.276055                                   </code></pre>
 </div>
 </div>
@@ -295,36 +304,36 @@ Attaching package: 'lmerTest'</code></pre>
 <section id="diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="diagnostics">Diagnostics</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare_models</span>(m_cpx, m_prm2, <span class="at">effects=</span><span class="st">"fixed"</span>, <span class="at">style=</span><span class="st">"se_p"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare_models</span>(m_cpx, m_prm2, <span class="at">effects=</span><span class="st">"fixed"</span>, <span class="at">style=</span><span class="st">"se_p"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Parameter          |                 m_cpx |                m_prm2
-------------------------------------------------------------------
-(Intercept)        |        7.66*** (0.04) |        7.66*** (0.04)
-trgt               |     -0.01* (4.49e-03) |    -0.01** (4.34e-03)
-trng               |        -0.08** (0.03) |        -0.08** (0.03)
-drpt               |          0.05* (0.02) |          0.05* (0.02)
-rcvr               |          -0.04 (0.02) |          -0.04 (0.02)
-a1                 |        -0.09** (0.03) |        -0.09** (0.03)
-trgt * trng        |      -5.11e-03 (0.01) |  -2.26e-03 (9.46e-03)
-trgt * drpt        |          -0.01 (0.02) |          -0.02 (0.02)
-trgt * rcvr        |      -4.95e-03 (0.02) |      -3.20e-03 (0.02)
-trgt * a1          | -8.22e-03* (4.01e-03) | -8.74e-03* (3.89e-03)
-trng * a1          |           0.04 (0.02) |           0.04 (0.02)
-drpt * a1          |           0.03 (0.02) |           0.03 (0.02)
-rcvr * a1          |          -0.02 (0.02) |          -0.02 (0.02)
-(trgt * trng) * a1 |      -2.50e-03 (0.01) |  -2.35e-03 (8.41e-03)
-(trgt * drpt) * a1 |           0.02 (0.02) |           0.02 (0.02)
-(trgt * rcvr) * a1 |       3.77e-03 (0.01) |       4.35e-03 (0.01)
-------------------------------------------------------------------
-Observations       |                  6335 |                  6335</code></pre>
+<pre><code>Parameter          |                m_cpx |               m_prm2
+----------------------------------------------------------------
+(Intercept)        |       7.66*** (0.04) |       7.66*** (0.04)
+trgt               |     0.01* (4.49e-03) |    0.01** (4.34e-03)
+trng               |       -0.08** (0.03) |       -0.08** (0.03)
+drpt               |         0.05* (0.02) |         0.05* (0.02)
+rcvr               |         -0.04 (0.02) |         -0.04 (0.02)
+a1                 |       -0.09** (0.03) |       -0.09** (0.03)
+trgt * trng        |      5.11e-03 (0.01) |  2.26e-03 (9.46e-03)
+trgt * drpt        |          0.01 (0.02) |          0.02 (0.02)
+trgt * rcvr        |      4.95e-03 (0.02) |      3.20e-03 (0.02)
+trgt * a1          | 8.22e-03* (4.01e-03) | 8.74e-03* (3.89e-03)
+trng * a1          |          0.04 (0.02) |          0.04 (0.02)
+drpt * a1          |          0.03 (0.02) |          0.03 (0.02)
+rcvr * a1          |         -0.02 (0.02) |         -0.02 (0.02)
+(trgt * trng) * a1 |      2.50e-03 (0.01) |  2.35e-03 (8.41e-03)
+(trgt * drpt) * a1 |         -0.02 (0.02) |         -0.02 (0.02)
+(trgt * rcvr) * a1 |     -3.77e-03 (0.01) |     -4.35e-03 (0.01)
+----------------------------------------------------------------
+Observations       |                 6335 |                 6335</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m_prm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m_prm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Could not compute standard errors from random effects for diagnostic
   plot.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Hofmann_Maulwurf_R_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hofmann_Maulwurf_R_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -332,7 +341,7 @@ Observations       |                  6335 |                  6335</code></pre>
 <section id="appendix" class="level1">
 <h1>Appendix</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.2.1 (2022-06-23)
 Platform: aarch64-apple-darwin20 (64-bit)

@@ -53,24 +53,38 @@ The data are part of the Master thesis that recorded children's (age: 4-8 years)
 + `Target`(renamend fom targetness)
      + Non-target syllable 
      + Target syllable
-+ Indicator variables for `Target` and `Block` contrasts
-     + `trgt` : Target syllable - Non-target syllable
-     + `trng` : 2md learning - 1st learning
-     + `drpt` : Disruption - 2nd learning
-     + `rcvr` : Recovery - Disruption 
 + `rt`:  response time 
-
-Box-Cox analysis suggested a log transformation of reaction times.
 
 ```{r}
 dat <- 
   read_feather("./data/Hofmann_Maulwurf_rt.arrow") |> 
-  relocate(trgt:rcvr, .before=rt) |> 
   mutate(a1 = age - 6.210813,
-         lrt = log(rt))
+         lrt = log(rt)) |> 
+  relocate(a1, .before=Block)
 ```
 
++ `age` is centered at mean;  using a round number of years (i.e., 6), rather than the mean yields a more meaningul `GM`.  We keep it for compatibility with original fit.
++ Box-Cox analysis suggested a log transformation of reaction times `rt`
+
 # LMM analysis
+
+## Contrasts and indicator variables
+
+Indicator variables for `Target` and `Block` contrasts
+     + `trgt` : Target syllable - Non-target syllable
+     + `trng` : 2md learning - 1st learning
+     + `drpt` : Disruption - 2nd learning
+     + `rcvr` : Recovery - Disruption 
+
+```{r}
+contrasts(dat$Target) <- contr.sum(2)
+contrasts(dat$Block) <- MASS::contr.sdif(4)
+mm <- model.matrix(~ 1 + Target*Block, data=dat)
+dat$trgt <- mm[,2]
+dat$trng <- mm[,3]
+dat$drpt <- mm[,4]
+dat$rcvr <- mm[,5]
+```
 
 ## Original maximal LMM
 
