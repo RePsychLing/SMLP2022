@@ -7,20 +7,29 @@ output:
   html:
     fig-width: 8
     fig-height: 6
-    toc: yes
+    toc: true
     toc_depth: 3
-    number_sections: yes
+    number_sections: true
   pdf:
     fig-width: 7
     fig-height: 5
     toc: yes
     toc_depth: 3
-    number_sections: yes
+    number_sections: true
 editor_options: 
   chunk_output_type: console
 jupyter: julia-1.8
 ---
 
+format:
+  html:
+    fig-width: 8
+    fig-height: 4
+    code-fold: true
+    number-sections: true
+    toc: true
+editor_options: 
+  chunk_output_type: console
 # Background 
 
 Children's (age: 4-8 years)reaction times in a task teaching them syntactic relations. 

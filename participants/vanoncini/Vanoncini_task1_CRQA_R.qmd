@@ -2,21 +2,14 @@
 title: "Cardiac Synchrony and its Role in Language Development"
 author: "Monica Vanoncini"
 date: "2022-08-25 (last revised: `r format(Sys.time())`)"
-output:
-  html_document:
-    toc: yes
-    toc_depth: 2
-    number_sections: yes
-    fig_width: 8
-    fig_height: 6
-    fig_caption: true
-  pdf_document:
-    toc: yes
-    toc_depth: 2
-    number_sections: yes
-    fig_width: 7
-    fig_height: 5
-    fig_caption: true
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
 editor_options: 
   chunk_output_type: console
 ---
@@ -28,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Task 1: Cardiac synchrony and its role in language development 
 
-This is part of my PhD project which examines the role of mother-infant interpersonal synchrony on language development. Specifically, in this script, I test the following RQ. Does mother-infant cardiac synchrony predict infants' word segmentation ability? We include data of 29 dyads who performed two different tasks: 
+**MV**: This is part of my PhD project which examines the role of mother-infant interpersonal synchrony on language development. Specifically, in this script, I test the following RQ. Does mother-infant cardiac synchrony predict infants' word segmentation ability? We include data of 29 dyads who performed two different tasks: 
 
 * **word-segmentation task**: infants underwent an eye-tracking task. During the familiarization phase they were listening to a story containing target words (i.e., familiar words). Then, they were tested with familiar (6 trials) and novel (6 trials) words. We measured their looking time (LT) in msec while listening to novel vs. familiar words. LT was our dependent variable.
 
@@ -63,13 +56,41 @@ levels(droplevels(lang_ECG$Familiarity))
 contrasts(lang_ECG$Familiarity)
 ```
 
+# Write arrow file
+
+RK: The arrow file is used as input in Julia. 
+
+```{r}
+library(arrow)
+library(tidyverse)
+library(summarytools)
+
+#view(dfSummary(lang_ECG))
+
+dat <- 
+  lang_ECG |> 
+  select(-Phase) |> 
+  rename(Subj=Participant, Fam=Familiarity, lt=LT, pc1=PC1, pc2=PC2, pc3=PC3) |> 
+  mutate(Subj = factor(paste0("S", str_pad(Subj, width = 2, side = "left", pad = "0")))) |> 
+  droplevels() |> 
+  relocate(lt, .after=pc3) |> 
+  as_tibble()
+
+#view(dfSummary(dat))
+
+write_feather(dat, "./data/Vanoncini_lang_ECG.arrow")
+```
+
+
+# Linear mixed models 
+
 ```{r}
 #center predictors
 lang_ECG$pc1C <- lang_ECG$PC1 - mean(lang_ECG$PC1)
 lang_ECG$pc2C <- lang_ECG$PC2 - mean(lang_ECG$PC2)
+lang_ECG$pc3C <- lang_ECG$PC3 - mean(lang_ECG$PC3)
 ```
 
-# Linear mixed models 
 
 ```{r}
 library(lme4)
@@ -80,10 +101,16 @@ lang_ECG$Familiarity <- relevel(lang_ECG$Familiarity, ref = "familiar")
 
 ```{r}
 #run different models
-pc0 =lmer(log(LT)~Familiarity+(1|Participant), data=lang_ECG, REML=FALSE)
-pc1=lmer(log(LT)~Familiarity*pc1C+(1|Participant), data=lang_ECG, REML=FALSE)
-pc2=lmer(log(LT)~Familiarity*pc1C+Familiarity*pc2C+(1|Participant), data=lang_ECG, REML=FALSE)
-#compare models with Anova
+pc0 <- lmer(log(LT)~Familiarity+(1|Participant), 
+            data=lang_ECG, REML=FALSE, control=lmerControl(calc.derivs = FALSE))
+
+pc1 <- lmer(log(LT)~Familiarity*pc1C+(1|Participant),
+            data=lang_ECG, REML=FALSE, control=lmerControl(calc.derivs = FALSE))
+
+pc2 <- lmer(log(LT)~Familiarity*pc1C+Familiarity*pc2C+(1|Participant),
+            data=lang_ECG, REML=FALSE, control=lmerControl(calc.derivs = FALSE))
+
+#compare models with anova()
 anova(pc0,pc1,pc2)
 summary(pc2)
 ```
@@ -95,6 +122,7 @@ library(performance)
 library(ggplot2)
 check_model(pc2)
 library(effects)
+
 myef <- effect("Familiarity*pc2C", pc2)
 myef_df <- data.frame(myef)
 head(myef_df)

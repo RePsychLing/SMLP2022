@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Monica Vanoncini">
+<meta name="dcterms.date" content="2022-08-25">
+
+<title>Cardiac Synchrony and its Role in Language Development</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Vanoncini_task1_CRQA_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Vanoncini_task1_CRQA_R_files/libs/quarto-html/quarto.js"></script>
+<script src="Vanoncini_task1_CRQA_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="Vanoncini_task1_CRQA_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Vanoncini_task1_CRQA_R_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Vanoncini_task1_CRQA_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Vanoncini_task1_CRQA_R_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Vanoncini_task1_CRQA_R_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Vanoncini_task1_CRQA_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Vanoncini_task1_CRQA_R_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#task-1-cardiac-synchrony-and-its-role-in-language-development" id="toc-task-1-cardiac-synchrony-and-its-role-in-language-development" class="nav-link active" data-scroll-target="#task-1-cardiac-synchrony-and-its-role-in-language-development"> <span class="header-section-number">1</span> Task 1: Cardiac synchrony and its role in language development</a></li>
+  <li><a href="#part-1-data-preparation" id="toc-part-1-data-preparation" class="nav-link" data-scroll-target="#part-1-data-preparation"> <span class="header-section-number">2</span> Part 1: Data preparation</a></li>
+  <li><a href="#write-arrow-file" id="toc-write-arrow-file" class="nav-link" data-scroll-target="#write-arrow-file"> <span class="header-section-number">3</span> Write arrow file</a></li>
+  <li><a href="#linear-mixed-models" id="toc-linear-mixed-models" class="nav-link" data-scroll-target="#linear-mixed-models"> <span class="header-section-number">4</span> Linear mixed models</a></li>
+  <li><a href="#plot-results" id="toc-plot-results" class="nav-link" data-scroll-target="#plot-results"> <span class="header-section-number">5</span> Plot results</a></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"> <span class="header-section-number">6</span> Appendix</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Cardiac Synchrony and its Role in Language Development</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Monica Vanoncini </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 25, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="task-1-cardiac-synchrony-and-its-role-in-language-development" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Task 1: Cardiac synchrony and its role in language development</h1>
+<p><strong>MV</strong>: This is part of my PhD project which examines the role of mother-infant interpersonal synchrony on language development. Specifically, in this script, I test the following RQ. Does mother-infant cardiac synchrony predict infants’ word segmentation ability? We include data of 29 dyads who performed two different tasks:</p>
+<ul>
+<li><p><strong>word-segmentation task</strong>: infants underwent an eye-tracking task. During the familiarization phase they were listening to a story containing target words (i.e., familiar words). Then, they were tested with familiar (6 trials) and novel (6 trials) words. We measured their looking time (LT) in msec while listening to novel vs.&nbsp;familiar words. LT was our dependent variable.</p></li>
+<li><p><strong>5-minutes free play interaction</strong>: mothers were asked to play with the baby as they would do at home. During this time we recorded dual ECG. We then followed the following processing steps:</p></li>
+</ul>
+<ol type="1">
+<li>we extracted offline Interbeat-intervals (IBIs)</li>
+<li>we calculated Respiratory Sinus Arrhythmia (RSA)</li>
+<li>to collect a more continuous measure of RSA, a sliding window of 15 s was used to extract a continuous estimate of cardiac vagal tone for both participants</li>
+<li>to identify coupling/synchrony between mothers’ and infants’ RSA time-series we used cross-recurrence quantification analysis (CRQA)</li>
+<li>CRQA gave us a bunch of metrics: RR, det, NRLINE, maxline, entropy, lam, TT</li>
+<li>we ran principal component analysis and we decide to include the first two components (pc1 and pc2), which had eigenvalues higher than 1 (Kaiser Rule).</li>
+</ol>
+</section>
+<section id="part-1-data-preparation" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Part 1: Data preparation</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>lang_ECG <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/Vanconin_lang_ECG.csv"</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">sep=</span><span class="st">";"</span>, <span class="at">dec =</span> <span class="st">","</span>) </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lang_ECG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   426 obs. of  7 variables:
+ $ Participant: int  10 10 10 10 10 10 10 10 10 10 ...
+ $ Phase      : chr  "familiarization" "familiarization" "familiarization" "familiarization" ...
+ $ Familiarity: chr  "famphase" "famphase" "famphase" "famphase" ...
+ $ LT         : num  1.17 2.65 15.26 11.68 5.49 ...
+ $ PC1        : num  -0.572 -0.572 -0.572 -0.572 -0.572 ...
+ $ PC2        : num  -0.092 -0.092 -0.092 -0.092 -0.092 ...
+ $ PC3        : num  -2.25 -2.25 -2.25 -2.25 -2.25 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>Participant <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(lang_ECG<span class="sc">$</span>Participant)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>Phase <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(lang_ECG<span class="sc">$</span>Phase)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>Familiarity <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(lang_ECG<span class="sc">$</span>Familiarity)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(lang_ECG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   426 obs. of  7 variables:
+ $ Participant: Factor w/ 29 levels "10","14","17",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ Phase      : Factor w/ 2 levels "familiarization",..: 1 1 1 1 2 2 2 2 2 2 ...
+ $ Familiarity: Factor w/ 3 levels "familiar","famphase",..: 2 2 2 2 3 1 1 3 1 1 ...
+ $ LT         : num  1.17 2.65 15.26 11.68 5.49 ...
+ $ PC1        : num  -0.572 -0.572 -0.572 -0.572 -0.572 ...
+ $ PC2        : num  -0.092 -0.092 -0.092 -0.092 -0.092 ...
+ $ PC3        : num  -2.25 -2.25 -2.25 -2.25 -2.25 ...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#select only the data of the test phase</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lang_ECG <span class="ot">&lt;-</span> <span class="fu">subset</span>(lang_ECG, lang_ECG<span class="sc">$</span>Phase <span class="sc">!=</span><span class="st">"familiarization"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lang_ECG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Participant              Phase       Familiarity        LT        
+ 14     : 12   familiarization:  0   familiar:160   Min.   : 1.059  
+ 19     : 12   testing        :310   famphase:  0   1st Qu.: 3.378  
+ 30     : 12                         novel   :150   Median : 5.938  
+ 32     : 12                                        Mean   : 7.893  
+ 33     : 12                                        3rd Qu.:10.002  
+ 37     : 12                                        Max.   :31.696  
+ (Other):238                                                        
+      PC1               PC2                PC3          
+ Min.   :-4.8247   Min.   :-2.19475   Min.   :-2.25027  
+ 1st Qu.:-1.0780   1st Qu.:-0.76545   1st Qu.:-0.42031  
+ Median :-0.2899   Median : 0.05161   Median : 0.20945  
+ Mean   :-0.0308   Mean   : 0.01955   Mean   : 0.03938  
+ 3rd Qu.: 1.0833   3rd Qu.: 0.78577   3rd Qu.: 0.57058  
+ Max.   : 5.3849   Max.   : 2.03139   Max.   : 1.40010  
+                                                        </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set contrasts</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stats)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(<span class="fu">droplevels</span>(lang_ECG<span class="sc">$</span>Familiarity))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "familiar" "novel"   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(lang_ECG<span class="sc">$</span>Familiarity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         famphase novel
+familiar        0     0
+famphase        1     0
+novel           0     1</code></pre>
+</div>
+</div>
+</section>
+<section id="write-arrow-file" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Write arrow file</h1>
+<p>RK: The arrow file is used as input in Julia.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'arrow'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    timestamp</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages
+───────────────────────────────────────
+tidyverse 1.3.2 ──</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.8     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.1
+✔ readr   2.1.2     ✔ forcats 0.5.2
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'summarytools'
+
+The following object is masked from 'package:tibble':
+
+    view</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#view(dfSummary(lang_ECG))</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  lang_ECG <span class="sc">|&gt;</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Phase) <span class="sc">|&gt;</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Subj=</span>Participant, <span class="at">Fam=</span>Familiarity, <span class="at">lt=</span>LT, <span class="at">pc1=</span>PC1, <span class="at">pc2=</span>PC2, <span class="at">pc3=</span>PC3) <span class="sc">|&gt;</span> </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Subj =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"S"</span>, <span class="fu">str_pad</span>(Subj, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>)))) <span class="sc">|&gt;</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(lt, <span class="at">.after=</span>pc3) <span class="sc">|&gt;</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#view(dfSummary(dat))</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(dat, <span class="st">"./data/Vanoncini_lang_ECG.arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="linear-mixed-models" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Linear mixed models</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#center predictors</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>pc1C <span class="ot">&lt;-</span> lang_ECG<span class="sc">$</span>PC1 <span class="sc">-</span> <span class="fu">mean</span>(lang_ECG<span class="sc">$</span>PC1)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>pc2C <span class="ot">&lt;-</span> lang_ECG<span class="sc">$</span>PC2 <span class="sc">-</span> <span class="fu">mean</span>(lang_ECG<span class="sc">$</span>PC2)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>pc3C <span class="ot">&lt;-</span> lang_ECG<span class="sc">$</span>PC3 <span class="sc">-</span> <span class="fu">mean</span>(lang_ECG<span class="sc">$</span>PC3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:tidyr':
+
+    expand, pack, unpack</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'lmerTest'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lme4':
+
+    lmer</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    step</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>lang_ECG<span class="sc">$</span>Familiarity <span class="ot">&lt;-</span> <span class="fu">relevel</span>(lang_ECG<span class="sc">$</span>Familiarity, <span class="at">ref =</span> <span class="st">"familiar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#run different models</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>pc0 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">log</span>(LT)<span class="sc">~</span>Familiarity<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>Participant), </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data=</span>lang_ECG, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>pc1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">log</span>(LT)<span class="sc">~</span>Familiarity<span class="sc">*</span>pc1C<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>Participant),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">data=</span>lang_ECG, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>pc2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(<span class="fu">log</span>(LT)<span class="sc">~</span>Familiarity<span class="sc">*</span>pc1C<span class="sc">+</span>Familiarity<span class="sc">*</span>pc2C<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>Participant),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">data=</span>lang_ECG, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">#compare models with anova()</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(pc0,pc1,pc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: lang_ECG
+Models:
+pc0: log(LT) ~ Familiarity + (1 | Participant)
+pc1: log(LT) ~ Familiarity * pc1C + (1 | Participant)
+pc2: log(LT) ~ Familiarity * pc1C + Familiarity * pc2C + (1 | Participant)
+    npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)  
+pc0    4 689.45 704.39 -340.72   681.45                       
+pc1    6 693.34 715.76 -340.67   681.34 0.1029  2    0.94984  
+pc2    8 691.46 721.35 -337.73   675.46 5.8801  2    0.05286 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite's
+  method [lmerModLmerTest]
+Formula: log(LT) ~ Familiarity * pc1C + Familiarity * pc2C + (1 | Participant)
+   Data: lang_ECG
+Control: lmerControl(calc.derivs = FALSE)
+
+     AIC      BIC   logLik deviance df.resid 
+   691.5    721.4   -337.7    675.5      302 
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-3.02876 -0.61309 -0.07738  0.63312  2.50248 
+
+Random effects:
+ Groups      Name        Variance Std.Dev.
+ Participant (Intercept) 0.1280   0.3578  
+ Residual                0.4546   0.6743  
+Number of obs: 310, groups:  Participant, 29
+
+Fixed effects:
+                        Estimate Std. Error         df t value
+(Intercept)             1.739135   0.085355  42.369320  20.375
+Familiaritynovel        0.051108   0.076938 281.615839   0.664
+pc1C                    0.011466   0.041902  42.172058   0.274
+pc2C                    0.028178   0.082346  41.993264   0.342
+Familiaritynovel:pc1C   0.003251   0.036957 280.777680   0.088
+Familiaritynovel:pc2C  -0.174237   0.074902 281.417164  -2.326
+                                 Pr(&gt;|t|)    
+(Intercept)           &lt;0.0000000000000002 ***
+Familiaritynovel                   0.5071    
+pc1C                               0.7857    
+pc2C                               0.7339    
+Familiaritynovel:pc1C              0.9300    
+Familiaritynovel:pc2C              0.0207 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) Fmlrty pc1C   pc2C   Fml:1C
+Familrtynvl -0.434                            
+pc1C        -0.013  0.006                     
+pc2C         0.002  0.011  0.000              
+Fmlrtynv:1C  0.006  0.000 -0.443 -0.001       
+Fmlrtynv:2C  0.011  0.001 -0.001 -0.429 -0.018</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-results" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Plot results</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(pc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Vanoncini_task1_CRQA_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>lattice theme set by effectsTheme()
+See ?effectsTheme for details.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>myef <span class="ot">&lt;-</span> <span class="fu">effect</span>(<span class="st">"Familiarity*pc2C"</span>, pc2)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>myef_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(myef)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(myef_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Familiarity pc2C      fit         se    lower    upper
+1    familiar -2.0 1.682780 0.18533732 1.318073 2.047486
+2       novel -2.0 2.082363 0.18784213 1.712727 2.451998
+3    familiar -1.0 1.710957 0.11847729 1.477818 1.944097
+4       novel -1.0 1.936303 0.11953564 1.701081 2.171525
+5    familiar -0.1 1.736317 0.08573388 1.567610 1.905024
+6       novel -0.1 1.804849 0.08684260 1.633961 1.975738</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(myef_df,<span class="fu">aes</span>(<span class="at">x=</span>pc2C, <span class="at">y=</span>fit, <span class="at">linetype=</span>Familiarity, <span class="at">fill=</span>Familiarity, <span class="at">size=</span>Familiarity)) <span class="sc">+</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">data=</span>myef_df, <span class="fu">aes</span>(<span class="at">x=</span>pc2C, <span class="at">y=</span>fit), <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span> <span class="co"># for plotting the lines</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>myef_df, <span class="fu">aes</span>(<span class="at">x=</span>pc2C, <span class="at">ymin=</span>lower, <span class="at">ymax=</span>upper, <span class="at">group=</span>Familiarity), <span class="at">alpha=</span>.<span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>lang_ECG, <span class="fu">aes</span>(<span class="at">x=</span>pc2C, <span class="at">y=</span><span class="fu">log</span>(LT), <span class="at">shape=</span>Familiarity, <span class="at">colour=</span>Participant), <span class="at">size=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_continuous(trans='logit') + # y-scale is now reflecting the logit space</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_bw() </span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#xlab("pc2 centered") + ylab("LT (fit)") +</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"pc2 (centered)"</span>, <span class="at">y =</span> <span class="st">"Log LT for test trials"</span>) <span class="sc">+</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"black"</span>))<span class="sc">+</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">shape =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">"Trial type"</span>), <span class="at">colour=</span><span class="cn">FALSE</span>, <span class="at">fill=</span><span class="cn">FALSE</span>, <span class="at">size=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">linetype=</span><span class="st">"Group"</span>)<span class="sc">+</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>), <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>), </span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
+"none")` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using size for a discrete variable is not advised.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Vanoncini_task1_CRQA_R_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="appendix" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Appendix</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.2.1 (2022-06-23)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Monterey 12.5.1
+
+Matrix products: default
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] effects_4.2-2      carData_3.0-5      performance_0.9.2  lmerTest_3.1-3    
+ [5] lme4_1.1-30        Matrix_1.4-1       summarytools_1.0.1 forcats_0.5.2     
+ [9] stringr_1.4.1      dplyr_1.0.9        purrr_0.3.4        readr_2.1.2       
+[13] tidyr_1.2.0        tibble_3.1.8       ggplot2_3.3.6      tidyverse_1.3.2   
+[17] arrow_9.0.0        readxl_1.4.1      
+
+loaded via a namespace (and not attached):
+ [1] googledrive_2.0.0   minqa_1.2.4         colorspace_2.0-3   
+ [4] pryr_0.1.5          ellipsis_0.3.2      estimability_1.4.1 
+ [7] base64enc_0.1-3     fs_1.5.2            rstudioapi_0.14    
+[10] farver_2.1.1        ggrepel_0.9.1       bit64_4.0.5        
+[13] fansi_1.0.3         lubridate_1.8.0     xml2_1.3.3         
+[16] codetools_0.2-18    splines_4.2.1       robustbase_0.95-0  
+[19] knitr_1.40          jsonlite_1.8.0      nloptr_2.0.3       
+[22] broom_1.0.0         dbplyr_2.2.1        compiler_4.2.1     
+[25] httr_1.4.4          backports_1.4.1     assertthat_0.2.1   
+[28] fastmap_1.1.0       gargle_1.2.0        survey_4.1-1       
+[31] cli_3.3.0           htmltools_0.5.3     tools_4.2.1        
+[34] gtable_0.3.0        glue_1.6.2          reshape2_1.4.4     
+[37] Rcpp_1.0.9          cellranger_1.1.0    vctrs_0.4.1        
+[40] nlme_3.1-159        insight_0.18.2      xfun_0.32          
+[43] rvest_1.0.3         lifecycle_1.0.1     googlesheets4_1.0.1
+[46] DEoptimR_1.0-11     MASS_7.3-58.1       scales_1.2.1       
+[49] hms_1.1.2           qqplotr_0.0.5       yaml_2.3.5         
+[52] see_0.7.2           pander_0.6.5        stringi_1.7.8      
+[55] bayestestR_0.12.1.2 checkmate_2.1.0     boot_1.3-28        
+[58] rlang_1.0.4         pkgconfig_2.0.3     matrixStats_0.62.0 
+[61] evaluate_0.16       lattice_0.20-45     patchwork_1.1.2    
+[64] rapportools_1.1     htmlwidgets_1.5.4   labeling_0.4.2     
+[67] bit_4.0.4           tidyselect_1.1.2    plyr_1.8.7         
+[70] magrittr_2.0.3      R6_2.5.1            magick_2.7.3       
+[73] generics_0.1.3      DBI_1.1.3           pillar_1.8.1       
+[76] haven_2.5.1         withr_2.5.0         mgcv_1.8-40        
+[79] survival_3.4-0      datawizard_0.5.1    nnet_7.3-17        
+[82] modelr_0.1.9        crayon_1.5.1        utf8_1.2.2         
+[85] tzdb_0.3.0          rmarkdown_2.15      grid_4.2.1         
+[88] reprex_2.0.2        digest_0.6.29       numDeriv_2016.8-1.1
+[91] munsell_0.5.0       mitools_2.4         tcltk_4.2.1        </code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

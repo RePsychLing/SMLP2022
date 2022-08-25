@@ -2,21 +2,13 @@
 title: "Detecting Faked IATs via Task-Switch Costs"
 author: "Anke Cajar (& a fewrevisions: Reinhold Kliegl)"
 date: "2022-08-09 (last revised: `r format(Sys.time())`)"
-output:
-  html_document:
-    toc: yes
-    toc_depth: 2
-    number_sections: yes
-    fig_width: 8
-    fig_height: 6
-    fig_caption: true
-  pdf_document:
-    toc: yes
-    toc_depth: 2
-    number_sections: yes
-    fig_width: 7
-    fig_height: 5
-    fig_caption: true
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
 editor_options: 
   chunk_output_type: console
 ---

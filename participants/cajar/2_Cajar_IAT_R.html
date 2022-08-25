@@ -97,10 +97,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#anke-cajar-ac-analysismodeling-issues" id="toc-anke-cajar-ac-analysismodeling-issues" class="nav-link active" data-scroll-target="#anke-cajar-ac-analysismodeling-issues"> <span class="header-section-number">1</span> Anke Cajar (AC): Analysis/modeling issues</a></li>
+  <li><a href="#background-and-overview" id="toc-background-and-overview" class="nav-link" data-scroll-target="#background-and-overview"> <span class="header-section-number">2</span> Background and overview</a>
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"> <span class="header-section-number">2.1</span> Data</a></li>
+  <li><a href="#iat-and-faking-strategies" id="toc-iat-and-faking-strategies" class="nav-link" data-scroll-target="#iat-and-faking-strategies"> <span class="header-section-number">2.2</span> IAT and faking strategies</a></li>
+  </ul></li>
+  <li><a href="#readme" id="toc-readme" class="nav-link" data-scroll-target="#readme"> <span class="header-section-number">3</span> Readme</a>
+  <ul class="collapse">
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design"> <span class="header-section-number">3.1</span> Design</a></li>
+  <li><a href="#variables" id="toc-variables" class="nav-link" data-scroll-target="#variables"> <span class="header-section-number">3.2</span> Variables</a></li>
+  </ul></li>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages"> <span class="header-section-number">4</span> Load packages</a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"> <span class="header-section-number">5</span> Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#trial-data" id="toc-trial-data" class="nav-link" data-scroll-target="#trial-data"> <span class="header-section-number">5.1</span> Trial data</a></li>
+  <li><a href="#subject-data" id="toc-subject-data" class="nav-link" data-scroll-target="#subject-data"> <span class="header-section-number">5.2</span> Subject data</a></li>
+  <li><a href="#item-data" id="toc-item-data" class="nav-link" data-scroll-target="#item-data"> <span class="header-section-number">5.3</span> Item data</a></li>
+  <li><a href="#combine-data" id="toc-combine-data" class="nav-link" data-scroll-target="#combine-data"> <span class="header-section-number">5.4</span> Combine data</a></li>
+  <li><a href="#check-distribution-of-rts" id="toc-check-distribution-of-rts" class="nav-link" data-scroll-target="#check-distribution-of-rts"> <span class="header-section-number">5.5</span> Check distribution of rt’s</a></li>
+  </ul></li>
+  <li><a href="#plot-switch-costs" id="toc-plot-switch-costs" class="nav-link" data-scroll-target="#plot-switch-costs"> <span class="header-section-number">6</span> Plot switch costs</a></li>
+  <li><a href="#acs-model-selection-revised" id="toc-acs-model-selection-revised" class="nav-link" data-scroll-target="#acs-model-selection-revised"> <span class="header-section-number">7</span> AC’s model selection (revised)</a>
+  <ul class="collapse">
+  <li><a href="#define-contrasts" id="toc-define-contrasts" class="nav-link" data-scroll-target="#define-contrasts"> <span class="header-section-number">7.1</span> Define contrasts</a></li>
+  <li><a href="#models-that-do-not-or-did-not-converge" id="toc-models-that-do-not-or-did-not-converge" class="nav-link" data-scroll-target="#models-that-do-not-or-did-not-converge"> <span class="header-section-number">7.2</span> Models that do not (or did not) converge</a></li>
+  <li><a href="#minimal-model-works" id="toc-minimal-model-works" class="nav-link" data-scroll-target="#minimal-model-works"> <span class="header-section-number">7.3</span> Minimal model works</a></li>
+  <li><a href="#regression-diagnostics-for-model13" id="toc-regression-diagnostics-for-model13" class="nav-link" data-scroll-target="#regression-diagnostics-for-model13"> <span class="header-section-number">7.4</span> Regression diagnostics for model13</a></li>
+  </ul></li>
+  <li><a href="#rks-proposal" id="toc-rks-proposal" class="nav-link" data-scroll-target="#rks-proposal"> <span class="header-section-number">8</span> RK’s proposal</a>
+  <ul class="collapse">
+  <li><a href="#contrasts-and-indicator-variables" id="toc-contrasts-and-indicator-variables" class="nav-link" data-scroll-target="#contrasts-and-indicator-variables"> <span class="header-section-number">8.1</span> Contrasts and indicator variables</a></li>
+  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection"> <span class="header-section-number">8.2</span> Model selection</a></li>
+  <li><a href="#diagnostics-for-model-m1" id="toc-diagnostics-for-model-m1" class="nav-link" data-scroll-target="#diagnostics-for-model-m1"> <span class="header-section-number">8.3</span> Diagnostics for model <code>m1</code></a></li>
+  <li><a href="#plot-of-switch-costs-for-speed-scores" id="toc-plot-of-switch-costs-for-speed-scores" class="nav-link" data-scroll-target="#plot-of-switch-costs-for-speed-scores"> <span class="header-section-number">8.4</span> Plot of switch costs for speed scores</a></li>
+  <li><a href="#partial-effect-plot" id="toc-partial-effect-plot" class="nav-link" data-scroll-target="#partial-effect-plot"> <span class="header-section-number">8.5</span> Partial effect plot</a></li>
+  </ul></li>
+  <li><a href="#conditional-means-of-random-effects" id="toc-conditional-means-of-random-effects" class="nav-link" data-scroll-target="#conditional-means-of-random-effects"> <span class="header-section-number">9</span> Conditional means of random effects</a>
+  <ul class="collapse">
+  <li><a href="#subject-related-conditional-means-of-random-experimental-effects" id="toc-subject-related-conditional-means-of-random-experimental-effects" class="nav-link" data-scroll-target="#subject-related-conditional-means-of-random-experimental-effects"> <span class="header-section-number">9.1</span> Subject-related conditional means of random experimental effects</a></li>
+  <li><a href="#subject-related-conditional-means-of-random-quasi-experimental-effects" id="toc-subject-related-conditional-means-of-random-quasi-experimental-effects" class="nav-link" data-scroll-target="#subject-related-conditional-means-of-random-quasi-experimental-effects"> <span class="header-section-number">9.2</span> Subject-related conditional means of random quasi-experimental effects</a></li>
+  <li><a href="#add-age-as-covariate-to-model-m1" id="toc-add-age-as-covariate-to-model-m1" class="nav-link" data-scroll-target="#add-age-as-covariate-to-model-m1"> <span class="header-section-number">9.3</span> Add <code>age</code> as covariate to model <code>m1</code></a></li>
+  <li><a href="#item-related-conditional-means-of-random-effects" id="toc-item-related-conditional-means-of-random-effects" class="nav-link" data-scroll-target="#item-related-conditional-means-of-random-effects"> <span class="header-section-number">9.4</span> Item-related conditional means of random effects</a></li>
+  </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"> <span class="header-section-number">10</span> Appendix</a>
+  <ul class="collapse">
+  <li><a href="#refit-model13-with-sum-contrasts" id="toc-refit-model13-with-sum-contrasts" class="nav-link" data-scroll-target="#refit-model13-with-sum-contrasts"> <span class="header-section-number">10.1</span> Refit <code>model13</code> with sum contrasts</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info"> <span class="header-section-number">10.2</span> Session info</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -131,8 +186,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="anke-cajar-ac-analysismodeling-issues" class="level1">
-<h1>Anke Cajar (AC): Analysis/modeling issues</h1>
+<section id="anke-cajar-ac-analysismodeling-issues" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Anke Cajar (AC): Analysis/modeling issues</h1>
 <ul>
 <li>Is the contrast coding appropriate?</li>
 <li>What is currently the best method for model selection (concerning questions like: from maximal to minimal model, doing rePCA, …)? Is the stuff from the RePsychLing package and vignettes still the way to do it?</li>
@@ -142,8 +197,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Model results (model 13) don’t really fit the mean response time/switch costs plot, as part of the effects you see in the figure goes into the random effects (By chance, there were more older subjects &gt; 45 years in the no-faking group, who had considerably longer mean response times in the baseline IAT). How do I report this in a paper? Should I plot the fixed effects from the model instead of mean response times (which I’d rather not)?</li>
 </ul>
 </section>
-<section id="background-and-overview" class="level1">
-<h1>Background and overview</h1>
+<section id="background-and-overview" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Background and overview</h1>
 <ul>
 <li>Data are from André Krügel.</li>
 <li>Revisions and additions for SMLP2022 by Reinhold Kliegl (RK)</li>
@@ -160,19 +215,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>plotting conditional means</li>
 </ul></li>
 </ul>
-<section id="data" class="level2">
-<h2 class="anchored" data-anchor-id="data">Data</h2>
+<section id="data" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="data"><span class="header-section-number">2.1</span> Data</h2>
 <p>This is data from an experiment showing that we can reliably detect whether outcomes from the Implicit Association Test (IAT) are faked by analysing task-switch costs in the combined blocks of the IAT (see next paragraph) Every participant performed two IATs: the control group performed the same normative IAT twice and the faking group was instructed to fake the second IAT by deliberately slowing down response times in the compatible block. It has been shown that switches from a target-concept word to an attribute-dimension word between consecutive trials produces stronger switch costs (i.e., response-time differences between task-repetition and task-switch trials) in the incompatible block than in the compatible block. The present data show that even after successful faking of the IAT, these switch costs are preserved (although the true compatible block became the faked incompatible block). Thus, switch costs can be used to detect IAT faking reliably and with high accuracy.</p>
 </section>
-<section id="iat-and-faking-strategies" class="level2">
-<h2 class="anchored" data-anchor-id="iat-and-faking-strategies">IAT and faking strategies</h2>
+<section id="iat-and-faking-strategies" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="iat-and-faking-strategies"><span class="header-section-number">2.2</span> IAT and faking strategies</h2>
 <p>The IAT measures people’s implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories—two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.</p>
 </section>
 </section>
-<section id="readme" class="level1">
-<h1>Readme</h1>
-<section id="design" class="level2">
-<h2 class="anchored" data-anchor-id="design">Design</h2>
+<section id="readme" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Readme</h1>
+<section id="design" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="design"><span class="header-section-number">3.1</span> Design</h2>
 <ul>
 <li>Design: 2 (B-Subj/W-Item) x 2 (W) x 2 (W) x 2 (W) factorial mixed design</li>
 <li>N trials: 38 Subj x 20 Item x 8 W-Item x 2 repetition of items = 12160</li>
@@ -180,8 +235,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>N observations: 12160-391=11769</li>
 </ul>
 </section>
-<section id="variables" class="level2">
-<h2 class="anchored" data-anchor-id="variables">Variables</h2>
+<section id="variables" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="variables"><span class="header-section-number">3.2</span> Variables</h2>
 <ul>
 <li><code>Subj</code>: Participant ID (renamed from <code>ID</code>; random factor)</li>
 <li><code>Item</code>: Word ID (random factor)</li>
@@ -209,8 +264,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </section>
 </section>
-<section id="load-packages" class="level1">
-<h1>Load packages</h1>
+<section id="load-packages" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Load packages</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">suppressMessages</span>(<span class="fu">library</span>(tidyverse)))</span>
@@ -226,10 +281,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">"#F0E442"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="preprocessing" class="level1">
-<h1>Preprocessing</h1>
-<section id="trial-data" class="level2">
-<h2 class="anchored" data-anchor-id="trial-data">Trial data</h2>
+<section id="preprocessing" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Preprocessing</h1>
+<section id="trial-data" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="trial-data"><span class="header-section-number">5.1</span> Trial data</h2>
 <ul>
 <li>Random factors should be factors, not integers!</li>
 <li>RK style preferences
@@ -282,7 +337,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. S001</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. S007</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">3. S008</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">4. S015</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">5. S017</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">6. S019</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">7. S020</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">8. S022</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">9. S027</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">10. S034</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">[ 28 others ]</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">294</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">311</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">297</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">292</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">320</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">320</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">297</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.5%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">301</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">306</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">315</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">8716</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">74.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHsAAAELCAQAAABTmzGBAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABz0lEQVR42u3awU0CYRRG0YehR4uwHu3BKnWhMYPCTkLy7jk7wmZu+GdIvszpY4qeHn0BsmXf2/n44e3nRn85PfrC/t/xKXa+/Op5ZmbeH32Fdxc95LJLZJfILpFdIrtEdonsEtkl0exfo9L+OenL6TisLdwND46l0UMezb64t19X7+Q3s+3ky8kukV0iu0R2iewS2SWyS2SXRLPt5Hby9aLZdvIZO/lysktkl8gukV0iu0R2iewS2SXRbDu5nXy9aPbVnXz7Sv7n137+Xsq3ix5y2SWyS2SXyC6RXSK7RHaJ7BKDscF4Pdkl3ief8T75crJLZJfILpFdIrtEdonsEtkldnI7+XrRbIPxjMF4Odklsktkl8gukV0iu0R2ieySaLad3E6+XjTbTj5jJ19OdonsEtklsktkl8gukV0iuySabSe3k68XzbaTz9jJl5NdIrtEdonsEtklsktkl8guiWbbye3k60Wz7eQzdvLlZJfILpFdIrtEdonsEtklskui2XZyO/l60Ww7+YydfDnZJbJLZJfILpFdIrtEdonsEoOxwXg92SU3dvKVDo+uqzv5Rpf/UdFDLrtEdonsEtklsktkl8gukV1iJy+JHnLZJZ/zX0DFRz+sIQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMHEGvnUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDAAWwbJAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHsAAAELCAQAAABTmzGBAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABz0lEQVR42u3awU0CYRRG0YehR4uwHu3BKnWhMYPCTkLy7jk7wmZu+GdIvszpY4qeHn0BsmXf2/n44e3nRn85PfrC/t/xKXa+/Op5ZmbeH32Fdxc95LJLZJfILpFdIrtEdonsEtkl0exfo9L+OenL6TisLdwND46l0UMezb64t19X7+Q3s+3ky8kukV0iu0R2iewS2SWyS2SXRLPt5Hby9aLZdvIZO/lysktkl8gukV0iu0R2iewS2SXRbDu5nXy9aPbVnXz7Sv7n137+Xsq3ix5y2SWyS2SXyC6RXSK7RHaJ7BKDscF4Pdkl3ief8T75crJLZJfILpFdIrtEdonsEtkldnI7+XrRbIPxjMF4Odklsktkl8gukV0iu0R2ieySaLad3E6+XjTbTj5jJ19OdonsEtklsktkl8gukV0iuySabSe3k68XzbaTz9jJl5NdIrtEdonsEtklsktkl8guiWbbye3k60Wz7eQzdvLlZJfILpFdIrtEdonsEtklskui2XZyO/l60Ww7+YydfDnZJbJLZJfILpFdIrtEdonsEoOxwXg92SU3dvKVDo+uqzv5Rpf/UdFDLrtEdonsEtklsktkl8gukV1iJy+JHnLZJZ/zX0DFRz+sIQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMEeZNLIAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDA2xIwOAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC"></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -294,7 +349,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. I01</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. I02</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">3. I03</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">4. I04</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">5. I05</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">6. I06</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">7. I07</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">8. I08</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">9. I09</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">10. I10</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">[ 10 others ]</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">583</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">589</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">592</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">586</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">581</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">591</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">591</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">595</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">590</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">579</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">4.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5892</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAELCAQAAAD38YlSAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABf0lEQVR42u3YMW5CQQxFUT5ij1lE1pPsgVVCkWY+BHf22NK5VVCaUxikecfjMqvrbgBwt27rh9+Xg/4+dvP+Wlm387++lr/vu53/Nu4kgIGBgYGBgVsFDAwMHPfyROr5LFo71gdekzfnW6tx3EmMA59u+KfpLvERbJcABgYGBgbeHTAwMDDw3uwSGdklKrNLZDfuJICBgYGBgYFbBQwMDBxnl8jILlGZXSK7cScBDAwMDAwM3CpgYODiPPMz8swHDrJLZDfuJICBgYGBgYFbBQwMXJxdIiO7RGWe+dmNOwlgYGBgYGDgVgEDAwPH2SUysktUZpfIbtxJAAMDAwMDA7cKGBgYOM4ukZFdojK7RHbjTgIYGBgYGBi4VcDAwMBxdomM7BKV2SWyG3cSwMDAwMDAwK0CBgYGjrNLZGSXqMwukd24kwAGBgYGBgZuFTAwcHGe+Rl55gMHhbtEm5YvV7BLdOn8yzXuJICBgYGBgYFbBQwMXNzsXWJC404COLsnx45BGWN/t/cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDBxBr51AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwAFsGyQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAELCAQAAAD38YlSAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABf0lEQVR42u3YMW5CQQxFUT5ij1lE1pPsgVVCkWY+BHf22NK5VVCaUxikecfjMqvrbgBwt27rh9+Xg/4+dvP+Wlm387++lr/vu53/Nu4kgIGBgYGBgVsFDAwMHPfyROr5LFo71gdekzfnW6tx3EmMA59u+KfpLvERbJcABgYGBgbeHTAwMDDw3uwSGdklKrNLZDfuJICBgYGBgYFbBQwMDBxnl8jILlGZXSK7cScBDAwMDAwM3CpgYODiPPMz8swHDrJLZDfuJICBgYGBgYFbBQwMXJxdIiO7RGWe+dmNOwlgYGBgYGDgVgEDAwPH2SUysktUZpfIbtxJAAMDAwMDA7cKGBgYOM4ukZFdojK7RHbjTgIYGBgYGBi4VcDAwMBxdomM7BKV2SWyG3cSwMDAwMDAwK0CBgYGjrNLZGSXqMwukd24kwAGBgYGBgZuFTAwcHGe+Rl55gMHhbtEm5YvV7BLdOn8yzXuJICBgYGBgYFbBQwMXNzsXWJC404COLsnx45BGWN/t/cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDBHmTSyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwNsSMDgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -306,7 +361,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. Baseline</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. Retest</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5901</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5868</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">49.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAkklEQVRo3u3YsQ2AMAxE0RixIzvAPLBDpoTWiaCJFOKL/nVurFecIsV2J60sowGAo2X1wxW00Lt9gFPaRttekotJrhKAAQMGDBgw4FABDBgw4MnA1Z8ut235MeY/yta8pm+8Ua4ScuCiw2fIQ8pRNDX8IaV+BuQqARgwYMCAAQMOFcCAAQOeDKx9SFGIXCUA984D81ILx+yzmEIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDBxBr51AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwAFsGyQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAkklEQVRo3u3YsQ2AMAxE0RixIzvAPLBDpoTWiaCJFOKL/nVurFecIsV2J60sowGAo2X1wxW00Lt9gFPaRttekotJrhKAAQMGDBgw4FABDBgw4MnA1Z8ut235MeY/yta8pm+8Ua4ScuCiw2fIQ8pRNDX8IaV+BuQqARgwYMCAAQMOFcCAAQOeDKx9SFGIXCUA984D81ILx+yzmEIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDBHmTSyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwNsSMDgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -318,7 +373,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. No_Faking</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. Faking</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5867</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">49.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5902</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAkklEQVRo3u3YQQqAMAxE0UZ6Rw/hefQOPaVum4obQZMpf3alUN5iKCR2Fq0s0QDA2VL7w5Gy0Jv1rOov12jdLW04y1UCMGDAgAEDBpwqgAEDBjwZeJjp2rtXfoybSC1a85DeKFcJObDr8J5ykVJcV9MvUsaPQK4SgAEDBgwYMOBUAQwYMODJwNqLFIXIVQLw17kAVG8MXHQ8VQoAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDBxBr51AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwAFsGyQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAkklEQVRo3u3YQQqAMAxE0UZ6Rw/hefQOPaVum4obQZMpf3alUN5iKCR2Fq0s0QDA2VL7w5Gy0Jv1rOov12jdLW04y1UCMGDAgAEDBpwqgAEDBjwZeJjp2rtXfoybSC1a85DeKFcJObDr8J5ykVJcV9MvUsaPQK4SgAEDBgwYMOBUAQwYMODJwNqLFIXIVQLw17kAVG8MXHQ8VQoAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDBHmTSyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwNsSMDgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -330,7 +385,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. Compatible</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. Incompatible</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5891</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5878</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">49.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAkklEQVRo3u3YsQ2AMAxE0RixIzvAPLBDpoTWiaCJFOKL/nVurFecIsV2J60sowGAo2X1wxW00Lt9gFPaRttekotJrhKAAQMGDBgw4FABDBgw4MnA1Z8ut235MeY/yta8pm+8Ua4ScuCiw2fIQ8pRNDX8IaV+BuQqARgwYMCAAQMOFcCAAQOeDKx9SFGIXCUA984D81ILx+yzmEIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDBxBr51AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwAFsGyQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAkklEQVRo3u3YsQ2AMAxE0RixIzvAPLBDpoTWiaCJFOKL/nVurFecIsV2J60sowGAo2X1wxW00Lt9gFPaRttekotJrhKAAQMGDBgw4FABDBgw4MnA1Z8ut235MeY/yta8pm+8Ua4ScuCiw2fIQ8pRNDX8IaV+BuQqARgwYMCAAQMOFcCAAQOeDKx9SFGIXCUA984D81ILx+yzmEIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDBHmTSyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwNsSMDgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -342,7 +397,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. No</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. Yes</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">5405</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">45.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">6364</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">54.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAF4AAAA3CAQAAAAvIDV3AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAnElEQVRo3u3YwQmAMAxG4US6o0M4j+7glHpNhUrpweaX925Ske+QCq1fptsyGwBesRIfjjQbYPPWSiSWemmdrTYzs7PzPemxAQ8evFDgwYMXCjx48EKBBz/Q4wzbe3rMkcfTuA9/5ruiV3pspPHVzO9pLp1eCrOd8tKpXf1DkR4b8ODBCwUePHihwIMHLxR48AP959JJLemxAT+rGw3PDFxv9RfhAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAF4AAAA3CAQAAAAvIDV3AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAnElEQVRo3u3YwQmAMAxG4US6o0M4j+7glHpNhUrpweaX925Ske+QCq1fptsyGwBesRIfjjQbYPPWSiSWemmdrTYzs7PzPemxAQ8evFDgwYMXCjx48EKBBz/Q4wzbe3rMkcfTuA9/5ruiV3pspPHVzO9pLp1eCrOd8tKpXf1DkR4b8ODBCwUePHihwIMHLxR48AP959JJLemxAT+rGw3PDFxv9RfhAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -354,7 +409,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [integer]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">Mean (sd) : 845.2 (477.7)</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">min ≤ med ≤ max:</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">400 ≤ 711 ≤ 9003</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">IQR (CV) : 383 (0.6)</td></tr></tbody></table></td>
       <td align="left" style="vertical-align:middle">1664 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABXElEQVR42u3dwWnDMABA0ah4x+zQzpPu0CnTq2xCyieFpNV7p5j4YH8jGXSQx/VE8fbsC/hrBIsEi7b5YBz+vBwmuI9xWtKcYbt/6nn6/fXs634JhmQkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYtJWT95t5r7mVdwpmK29DMhMs2g3Jiy+q/Ogwh513R6vOU/cYkpFgkWCRYJFgkWCRYJFgkWCRYJFgUVoP21tzOfGBYGsuJxqSkWCRYNEDc9jeKp+H/bVgx7Xa//oOHfN9fVrTv+l9etxDo8akHwkWCRZ9A/7HF38O61QJAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABXElEQVR42u3dwWnDMABA0ah4x+zQzpPu0CnTq2xCyieFpNV7p5j4YH8jGXSQx/VE8fbsC/hrBIsEi7b5YBz+vBwmuI9xWtKcYbt/6nn6/fXs634JhmQkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYtJWT95t5r7mVdwpmK29DMhMs2g3Jiy+q/Ogwh513R6vOU/cYkpFgkWCRYJFgkWCRYJFgkWCRYJFgUVoP21tzOfGBYGsuJxqSkWCRYNEDc9jeKp+H/bVgx7Xa//oOHfN9fVrTv+l9etxDo8akHwkWCRZ9A/7HF38O61QJAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">11769
 (100.0%)</td>
       <td align="center">0
@@ -371,8 +426,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>See IAT scoring procedure from Greenwald et al.&nbsp;(2003) for removal of <code>rt</code> outliers.</li>
 </ul>
 </section>
-<section id="subject-data" class="level2">
-<h2 class="anchored" data-anchor-id="subject-data">Subject data</h2>
+<section id="subject-data" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="subject-data"><span class="header-section-number">5.2</span> Subject data</h2>
 <ul>
 <li>Rename variables</li>
 <li>Convert types</li>
@@ -421,7 +476,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. S001</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. S007</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">3. S008</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">4. S015</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">5. S017</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">6. S019</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">7. S020</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">8. S022</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">9. S027</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">10. S034</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">[ 28 others ]</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">2.6%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">28</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">73.7%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHsAAAELCAQAAABTmzGBAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABw0lEQVR42u3YQUoDURRFwRfJHl2E69E9uEodCNIJZmZoeKdqFjL5B353w718TdHL2QeQLfvZrscfH78P+tvl7IP9v+Nb7Hr71+vMzHyefcKni15y2SWyS2SXyC6RXSK7RHaJ7JJo9t2otH9O+nE5DmsLd8ODY2n0kkezb57t99U7+cNsO/lysktkl8gukV0iu0R2iewS2SXRbDu5nXy9aLadfMZOvpzsEtklsktkl8gukV0iu0R2STTbTm4nXy+abSefsZMvJ7tEdonsEtklsktkl8gukV1iMDYYrye7xE4+YydfTnaJ7BLZJbJLZJfILpFdIrvETm4nXy+abTCeMRgvJ7tEdonsEtklsktkl8gukV0SzbaT28nXi2bbyWfs5MvJLpFdIrtEdonsEtklsktkl0Sz7eR28vWi2XbyGTv5crJLZJfILpFdIrtEdonsEtkl0Ww7uZ18vWi2nXzGTr6c7BLZJbJLZJfILpFdIrtEdkk0205uJ18vmm0nn7GTLye7RHaJ7BLZJbJLZJfILpFdYjA2GK8nu+TBTr7S4dX1506+0e03KnrJZZfILpFdIrtEdonsEtklskvs5CXRSy675BsU7EEZwNuoUwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMHEGvnUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDAAWwbJAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC"></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAHsAAAELCAQAAABTmzGBAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABw0lEQVR42u3YQUoDURRFwRfJHl2E69E9uEodCNIJZmZoeKdqFjL5B353w718TdHL2QeQLfvZrscfH78P+tvl7IP9v+Nb7Hr71+vMzHyefcKni15y2SWyS2SXyC6RXSK7RHaJ7JJo9t2otH9O+nE5DmsLd8ODY2n0kkezb57t99U7+cNsO/lysktkl8gukV0iu0R2iewS2SXRbDu5nXy9aLadfMZOvpzsEtklsktkl8gukV0iu0R2STTbTm4nXy+abSefsZMvJ7tEdonsEtklsktkl8gukV1iMDYYrye7xE4+YydfTnaJ7BLZJbJLZJfILpFdIrvETm4nXy+abTCeMRgvJ7tEdonsEtklsktkl8gukV0SzbaT28nXi2bbyWfs5MvJLpFdIrtEdonsEtklsktkl0Sz7eR28vWi2XbyGTv5crJLZJfILpFdIrtEdonsEtkl0Ww7uZ18vWi2nXzGTr6c7BLZJbJLZJfILpFdIrtEdkk0205uJ18vmm0nn7GTLye7RHaJ7BLZJbJLZJfILpFdYjA2GK8nu+TBTr7S4dX1506+0e03KnrJZZfILpFdIrtEdonsEtklskvs5CXRSy675BsU7EEZwNuoUwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMEeZNLIAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDA2xIwOAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC"></td>
       <td align="center">38
 (100.0%)</td>
       <td align="center">0
@@ -433,7 +488,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [numeric]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">Mean (sd) : 31.6 (14.5)</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">min ≤ med ≤ max:</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">18 ≤ 26 ≤ 68</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">IQR (CV) : 15.8 (0.5)</td></tr></tbody></table></td>
       <td align="left" style="vertical-align:middle">22 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABa0lEQVR42u3cwW3CQBRAQTuiR3pI6iE9pMrkuom4DETLgt/ckMCCJ31btlnv31vE26O/wLMpGCoYOo0vdvroBXd/H7b5hYw/9HTzVrZtO8N7vx79q/9JI4kKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGfq351mXvR/RnkfwRl72bRhIVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQzd9ZRN8xqPMZ0YTK7mrns9t5FEBUMFQwVDE3f66+D7r8Px+pDB7rn/2kiigqGCoYKhhXf6diybdea5cLA1/0nUSKKCoYKhgqGCoYKhgqGCoYKhgqGFT43MrFUsLxNs1plnI4kKhgqGCob28eDy2XrJq96Hq7l7jUwjiQqGCoZ+APUjF6yqRQtzAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABa0lEQVR42u3cwW3CQBRAQTuiR3pI6iE9pMrkuom4DETLgt/ckMCCJ31btlnv31vE26O/wLMpGCoYOo0vdvroBXd/H7b5hYw/9HTzVrZtO8N7vx79q/9JI4kKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGfq351mXvR/RnkfwRl72bRhIVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQwVDBUMFQzd9ZRN8xqPMZ0YTK7mrns9t5FEBUMFQwVDE3f66+D7r8Px+pDB7rn/2kiigqGCoYKhhXf6diybdea5cLA1/0nUSKKCoYKhgqGCoYKhgqGCoYKhgqGFT43MrFUsLxNs1plnI4kKhgqGCob28eDy2XrJq96Hq7l7jUwjiQqGCoZ+APUjF6yqRQtzAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">38
 (100.0%)</td>
       <td align="center">0
@@ -445,7 +500,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. female</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. male</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">30</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">78.9%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">8</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">21.1%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIMAAAA3CAQAAACFzzGOAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAyUlEQVRo3u3bMW7CQBBA0bcod+QO4TzkDpySNFMYIRoShVj8322zsp80W3jldVUcXv0A/6MYEMP0sV18vdVB8bkeMHB89bP9WZebVUOBGKYYEMMUA2KYYkAMUwyIYYoBMUwxIIYpBsQwxYAYphhw9y3y8twuu29tP0avp7fZY9s3bygQw3RzNpx/eF1z2u1U/eJ1zZ6P14YCMUwxIIYpBsQwxYAYphgQwxQDYphiQAxTDIhhigExTDGg65ppvdW/Aw9rKBDDFAP4BgRNC8cr6krAAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAIMAAAA3CAQAAACFzzGOAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAyUlEQVRo3u3bMW7CQBBA0bcod+QO4TzkDpySNFMYIRoShVj8322zsp80W3jldVUcXv0A/6MYEMP0sV18vdVB8bkeMHB89bP9WZebVUOBGKYYEMMUA2KYYkAMUwyIYYoBMUwxIIYpBsQwxYAYphhw9y3y8twuu29tP0avp7fZY9s3bygQw3RzNpx/eF1z2u1U/eJ1zZ6P14YCMUwxIIYpBsQwxYAYphgQwxQDYphiQAxTDIhhigExTDGg65ppvdW/Aw9rKBDDFAP4BgRNC8cr6krAAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">38
 (100.0%)</td>
       <td align="center">0
@@ -457,7 +512,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. No_Faking</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. Faking</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">19</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAiklEQVRo3u3YMQ6AIAxG4dZ4R+/gffQOnFJXMLKQAP3Je1sX8g1dqD+m1TYbADhaez7cQRf69ArY7Jht+ykVk9xKAAYMGDBgwIBDBRgwYMCLgT9/utT2ysA8/yh78zN9y41yKyEHLnb4CnpIMQ4pAwMMGDBgwIABhwowYMCAFwNrH1IUklsJwL17AbI4C1zud1IRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAiklEQVRo3u3YMQ6AIAxG4dZ4R+/gffQOnFJXMLKQAP3Je1sX8g1dqD+m1TYbADhaez7cQRf69ArY7Jht+ykVk9xKAAYMGDBgwIBDBRgwYMCLgT9/utT2ysA8/yh78zN9y41yKyEHLnb4CnpIMQ4pAwMMGDBgwIABhwowYMCAFwNrH1IUklsJwL17AbI4C1zud1IRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">38
 (100.0%)</td>
       <td align="center">0
@@ -469,7 +524,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [integer]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">Mean (sd) : 309.7 (12.7)</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">min ≤ med ≤ max:</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">258 ≤ 314 ≤ 320</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">IQR (CV) : 13.8 (0)</td></tr></tbody></table></td>
       <td align="left" style="vertical-align:middle">20 distinct values</td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABXElEQVR42u3dMW6DUBBAwRD5jrlDch7nDj5l0uJU+6xgDJrpkIyMnrS/2AKWnzeK970f4GgEiwSLLuuLZe+nearr+Pj+XIW5TG86o4/Rr253V0YyEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLDrhu6jnL+V+xAmDPfZS7ikjGQkWHWgktz2bpg4UbNuzacpIRoJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFd+ud+cbp61+/3fkam66ZP/uwvTZOk//dds81ZSQjwaJlfXx8H+gseab1R4UXjRojGQkWCRb9AkTmE6NWLqA6AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABXElEQVR42u3dMW6DUBBAwRD5jrlDch7nDj5l0uJU+6xgDJrpkIyMnrS/2AKWnzeK970f4GgEiwSLLuuLZe+nearr+Pj+XIW5TG86o4/Rr253V0YyEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLDrhu6jnL+V+xAmDPfZS7ikjGQkWHWgktz2bpg4UbNuzacpIRoJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFd+ud+cbp61+/3fkam66ZP/uwvTZOk//dds81ZSQjwaJlfXx8H+gseab1R4UXjRojGQkWCRb9AkTmE6NWLqA6AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">38
 (100.0%)</td>
       <td align="center">0
@@ -482,8 +537,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="item-data" class="level2">
-<h2 class="anchored" data-anchor-id="item-data">Item data</h2>
+<section id="item-data" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="item-data"><span class="header-section-number">5.3</span> Item data</h2>
 <ul>
 <li>Item categories:
 <ul>
@@ -528,7 +583,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. I01</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. I02</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">3. I03</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">4. I04</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">5. I05</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">6. I06</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">7. I07</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">8. I08</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">9. I09</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">10. I10</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">[ 10 others ]</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAELCAQAAAD38YlSAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABf0lEQVR42u3YMW5CQQxFUT5ij1lE1pPsgVVCkWY+BHf22NK5VVCaUxikecfjMqvrbgBwt27rh9+Xg/4+dvP+Wlm387++lr/vu53/Nu4kgIGBgYGBgVsFDAwMHPfyROr5LFo71gdekzfnW6tx3EmMA59u+KfpLvERbJcABgYGBgbeHTAwMDDw3uwSGdklKrNLZDfuJICBgYGBgYFbBQwMDBxnl8jILlGZXSK7cScBDAwMDAwM3CpgYODiPPMz8swHDrJLZDfuJICBgYGBgYFbBQwMXJxdIiO7RGWe+dmNOwlgYGBgYGDgVgEDAwPH2SUysktUZpfIbtxJAAMDAwMDA7cKGBgYOM4ukZFdojK7RHbjTgIYGBgYGBi4VcDAwMBxdomM7BKV2SWyG3cSwMDAwMDAwK0CBgYGjrNLZGSXqMwukd24kwAGBgYGBgZuFTAwcHGe+Rl55gMHhbtEm5YvV7BLdOn8yzXuJICBgYGBgYFbBQwMXNzsXWJC404COLsnx45BGWN/t/cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDBxBr51AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwAFsGyQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAELCAQAAAD38YlSAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABf0lEQVR42u3YMW5CQQxFUT5ij1lE1pPsgVVCkWY+BHf22NK5VVCaUxikecfjMqvrbgBwt27rh9+Xg/4+dvP+Wlm387++lr/vu53/Nu4kgIGBgYGBgVsFDAwMHPfyROr5LFo71gdekzfnW6tx3EmMA59u+KfpLvERbJcABgYGBgbeHTAwMDDw3uwSGdklKrNLZDfuJICBgYGBgYFbBQwMDBxnl8jILlGZXSK7cScBDAwMDAwM3CpgYODiPPMz8swHDrJLZDfuJICBgYGBgYFbBQwMXJxdIiO7RGWe+dmNOwlgYGBgYGDgVgEDAwPH2SUysktUZpfIbtxJAAMDAwMDA7cKGBgYOM4ukZFdojK7RHbjTgIYGBgYGBi4VcDAwMBxdomM7BKV2SWyG3cSwMDAwMDAwK0CBgYGjrNLZGSXqMwukd24kwAGBgYGBgZuFTAwcHGe+Rl55gMHhbtEm5YvV7BLdOn8yzXuJICBgYGBgYFbBQwMXNzsXWJC404COLsnx45BGWN/t/cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDBHmTSyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwNsSMDgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
       <td align="center">20
 (100.0%)</td>
       <td align="center">0
@@ -540,7 +595,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [character]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. FLIEDER</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. Freiheit</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">3. GÄNSEBLÜMCHEN</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">4. Gefängnis</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">5. HORNISSE</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">6. KAKERLAKE</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">7. Krankheit</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">8. Liebe</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">9. Loyalität</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">10. MISTKÄFER</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">[ 10 others ]</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">1</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">5.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAELCAQAAAD38YlSAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAABf0lEQVR42u3YMW5CQQxFUT5ij1lE1pPsgVVCkWY+BHf22NK5VVCaUxikecfjMqvrbgBwt27rh9+Xg/4+dvP+Wlm387++lr/vu53/Nu4kgIGBgYGBgVsFDAwMHPfyROr5LFo71gdekzfnW6tx3EmMA59u+KfpLvERbJcABgYGBgbeHTAwMDDw3uwSGdklKrNLZDfuJICBgYGBgYFbBQwMDBxnl8jILlGZXSK7cScBDAwMDAwM3CpgYODiPPMz8swHDrJLZDfuJICBgYGBgYFbBQwMXJxdIiO7RGWe+dmNOwlgYGBgYGDgVgEDAwPH2SUysktUZpfIbtxJAAMDAwMDA7cKGBgYOM4ukZFdojK7RHbjTgIYGBgYGBi4VcDAwMBxdomM7BKV2SWyG3cSwMDAwMDAwK0CBgYGjrNLZGSXqMwukd24kwAGBgYGBgZuFTAwcHGe+Rl55gMHhbtEm5YvV7BLdOn8yzXuJICBgYGBgYFbBQwMXNzsXWJC404COLsnx45BGWN/t/cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjRUMjI6MTg6MTcrMDA6MDBxBr51AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwAFsGyQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAELCAQAAAD38YlSAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAABf0lEQVR42u3YMW5CQQxFUT5ij1lE1pPsgVVCkWY+BHf22NK5VVCaUxikecfjMqvrbgBwt27rh9+Xg/4+dvP+Wlm387++lr/vu53/Nu4kgIGBgYGBgVsFDAwMHPfyROr5LFo71gdekzfnW6tx3EmMA59u+KfpLvERbJcABgYGBgbeHTAwMDDw3uwSGdklKrNLZDfuJICBgYGBgYFbBQwMDBxnl8jILlGZXSK7cScBDAwMDAwM3CpgYODiPPMz8swHDrJLZDfuJICBgYGBgYFbBQwMXJxdIiO7RGWe+dmNOwlgYGBgYGDgVgEDAwPH2SUysktUZpfIbtxJAAMDAwMDA7cKGBgYOM4ukZFdojK7RHbjTgIYGBgYGBi4VcDAwMBxdomM7BKV2SWyG3cSwMDAwMDAwK0CBgYGjrNLZGSXqMwukd24kwAGBgYGBgZuFTAwcHGe+Rl55gMHhbtEm5YvV7BLdOn8yzXuJICBgYGBgYFbBQwMXNzsXWJC404COLsnx45BGWN/t/cAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjItMDgtMjVUMTg6NDQ6NTQrMDA6MDBHmTSyAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwNsSMDgAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg=="></td>
       <td align="center">20
 (100.0%)</td>
       <td align="center">0
@@ -552,7 +607,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. target</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. attribute</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAiklEQVRo3u3YMQ6AIAxG4dZ4R+/gffQOnFJXMLKQAP3Je1sX8g1dqD+m1TYbADhaez7cQRf69ArY7Jht+ykVk9xKAAYMGDBgwIBDBRgwYMCLgT9/utT2ysA8/yh78zN9y41yKyEHLnb4CnpIMQ4pAwMMGDBgwIABhwowYMCAFwNrH1IUklsJwL17AbI4C1zud1IRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAiklEQVRo3u3YMQ6AIAxG4dZ4R+/gffQOnFJXMLKQAP3Je1sX8g1dqD+m1TYbADhaez7cQRf69ArY7Jht+ykVk9xKAAYMGDBgwIBDBRgwYMCLgT9/utT2ysA8/yh78zN9y41yKyEHLnb4CnpIMQ4pAwMMGDBgwIABhwowYMCAFwNrH1IUklsJwL17AbI4C1zud1IRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">20
 (100.0%)</td>
       <td align="center">0
@@ -564,7 +619,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [factor]</td>
       <td align="left" style="padding:8;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">1. +</td></tr><tr style="background-color:transparent"><td style="padding:0;margin:0;border:0" align="left">2. -</td></tr></tbody></table></td>
       <td align="left" style="padding:0;vertical-align:middle"><table style="border-collapse:collapse;border:none;margin:0"><tbody><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr><tr style="background-color:transparent"><td style="padding:0 5px 0 7px;margin:0;border:0" align="right">10</td><td style="padding:0 2px 0 0;border:0;" align="left">(</td><td style="padding:0;border:0" align="right">50.0%</td><td style="padding:0 4px 0 2px;border:0" align="left">)</td></tr></tbody></table></td>
-      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBgWEhGj++ltAAAAiklEQVRo3u3YMQ6AIAxG4dZ4R+/gffQOnFJXMLKQAP3Je1sX8g1dqD+m1TYbADhaez7cQRf69ArY7Jht+ykVk9xKAAYMGDBgwIBDBRgwYMCLgT9/utT2ysA8/yh78zN9y41yKyEHLnb4CnpIMQ4pAwMMGDBgwIABhwowYMCAFwNrH1IUklsJwL17AbI4C1zud1IRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI0VDIyOjE4OjE3KzAwOjAwcQa+dQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNFQyMjoxODoxNyswMDowMABbBskAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
+      <td align="left" style="vertical-align:middle;padding:0;background-color:transparent;"><img style="border:none;background-color:transparent;padding:0;max-width:max-content;" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAFgAAAA3CAQAAAAiPkUwAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfmCBkSLDb4gYjCAAAAiklEQVRo3u3YMQ6AIAxG4dZ4R+/gffQOnFJXMLKQAP3Je1sX8g1dqD+m1TYbADhaez7cQRf69ArY7Jht+ykVk9xKAAYMGDBgwIBDBRgwYMCLgT9/utT2ysA8/yh78zN9y41yKyEHLnb4CnpIMQ4pAwMMGDBgwIABhwowYMCAFwNrH1IUklsJwL17AbI4C1zud1IRAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA4LTI1VDE4OjQ0OjU0KzAwOjAwR5k0sgAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wOC0yNVQxODo0NDo1NCswMDowMDbEjA4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII="></td>
       <td align="center">20
 (100.0%)</td>
       <td align="center">0
@@ -577,8 +632,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="combine-data" class="level2">
-<h2 class="anchored" data-anchor-id="combine-data">Combine data</h2>
+<section id="combine-data" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="combine-data"><span class="header-section-number">5.4</span> Combine data</h2>
 <p>The dataframe will be used in analyses with <code>MixedModels.jl</code> in Julia.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
@@ -591,12 +646,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Separate files for data, subject info, and item info are easier to maintain and are preferred for storage in a public repository. The information can be combined as needed. The redundant format of one integrated file chosen here is to facilitate transition to working with Julia <code>MixedModels.jl</code> at SMLP2022.</p>
 </section>
-<section id="check-distribution-of-rts" class="level2">
-<h2 class="anchored" data-anchor-id="check-distribution-of-rts">Check distribution of rt’s</h2>
+<section id="check-distribution-of-rts" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="check-distribution-of-rts"><span class="header-section-number">5.5</span> Check distribution of rt’s</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lambdaList <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">boxcox</span>(<span class="fu">lm</span>(rt <span class="sc">~</span> Group<span class="sc">*</span>Time<span class="sc">*</span>Block<span class="sc">*</span>Switch, <span class="at">data=</span>dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(lambda <span class="ot">&lt;-</span> lambdaList<span class="sc">$</span>x[<span class="fu">which.max</span>(lambdaList<span class="sc">$</span>y)]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -604,15 +659,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="dv">1000</span><span class="sc">/</span>dat<span class="sc">$</span>rt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>speed <span class="ot">&lt;-</span> <span class="dv">1000</span><span class="sc">/</span>dat<span class="sc">$</span>rt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The check suggests reciprocal transformation of <code>rt</code>, that is to use <code>speed</code>.</p>
 </section>
 </section>
-<section id="plot-switch-costs" class="level1">
-<h1>Plot switch costs</h1>
+<section id="plot-switch-costs" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Plot switch costs</h1>
 <p>RK: Put <code>Time</code> on blocks of x-axis?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>switch_costs <span class="ot">&lt;-</span> dat<span class="sc">|&gt;</span> </span>
@@ -632,15 +687,15 @@ using the `.groups` argument.</code></pre>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">13</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fig_rt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
-<section id="acs-model-selection-revised" class="level1">
-<h1>AC’s model selection (revised)</h1>
+<section id="acs-model-selection-revised" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> AC’s model selection (revised)</h1>
 <p>This section reproduces logic of the original model selection, but where necessary with corrected LMM syntax.</p>
-<section id="define-contrasts" class="level2">
-<h2 class="anchored" data-anchor-id="define-contrasts">Define contrasts</h2>
+<section id="define-contrasts" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="define-contrasts"><span class="header-section-number">7.1</span> Define contrasts</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ctable</span>(dat<span class="sc">$</span>Group, dat<span class="sc">$</span>Time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -686,8 +741,8 @@ Data Frame: dat
 <li>For sum contrasts division by (-2) yields estimates of the difference between levels (instead of differences from Grand Mean) and the sign of the effects is reversed (i.e., Switch: yes - no; Block: incompatible - compaible). The division by 2 is strongly discouraged by Douglas Bates because indicators for higher order interaction terms become very small. Since we analyze response speed these effects are expected to be negative. Therefore, for my own model selection (see below), I will <strong>not</strong> divide by 2 and I will <strong>not</strong> reverse the direction of effects for sum contrasts.</li>
 </ul>
 </section>
-<section id="models-that-do-not-or-did-not-converge" class="level2">
-<h2 class="anchored" data-anchor-id="models-that-do-not-or-did-not-converge">Models that do not (or did not) converge</h2>
+<section id="models-that-do-not-or-did-not-converge" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="models-that-do-not-or-did-not-converge"><span class="header-section-number">7.2</span> Models that do not (or did not) converge</h2>
 <ul>
 <li>AC: I tried model selection by starting with the maximal model and working my way down to the minimal model.</li>
 <li>RK. Some convergence issues were due to false positives. Double-bar syntax does not work with factors; you need to convert to indicator variables – see next chunk.</li>
@@ -1324,8 +1379,8 @@ model11   21 11396 11551  -5677    11354     0  1          1</code></pre>
 </div>
 </div>
 </section>
-<section id="minimal-model-works" class="level2">
-<h2 class="anchored" data-anchor-id="minimal-model-works">Minimal model works</h2>
+<section id="minimal-model-works" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="minimal-model-works"><span class="header-section-number">7.3</span> Minimal model works</h2>
 <p>RK: As shown above, many other models also converge! Some of them were discarded due to false positive convergence errors with default setting of <code>control=lmerControl(calc.derivs=TRUE)</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>model12 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Group<span class="sc">*</span>Time<span class="sc">*</span>Block<span class="sc">*</span>Switch <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), </span>
@@ -1495,16 +1550,16 @@ Observations                      |                    11769 |                  
 </div>
 <p>RK: There is no difference due to different order of factors here. The problem in original code was perhaps the false-positive convergence error that is no longer present in <code>model7</code> with <code>control=lmerControl(calc.derivs=FALSE)</code>.</p>
 </section>
-<section id="regression-diagnostics-for-model13" class="level2">
-<h2 class="anchored" data-anchor-id="regression-diagnostics-for-model13">Regression diagnostics for model13</h2>
+<section id="regression-diagnostics-for-model13" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="regression-diagnostics-for-model13"><span class="header-section-number">7.4</span> Regression diagnostics for model13</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(model13))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">resid</span>(model13))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="768"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10623  8968</code></pre>
@@ -1513,15 +1568,15 @@ Observations                      |                    11769 |                  
 <span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab=</span><span class="st">"Fitted values"</span>, <span class="at">ylab=</span><span class="st">"Standardized residuals"</span>) <span class="sc">+</span> </span>
 <span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="dv">0</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">geom_hex</span>() <span class="sc">+</span> <span class="fu">geom_density2d</span>(<span class="at">size=</span><span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
 </section>
-<section id="rks-proposal" class="level1">
-<h1>RK’s proposal</h1>
-<section id="contrasts-and-indicator-variables" class="level2">
-<h2 class="anchored" data-anchor-id="contrasts-and-indicator-variables">Contrasts and indicator variables</h2>
+<section id="rks-proposal" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> RK’s proposal</h1>
+<section id="contrasts-and-indicator-variables" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="contrasts-and-indicator-variables"><span class="header-section-number">8.1</span> Contrasts and indicator variables</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(dat<span class="sc">$</span>Group)   <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
 <span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(dat<span class="sc">$</span>Time)    <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
@@ -1540,10 +1595,10 @@ Observations                      |                    11769 |                  
 <span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>vc <span class="ot">&lt;-</span> mm[,<span class="dv">7</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="model-selection" class="level2">
-<h2 class="anchored" data-anchor-id="model-selection">Model selection</h2>
-<section id="maximal-lmm-m_max" class="level3">
-<h3 class="anchored" data-anchor-id="maximal-lmm-m_max">Maximal LMM <code>m_max</code></h3>
+<section id="model-selection" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="model-selection"><span class="header-section-number">8.2</span> Model selection</h2>
+<section id="maximal-lmm-m_max" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="maximal-lmm-m_max"><span class="header-section-number">8.2.1</span> Maximal LMM <code>m_max</code></h3>
 <p>I use <code>MixedModels.jl</code> in script <code>Cajar_IAT_Julia.qmd</code> to demonstrate model selection starting with a maximal LMM (relative to the experimental design, that is without inclusion of covariates such as trial number, subject age, or items’ frequency), but including also the two item factors <code>Task</code> and <code>Valence</code>.</p>
 <pre><code>m_max &lt;- lmer(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                      (1 +       Time*Block*Switch*Task*Valence | Subj) +  
@@ -1552,8 +1607,8 @@ Observations                      |                    11769 |                  
 <p>With this model we estimate the maximal number of fixed effects (2^6 = 64 terms) and their corresponding VCs and CPs for <code>Subj</code> and for <code>Item</code> grouping variables, that is we estimate variance components (VCs) and correlation parameters (CPs) for within-subject factors for <code>Subj</code> (i.e., 2^5 = 32 VCs and 32 x 31 /2 = 496 CPs) and for within-item factors for <code>Item</code> (i.e., 2^4 = 16 VCs and 16 x 15 /2 = 120 CPs), plus the observation-level residual variance. Thus, 64+(32+496)+(16+120)+1=729 model parameters are estimated from 11679 observations. Given 38 subjects and 20 items, there are also 38 subject x 32 parameters + 20 items x 16 parameters = 1536 conditional means of the random effects for the two random factors.</p>
 <p>I was not able to fit this LMM with <code>lme4::lmer()</code>.</p>
 </section>
-<section id="selected-lmm-m1" class="level3">
-<h3 class="anchored" data-anchor-id="selected-lmm-m1">Selected LMM <code>m1</code></h3>
+<section id="selected-lmm-m1" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="selected-lmm-m1"><span class="header-section-number">8.2.2</span> Selected LMM <code>m1</code></h3>
 <p>Model selection led to the model refit here.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>f_m1 <span class="ot">&lt;-</span> <span class="st">"./fits/m1.rda"</span></span>
@@ -1647,8 +1702,8 @@ gr:tm:bl:sw -0.007893   0.003442  -2.293</code></pre>
 <p>There is no evidence for fixed efffects of word characteristics on response speed, but there are reliable individual differences associated with them.</p>
 </section>
 </section>
-<section id="diagnostics-for-model-m1" class="level2">
-<h2 class="anchored" data-anchor-id="diagnostics-for-model-m1">Diagnostics for model <code>m1</code></h2>
+<section id="diagnostics-for-model-m1" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="diagnostics-for-model-m1"><span class="header-section-number">8.3</span> Diagnostics for model <code>m1</code></h2>
 <p>Using an easystats function from the {performance} package.</p>
 <div class="cell" data-units="cm">
 <div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1662,8 +1717,8 @@ gr:tm:bl:sw -0.007893   0.003442  -2.293</code></pre>
 </div>
 <p>The diagnostics look fine.</p>
 </section>
-<section id="plot-of-switch-costs-for-speed-scores" class="level2">
-<h2 class="anchored" data-anchor-id="plot-of-switch-costs-for-speed-scores">Plot of switch costs for speed scores</h2>
+<section id="plot-of-switch-costs-for-speed-scores" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="plot-of-switch-costs-for-speed-scores"><span class="header-section-number">8.4</span> Plot of switch costs for speed scores</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>switch_costs <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
 <span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Time, Group, Block, Switch)<span class="sc">|&gt;</span></span>
@@ -1684,8 +1739,8 @@ using the `.groups` argument.</code></pre>
 <span id="cb125-10"><a href="#cb125-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">13</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="partial-effect-plot" class="level2">
-<h2 class="anchored" data-anchor-id="partial-effect-plot">Partial effect plot</h2>
+<section id="partial-effect-plot" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="partial-effect-plot"><span class="header-section-number">8.5</span> Partial effect plot</h2>
 <p>For this you need the {remef} package: https://github.com/hohenstein/remef</p>
 <pre><code># install.packages("devtools")
 devtools::install_github("hohenstein/remef")</code></pre>
@@ -1735,11 +1790,11 @@ using the `.groups` argument.</code></pre>
 <p>For typical balanced experimental designs zero-order and partial-effect plots will not differ much. This is much more relevant when correlated covariates and associated interactions are part of the model.</p>
 </section>
 </section>
-<section id="conditional-means-of-random-effects" class="level1">
-<h1>Conditional means of random effects</h1>
+<section id="conditional-means-of-random-effects" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Conditional means of random effects</h1>
 <p>In this section we examine <em>much under-appreciated</em> information estimated in LMMs, that is predictions based on model parameters for subjects and items (i.e., for units of grouping variables/levels of random factors).</p>
-<section id="subject-related-conditional-means-of-random-experimental-effects" class="level2">
-<h2 class="anchored" data-anchor-id="subject-related-conditional-means-of-random-experimental-effects">Subject-related conditional means of random experimental effects</h2>
+<section id="subject-related-conditional-means-of-random-experimental-effects" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="subject-related-conditional-means-of-random-experimental-effects"><span class="header-section-number">9.1</span> Subject-related conditional means of random experimental effects</h2>
 <p>The CP’s suggest that individual differences in <code>Time</code> and <code>Block</code> effects are highly negatively correlated and individual differences in the <code>Time x Block</code> interaction also correlate very highly with individual differences in <code>Time</code> (positive) and <code>Block</code> (negative). Such large correlations of effects are often due to some type of artefact. They are not necessarily a “problem”, but they should be “understood” and therefore be examined in some detail. We can visualize these CPs with caterpillar plots of subjects’ conditional means of random experimental effects.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a>cm_m1 <span class="ot">&lt;-</span> <span class="fu">ranef</span>(m1, <span class="at">drop=</span><span class="cn">TRUE</span>, <span class="at">condVar=</span><span class="cn">TRUE</span>, <span class="at">whichel=</span><span class="st">"Subj"</span>)</span>
@@ -1771,7 +1826,7 @@ using the `.groups` argument.</code></pre>
 <span id="cb134-27"><a href="#cb134-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb134-28"><a href="#cb134-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Not that much clustering by group is visible in the default ordering by GM. How about when we order by the effect of <code>Time</code>? We also ignore effects associated with <code>Task</code> and <code>Valence</code> for now.</p>
@@ -1792,7 +1847,7 @@ using the `.groups` argument.</code></pre>
 <span id="cb135-14"><a href="#cb135-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb135-15"><a href="#cb135-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>First, now we can see the correlation parameters in the alignments of orientations of <code>Time</code>, <code>Block</code>, and <code>TxB</code>.</p>
@@ -1817,13 +1872,13 @@ using the `.groups` argument.</code></pre>
 <span id="cb136-14"><a href="#cb136-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb136-15"><a href="#cb136-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>In general, the instruction to fake does not reveal a distinct clustering of switch costs by instruction for between-subject differences. One exception might be subject S053 who showed the smallest difference in response speed between switch and no-switch trials relative to the main effect of <code>Switch</code>. This could have resulted from deliberate slowing of no-switch trials.</p>
 </section>
-<section id="subject-related-conditional-means-of-random-quasi-experimental-effects" class="level2">
-<h2 class="anchored" data-anchor-id="subject-related-conditional-means-of-random-quasi-experimental-effects">Subject-related conditional means of random quasi-experimental effects</h2>
+<section id="subject-related-conditional-means-of-random-quasi-experimental-effects" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="subject-related-conditional-means-of-random-quasi-experimental-effects"><span class="header-section-number">9.2</span> Subject-related conditional means of random quasi-experimental effects</h2>
 <p>Plots of conditional means can also be used to check for potential confounding of clustering related to <code>Gender</code> and <code>age</code>, that is of covariates not included in the LMM.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check clustering by Gender</span></span>
@@ -1839,7 +1894,7 @@ using the `.groups` argument.</code></pre>
 <span id="cb137-11"><a href="#cb137-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb137-12"><a href="#cb137-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check clustering by Age</span></span>
 <span id="cb138-2"><a href="#cb138-2" aria-hidden="true" tabindex="-1"></a>cm_m1 <span class="sc">|&gt;</span> </span>
@@ -1855,7 +1910,7 @@ using the `.groups` argument.</code></pre>
 <span id="cb138-12"><a href="#cb138-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb138-13"><a href="#cb138-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subj ordered by ...</span></span>
 <span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a>ord_subj <span class="ot">&lt;-</span> cm_m1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(Term<span class="sc">==</span><span class="st">"GM"</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(condval) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Subj) </span>
@@ -1872,13 +1927,13 @@ using the `.groups` argument.</code></pre>
 <span id="cb139-13"><a href="#cb139-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb139-14"><a href="#cb139-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Older subjects are slower overall and show a smaller change from baseline to retest (see <code>GM</code> and <code>Time</code>). For other effects, their credibility intervals mostly cross the zero line.</p>
 </section>
-<section id="add-age-as-covariate-to-model-m1" class="level2">
-<h2 class="anchored" data-anchor-id="add-age-as-covariate-to-model-m1">Add <code>age</code> as covariate to model <code>m1</code></h2>
+<section id="add-age-as-covariate-to-model-m1" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="add-age-as-covariate-to-model-m1"><span class="header-section-number">9.3</span> Add <code>age</code> as covariate to model <code>m1</code></h2>
 <p>We refit the model including <code>age</code> (centered) as an additional covariate.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>age_c <span class="ot">&lt;-</span> dat<span class="sc">$</span>age <span class="sc">-</span> <span class="fu">median</span>(dat<span class="sc">$</span>age)</span>
@@ -2023,13 +2078,13 @@ SD (Observations) |     0.37 |         0.37</code></pre>
 <span id="cb146-29"><a href="#cb146-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Subject"</span>) <span class="sc">+</span></span>
 <span id="cb146-30"><a href="#cb146-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>As expected, older subjects’ conditional means for <code>GM</code> “moved” into the sample distribution when age is included as a covariate.</p>
 </section>
-<section id="item-related-conditional-means-of-random-effects" class="level2">
-<h2 class="anchored" data-anchor-id="item-related-conditional-means-of-random-effects">Item-related conditional means of random effects</h2>
+<section id="item-related-conditional-means-of-random-effects" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="item-related-conditional-means-of-random-effects"><span class="header-section-number">9.4</span> Item-related conditional means of random effects</h2>
 <ul>
 <li>There is only one VC for Grand Mean of speed of response by Item.</li>
 <li>Replace item number with actual word.</li>
@@ -2062,16 +2117,16 @@ SD (Observations) |     0.37 |         0.37</code></pre>
 <span id="cb147-17"><a href="#cb147-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Conditional mean"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
 <span id="cb147-18"><a href="#cb147-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<p><img src="2_Cajar_IAT_R_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>The sources of the two significant <code>Item</code>-related VCs of <code>GM</code> and <code>Block</code> are two items. <strong>HORNISSE</strong> (hornet) is the only item with a significantly smaller than average <code>Block</code> effect (see right facet; i.e., no overlap of credibility interval with zero line). Note that <em>hornet</em> was also the item with the numerically slowest respond speed overall (see <code>GM</code>, left facet). There was also one item/word that was responded to significantly faster (i.e., no overlap of credibility interval with <code>GM</code>) than <strong>Liebe</strong> (lover) than the Grand Mean. Makes sense.</p>
 </section>
 </section>
-<section id="appendix" class="level1">
-<h1>Appendix</h1>
-<section id="refit-model13-with-sum-contrasts" class="level2">
-<h2 class="anchored" data-anchor-id="refit-model13-with-sum-contrasts">Refit <code>model13</code> with sum contrasts</h2>
+<section id="appendix" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Appendix</h1>
+<section id="refit-model13-with-sum-contrasts" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="refit-model13-with-sum-contrasts"><span class="header-section-number">10.1</span> Refit <code>model13</code> with sum contrasts</h2>
 <p>In the original analysis, treatment contrasts were chosen for <code>Group</code> and <code>Time</code> because they provides a direct test of the critical cell against the average of the other three (which may be assumed to be equivalent because they do not involve fake behavior). There are four critical terms with this specification:</p>
 <ol type="1">
 <li>Interaction of <code>Group x Time</code> tests the critical “fake” cell against the mean of other cells.<br>
@@ -2122,8 +2177,8 @@ SD (Observations) |     0.37 |         0.37</code></pre>
 <p>Good. Expectations were met perfectly!</p>
 <p>All other fixed-effect test statistics will depend on the chosen contrasts. In general, as sum contrasts are orthogonal, they should have better statistical power for the detection of significant main effects and other interactions than treatment contrasts. For example, the <code>Block x Switch</code> is of theoretical interest, too. For this interaction, with contr.sum, <em>t</em> = -17.0, with contr.treatment <em>t</em>=-8.9, despite averaging over <code>Group</code> and <code>Time</code> in this case in both models. Other fixed effects have a different meaning in the two analyses; they do not refer to the same effects! Therefore, test statistics are not comparable.</p>
 </section>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session info</h2>
+<section id="session-info" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="session-info"><span class="header-section-number">10.2</span> Session info</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
