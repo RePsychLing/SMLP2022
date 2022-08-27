@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Reinhold Kliegl">
+<meta name="dcterms.date" content="2022-08-27">
+
+<title>Ozge Bakay: Missing Verb Illusion</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="SMPL_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SMPL_R_files/libs/quarto-html/quarto.js"></script>
+<script src="SMPL_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="SMPL_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SMPL_R_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SMPL_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SMPL_R_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SMPL_R_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SMPL_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SMPL_R_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background"> <span class="header-section-number">1</span> Background</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"> <span class="header-section-number">2</span> Setup</a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"> <span class="header-section-number">3</span> Preprocessing</a></li>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics"> <span class="header-section-number">4</span> Descriptive statistics</a>
+  <ul class="collapse">
+  <li><a href="#case-x-gram" id="toc-case-x-gram" class="nav-link" data-scroll-target="#case-x-gram"> <span class="header-section-number">4.1</span> Case x Gram</a></li>
+  <li><a href="#trial" id="toc-trial" class="nav-link" data-scroll-target="#trial"> <span class="header-section-number">4.2</span> Trial</a></li>
+  <li><a href="#trial-x-case-x-gram" id="toc-trial-x-case-x-gram" class="nav-link" data-scroll-target="#trial-x-case-x-gram"> <span class="header-section-number">4.3</span> Trial x Case x Gram</a></li>
+  </ul></li>
+  <li><a href="#clmm" id="toc-clmm" class="nav-link" data-scroll-target="#clmm"> <span class="header-section-number">5</span> CLMM</a>
+  <ul class="collapse">
+  <li><a href="#varying-only-gm" id="toc-varying-only-gm" class="nav-link" data-scroll-target="#varying-only-gm"> <span class="header-section-number">5.1</span> Varying only GM</a></li>
+  <li><a href="#individual-and-item-differences-in-main-effects" id="toc-individual-and-item-differences-in-main-effects" class="nav-link" data-scroll-target="#individual-and-item-differences-in-main-effects"> <span class="header-section-number">5.2</span> Individual and item differences in main effects</a></li>
+  <li><a href="#zero-correlation-parameters-clmm" id="toc-zero-correlation-parameters-clmm" class="nav-link" data-scroll-target="#zero-correlation-parameters-clmm"> <span class="header-section-number">5.3</span> Zero-correlation parameters CLMM</a></li>
+  <li><a href="#parsimonious-clmm" id="toc-parsimonious-clmm" class="nav-link" data-scroll-target="#parsimonious-clmm"> <span class="header-section-number">5.4</span> Parsimonious CLMM</a></li>
+  <li><a href="#extending-the-parsimonious-clmm-with-cps" id="toc-extending-the-parsimonious-clmm-with-cps" class="nav-link" data-scroll-target="#extending-the-parsimonious-clmm-with-cps"> <span class="header-section-number">5.5</span> Extending the parsimonious CLMM with CPs</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"> <span class="header-section-number">6</span> Summary</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Ozge Bakay: Missing Verb Illusion</h1>
+<p class="subtitle lead">RePsychLing SMLP2022</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Reinhold Kliegl </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 27, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="background" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Background</h1>
+<p>The experiment investigates whether there is missing-verb illusion in Turkish center-embeddings and whether case similarity has an effect on the presence of illusion. The experiment has a 2x2 design where the factors are Grammaticality (Grammatical vs.&nbsp;Ungrammatical) and Case Similarity (High vs.&nbsp;Low). Both factors varied within-subject and within-item. The primary dependent variable is a 5-point rating.</p>
+<p>The analysis includes data from 56 subject (after exclusion of one subject with low accuracy) who rated 24 critical items (6 in each of the 2 x 2 conditions; nobs=1344. Subjects also rated 36 filler items that are excluded here, but might be used to assess rating bias.</p>
+<p>With 56 (or 57) subjects and 24 items, assignment of items to conditions could not be counterbalanced across subjects. The assignment was not random because each item was seen by 20, 13, 13, and 11 subjects across the four conditions.</p>
+<p>The gaol of the analysis is to test effects with a cumulative link mixed model for ordinal rating data, basically an integrated set of logistic regressions, taking into account clustering of ratings by subjects and by items.</p>
+</section>
+<section id="setup" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
+</section>
+<section id="preprocessing" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Preprocessing</h1>
+<ul>
+<li>Extract a minimal data set</li>
+<li>My variable naming conventions</li>
+<li>For filtering decisions see original script</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_excel</span>(<span class="st">"./data/Exp3 R Data.xlsx"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  filter(Subject != 10) |&gt; </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Type <span class="sc">==</span> <span class="st">"exp"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Subj =</span> Subject, Item, <span class="at">trial=</span>Trial, Case, <span class="at">Gram=</span>Grammaticality, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">rating=</span>RatingRATING, <span class="at">acc=</span>AccuracyCOMP ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Subj =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"S"</span>, <span class="fu">str_pad</span>(Subj, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>))),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Item =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"I"</span>, <span class="fu">str_pad</span>(Item, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>))),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Gram =</span> <span class="fu">factor</span>(Gram),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Case =</span> <span class="fu">factor</span>(Case)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Subj, Item, trial, Case, Gram, rating)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#stview(dfSummary(df))</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(df, <span class="st">"./data/Bakay_rating.arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="descriptive-statistics" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Descriptive statistics</h1>
+<section id="case-x-gram" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="case-x-gram"><span class="header-section-number">4.1</span> Case x Gram</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subj, Case, Gram) <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N=</span><span class="fu">n</span>(), <span class="at">rating=</span><span class="fu">mean</span>(rating)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Case, Gram) <span class="sc">|&gt;</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N=</span><span class="fu">n</span>(), <span class="at">rating_M=</span><span class="fu">mean</span>(rating), </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">rating_SD=</span><span class="fu">sd</span>(rating), <span class="at">rating_SE=</span>rating_SD<span class="sc">/</span><span class="fu">sqrt</span>(N))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Subj', 'Case'. You can override using the
+`.groups` argument.
+`summarise()` has grouped output by 'Case'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Case=</span><span class="fu">fct_rev</span>(Case)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Case, <span class="at">y=</span>rating_M, <span class="at">group=</span>Gram, <span class="at">color=</span>Gram)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymax=</span>rating_M <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>rating_SE,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>rating_M <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>rating_SE), <span class="at">width=</span>.<span class="dv">05</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="st">""</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"grammatical"</span>, <span class="st">"ungrammatical"</span>), <span class="at">values=</span>cbPalette)<span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">99</span>, .<span class="dv">99</span>), <span class="at">legend.justification =</span> <span class="fu">c</span>(.<span class="dv">99</span>,.<span class="dv">99</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SMPL_R_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="trial" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="trial"><span class="header-section-number">4.2</span> Trial</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>trial, <span class="at">y=</span>rating)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Trial"</span>) <span class="sc">+</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="SMPL_R_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="trial-x-case-x-gram" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="trial-x-case-x-gram"><span class="header-section-number">4.3</span> Trial x Case x Gram</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>trial, <span class="at">y=</span>rating, <span class="at">group=</span>Case<span class="sc">:</span>Gram, <span class="at">color=</span>Case<span class="sc">:</span>Gram)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Trial"</span>) <span class="sc">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="st">"Condition"</span>, <span class="at">values=</span>cbPalette) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="SMPL_R_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Not much evidence for a trial effect.</p>
+</section>
+</section>
+<section id="clmm" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> CLMM</h1>
+<section id="varying-only-gm" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="varying-only-gm"><span class="header-section-number">5.1</span> Varying only GM</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(df<span class="sc">$</span>Case) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(df<span class="sc">$</span>Gram) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>tr_c <span class="ot">&lt;-</span> df<span class="sc">$</span>trial<span class="dv">-30</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> tr_c <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
+  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m0) <span class="co"># sig main effects of Case and Gram</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: as.factor(rating) ~ 1 + tr_c + Case * Gram + (1 | Subj) + (1 |  
+    Item)
+data:    df
+
+ link  threshold nobs logLik   AIC     niter     max.grad cond.H 
+ logit flexible  1368 -1777.65 3575.30 762(5017) 9.82e-04 2.9e+04
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ Subj   (Intercept) 3.41158  1.8470  
+ Item   (Intercept) 0.06526  0.2555  
+Number of groups:  Subj 57,  Item 24 
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+tr_c        -0.0006034  0.0030395  -0.199 0.842641    
+Case1        0.1775014  0.0520811   3.408 0.000654 ***
+Gram1        0.2492942  0.0525541   4.744  2.1e-06 ***
+Case1:Gram1 -0.0264138  0.0518109  -0.510 0.610183    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -1.3076     0.2612  -5.006
+2|3   0.2454     0.2597   0.945
+3|4   1.6040     0.2640   6.076
+4|5   3.1207     0.2804  11.131</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data=</span>df)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1) <span class="co"># sig main effects of Case and Gram</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: as.factor(rating) ~ 1 + Case * Gram + (1 | Subj) + (1 | Item)
+data:    df
+
+ link  threshold nobs logLik   AIC     niter     max.grad cond.H 
+ logit flexible  1368 -1777.67 3573.34 895(6432) 8.84e-04 1.3e+02
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ Subj   (Intercept) 3.41198  1.8472  
+ Item   (Intercept) 0.06544  0.2558  
+Number of groups:  Subj 57,  Item 24 
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+Case1        0.17797    0.05203   3.421 0.000625 ***
+Gram1        0.24918    0.05255   4.742 2.12e-06 ***
+Case1:Gram1 -0.02662    0.05180  -0.514 0.607254    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -1.3069     0.2612  -5.004
+2|3   0.2461     0.2597   0.948
+3|4   1.6049     0.2640   6.080
+4|5   3.1218     0.2803  11.136</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of cumulative link models:
+ 
+   formula:                                                             link:
+m1 as.factor(rating) ~ 1 + Case * Gram + (1 | Subj) + (1 | Item)        logit
+m0 as.factor(rating) ~ 1 + tr_c + Case * Gram + (1 | Subj) + (1 | Item) logit
+   threshold:
+m1 flexible  
+m0 flexible  
+
+   no.par    AIC  logLik LR.stat df Pr(&gt;Chisq)
+m1      9 3573.3 -1777.7                      
+m0     10 3575.3 -1777.6  0.0394  1     0.8426</code></pre>
+</div>
+</div>
+<p>We don’t need trial as a covariate. Probably, we could also drop the interaction at least from the random-effect structure.</p>
+</section>
+<section id="individual-and-item-differences-in-main-effects" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="individual-and-item-differences-in-main-effects"><span class="header-section-number">5.2</span> Individual and item differences in main effects</h2>
+<p>Relative to the factorial design this is not the maximal CLMM; we do not include Subj- and Item-related VCs for the interaction term.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">"./fits/m2_clmm.rda"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(f2)){</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">+</span> Gram <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">+</span> Gram <span class="sc">|</span> Item),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>df)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save</span>(m2, <span class="at">file=</span>f2)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="fu">load</span>(f2)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: as.factor(rating) ~ 1 + Case * Gram + (1 + Case + Gram | Subj) +  
+    (1 + Case + Gram | Item)
+data:    df
+
+ link  threshold nobs logLik   AIC     niter       max.grad cond.H 
+ logit flexible  1368 -1749.10 3536.19 2664(16183) 1.79e-03 1.2e+06
+
+Random effects:
+ Groups Name        Variance  Std.Dev. Corr          
+ Subj   (Intercept) 5.0454534 2.24621                
+        CaseLow     0.0002955 0.01719  -1.000        
+        GramUngra   1.7063847 1.30629  -0.521  0.521 
+ Item   (Intercept) 0.2032667 0.45085                
+        CaseLow     0.1067584 0.32674  -0.547        
+        GramUngra   0.0808627 0.28436  -0.985  0.683 
+Number of groups:  Subj 57,  Item 24 
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)   
+Case1        0.18780    0.06265   2.998  0.00272 **
+Gram1        0.31284    0.10772   2.904  0.00368 **
+Case1:Gram1 -0.03348    0.05292  -0.633  0.52694   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -1.4037     0.2793  -5.025
+2|3   0.2468     0.2778   0.888
+3|4   1.7097     0.2827   6.048
+4|5   3.3840     0.3024  11.189</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of cumulative link models:
+ 
+   formula:                                                                                 
+m1 as.factor(rating) ~ 1 + Case * Gram + (1 | Subj) + (1 | Item)                            
+m2 as.factor(rating) ~ 1 + Case * Gram + (1 + Case + Gram | Subj) + (1 + Case + Gram | Item)
+   link: threshold:
+m1 logit flexible  
+m2 logit flexible  
+
+   no.par    AIC  logLik LR.stat df Pr(&gt;Chisq)    
+m1      9 3573.3 -1777.7                          
+m2     19 3536.2 -1749.1  57.145 10  1.252e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The main effects stay significant. The random-effect structure looks overparaemterized because some of the CP are or are very close to -1.00, that is at the boundary.</p>
+</section>
+<section id="zero-correlation-parameters-clmm" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="zero-correlation-parameters-clmm"><span class="header-section-number">5.3</span> Zero-correlation parameters CLMM</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mm <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case<span class="sc">*</span>Gram, <span class="at">data=</span>df)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>case <span class="ot">&lt;-</span> mm[,<span class="dv">2</span>]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>gram <span class="ot">&lt;-</span> mm[,<span class="dv">3</span>]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> case <span class="sc">*</span> gram <span class="sc">+</span> (<span class="dv">1</span>  <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Subj) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                                                 (<span class="dv">1</span>  <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Item), <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
+  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: as.factor(rating) ~ 1 + case * gram + (1 | Subj) + (0 + case |  
+    Subj) + (0 + gram | Subj) + (1 | Item) + (0 + case | Item) +  
+    (0 + gram | Item)
+data:    df
+
+ link  threshold nobs logLik   AIC     niter       max.grad cond.H 
+ logit flexible  1368 -1752.05 3530.11 1694(10430) 7.13e-04 1.3e+02
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ Subj   gram        0.41418  0.64357 
+ Subj   case        0.00000  0.00000 
+ Subj   (Intercept) 3.81221  1.95249 
+ Item   gram        0.00155  0.03937 
+ Item   case        0.01984  0.14086 
+ Item   (Intercept) 0.07074  0.26597 
+Number of groups:  Subj 57,  Item 24 
+
+Coefficients:
+          Estimate Std. Error z value Pr(&gt;|z|)   
+case       0.18705    0.06018   3.108  0.00188 **
+gram       0.30526    0.10264   2.974  0.00294 **
+case:gram -0.03544    0.05277  -0.672  0.50181   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -1.3904     0.2759  -5.040
+2|3   0.2559     0.2741   0.933
+3|4   1.7097     0.2791   6.126
+4|5   3.3677     0.2990  11.263</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m3, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of cumulative link models:
+ 
+   formula:                                                                                                                                     
+m1 as.factor(rating) ~ 1 + Case * Gram + (1 | Subj) + (1 | Item)                                                                                
+m3 as.factor(rating) ~ 1 + case * gram + (1 | Subj) + (0 + case | Subj) + (0 + gram | Subj) + (1 | Item) + (0 + case | Item) + (0 + gram | Item)
+m2 as.factor(rating) ~ 1 + Case * Gram + (1 + Case + Gram | Subj) + (1 + Case + Gram | Item)                                                    
+   link: threshold:
+m1 logit flexible  
+m3 logit flexible  
+m2 logit flexible  
+
+   no.par    AIC  logLik LR.stat df Pr(&gt;Chisq)    
+m1      9 3573.3 -1777.7                          
+m3     13 3530.1 -1752.1 51.2271  4  2.001e-10 ***
+m2     19 3536.2 -1749.1  5.9174  6     0.4325    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Some of the VCs are very close to zero.</p>
+</section>
+<section id="parsimonious-clmm" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="parsimonious-clmm"><span class="header-section-number">5.4</span> Parsimonious CLMM</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> case <span class="sc">*</span> gram <span class="sc">+</span> (<span class="dv">1</span>  <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Subj) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                                                 (<span class="dv">1</span>  <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Item) , <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
+  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: as.factor(rating) ~ 1 + case * gram + (1 | Subj) + (0 + gram |  
+    Subj) + (1 | Item) + (0 + case | Item)
+data:    df
+
+ link  threshold nobs logLik   AIC     niter      max.grad cond.H 
+ logit flexible  1368 -1752.06 3526.12 1198(7444) 1.84e-03 1.3e+02
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ Subj   gram        0.41391  0.6434  
+ Subj   (Intercept) 3.81060  1.9521  
+ Item   case        0.01985  0.1409  
+ Item   (Intercept) 0.07074  0.2660  
+Number of groups:  Subj 57,  Item 24 
+
+Coefficients:
+          Estimate Std. Error z value Pr(&gt;|z|)   
+case       0.18687    0.06013   3.108  0.00189 **
+gram       0.30522    0.10229   2.984  0.00285 **
+case:gram -0.03538    0.05276  -0.671  0.50242   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -1.3899     0.2757  -5.041
+2|3   0.2560     0.2740   0.934
+3|4   1.7094     0.2790   6.127
+4|5   3.3669     0.2987  11.271</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m4, m3, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of cumulative link models:
+ 
+   formula:                                                                                                                                     
+m1 as.factor(rating) ~ 1 + Case * Gram + (1 | Subj) + (1 | Item)                                                                                
+m4 as.factor(rating) ~ 1 + case * gram + (1 | Subj) + (0 + gram | Subj) + (1 | Item) + (0 + case | Item)                                        
+m3 as.factor(rating) ~ 1 + case * gram + (1 | Subj) + (0 + case | Subj) + (0 + gram | Subj) + (1 | Item) + (0 + case | Item) + (0 + gram | Item)
+m2 as.factor(rating) ~ 1 + Case * Gram + (1 + Case + Gram | Subj) + (1 + Case + Gram | Item)                                                    
+   link: threshold:
+m1 logit flexible  
+m4 logit flexible  
+m3 logit flexible  
+m2 logit flexible  
+
+   no.par    AIC  logLik LR.stat df Pr(&gt;Chisq)    
+m1      9 3573.3 -1777.7                          
+m4     11 3526.1 -1752.1 51.2215  2  7.541e-12 ***
+m3     13 3530.1 -1752.1  0.0057  2     0.9972    
+m2     19 3536.2 -1749.1  5.9174  6     0.4325    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Looking good!</p>
+</section>
+<section id="extending-the-parsimonious-clmm-with-cps" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="extending-the-parsimonious-clmm-with-cps"><span class="header-section-number">5.5</span> Extending the parsimonious CLMM with CPs</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Gram <span class="sc">|</span> Subj) <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">+</span> Case<span class="sc">|</span> Item) , <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
+  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
+
+formula: as.factor(rating) ~ 1 + Case * Gram + (1 + Gram | Subj) + (1 +  
+    Case | Item)
+data:    df
+
+ link  threshold nobs logLik   AIC     niter      max.grad cond.H 
+ logit flexible  1368 -1751.12 3528.24 1399(8592) 1.74e-03 1.3e+02
+
+Random effects:
+ Groups Name        Variance Std.Dev. Corr   
+ Subj   (Intercept) 4.91346  2.2166          
+        GramUngra   1.67133  1.2928   -0.517 
+ Item   (Intercept) 0.08058  0.2839          
+        CaseLow     0.07941  0.2818   -0.378 
+Number of groups:  Subj 57,  Item 24 
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)   
+Case1        0.18691    0.06014   3.108  0.00188 **
+Gram1        0.31059    0.10287   3.019  0.00253 **
+Case1:Gram1 -0.03396    0.05276  -0.644  0.51973   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+    Estimate Std. Error z value
+1|2  -1.3964     0.2770  -5.042
+2|3   0.2471     0.2754   0.897
+3|4   1.7018     0.2803   6.072
+4|5   3.3658     0.2999  11.222</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( m4, m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of cumulative link models:
+ 
+   formula:                                                                                             
+m4 as.factor(rating) ~ 1 + case * gram + (1 | Subj) + (0 + gram | Subj) + (1 | Item) + (0 + case | Item)
+m5 as.factor(rating) ~ 1 + Case * Gram + (1 + Gram | Subj) + (1 + Case | Item)                          
+   link: threshold:
+m4 logit flexible  
+m5 logit flexible  
+
+   no.par    AIC  logLik LR.stat df Pr(&gt;Chisq)
+m4     11 3526.1 -1752.1                      
+m5     13 3528.2 -1751.1   1.874  2     0.3918</code></pre>
+</div>
+</div>
+<p>Looking also good, but the two CPs are not significant.</p>
+</section>
+</section>
+<section id="summary" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Summary</h1>
+<ul>
+<li>There is evidence for significant individual differences in the effect of Gram and in the Grand Mean</li>
+<li>There is evidence for significant item differences in the effect of Case and in the Grand Mean</li>
+<li>There is no evidence for correlation parameters.</li>
+<li>There are two significant main effects of Case and Gram, irrespective of the complexity of the randome-effect struture.</li>
+</ul>
+<p>Appendix</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.2.1 (2022-06-23)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Monterey 12.5.1
+
+Matrix products: default
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] sciplot_1.2-0       summarytools_1.0.1  ordinal_2019.12-10 
+ [4] report_0.5.5        see_0.7.2           correlation_0.8.2  
+ [7] modelbased_0.8.5    effectsize_0.7.0.5  parameters_0.18.2  
+[10] performance_0.9.2   bayestestR_0.12.1.2 datawizard_0.5.1   
+[13] insight_0.18.2      easystats_0.5.1     forcats_0.5.2      
+[16] stringr_1.4.1       dplyr_1.0.9         purrr_0.3.4        
+[19] readr_2.1.2         tidyr_1.2.0         tibble_3.1.8       
+[22] ggplot2_3.3.6       tidyverse_1.3.2     readxl_1.4.1       
+[25] arrow_9.0.0        
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-159        matrixStats_0.62.0  fs_1.5.2           
+ [4] lubridate_1.8.0     bit64_4.0.5         httr_1.4.4         
+ [7] numDeriv_2016.8-1.1 tools_4.2.1         backports_1.4.1    
+[10] utf8_1.2.2          R6_2.5.1            mgcv_1.8-40        
+[13] DBI_1.1.3           colorspace_2.0-3    withr_2.5.0        
+[16] tidyselect_1.1.2    emmeans_1.8.0       bit_4.0.4          
+[19] compiler_4.2.1      cli_3.3.0           rvest_1.0.3        
+[22] xml2_1.3.3          sandwich_3.0-2      labeling_0.4.2     
+[25] checkmate_2.1.0     scales_1.2.1        mvtnorm_1.1-3      
+[28] digest_0.6.29       rmarkdown_2.15      base64enc_0.1-3    
+[31] pkgconfig_2.0.3     htmltools_0.5.3     dbplyr_2.2.1       
+[34] fastmap_1.1.0       htmlwidgets_1.5.4   rlang_1.0.4        
+[37] pryr_0.1.5          rstudioapi_0.14     farver_2.1.1       
+[40] generics_0.1.3      zoo_1.8-10          jsonlite_1.8.0     
+[43] googlesheets4_1.0.1 magrittr_2.0.3      rapportools_1.1    
+[46] Matrix_1.4-1        Rcpp_1.0.9          munsell_0.5.0      
+[49] fansi_1.0.3         ucminf_1.1-4        lifecycle_1.0.1    
+[52] stringi_1.7.8       multcomp_1.4-20     yaml_2.3.5         
+[55] MASS_7.3-58.1       plyr_1.8.7          grid_4.2.1         
+[58] crayon_1.5.1        lattice_0.20-45     haven_2.5.1        
+[61] splines_4.2.1       pander_0.6.5        hms_1.1.2          
+[64] magick_2.7.3        knitr_1.40          pillar_1.8.1       
+[67] tcltk_4.2.1         estimability_1.4.1  reshape2_1.4.4     
+[70] codetools_0.2-18    reprex_2.0.2        glue_1.6.2         
+[73] evaluate_0.16       modelr_0.1.9        vctrs_0.4.1        
+[76] tzdb_0.3.0          cellranger_1.1.0    gtable_0.3.0       
+[79] assertthat_0.2.1    xfun_0.32           xtable_1.8-4       
+[82] broom_1.0.0         coda_0.19-4         survival_3.4-0     
+[85] googledrive_2.0.0   gargle_1.2.0        TH.data_1.1-1      
+[88] ellipsis_0.3.2     </code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

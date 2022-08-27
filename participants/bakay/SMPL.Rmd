@@ -1,0 +1,151 @@
+---
+title: "Exp3 R Markdown"
+author: "Özge Bakay"
+date: "2022-01-26"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(magrittr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+#library(rethinking)
+library(lme4)
+library(lmerTest)
+library(ordinal)
+library(readxl)
+library(sciplot)
+
+df <- read_excel("./data/Exp3 R Data.xlsx")
+```
+
+## About the data
+
+The data here is from a rating experiment. The experiment investigates whether there is missing-verb illusion in Turkish center-embeddings and whether case similarity has an effect on the presence of illusion. The experiment has a 2x2 design where the variables are Grammaticality (Grammatical vs. Ungrammatical) and Case Similarity (High vs. Low). 
+
+## Accuracy Check
+
+```{r}
+df$AccuracyCOMP %<>% as.integer()
+
+accuracy_list <- 
+  df %>% 
+  dplyr::select(AccuracyCOMP, Subject) %>% 
+  group_by(Subject) %>% 
+  summarise(Accuracy = mean(AccuracyCOMP))
+
+View(accuracy_list) ## Subject 53 below 70%
+
+## creating a new df by excluding the subject with low accuracy
+df_new <- subset(df, Subject != "53")
+str(df_new)
+unique(df_new$Subject)
+
+## accuracy check again
+accuracy_list2 <- 
+  df_new %>% 
+  dplyr::select(AccuracyCOMP, Subject) %>% 
+  group_by(Subject) %>% 
+  summarise(Accuracy = mean(AccuracyCOMP))
+
+View(accuracy_list2)
+
+mean(accuracy_list2$Accuracy) 
+## 89% overall mean accuracy in the remaining 56 participants
+
+```
+
+## DESCRIPTIVES for critical items
+
+```{r}
+df_critical <- df_new %>% subset(Type == "exp")
+unique(df_critical$Grammaticality)
+unique(df_critical$Case)
+
+## mean of ratings
+mean <- 
+  df_critical %>% 
+  group_by(Case, Grammaticality) %>% 
+  dplyr::summarize(RatingRATING = mean(RatingRATING, na.rm =T))
+
+View(mean)
+
+## se of ratings, does not work now for some reason
+std <- df_critical %>% group_by(Case, Grammaticality) %>% 
+  dplyr::summarize(RatingRATING = se(RatingRATING, na.rm =T))
+
+View(std) 
+
+## comprehension per condition
+meanC <- df_critical %>% group_by(Case, Grammaticality) %>% 
+  dplyr::summarize(Accuracy = mean(AccuracyCOMP, na.rm =T))
+
+View(meanC)
+
+```
+
+## sum contrast coding
+
+```{r}
+df_critical %<>% mutate(Gra_contrast = ifelse(Grammaticality == "Gra", 0.5, -0.5))
+df_critical %<>% mutate(Case_contrast = ifelse(Case == "Low", 0.5, -0.5))
+
+```
+
+## clm models with random intercepts only
+
+```{r}
+exp4 <- clmm(as.factor(RatingRATING) ~ Trial + Case_contrast * Gra_contrast + (1|Subject) + (1|Item), data=df_critical)
+summary(exp4) # sig effect of gra
+
+## split
+
+group = split(df_critical, df_critical$Case_contrast)
+dfHigh = group$"-0.5"
+dfLow = group$"0.5"
+
+expHigh <- clmm(as.factor(RatingRATING) ~ Trial + Gra_contrast + (1|Subject) + (1|Item), data=dfHigh)
+summary(expHigh)#sig
+
+expLow <- clmm(as.factor(RatingRATING) ~ Trial + Gra_contrast + (1|Subject) + (1|Item), data=dfLow)
+summary(expLow) #sig, more sig
+
+```
+
+## clm models including random slopes
+
+```{r}
+expc <- clmm(as.factor(RatingRATING) ~ Trial + Case_contrast * Gra_contrast + (1+ Case_contrast * Gra_contrast|Subject)+(1+ Case_contrast * Gra_contrast|Item), data=df_critical)
+summary(expc) # this model converges but the coefficients are NA. I do not know if we can trust this model.
+
+## split
+
+group = split(df_critical, df_critical$Case_contrast)
+dfHigh = group$"-0.5"
+dfLow = group$"0.5"
+
+expHigh2 <- clmm(as.factor(RatingRATING) ~ Trial + Gra_contrast + (1+ Gra_contrast |Subject)+(1+ Gra_contrast |Item), data=dfHigh)
+summary(expHigh2) #sig effect of gra
+
+expLow2 <- clmm(as.factor(RatingRATING) ~ Trial + Gra_contrast + (1+ Gra_contrast |Subject)+(1+ Gra_contrast |Item), data=dfLow)
+summary(expLow2) #sig effect of gra, more sig
+
+group = split(df_critical, df_critical$Gra_contrast)
+dfGra = group$"0.5"
+dfUngra = group$"-0.5"
+
+expGra <- clmm(as.factor(RatingRATING) ~ Trial + Case_contrast + (1+ Case_contrast |Subject)+(1+ Case_contrast |Item), data=dfGra)
+summary(expGra) #no effect
+
+expUngra <- clmm(as.factor(RatingRATING) ~ Trial + Case_contrast + (1+ Case_contrast |Subject)+(1+ Case_contrast |Item), data=dfUngra)
+summary(expUngra) #sig effect of case, unexpected
+
+## In all the models with random slopes above, the coefficients turn out to be NA.
+```

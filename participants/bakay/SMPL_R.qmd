@@ -1,0 +1,207 @@
+---
+title: "Ozge Bakay: Missing Verb Illusion"
+subtitle: "RePsychLing SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-08-27 (last revised: `r format(Sys.time())`)"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+---
+
+# Background
+
+The experiment investigates whether there is missing-verb illusion in Turkish center-embeddings and whether case similarity has an effect on the presence of illusion. The experiment has a 2x2 design where the factors are Grammaticality (Grammatical vs. Ungrammatical) and Case Similarity (High vs. Low). Both factors varied within-subject and within-item. The primary dependent variable is a 5-point rating. 
+
+The analysis includes data from 56 subject (after exclusion of one subject with low accuracy) who rated 24 critical items (6 in each of the 2 x 2 conditions; nobs=1344. Subjects also rated 36 filler items that are excluded here, but might be used to assess rating bias. 
+
+With 56 (or 57) subjects and 24 items, assignment of items to conditions could not be counterbalanced across subjects. The assignment was not random because each item was seen by 20, 13, 13, and 11 subjects across the four conditions.
+
+The gaol of the analysis is to test effects with a cumulative link mixed model for ordinal rating data,  basically an integrated set of logistic regressions, taking into account clustering of ratings by subjects and by items. 
+
+# Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set
+
+library(arrow)
+library(readxl)
+library(tidyverse)
+library(easystats)
+library(ordinal)
+library(summarytools)
+library(sciplot)
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+```
+
+# Preprocessing 
+
++ Extract a minimal data set 
++ My variable naming conventions
++ For filtering decisions see original script
+
+```{r}
+df <- 
+  read_excel("./data/Exp3 R Data.xlsx") |> 
+#  filter(Subject != 10) |> 
+  filter(Type == "exp") |> 
+  select(Subj = Subject, Item, trial=Trial, Case, Gram=Grammaticality, 
+         rating=RatingRATING, acc=AccuracyCOMP ) |> 
+  mutate(
+    Subj = factor(paste0("S", str_pad(Subj, width = 2, side = "left", pad = "0"))),
+    Item = factor(paste0("I", str_pad(Item, width = 2, side = "left", pad = "0"))),
+    Gram = factor(Gram),
+    Case = factor(Case)
+    ) |> 
+  select(Subj, Item, trial, Case, Gram, rating)
+
+#stview(dfSummary(df))
+write_feather(df, "./data/Bakay_rating.arrow")
+```
+
+# Descriptive statistics
+
+## Case x Gram
+
+```{r}
+table1 <- 
+  df |> 
+  group_by(Subj, Case, Gram) |> 
+  summarise(N=n(), rating=mean(rating)) |> 
+  ungroup() |> 
+  group_by(Case, Gram) |> 
+  summarise(N=n(), rating_M=mean(rating), 
+            rating_SD=sd(rating), rating_SE=rating_SD/sqrt(N))
+table1 |> 
+  mutate(Case=fct_rev(Case)) |> 
+  ggplot(aes(x=Case, y=rating_M, group=Gram, color=Gram)) +
+  geom_point(position=position_dodge(width=.1)) +
+  geom_line(position=position_dodge(width=.1)) +
+  geom_errorbar(aes(ymax=rating_M + 2*rating_SE,
+                    ymin=rating_M - 2*rating_SE), width=.05,
+                position=position_dodge(width=.1)) +
+  scale_color_manual("", labels=c("grammatical", "ungrammatical"), values=cbPalette)+
+  scale_y_continuous("Rating", limits=c(1,5)) +
+  theme_bw() + theme(legend.position = c(.99, .99), legend.justification = c(.99,.99))
+```
+
+## Trial
+
+```{r}
+df |> 
+  ggplot(aes(x=trial, y=rating)) +
+  geom_smooth() +
+  xlab("Trial") + 
+  scale_y_continuous("Rating", limits=c(1,5)) +
+  theme_bw() + theme(legend.position = "top")
+```
+
+## Trial x Case x Gram
+
+```{r}
+df |> 
+  ggplot(aes(x=trial, y=rating, group=Case:Gram, color=Case:Gram)) +
+  geom_smooth() +
+  xlab("Trial") + 
+  scale_y_continuous("Rating", limits=c(1,5)) +
+  scale_colour_manual("Condition", values=cbPalette) +
+  theme_bw() + theme(legend.position = "top")
+```
+
+Not much evidence for a trial effect.
+
+# CLMM
+
+## Varying only GM
+
+```{r}
+contrasts(df$Case) <- contr.sum(2)
+contrasts(df$Gram) <- contr.sum(2)
+df$tr_c <- df$trial-30
+
+m0 <- clmm(as.factor(rating) ~ 1 + tr_c + Case * Gram + (1|Subj) + (1|Item), data=df)
+summary(m0) # sig main effects of Case and Gram
+
+m1 <- clmm(as.factor(rating) ~ 1 + Case * Gram + (1|Subj) + (1|Item), data=df)
+summary(m1) # sig main effects of Case and Gram
+
+anova(m1, m0)
+```
+
+We don't need trial as a covariate. Probably, we could also drop the interaction at least from the random-effect structure.
+
+## Individual and item differences in main effects
+
+Relative to the factorial design this is not the maximal CLMM; we do not include Subj- and Item-related VCs for the interaction term.
+
+```{r}
+f2 <- "./fits/m2_clmm.rda"
+if(!file.exists(f2)){
+  m2 <- clmm(as.factor(rating) ~ 1 + Case * Gram + (1 + Case + Gram | Subj) + (1 + Case + Gram | Item),
+             data=df)
+  save(m2, file=f2)
+} else load(f2)
+
+summary(m2) 
+anova(m1, m2)
+```
+
+The main effects stay significant. The random-effect structure looks overparaemterized because some of the CP are or are very close to -1.00, that is at the boundary.
+
+## Zero-correlation parameters CLMM
+
+```{r}
+mm <- model.matrix(~ 1 + Case*Gram, data=df)
+case <- mm[,2]
+gram <- mm[,3]
+
+m3 <- clmm(as.factor(rating) ~ 1 + case * gram + (1  | Subj) + (0 + case | Subj) + (0 + gram | Subj) +
+                                                 (1  | Item) + (0 + case | Item) + (0 + gram | Item), data=df)
+summary(m3)
+anova(m1, m3, m2)
+```
+
+Some of the VCs are very close to zero. 
+
+## Parsimonious CLMM
+
+```{r}
+m4 <- clmm(as.factor(rating) ~ 1 + case * gram + (1  | Subj) + (0 + gram | Subj) +
+                                                 (1  | Item) + (0 + case | Item) , data=df)
+summary(m4)
+anova(m1, m4, m3, m2)
+```
+
+Looking good!
+
+## Extending the parsimonious CLMM with CPs
+
+```{r}
+m5 <- clmm(as.factor(rating) ~ 1 + Case * Gram + (1 + Gram | Subj) +  (1 + Case| Item) , data=df)
+summary(m5)
+anova( m4, m5)
+```
+
+Looking also good, but the two CPs are not significant.
+
+# Summary
+
++ There is evidence for significant individual differences in the effect of Gram and in the Grand Mean
++ There is evidence for significant item differences in the effect of Case and in the Grand Mean
++ There is no evidence for correlation parameters.
++ There are two significant main effects of Case and Gram, irrespective of the complexity of the randome-effect struture.
+
+Appendix
+
+```{r}
+sessionInfo()
+```
+
