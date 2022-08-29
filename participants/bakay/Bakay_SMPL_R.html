@@ -83,16 +83,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="SMPL_R_files/libs/clipboard/clipboard.min.js"></script>
-<script src="SMPL_R_files/libs/quarto-html/quarto.js"></script>
-<script src="SMPL_R_files/libs/quarto-html/popper.min.js"></script>
-<script src="SMPL_R_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="SMPL_R_files/libs/quarto-html/anchor.min.js"></script>
-<link href="SMPL_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="SMPL_R_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="SMPL_R_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="SMPL_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="SMPL_R_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Bakay_SMPL_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Bakay_SMPL_R_files/libs/quarto-html/quarto.js"></script>
+<script src="Bakay_SMPL_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="Bakay_SMPL_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Bakay_SMPL_R_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Bakay_SMPL_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Bakay_SMPL_R_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Bakay_SMPL_R_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Bakay_SMPL_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Bakay_SMPL_R_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -108,7 +108,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background"> <span class="header-section-number">1</span> Background</a></li>
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"> <span class="header-section-number">2</span> Setup</a></li>
   <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"> <span class="header-section-number">3</span> Preprocessing</a></li>
-  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics"> <span class="header-section-number">4</span> Descriptive statistics</a>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures"> <span class="header-section-number">4</span> Figures</a>
   <ul class="collapse">
   <li><a href="#case-x-gram" id="toc-case-x-gram" class="nav-link" data-scroll-target="#case-x-gram"> <span class="header-section-number">4.1</span> Case x Gram</a></li>
   <li><a href="#trial" id="toc-trial" class="nav-link" data-scroll-target="#trial"> <span class="header-section-number">4.2</span> Trial</a></li>
@@ -123,6 +123,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#extending-the-parsimonious-clmm-with-cps" id="toc-extending-the-parsimonious-clmm-with-cps" class="nav-link" data-scroll-target="#extending-the-parsimonious-clmm-with-cps"> <span class="header-section-number">5.5</span> Extending the parsimonious CLMM with CPs</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"> <span class="header-section-number">6</span> Summary</a></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"> <span class="header-section-number">7</span> Appendix</a></li>
   </ul>
 </nav>
 </div>
@@ -166,6 +167,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="setup" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span>set</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>function (...) 
+{
+    set2(resolve(...))
+}
+&lt;bytecode: 0x150bc2538&gt;
+&lt;environment: 0x150d26b70&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ordinal)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sciplot)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># respecting color vision deficiency</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>cbPalette <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#009E73"</span>, <span class="st">"#CC79A7"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"#F0E442"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="preprocessing" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Preprocessing</h1>
@@ -175,73 +198,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>For filtering decisions see original script</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_excel</span>(<span class="st">"./data/Exp3 R Data.xlsx"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  filter(Subject != 10) |&gt; </span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Type <span class="sc">==</span> <span class="st">"exp"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Subj =</span> Subject, Item, <span class="at">trial=</span>Trial, Case, <span class="at">Gram=</span>Grammaticality, </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">rating=</span>RatingRATING, <span class="at">acc=</span>AccuracyCOMP ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Subj =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"S"</span>, <span class="fu">str_pad</span>(Subj, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>))),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Item =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"I"</span>, <span class="fu">str_pad</span>(Item, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>))),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Gram =</span> <span class="fu">factor</span>(Gram),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Case =</span> <span class="fu">factor</span>(Case)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Subj, Item, trial, Case, Gram, rating)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#stview(dfSummary(df))</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(df, <span class="st">"./data/Bakay_rating.arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_excel</span>(<span class="st">"./data/Bakay_Exp3 R Data.xlsx"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#  filter(Subject != 10) |&gt; </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Type <span class="sc">==</span> <span class="st">"exp"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Subj =</span> Subject, Item, <span class="at">trial=</span>Trial, Case, <span class="at">Gram=</span>Grammaticality, </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">rating=</span>RatingRATING, <span class="at">acc=</span>AccuracyCOMP ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Subj =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"S"</span>, <span class="fu">str_pad</span>(Subj, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>))),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Item =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">"I"</span>, <span class="fu">str_pad</span>(Item, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>))),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Gram =</span> <span class="fu">factor</span>(Gram),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Case =</span> <span class="fu">factor</span>(Case)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Subj, Item, trial, Case, Gram, rating)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#stview(dfSummary(df))</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(df, <span class="st">"./data/Bakay_rating.arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="descriptive-statistics" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Descriptive statistics</h1>
+<section id="figures" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Figures</h1>
 <section id="case-x-gram" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="case-x-gram"><span class="header-section-number">4.1</span> Case x Gram</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subj, Case, Gram) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N=</span><span class="fu">n</span>(), <span class="at">rating=</span><span class="fu">mean</span>(rating)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Case, Gram) <span class="sc">|&gt;</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N=</span><span class="fu">n</span>(), <span class="at">rating_M=</span><span class="fu">mean</span>(rating), </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">rating_SD=</span><span class="fu">sd</span>(rating), <span class="at">rating_SE=</span>rating_SD<span class="sc">/</span><span class="fu">sqrt</span>(N))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'Subj', 'Case'. You can override using the
-`.groups` argument.
-`summarise()` has grouped output by 'Case'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Case=</span><span class="fu">fct_rev</span>(Case)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Case, <span class="at">y=</span>rating_M, <span class="at">group=</span>Gram, <span class="at">color=</span>Gram)) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymax=</span>rating_M <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>rating_SE,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>rating_M <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>rating_SE), <span class="at">width=</span>.<span class="dv">05</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="st">""</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"grammatical"</span>, <span class="st">"ungrammatical"</span>), <span class="at">values=</span>cbPalette)<span class="sc">+</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">99</span>, .<span class="dv">99</span>), <span class="at">legend.justification =</span> <span class="fu">c</span>(.<span class="dv">99</span>,.<span class="dv">99</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="ot">&lt;-</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subj, Case, Gram) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N=</span><span class="fu">n</span>(), <span class="at">rating=</span><span class="fu">mean</span>(rating)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Case, Gram) <span class="sc">|&gt;</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">N=</span><span class="fu">n</span>(), <span class="at">rating_M=</span><span class="fu">mean</span>(rating), </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">rating_SD=</span><span class="fu">sd</span>(rating), <span class="at">rating_SE=</span>rating_SD<span class="sc">/</span><span class="fu">sqrt</span>(N))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>table1 <span class="sc">|&gt;</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Case=</span><span class="fu">fct_rev</span>(Case)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Case, <span class="at">y=</span>rating_M, <span class="at">group=</span>Gram, <span class="at">color=</span>Gram)) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymax=</span>rating_M <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>rating_SE,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>rating_M <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>rating_SE), <span class="at">width=</span>.<span class="dv">05</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="at">width=</span>.<span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="st">""</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"grammatical"</span>, <span class="st">"ungrammatical"</span>), <span class="at">values=</span>cbPalette)<span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">99</span>, .<span class="dv">99</span>), <span class="at">legend.justification =</span> <span class="fu">c</span>(.<span class="dv">99</span>,.<span class="dv">99</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="SMPL_R_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Bakay_SMPL_R_files/figure-html/fig1-1.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption class="figure-caption"><em>Figure 1</em>. Case x Grammaticality interaction</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="trial" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="trial"><span class="header-section-number">4.2</span> Trial</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>trial, <span class="at">y=</span>rating)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Trial"</span>) <span class="sc">+</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>trial, <span class="at">y=</span>rating)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Trial"</span>) <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="SMPL_R_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Bakay_SMPL_R_files/figure-html/fig2-1.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption class="figure-caption"><em>Figure 2</em>. Trial main effect with default smooth() parameters.</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -255,11 +279,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Rating"</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)) <span class="sc">+</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="st">"Condition"</span>, <span class="at">values=</span>cbPalette) <span class="sc">+</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using method = 'loess' and formula 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="SMPL_R_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Bakay_SMPL_R_files/figure-html/fig3-1.png" class="img-fluid figure-img" width="768"></p>
+<p></p><figcaption class="figure-caption"><em>Figure 3</em>. Trial effect for four conditions with default smooth() parameters.</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Not much evidence for a trial effect.</p>
@@ -270,16 +296,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="varying-only-gm" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="varying-only-gm"><span class="header-section-number">5.1</span> Varying only GM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(df<span class="sc">$</span>Case) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(df<span class="sc">$</span>Gram) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>tr_c <span class="ot">&lt;-</span> df<span class="sc">$</span>trial<span class="dv">-30</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> tr_c <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
-  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m0) <span class="co"># sig main effects of Case and Gram</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(df<span class="sc">$</span>Case) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(df<span class="sc">$</span>Gram) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>tr_c <span class="ot">&lt;-</span> df<span class="sc">$</span>trial<span class="dv">-30</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> tr_c <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data=</span>df)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m0) <span class="co"># sig main effects of Case and Gram</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -312,8 +334,8 @@ Threshold coefficients:
 3|4   1.6040     0.2640   6.076
 4|5   3.1207     0.2804  11.131</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data=</span>df)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1) <span class="co"># sig main effects of Case and Gram</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subj) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Item), <span class="at">data=</span>df)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1) <span class="co"># sig main effects of Case and Gram</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -344,7 +366,7 @@ Threshold coefficients:
 3|4   1.6049     0.2640   6.080
 4|5   3.1218     0.2803  11.136</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio tests of cumulative link models:
  
@@ -366,14 +388,14 @@ m0     10 3575.3 -1777.6  0.0394  1     0.8426</code></pre>
 <h2 data-number="5.2" class="anchored" data-anchor-id="individual-and-item-differences-in-main-effects"><span class="header-section-number">5.2</span> Individual and item differences in main effects</h2>
 <p>Relative to the factorial design this is not the maximal CLMM; we do not include Subj- and Item-related VCs for the interaction term.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">"./fits/m2_clmm.rda"</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(f2)){</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">+</span> Gram <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">+</span> Gram <span class="sc">|</span> Item),</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>df)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save</span>(m2, <span class="at">file=</span>f2)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="fu">load</span>(f2)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> <span class="st">"./fits/Bakay_m2_clmm.rda"</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(f2)){</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">+</span> Gram <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">+</span> Gram <span class="sc">|</span> Item),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>df)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save</span>(m2, <span class="at">file=</span>f2)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="fu">load</span>(f2)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -409,7 +431,7 @@ Threshold coefficients:
 3|4   1.7097     0.2827   6.048
 4|5   3.3840     0.3024  11.189</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio tests of cumulative link models:
  
@@ -432,17 +454,13 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="zero-correlation-parameters-clmm" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="zero-correlation-parameters-clmm"><span class="header-section-number">5.3</span> Zero-correlation parameters CLMM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mm <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case<span class="sc">*</span>Gram, <span class="at">data=</span>df)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>case <span class="ot">&lt;-</span> mm[,<span class="dv">2</span>]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>gram <span class="ot">&lt;-</span> mm[,<span class="dv">3</span>]</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> case <span class="sc">*</span> gram <span class="sc">+</span> (<span class="dv">1</span>  <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Subj) <span class="sc">+</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                                                 (<span class="dv">1</span>  <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Item), <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
-  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mm <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case<span class="sc">*</span>Gram, <span class="at">data=</span>df)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>case <span class="ot">&lt;-</span> mm[,<span class="dv">2</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>gram <span class="ot">&lt;-</span> mm[,<span class="dv">3</span>]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> case <span class="sc">*</span> gram <span class="sc">+</span> (<span class="dv">1</span>  <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Subj) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                                                 (<span class="dv">1</span>  <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Item), <span class="at">data=</span>df)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -479,7 +497,7 @@ Threshold coefficients:
 3|4   1.7097     0.2791   6.126
 4|5   3.3677     0.2990  11.263</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m3, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m3, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio tests of cumulative link models:
  
@@ -505,13 +523,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="parsimonious-clmm" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="parsimonious-clmm"><span class="header-section-number">5.4</span> Parsimonious CLMM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> case <span class="sc">*</span> gram <span class="sc">+</span> (<span class="dv">1</span>  <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Subj) <span class="sc">+</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                                                 (<span class="dv">1</span>  <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Item) , <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
-  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> case <span class="sc">*</span> gram <span class="sc">+</span> (<span class="dv">1</span>  <span class="sc">|</span> Subj) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> gram <span class="sc">|</span> Subj) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                                                 (<span class="dv">1</span>  <span class="sc">|</span> Item) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> case <span class="sc">|</span> Item) , <span class="at">data=</span>df)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -545,7 +559,7 @@ Threshold coefficients:
 3|4   1.7094     0.2790   6.127
 4|5   3.3669     0.2987  11.271</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m4, m3, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m4, m3, m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio tests of cumulative link models:
  
@@ -574,12 +588,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="extending-the-parsimonious-clmm-with-cps" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="extending-the-parsimonious-clmm-with-cps"><span class="header-section-number">5.5</span> Extending the parsimonious CLMM with CPs</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Gram <span class="sc">|</span> Subj) <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">+</span> Case<span class="sc">|</span> Item) , <span class="at">data=</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using formula(x) is deprecated when x is a character vector of length &gt; 1.
-  Consider formula(paste(x, collapse = " ")) instead.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">clmm</span>(<span class="fu">as.factor</span>(rating) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Case <span class="sc">*</span> Gram <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Gram <span class="sc">|</span> Subj) <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">+</span> Case<span class="sc">|</span> Item) , <span class="at">data=</span>df)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cumulative Link Mixed Model fitted with the Laplace approximation
 
@@ -613,7 +623,7 @@ Threshold coefficients:
 3|4   1.7018     0.2803   6.072
 4|5   3.3658     0.2999  11.222</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( m4, m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>( m4, m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Likelihood ratio tests of cumulative link models:
  
@@ -640,9 +650,11 @@ m5     13 3528.2 -1751.1   1.874  2     0.3918</code></pre>
 <li>There is no evidence for correlation parameters.</li>
 <li>There are two significant main effects of Case and Gram, irrespective of the complexity of the randome-effect struture.</li>
 </ul>
-<p>Appendix</p>
+</section>
+<section id="appendix" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Appendix</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.2.1 (2022-06-23)
 Platform: aarch64-apple-darwin20 (64-bit)

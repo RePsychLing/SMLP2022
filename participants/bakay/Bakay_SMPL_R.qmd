@@ -26,7 +26,10 @@ The gaol of the analysis is to test effects with a cumulative link mixed model f
 
 # Setup
 
-```{r setup, include=FALSE}
+```{r setup}
+#| label: setup
+#| warning: false
+
 knitr::opts_chunk$set
 
 library(arrow)
@@ -49,8 +52,10 @@ cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
 + For filtering decisions see original script
 
 ```{r}
+#| label: preproc
+
 df <- 
-  read_excel("./data/Exp3 R Data.xlsx") |> 
+  read_excel("./data/Bakay_Exp3 R Data.xlsx") |> 
 #  filter(Subject != 10) |> 
   filter(Type == "exp") |> 
   select(Subj = Subject, Item, trial=Trial, Case, Gram=Grammaticality, 
@@ -67,11 +72,15 @@ df <-
 write_feather(df, "./data/Bakay_rating.arrow")
 ```
 
-# Descriptive statistics
+# Figures
 
 ## Case x Gram
 
 ```{r}
+#| label: fig1
+#| fig-cap: _Figure 1_. Case x Grammaticality interaction
+#| message: false
+
 table1 <- 
   df |> 
   group_by(Subj, Case, Gram) |> 
@@ -96,6 +105,10 @@ table1 |>
 ## Trial
 
 ```{r}
+#| label: fig2
+#| fig-cap: _Figure 2_. Trial main effect with default smooth() parameters.
+#| message: false
+#| 
 df |> 
   ggplot(aes(x=trial, y=rating)) +
   geom_smooth() +
@@ -107,6 +120,10 @@ df |>
 ## Trial x Case x Gram
 
 ```{r}
+#| label: fig3
+#| fig-cap: _Figure 3_. Trial effect for four conditions with default smooth() parameters.
+#| message: false
+
 df |> 
   ggplot(aes(x=trial, y=rating, group=Case:Gram, color=Case:Gram)) +
   geom_smooth() +
@@ -123,6 +140,9 @@ Not much evidence for a trial effect.
 ## Varying only GM
 
 ```{r}
+#| label: m0, m1
+#| warning: false
+
 contrasts(df$Case) <- contr.sum(2)
 contrasts(df$Gram) <- contr.sum(2)
 df$tr_c <- df$trial-30
@@ -143,7 +163,10 @@ We don't need trial as a covariate. Probably, we could also drop the interaction
 Relative to the factorial design this is not the maximal CLMM; we do not include Subj- and Item-related VCs for the interaction term.
 
 ```{r}
-f2 <- "./fits/m2_clmm.rda"
+#| label: m2
+#| warning: false
+
+f2 <- "./fits/Bakay_m2_clmm.rda"
 if(!file.exists(f2)){
   m2 <- clmm(as.factor(rating) ~ 1 + Case * Gram + (1 + Case + Gram | Subj) + (1 + Case + Gram | Item),
              data=df)
@@ -158,7 +181,10 @@ The main effects stay significant. The random-effect structure looks overparaemt
 
 ## Zero-correlation parameters CLMM
 
-```{r}
+```{r m3}
+#| label: m3
+#| warning: false
+
 mm <- model.matrix(~ 1 + Case*Gram, data=df)
 case <- mm[,2]
 gram <- mm[,3]
@@ -174,6 +200,9 @@ Some of the VCs are very close to zero.
 ## Parsimonious CLMM
 
 ```{r}
+#| label: m4
+#| warning: false
+
 m4 <- clmm(as.factor(rating) ~ 1 + case * gram + (1  | Subj) + (0 + gram | Subj) +
                                                  (1  | Item) + (0 + case | Item) , data=df)
 summary(m4)
@@ -185,6 +214,9 @@ Looking good!
 ## Extending the parsimonious CLMM with CPs
 
 ```{r}
+#| label: m5
+#| warning: false
+
 m5 <- clmm(as.factor(rating) ~ 1 + Case * Gram + (1 + Gram | Subj) +  (1 + Case| Item) , data=df)
 summary(m5)
 anova( m4, m5)
@@ -197,9 +229,9 @@ Looking also good, but the two CPs are not significant.
 + There is evidence for significant individual differences in the effect of Gram and in the Grand Mean
 + There is evidence for significant item differences in the effect of Case and in the Grand Mean
 + There is no evidence for correlation parameters.
-+ There are two significant main effects of Case and Gram, irrespective of the complexity of the randome-effect struture.
++ There are two significant main effects of Case and Gram, irrespective of the complexity of the random-effect struture.
 
-Appendix
+# Appendix
 
 ```{r}
 sessionInfo()

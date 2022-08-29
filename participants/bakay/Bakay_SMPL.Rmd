@@ -23,7 +23,7 @@ library(ordinal)
 library(readxl)
 library(sciplot)
 
-df <- read_excel("./data/Exp3 R Data.xlsx")
+df <- read_excel("./data/Bakay_Exp3 R Data.xlsx")
 ```
 
 ## About the data
