@@ -1,0 +1,345 @@
+---
+title: "Oliver Lindemann: Two attributes of numerical meaning"
+author: "Reinhold Kliegl"
+date: "2022-08-25 (last revised: `r format(Sys.time())`)"
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: libs
+#| warning: false
+#| message: false
+
+library(arrow)
+library(tidyverse)
+library(easystats)
+library(lme4)
+library(summarytools)
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+```
+
+# Description
+
+The study aims to examine the interactions of space- and size-congruity effects while number processing.
+
+The numbers 1 to 9 ($N$) were presented in different six font sizes ($V_\text{size}=[-3, -2, -1, 1, 2, 3]$) and at six different stimulus locations (three left and three right from screen center, $V_\text{space}=[-3, -2, -1, 1, 2, 3]$). For each trial, a size and space-congruity parameter, $C$, could be calculated that varies between $-1$ and $+1$ (see formula below).
+
+The mixed effect model of the reaction times aims to consider, beside these two congruity parameters and their interaction, also the size- or space-congruity in the previous trial ($n-1$, 'Gratton effect').
+
+Congruity was defined as $$C =  \frac{V}{3}  \cdot \frac{N-5}{4} = \frac{V(N-5)}{12}$$
+
+```{r def}
+#| label: def_congr
+#| echo: false
+
+congruity_parameter = function(num_size, variable) {
+  n = num_size
+  v = variable
+  return(v*(n-5)/12)
+}
+```
+
+# Data
+
+## Code book (of the relevant vaiables)
+
+-   **`Subject`**: Subject ID
+-   **`digit`**: Presented digit (1 to 9, except 5)
+-   **`rt`**: Reaction time in ms
+-   **`size_rc`**: Stimulus size (-3 to +3) (recalculated)
+-   **`pos_rc`**: Stimulus position (-3 to +3) (recalculated)
+-   **`numerical_distance`**: Distance to 5 (abs(5-digit))
+-   **`SiC`**: Size congruity parameter (-1 to +1)
+-   **`SpC`**: Spatial congruity parameter (-1 to +1)
+-   **`P_SiC`**: Size congruity of the previous trial (-1 to +1)
+-   **`P_SpC`**: Spatial congruity of the previous trial (-1 to +1)
+
+## Data preprocessing
+
+```{r}
+#| label: read
+#| echo: false
+
+# read data
+raw <- 
+  read_csv("./data/WBL16_raw_data.csv", na =c("NA", "None"), show_col_types = FALSE) |>
+  rename(Subj=Subject) |> 
+  mutate(Subj = as_factor(Subj),
+         Subj = factor(paste0("S", str_pad(Subj, width = 3, side = "left", pad = "0"))),
+         resp = factor(resp, levels=c(32, 105, 111), labels=c("no", "ti", "to")), 
+         mapping = as_factor(mapping)) 
+
+# filter and sort and create new variables
+dat <-  
+  raw |>
+  filter(trial>=0) |>
+  arrange(Subj, trial) |>
+  mutate(
+    magnitude = factor(digit >5, levels=c(FALSE,TRUE),
+                      labels=c("small", "large")),
+    pos_rc = pos/100, # pos recoded
+    size_rc = as.integer(as.factor(size))-4, # size recoded to -3,-2,-1,1,2,3
+    size_rc = ifelse(size_rc>=0, size_rc+1, size_rc),
+    numerical_distance = abs(digit-5),
+    SiC = congruity_parameter(digit, size_rc),
+    SpC = congruity_parameter(digit, pos_rc)
+    )
+
+# Determine congruity of previous trials (Gratton effect)
+# previous size and space congruence
+dat <-  
+  dat |> 
+  mutate(P_SiC = append(NA, SiC[2:n()-1]),
+         P_SpC = append(NA, SpC[2:n()-1]))
+
+# set first "previous congruity" of each subject to NaN
+for (x in unique(dat$Subj)) {
+  t = min(subset(dat, Subj==x)$trial)
+  idx = which((dat$Subj==x) & (dat$trial==t))
+  dat[idx,"P_SiC"]  = NA
+  dat[idx,"P_SpC"]  = NA
+}
+
+
+## Select data
+dat <-  
+  dat |>
+  filter(error==0, resp !="no", rt>200) |>
+  select(-trial, -resp, -magnitude, -mapping, -error, -ISI)
+```
+
+## Show data and save as arrow file
+
+We use the arrow file as input for Julia. 
+
+```{r}
+#| label: arrow
+
+glimpse(dat)
+view(dfSummary(dat))
+write_feather(dat, "Lindemann_NumMeaning.arrow")
+```
+
+## Residual distribution -> speed
+
+Check the distributions of 
+
+```{r}
+#| label: boxcox
+#| 
+MASS::boxcox(rt ~1+numerical_distance+size_rc+SpC+Subj, data=dat)
+dat$speed <- 1000/dat$rt
+
+# boxcox is in favor or response speed (i.e., Hz)
+ggplot(dat, aes(x=speed)) + 
+  geom_histogram( aes(y=..density..), colour="lightblue", fill="lightblue") +
+  stat_function(fun=dnorm, color="red", size=2,
+                 args=list(mean=mean(dat$speed), 
+                           sd=sd(dat$speed))) +
+  xlab("Speed [1/s]") + ylab("Density") +
+  coord_cartesian(xlim=c(0.5, 3)) +theme_bw()
+
+# compare with response time
+ggplot(dat, aes(x=rt)) + 
+  geom_histogram( aes(y=..density..), colour="lightblue", fill="lightblue") +
+  stat_function(fun=dnorm, color="red", size=2,
+                 args=list(mean=mean(dat$rt), 
+                           sd=sd(dat$rt))) +
+  xlab("Response time [ms]") + ylab("Density") +
+  coord_cartesian(xlim=c(200, 1500)) +theme_bw()
+```
+
+# RK Alternative: Top-down strategy
+
+## Model selection
+
+```{r}
+#| label: model_selection
+# start with complex LMM; not maximal because no interaction terms in RES
+m_cpx =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                      (1 + numerical_distance +
+                          size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj),  
+                        REML=FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+summary(rePCA(m_cpx))
+VarCorr(m_cpx)
+
+# zero-correlation parameters
+m_zcp =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                      (1 + numerical_distance +
+                          size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC || Subj),  
+                        REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+summary(rePCA(m_zcp))
+anova(m_zcp, m_cpx)
+VarCorr(m_zcp)
+
+# parsimonious LMM: remove small VCs 
+m_prsm1 =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                       (1 + numerical_distance + P_SpC | Subj),  
+                        REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+summary(rePCA(m_prsm1))  # Looks ok
+anova(m_prsm1, m_zcp, m_cpx)
+VarCorr(m_prsm1)
+
+# parsimonious LMM: remove small VCs
+m_prsm2 =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                       (1 + numerical_distance + SpC + P_SpC || Subj),  
+                        REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+summary(rePCA(m_prsm2))  
+anova(m_prsm2, m_prsm1, m_zcp, m_cpx)
+VarCorr(m_prsm2)   # Very similar in magnitude; keep all of them?
+
+# extend with CPs
+m_ext =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                     (1 + numerical_distance + SpC + P_SpC | Subj),  
+                        REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+summary(rePCA(m_ext))  
+anova(m_prsm2, m_ext, m_cpx)
+VarCorr(m_ext)
+
+m_voi =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                      (1 | Subj),  
+                         REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+
+anova(m_prsm2, m_voi)
+```
+
+# Figures
+
+## Conditional means
+
+```{r}
+#| label: condmeans
+
+cond_means <- 
+  as_tibble(ranef(m_prsm2, condVar=TRUE)) |> 
+  rename(Term=term, Subj=grp)
+
+cond_means |> 
+   ggplot(aes(y=Subj, x=condval)) +
+   geom_point() + facet_wrap(~Term, scales="free_x") +
+   geom_errorbarh(aes(xmin=condval -2*condsd,
+                      xmax=condval +2*condsd), height=0) +
+   geom_vline(xintercept=0, color="red") + theme_bw()
+
+# Subjects ordered by numerical_distance effect
+ord_subj <- cond_means |> filter(Term=="numerical_distance") |> arrange(condval) |> pull(Subj)
+
+cond_means |> 
+   ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval)) +
+   geom_point() + facet_wrap(~Term, scales="free_x") +
+   geom_errorbarh(aes(xmin=condval -2*condsd,
+                      xmax=condval +2*condsd), height=0) +
+   geom_vline(xintercept=0, color="red") + theme_bw()
+```
+
+Large individual differences in the numerical-distance effect. 
+
+## 
+
+```{r, echo=FALSE}
+dat <- 
+    dat |>
+    mutate(
+      pos_cat = factor(pos > 0, levels=c(FALSE, TRUE),
+                        labels=c("left", "right")),
+      size_cat = factor(size > 100, levels=c(FALSE, TRUE),
+                        labels=c("small", "large"))
+    )
+
+
+m = length(unique(dat$digit)) * length(unique(dat$size_cat)) *
+              length(unique(dat$pos_cat))
+tmp = dat |>
+          group_by(Subj, digit, size_cat, pos_cat) |>
+          summarise(mSpeed= median(speed)) |>
+          # norm RT for within CI
+          group_by(Subj) |>
+          mutate(mSpeed.norm = mSpeed - mean(mSpeed)) |>
+          ungroup() |>
+          mutate(mSpeed.norm = mSpeed.norm + mean(mSpeed)) |> ## add grand mean
+          # averge over Subjs and calc CI  
+          group_by(digit, size_cat, pos_cat) |>
+          summarize(mean_speed = mean(mSpeed),
+                    n = length(mSpeed),
+                    sd=sd(mSpeed),
+                    se=sd/sqrt(n),
+                    ci.between = se*qt(.975, n-1),
+                    ci.within = sd(mSpeed.norm)/sqrt(n)*qt(.975, n-1) * sqrt(m/(m-1)))  
+
+tmp = tmp |>
+    mutate(Condition = paste0(as.character(pos_cat), as.character(size_cat)))
+
+tmp$Condition = str_replace(tmp$Condition, "leftsmall", "Left, Small")
+tmp$Condition = str_replace(tmp$Condition, "leftlarge", "Left, Large")
+tmp$Condition = str_replace(tmp$Condition, "rightsmall", "Right, Small")
+tmp$Condition = str_replace(tmp$Condition, "rightlarge", "Right, Large")
+
+dodge <- position_dodge(.5)
+ggplot(data=tmp, aes(x=digit, y=mean_speed, shape=Condition))  +
+  geom_line(position=dodge, aes(linetype = Condition)) +
+  geom_errorbar(position=dodge, aes(ymin=mean_speed - ci.within , ymax=mean_speed + ci.within ),
+                  width=.8) +
+  geom_point(position=dodge, size = 4, aes(shape=Condition, fill=Condition)) +
+  scale_fill_manual(values = c("black", "white","black", "white")) +   
+  scale_shape_manual(values = c(24, 24, 21,21)) +   
+  scale_linetype_manual(values = c(3,3,3,3)) +   
+  scale_x_continuous(breaks = c(1, 2,3,4,6,7,8, 9) ) +
+  ylab("Mean speed (1/s)") +
+  xlab("Digit") +
+  theme_bw(base_size=18)
+```
+
+# Appendix
+
+```{r}
+sessionInfo()
+```
+

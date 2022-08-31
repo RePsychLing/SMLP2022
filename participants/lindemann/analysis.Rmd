@@ -1,0 +1,257 @@
+---
+title: "Two attributes of numerical meaning"
+author: "Oliver Lindemann"
+output:
+  html_document:
+    toc: true
+---
+
+```{r libs, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(lme4)
+```
+
+# Description
+
+The study aims to examine the interactions of space- and size-congruity effects while number processing.
+
+The numbers 1 to 9 ($N$) were presented in different six font sizes ($V_\text{size}=[-3, -2, -1, 1, 2, 3]$) and at six different stimulus locations (three left and three right from screen center, $V_\text{space}=[-3, -2, -1, 1, 2, 3]$). For each trial, a size and space-congruity parameter, $C$, could be calculated that varies between $-1$ and $+1$ (see formula below).
+
+The mixed effect model of the reaction times aims to consider, beside these two congruity parameters and their interaction, also the size- or space-congruity in the previous trial ($n-1$, 'Gratton effect').
+
+Congruity was defined as $$C =  \frac{V}{3}  \cdot \frac{N-5}{4} = \frac{V(N-5)}{12}$$
+
+```{r def congruity, echo=FALSE}
+congruity_parameter = function(num_size, variable) {
+  n = num_size
+  v = variable
+  return(v*(n-5)/12)
+}
+```
+
+# Data
+
+## Code book (of the relevant vaiables)
+
+-   **`Subject`**: Subject ID
+-   **`digit`**: Presented digit (1 to 9, except 5)
+-   **`rt`**: Reaction time in ms
+-   **`size_rc`**: Stimulus size (-3 to +3) (recalculated)
+-   **`pos_rc`**: Stimulus position (-3 to +3) (recalculated)
+-   **`numerical_distance`**: Distance to 5 (abs(5-digit))
+-   **`SiC`**: Size congruity parameter (-1 to +1)
+-   **`SpC`**: Spatial congruity parameter (-1 to +1)
+-   **`P_SiC`**: Size congruity of the previous trial (-1 to +1)
+-   **`P_SpC`**: Spatial congruity of the previous trial (-1 to +1)
+
+```{r, echo=FALSE}
+# Data proprocessing
+
+raw = read_csv("./data/WBL16_raw_data.csv", na =c("NA", "None"), show_col_types = FALSE) %>%
+    mutate(Subject = as_factor(Subject),
+           resp = factor(resp, levels=c(32, 105, 111), labels=c("no", "ti", "to")), 
+           mapping = as_factor(mapping)
+           )
+# filter and sort and create new variables
+data = raw %>%
+    filter(trial>=0) %>%
+    arrange(Subject, trial) %>%
+    mutate(
+      magnitude = factor(digit >5, levels=c(FALSE,TRUE),
+                        labels=c("small", "large")),
+      pos_rc = pos/100, # pos recoded
+      size_rc = as.integer(as.factor(size))-4, # size recoded to -3,-2,-1,1,2,3
+      size_rc = ifelse(size_rc>=0, size_rc+1, size_rc),
+      numerical_distance = abs(digit-5),
+      SiC = congruity_parameter(digit, size_rc),
+      SpC = congruity_parameter(digit, pos_rc)
+      )
+
+# Determine congruity of previous trails (Gratton effect)
+# previous size and space congruence
+data = data %>% 
+  mutate(P_SiC = append(NA, SiC[2:n()-1]),
+         P_SpC = append(NA, SpC[2:n()-1]))
+
+# set first "previous congruity" of each subject to NaN
+for (x in unique(data$Subject)) {
+  t = min(subset(data, Subject==x)$trial)
+  idx = which((data$Subject==x) & (data$trial==t))
+  data[idx,"P_SiC"]  = NA
+  data[idx,"P_SpC"]  = NA
+}
+
+
+## Select data
+rt.data = data %>%
+  filter(error==0, resp !="no", rt>200) %>%
+  select(-trial, -resp, -magnitude, -mapping, -error, -ISI)
+```
+
+## Show data
+
+```{r}
+glimpse(rt.data)
+```
+
+# Linear Mixed Effects Model Analyses
+
+## Model Selection
+
+```{r eval=TRUE}
+# initial model with control factors and factors of interest
+model.no_slopes = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                         (1 | Subject),  
+                         REML =FALSE, data =rt.data)
+
+# testing random slope for numerical distance
+model.nd = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.no_slopes, model.nd)
+
+# testing random slope for visual size
+model.nd_vs = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance + size_rc | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.nd, model.nd_vs)
+
+# testing random slope for position
+model.nd_loc = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance + pos_rc | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.nd, model.nd_loc)
+
+# testing random slope for SiC
+model.nd_sic = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance + SiC | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.nd, model.nd_sic)
+
+# testing random slope for spatial congruity
+model.nd_spc = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance + SpC | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.nd, model.nd_spc)
+
+# testing random slope for previous size congruity
+model.nd_psic = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance + P_SiC | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.nd, model.nd_psic)
+
+# testing random slope for previous position congruity
+model.nd_pspc = lmer(rt~ numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                        (1 + numerical_distance + P_SpC | Subject),  
+                       REML =FALSE, data =rt.data)
+anova(model.nd, model.nd_pspc)
+```
+
+## Result of best fitting model
+
+```{r best_model}
+#### Best model with random slopes for numerical distance only 
+summary(model.nd)
+```
+
+# Plotting
+
+```{r, echo=FALSE}
+rt.data = rt.data %>%
+    mutate(
+      pos_cat = factor(pos > 0, levels=c(FALSE, TRUE),
+                        labels=c("left", "right")),
+      size_cat = factor(size > 100, levels=c(FALSE, TRUE),
+                        labels=c("small", "large"))
+    )
+
+
+m = length(unique(rt.data$digit)) * length(unique(rt.data$size_cat)) *
+              length(unique(rt.data$pos_cat))
+tmp = rt.data %>%
+          group_by(Subject, digit, size_cat, pos_cat) %>%
+          summarise(mRT= median(rt)) %>%
+          # norm RT dfor within CI
+          group_by(Subject) %>%
+          mutate(mRT.norm = mRT - mean(mRT)) %>%
+          ungroup() %>%
+          mutate(mRT.norm = mRT.norm + mean(mRT)) %>% ## add grand mean
+          # averge over subjects and calc CI  
+          group_by(digit, size_cat, pos_cat) %>%
+          summarize(mean_rt = mean(mRT),
+                    n = length(mRT),
+                    sd=sd(mRT),
+                    se=sd/sqrt(n),
+                    ci.between = se*qt(.975, n-1),
+                    ci.within = sd(mRT.norm)/sqrt(n)*qt(.975, n-1) * sqrt(m/(m-1)))  
+
+tmp = tmp %>%
+    mutate(Condition = paste0(as.character(pos_cat), as.character(size_cat)))
+
+tmp$Condition = str_replace(tmp$Condition, "leftsmall", "Left, Small")
+tmp$Condition = str_replace(tmp$Condition, "leftlarge", "Left, Large")
+tmp$Condition = str_replace(tmp$Condition, "rightsmall", "Right, Small")
+tmp$Condition = str_replace(tmp$Condition, "rightlarge", "Right, Large")
+
+dodge <- position_dodge(.5)
+ggplot(data=tmp, aes(x=digit, y=mean_rt, shape=Condition))  +
+  geom_line(position=dodge, aes(linetype = Condition)) +
+  geom_errorbar(position=dodge, aes(ymin=mean_rt- ci.within , ymax=mean_rt+ ci.within ),
+                  width=.8) +
+  geom_point(position=dodge, size = 4, aes(shape=Condition, fill=Condition)) +
+  scale_fill_manual(values = c("black", "white","black", "white")) +   
+  scale_shape_manual(values = c(24, 24, 21,21)) +   
+  scale_linetype_manual(values = c(3,3,3,3)) +   
+  scale_x_continuous(breaks = c(1, 2,3,4,6,7,8, 9) ) +
+  ylab("Mean RT (ms)") +
+  xlab("Digit") +
+  theme_bw(base_size=18)
+```
