@@ -16,10 +16,20 @@ editor_options:
 jupyter: julia-1.8
 ---
 
-# Background 
+# Description
+
+The study aims to examine the interactions of space- and size-congruity effects while number processing.
+
+The numbers 1 to 9 ($N$) were presented in different six font sizes ($V_\text{size}=[-3, -2, -1, 1, 2, 3]$) and at six different stimulus locations (three left and three right from screen center, $V_\text{space}=[-3, -2, -1, 1, 2, 3]$). For each trial, a size and space-congruity parameter, $C$, could be calculated that varies between $-1$ and $+1$ (see formula below).
+
+The mixed effect model of the reaction times aims to consider, beside these two congruity parameters and their interaction, also the size- or space-congruity in the previous trial ($n-1$, 'Gratton effect').
+
+Congruity was defined as $$C =  \frac{V}{3}  \cdot \frac{N-5}{4} = \frac{V(N-5)}{12}$$
 
 
 # Setup
+
+## Packages
 
 ```{julia}
 #| label: packages
@@ -43,14 +53,163 @@ using RCall            # call R from Julia
 using StatsBase
 using StatsModels
 
-
 ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
+## Code book 
+
+For preprocessing see earlier script. Here we have only the relevant variables for the following analyses.
+
+-   **`Subj`**: Subject ID
+-   **`digit`**: Presented digit (1 to 9, except 5)
+-   **`size`**: Stimulus size
+-   **`size_rc`**: Stimulus size (-3 to +3) (recalculated)
+-   **`pos`**: Stimulus position 
+-   **`pos_rc`**: Stimulus position (-3 to +3) (recalculated)
+-   **`numerical_distance`**: Distance to 5 (abs(5-digit))
+-   **`SiC`**: Size congruity parameter (-1 to +1)
+-   **`SpC`**: Spatial congruity parameter (-1 to +1)
+-   **`P_SiC`**: Size congruity of the previous trial (-1 to +1)
+-   **`P_SpC`**: Spatial congruity of the previous trial (-1 to +1)
+-   **`speed`**: Speed of responding in Hz, [1/s]
+
 
 ```{julia}
+#| label: data
+
 dat = DataFrame(Arrow.Table("./data/Lindemann_NumMeaning.arrow"));
+describe(dat)
+```
+
+# Contrasts
+
+We have only the random factor `Subj` and declare it as a grouping variable.
+
+```{julia}
+contrasts = Dict(:Subj => Grouping());
+```
+
+# Model selection
+
+## Complex LMM
+
+ We start with a complex LMM; it is not _maximal_ because no interaction terms in RES.
+
+```{julia}
+#| label: m_cpx
+m_pc1 = let 
+    form = @formula(llt ~  1 + Fam*pc1_c + (1 | Subj));
+    fit(MixedModel, form, dat; contrasts);
+  end
+m_cpx = let
+    form = @formula(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                              SiC+SpC+P_SiC+P_SpC + SiC&SpC + SiC&P_SiC + SiC&P_SpC + SpC&P_SiC + SpC&P_SpC +
+                         (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj));
+    fit(MixedModel, form, dat; contrasts);
+  end
+
+VarCorr(m_cpx)
+```
+
+## Zero-correlation parameter LMM
+
+```{julia}
+#| label: m_zcp
+
+m_zcp =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                      (1 + numerical_distance +
+                          size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC || Subj),
+summary(rePCA(m_zcp))
+anova(m_zcp, m_cpx)
+VarCorr(m_zcp)
+```
+
+
+# Parsimonious LMM (1)
+
+We remove small variance components (VCs)
+
+```{julia}
+#| label: m_prsm1
+
+m_prsm1 =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                       (1 + numerical_distance + P_SpC | Subj)
+summary(rePCA(m_prsm1))  # Looks ok
+anova(m_prsm1, m_zcp, m_cpx)
+VarCorr(m_prsm1)
+```
+
+# Parsimonious LMM (2)
+
+```{julia}
+#| label: m_prsm2
+
+m_prsm2 =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                       (1 + numerical_distance + SpC + P_SpC || Subj)
+```
+
+
+# LMM extended with CPs
+
+```{julia}
+#| label: m_ext
+
+m_ext =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                     (1 + numerical_distance + SpC + P_SpC | Subj)
+```
+
+```{julia}
+#| label: m_voi
+
+m_voi =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc +
+                         SiC*SpC*P_SiC*P_SpC +
+                         SiC:SpC +
+                         SiC:P_SiC +
+                         SiC:P_SpC +
+                         SpC:P_SiC +
+                         SpC:P_SpC +
+                      (1 | Subj)
+```
+
+# Figures
+
+## Caterpillar plot 
+
+```{julia}
+
+```
+
+Large individual differences in the numerical-distance effect. 
+
+## Shrinkage plots
+
+```{julia}
+
 ```
 
 # Appendix
