@@ -9,7 +9,7 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -27,7 +27,7 @@ We will assume that you have git installed and are able to clone a repository fr
 git clone https://github.com/RePsychLing/SMLP2022
 ```
 
-## Julia Programming Language 
+## Julia Programming Language
 
 We will use Julia v1.8.0 in the summer school. You can download the version appropriate for your setup from here: [Julia Programming Language](https://julialang.org/downloads/)
 
@@ -35,13 +35,12 @@ We will use Julia v1.8.0 in the summer school. You can download the version appr
 
 We will use VS Code IDE, that is Julia : VS Code ~ R : RStudio. You can download the version appropriate for your setup from here: [VS Code](https://code.visualstudio.com/download)
 
-## Quarto 
+## Quarto
 
 The web site and other documents for this course are rendered using a `knitr`-like system called Quarto. You can download the version appropriate for your setup from here: [quarto](https://quarto.org/docs/get-started/)
 
 # Summary
 
-We assume everybody will succeed with the installations. If not, please get in touch! 
+We assume everybody will succeed with the installations. If not, please get in touch!
 
-You may also want to give it a try to get these tools to play nicely with each other -- but don't spend too much time on this.  
-
+You may also want to give it a try to get these tools to play nicely with each other -- but don't spend too much time on this.
