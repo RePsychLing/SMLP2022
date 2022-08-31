@@ -1,8 +1,8 @@
 ---
-title: "Ozge Bakay: Missing Verb Illusion"
+title: "Özge Bakay: Missing Verb Illusion"
 subtitle: "RePsychLing SMLP2022"
 author: "Reinhold Kliegl"
-date: "2022-08-27 (last revised: `r format(Sys.time())`)"
+date: "2022-08-31 (last revised: `r format(Sys.time())`)"
 format:
   html:
     toc: true

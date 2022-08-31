@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Sixth Summer School on Statistical Methods for Linguistics and Psychology",
     "section": "",
-    "text": "This site provides materials for the “Advanced frequentist methods” section of the Summer School on Statistical Methods to be held at the University of Potsdam, 12-16 September, 2022"
+    "text": "This site provides materials for the Advanced frequentist methods stream of the Summer School on Statistical Methods to be held at the University of Potsdam, 12-16 September, 2022"
   },
   {
     "objectID": "about.html",
@@ -416,8 +416,8 @@
     "objectID": "index.html#git",
     "href": "index.html#git",
     "title": "Sixth Summer School on Statistical Methods for Linguistics and Psychology",
-    "section": "git",
-    "text": "git\nWe will assume that you have git installed and are able to clone a repository from github. If not, Happy Git with R is a good place to learn about git for data science.\nThis website is built using quarto, described below, from the repository https://github.com/RePsychLing/SMLP2022. Clone this repository with, e.g.\ngit clone https://github.com/RePsychLing/SMLP2022"
+    "section": "1.1 git",
+    "text": "1.1 git\nWe will assume that you have git installed and are able to clone a repository from github. This website is built using quarto, described below, from a [git repository] (https://github.com/RePsychLing/SMLP2022). Clone this repository with, e.g.\ngit clone https://github.com/RePsychLing/SMLP2022"
   },
   {
     "objectID": "index.html#julia-and-juliaup",
@@ -439,5 +439,26 @@
     "title": "Sixth Summer School on Statistical Methods for Linguistics and Psychology",
     "section": "Quarto and the Jupyter kernel",
     "text": "Quarto and the Jupyter kernel\nThe web site and other documents for this course are rendered using a knitr-like system called quarto. This system is very knitr-like because it was created by the same folks at RStudio who created knitr, although quarto is not officially an RStudio product.\nIn a quarto markdown document (.qmd extension) code cells can be R code or Python code or Julia code. Python code cells and Julia code cells are executed using Jupyter which means that the Jupyter “kernel” for Julia must be installed. (Jupyter is an interactive notebook system for the browser that can execute code chunks in various languages. The name “Jupyter” is from fragments of the language names: JUlia, PYthon, and R.)\nThe Jupyter kernel for Julia is part of IJulia.jl, a Julia package. (The URL’s of github repositories for Julia packages typically end in .jl. We include that extension to indicate that the name refers to a Julia package.)\nAs this package may be used in many different projects, we add it to the project list for the Julia release.\n\nPkg.activate()    # activate a system-wide configuration\n\n  Activating project at `~/.julia/environments/v1.8`\n\n\n\nPkg.add(\"IJulia\")\n\n   Resolving package versions...\n\n\n  No Changes to `~/.julia/environments/v1.8/Project.toml`\n  No Changes to `~/.julia/environments/v1.8/Manifest.toml`\n\n\n\nPkg.activate(\".\") # activate the local project again\n\n  Activating project at `~/git/SMLP2022`\n\n\nThe act of adding the IJulia package should create the Julia kernel for Jupyter. As described on the IJulia.jl repository, if you already have Jupyter installed (and visible on your search path) the installation simply adds a new kernel to that instance of Jupyter. Otherwise, a lightweight version of Conda is installed in a directory with a name like ~/.julia/conda/3/ and jupyter is installed for this version of Conda.\nThe quarto installation page provides package download links for common operating systems. Once quarto is installed, run quarto check in the shell to see if it finds the version of Jupyter and the Julia kernel that was installed.\nIn my case the output is like\n$ quarto check\n\n[✓] Checking Quarto installation......OK\n      Version: 99.9.9\n      Path: /home/bates/git/quarto-cli/package/dist/bin\n\n[✓] Checking basic markdown render....OK\n\n[✓] Checking Python 3 installation....OK\n      Version: 3.9.13 (Conda)\n      Path: /home/bates/bin/python\n      Jupyter: 4.11.1\n      Kernels: julia-1.7, julia-1.8, julia-1.9, julia-1.6, python3\n\n[✓] Checking Jupyter engine render....OK\n\n[✓] Checking R installation...........OK\n      Version: 4.2.1\n      Path: /usr/lib/R\n      LibPaths:\n        - /home/bates/R/x86_64-pc-linux-gnu-library/4.2\n        - /usr/local/lib/R/site-library\n        - /usr/lib/R/site-library\n        - /usr/lib/R/library\n      rmarkdown: 2.14\n\n[✓] Checking Knitr engine render......OK\nThe important thing to check is that Jupyter is located with the correct Julia kernel(s). If not, you need to add python, python3 and jupyter from the ~/.julia/conda/3/bin/ directory to your search path."
+  },
+  {
+    "objectID": "index.html#julia-programming-language",
+    "href": "index.html#julia-programming-language",
+    "title": "Sixth Summer School on Statistical Methods for Linguistics and Psychology",
+    "section": "1.2 Julia Programming Language",
+    "text": "1.2 Julia Programming Language\nWe will use Julia v1.8.0 in the summer school. You can download the version appropriate for your setup from here: Julia Programming Language"
+  },
+  {
+    "objectID": "index.html#visual-studio-code-vs-code",
+    "href": "index.html#visual-studio-code-vs-code",
+    "title": "Sixth Summer School on Statistical Methods for Linguistics and Psychology",
+    "section": "1.3 Visual Studio Code (VS Code)",
+    "text": "1.3 Visual Studio Code (VS Code)\nWe will use VS Code IDE, that is Julia : VS Code ~ R : RStudio. You can download the version appropriate for your setup from here: VS Code"
+  },
+  {
+    "objectID": "index.html#quarto",
+    "href": "index.html#quarto",
+    "title": "Sixth Summer School on Statistical Methods for Linguistics and Psychology",
+    "section": "1.4 Quarto",
+    "text": "1.4 Quarto\nThe web site and other documents for this course are rendered using a knitr-like system called Quarto. You can download the version appropriate for your setup from here: quarto"
   }
 ]
