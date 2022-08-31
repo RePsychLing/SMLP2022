@@ -216,7 +216,7 @@ VarCorr(m_zcp)
 anova(m_voi, m_zcp, m_cpx)
 ```
 
-We do no loose goodness of fit with LMM `m_zcp` relative to LMM `m_cpx`; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM `m_voi`
+We do no loose goodness of fit with LMM `m_zcp` relative to LMM `m_cpx`; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM `m_voi`. 
 
 ### Parsimonious LMM
 
@@ -225,7 +225,7 @@ We keep only the three largest VCs from `m_cpx`.
 ```{r}
 m_prsm =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC+SpC+P_SiC+P_SpC +
                           SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC +
-                       (1 + numerical_distance + size_rc + P_SpC || Subj),  
+                       (1 + numerical_distance + size_rc + SpC + P_SpC || Subj),  
                         REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
 summary(rePCA(m_prsm))  # ok
 VarCorr(m_prsm)
@@ -273,6 +273,16 @@ cond_means |>
                       xmax=condval +2*condsd), height=0) +
    geom_vline(xintercept=0, color="red") + theme_bw()
 
+# Subjects ordered by SpC effect
+ord_subj <- cond_means |> filter(Term=="SpC") |> arrange(condval) |> pull(Subj)
+
+cond_means |> 
+   ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval)) +
+   geom_point() + facet_wrap(~Term, scales="free_x") +
+   geom_errorbarh(aes(xmin=condval -2*condsd,
+                      xmax=condval +2*condsd), height=0) +
+   geom_vline(xintercept=0, color="red") + theme_bw()
+
 # Subjects ordered by P_SpC effect
 ord_subj <- cond_means |> filter(Term=="P_SpC") |> arrange(condval) |> pull(Subj)
 
@@ -288,7 +298,22 @@ cond_means |>
 
 + `numerical_distance` effect: Credibility intervals of most subjects cross the zero line; a few are on either side.  
 + `size_rc` effect: dito
-+  `P_SpC` effect: no evidence for individual differences in the conditional modes; all of them cross the zero line. 
++  `SpC` and  `P_SpC` effects: no evidence for individual differences in the conditional modes; all of credibility intervals cross the zero line. 
+
+
+Could we get rid of the corresponding VCs?
+
+```{r}
+m_prsm2 =  lmer(speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC+SpC+P_SiC+P_SpC +
+                          SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC +
+                       (1 + numerical_distance + size_rc  || Subj),  
+                        REML =FALSE, control=lmerControl(calc.derivs=FALSE), data =dat)
+summary(rePCA(m_prsm2))  # ok
+VarCorr(m_prsm2)
+anova(m_voi, m_prsm2, m_prsm)
+```
+
+Yes, we could. 
 
 ## Plot of higher-order interaction
 

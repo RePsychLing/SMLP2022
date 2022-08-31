@@ -407,7 +407,7 @@ m_cpx   50 2444.8 2815.7 -1172.4   2344.8 45.725 28     0.0186 *
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>We do no loose goodness of fit with LMM <code>m_zcp</code> relative to LMM <code>m_cpx</code>; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM <code>m_voi</code></p>
+<p>We do no loose goodness of fit with LMM <code>m_zcp</code> relative to LMM <code>m_cpx</code>; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM <code>m_voi</code>.</p>
 </section>
 <section id="parsimonious-lmm" class="level3" data-number="3.2.4">
 <h3 data-number="3.2.4" class="anchored" data-anchor-id="parsimonious-lmm"><span class="header-section-number">3.2.4</span> Parsimonious LMM</h3>
@@ -415,38 +415,39 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>m_prsm <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span> SiC<span class="sc">+</span>SpC<span class="sc">+</span>P_SiC<span class="sc">+</span>P_SpC <span class="sc">+</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                          SiC<span class="sc">:</span>SpC <span class="sc">+</span> SiC<span class="sc">:</span>P_SiC <span class="sc">+</span> SiC<span class="sc">:</span>P_SpC <span class="sc">+</span> SpC<span class="sc">:</span>P_SiC <span class="sc">+</span> SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> P_SpC <span class="sc">||</span> Subj),  </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> SpC <span class="sc">+</span> P_SpC <span class="sc">||</span> Subj),  </span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_prsm))  <span class="co"># ok</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Subj
 Importance of components:
-                         [,1]    [,2]    [,3]    [,4]
-Standard deviation     0.6896 0.05956 0.05511 0.02869
-Proportion of Variance 0.9847 0.00734 0.00629 0.00170
-Cumulative Proportion  0.9847 0.99201 0.99830 1.00000</code></pre>
+                         [,1]    [,2]    [,3]    [,4]   [,5]
+Standard deviation     0.6905 0.05960 0.05536 0.03091 0.0287
+Proportion of Variance 0.9827 0.00732 0.00632 0.00197 0.0017
+Cumulative Proportion  0.9827 0.99002 0.99633 0.99830 1.0000</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prsm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Groups   Name               Std.Dev. 
- Subj     (Intercept)        0.1817491
- Subj.1   numerical_distance 0.0156972
- Subj.2   size_rc            0.0075604
- Subj.3   P_SpC              0.0145237
- Residual                    0.2635456</code></pre>
+ Subj     (Intercept)        0.1819450
+ Subj.1   numerical_distance 0.0157052
+ Subj.2   size_rc            0.0075616
+ Subj.3   SpC                0.0081464
+ Subj.4   P_SpC              0.0145875
+ Residual                    0.2635125</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_voi, m_prsm, m_zcp, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Data: dat
 Models:
 m_voi: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 | Subj)
-m_prsm: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + P_SpC | Subj))
+m_prsm: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + SpC | Subj) + (0 + P_SpC | Subj))
 m_zcp: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + pos_rc | Subj) + (0 + SiC | Subj) + (0 + SpC | Subj) + (0 + P_SiC | Subj) + (0 + P_SpC | Subj))
 m_cpx: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj)
        npar    AIC    BIC  logLik deviance   Chisq Df Pr(&gt;Chisq)    
 m_voi    15 2459.6 2570.8 -1214.8   2429.6                          
-m_prsm   18 2430.1 2563.6 -1197.0   2394.1 35.5185  3  9.466e-08 ***
-m_zcp    22 2434.6 2597.8 -1195.3   2390.6  3.4831  4     0.4805    
+m_prsm   19 2432.0 2572.9 -1197.0   2394.0 35.6093  4  3.482e-07 ***
+m_zcp    22 2434.6 2597.8 -1195.3   2390.6  3.3923  3     0.3350    
 m_cpx    50 2444.8 2815.7 -1172.4   2344.8 45.7255 28     0.0186 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
@@ -456,12 +457,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <pre><code>Data: dat
 Models:
 m_voi: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 | Subj)
-m_prsm: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + P_SpC | Subj))
+m_prsm: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + SpC | Subj) + (0 + P_SpC | Subj))
 m_cpx: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj)
        npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
 m_voi    15 2459.6 2570.8 -1214.8   2429.6                         
-m_prsm   18 2430.1 2563.6 -1197.0   2394.1 35.519  3  9.466e-08 ***
-m_cpx    50 2444.8 2815.7 -1172.4   2344.8 49.209 32    0.02653 *  
+m_prsm   19 2432.0 2572.9 -1197.0   2394.0 35.609  4  3.482e-07 ***
+m_cpx    50 2444.8 2815.7 -1172.4   2344.8 49.118 31     0.0205 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
@@ -512,8 +513,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <p><img src="Lindemann_NumMeaning_R_files/figure-html/condmeans-3.png" class="img-fluid" width="768"></p>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subjects ordered by P_SpC effect</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ord_subj <span class="ot">&lt;-</span> cond_means <span class="sc">|&gt;</span> <span class="fu">filter</span>(Term<span class="sc">==</span><span class="st">"P_SpC"</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(condval) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Subj)</span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subjects ordered by SpC effect</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ord_subj <span class="ot">&lt;-</span> cond_means <span class="sc">|&gt;</span> <span class="fu">filter</span>(Term<span class="sc">==</span><span class="st">"SpC"</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(condval) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Subj)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>cond_means <span class="sc">|&gt;</span> </span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">factor</span>(Subj, <span class="at">levels=</span>ord_subj), <span class="at">x=</span>condval)) <span class="sc">+</span></span>
@@ -524,14 +525,65 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <p><img src="Lindemann_NumMeaning_R_files/figure-html/condmeans-4.png" class="img-fluid" width="768"></p>
 </div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subjects ordered by P_SpC effect</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>ord_subj <span class="ot">&lt;-</span> cond_means <span class="sc">|&gt;</span> <span class="fu">filter</span>(Term<span class="sc">==</span><span class="st">"P_SpC"</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(condval) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Subj)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>cond_means <span class="sc">|&gt;</span> </span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">factor</span>(Subj, <span class="at">levels=</span>ord_subj), <span class="at">x=</span>condval)) <span class="sc">+</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>Term, <span class="at">scales=</span><span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_errorbarh</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>condval <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>condsd,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmax=</span>condval <span class="sc">+</span><span class="dv">2</span><span class="sc">*</span>condsd), <span class="at">height=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/condmeans-5.png" class="img-fluid" width="768"></p>
+</div>
 </div>
 <p><strong>Evaluation of credibility intervals</strong></p>
 <ul>
 <li><code>numerical_distance</code> effect: Credibility intervals of most subjects cross the zero line; a few are on either side.<br>
 </li>
 <li><code>size_rc</code> effect: dito</li>
-<li><code>P_SpC</code> effect: no evidence for individual differences in the conditional modes; all of them cross the zero line.</li>
+<li><code>SpC</code> and <code>P_SpC</code> effects: no evidence for individual differences in the conditional modes; all of credibility intervals cross the zero line.</li>
 </ul>
+<p>Could we get rid of the corresponding VCs?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>m_prsm2 <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span> SiC<span class="sc">+</span>SpC<span class="sc">+</span>P_SiC<span class="sc">+</span>P_SpC <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>                          SiC<span class="sc">:</span>SpC <span class="sc">+</span> SiC<span class="sc">:</span>P_SiC <span class="sc">+</span> SiC<span class="sc">:</span>P_SpC <span class="sc">+</span> SpC<span class="sc">:</span>P_SiC <span class="sc">+</span> SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc  <span class="sc">||</span> Subj),  </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_prsm2))  <span class="co"># ok</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Subj
+Importance of components:
+                         [,1]    [,2]    [,3]
+Standard deviation     0.6896 0.05945 0.02870
+Proportion of Variance 0.9909 0.00737 0.00172
+Cumulative Proportion  0.9909 0.99828 1.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prsm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name               Std.Dev. 
+ Subj     (Intercept)        0.1818039
+ Subj.1   numerical_distance 0.0156739
+ Subj.2   size_rc            0.0075672
+ Residual                    0.2636434</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_voi, m_prsm2, m_prsm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: dat
+Models:
+m_voi: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 | Subj)
+m_prsm2: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj))
+m_prsm: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + SpC | Subj) + (0 + P_SpC | Subj))
+        npar    AIC    BIC  logLik deviance   Chisq Df Pr(&gt;Chisq)    
+m_voi     15 2459.6 2570.8 -1214.8   2429.6                          
+m_prsm2   17 2428.9 2555.0 -1197.4   2394.9 34.7131  2  2.898e-08 ***
+m_prsm    19 2432.0 2572.9 -1197.0   2394.0  0.8961  2     0.6389    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Yes, we could.</p>
 </section>
 <section id="plot-of-higher-order-interaction" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="plot-of-higher-order-interaction"><span class="header-section-number">4.2</span> Plot of higher-order interaction</h2>
@@ -543,7 +595,7 @@ override using the `.groups` argument.
 the `.groups` argument.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Lindemann_NumMeaning_R_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -551,7 +603,7 @@ the `.groups` argument.</code></pre>
 <section id="appendix" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Appendix</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.2.1 (2022-06-23)
 Platform: aarch64-apple-darwin20 (64-bit)
