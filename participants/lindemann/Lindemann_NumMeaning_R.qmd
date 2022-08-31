@@ -120,18 +120,6 @@ dat <-
   select(-trial, -resp, -magnitude, -mapping, -error, -ISI)
 ```
 
-## Show data and save as arrow file
-
-We use the arrow file as input for Julia. 
-
-```{r}
-#| label: arrow
-
-glimpse(dat)
-view(dfSummary(dat))
-write_feather(dat, "./data/Lindemann_NumMeaning.arrow")
-```
-
 ## Residual distribution -> speed
 
 Check the distributions of 
@@ -162,6 +150,22 @@ ggplot(dat, aes(x=rt)) +
 ```
 
 # RK Alternative: Top-down strategy
+
+## Show data and save as arrow file
+
+We use the arrow file as input for Julia. 
+
+```{r}
+#| label: arrow
+glimpse(dat)
+
+dat <- 
+  dat |> 
+  select(Subj, digit, size, size_rc, pos, pos_rc, numerical_distance, SiC, SpC, P_SiC, P_SpC, speed)
+
+write_feather(dat, "./data/Lindemann_NumMeaning.arrow")
+```
+
 
 ## Model selection
 
