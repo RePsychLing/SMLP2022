@@ -128,8 +128,8 @@ We use the arrow file as input for Julia.
 #| label: arrow
 
 glimpse(dat)
-view(dfSummary(dat))
-write_feather(dat, "Lindemann_NumMeaning.arrow")
+#view(dfSummary(dat))
+write_feather(dat, "./data/Lindemann_NumMeaning.arrow")
 ```
 
 ## Residual distribution -> speed
