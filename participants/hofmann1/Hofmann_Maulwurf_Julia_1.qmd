@@ -66,9 +66,6 @@ using DataFrameMacros  # simplified dplyr-like data wrangling
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-if contains(first(Sys.cpu_info()).model, "Intel")
-  using MKL             # faster LAPACK on Intel processors
-end
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia

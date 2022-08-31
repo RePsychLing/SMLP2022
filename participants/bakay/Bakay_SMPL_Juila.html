@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.147">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Reinhold Kliegl">
+<meta name="dcterms.date" content="2022-08-27">
+
+<title>Özge Bakay: Missing Verb Illusion</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Bakay_SMPL_Juila_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Bakay_SMPL_Juila_files/libs/quarto-html/quarto.js"></script>
+<script src="Bakay_SMPL_Juila_files/libs/quarto-html/popper.min.js"></script>
+<script src="Bakay_SMPL_Juila_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Bakay_SMPL_Juila_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Bakay_SMPL_Juila_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Bakay_SMPL_Juila_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Bakay_SMPL_Juila_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Bakay_SMPL_Juila_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Bakay_SMPL_Juila_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background"><span class="toc-section-number">1</span>  Background</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="toc-section-number">2</span>  Setup</a></li>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures"><span class="toc-section-number">3</span>  Figures</a>
+  <ul class="collapse">
+  <li><a href="#case-x-gram" id="toc-case-x-gram" class="nav-link" data-scroll-target="#case-x-gram"><span class="toc-section-number">3.1</span>  Case x Gram</a></li>
+  <li><a href="#trial" id="toc-trial" class="nav-link" data-scroll-target="#trial"><span class="toc-section-number">3.2</span>  Trial</a></li>
+  <li><a href="#trial-x-case-x-gram" id="toc-trial-x-case-x-gram" class="nav-link" data-scroll-target="#trial-x-case-x-gram"><span class="toc-section-number">3.3</span>  Trial x Case x Gram</a></li>
+  </ul></li>
+  <li><a href="#lmm" id="toc-lmm" class="nav-link" data-scroll-target="#lmm"><span class="toc-section-number">4</span>  LMM</a>
+  <ul class="collapse">
+  <li><a href="#contrasts" id="toc-contrasts" class="nav-link" data-scroll-target="#contrasts"><span class="toc-section-number">4.1</span>  Contrasts</a></li>
+  <li><a href="#varying-only-gm" id="toc-varying-only-gm" class="nav-link" data-scroll-target="#varying-only-gm"><span class="toc-section-number">4.2</span>  Varying only GM</a></li>
+  <li><a href="#individual-and-item-differences-in-main-effects" id="toc-individual-and-item-differences-in-main-effects" class="nav-link" data-scroll-target="#individual-and-item-differences-in-main-effects"><span class="toc-section-number">4.3</span>  Individual and item differences in main effects</a></li>
+  <li><a href="#zero-correlation-parameters-clmm" id="toc-zero-correlation-parameters-clmm" class="nav-link" data-scroll-target="#zero-correlation-parameters-clmm"><span class="toc-section-number">4.4</span>  Zero-correlation parameters CLMM</a></li>
+  <li><a href="#parsimonious-clmm" id="toc-parsimonious-clmm" class="nav-link" data-scroll-target="#parsimonious-clmm"><span class="toc-section-number">4.5</span>  Parsimonious CLMM</a></li>
+  <li><a href="#extending-the-parsimonious-clmm-with-cps" id="toc-extending-the-parsimonious-clmm-with-cps" class="nav-link" data-scroll-target="#extending-the-parsimonious-clmm-with-cps"><span class="toc-section-number">4.6</span>  Extending the parsimonious CLMM with CPs</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="toc-section-number">5</span>  Summary</a></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="toc-section-number">6</span>  Appendix</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Özge Bakay: Missing Verb Illusion</h1>
+<p class="subtitle lead">RePsychLing SMLP2022</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Reinhold Kliegl </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 27, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="background" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Background</h1>
+<p>The experiment investigates whether there is missing-verb illusion in Turkish center-embeddings and whether case similarity has an effect on the presence of illusion. The experiment has a 2x2 design where the factors are Grammaticality (Grammatical vs.&nbsp;Ungrammatical) and Case Similarity (High vs.&nbsp;Low). Both factors varied within-subject and within-item. The primary dependent variable is a 5-point rating.</p>
+<p>The analysis includes data from 56 subject (after exclusion of one subject with low accuracy) who rated 24 critical items (6 in each of the 2 x 2 conditions; nobs=1344. Subjects also rated 36 filler items that are excluded here, but might be used to assess rating bias.</p>
+<p>With 56 (or 57) subjects and 24 items, assignment of items to conditions could not be counterbalanced across subjects. The assignment was not random because each item was seen by 20, 13, 13, and 11 subjects across the four conditions.</p>
+<p>The gaol of the analysis is to test effects with a cumulative link mixed model for ordinal rating data, basically an integrated set of logistic regressions, taking into account clustering of ratings by subjects and by items.</p>
+</section>
+<section id="setup" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
+<p>First attach the <em>MixedModels.jl</em> package and other packages for plotting. The <em>CairoMakie.jl</em> package allows the Makie graphics system <span class="citation" data-cites="Danisch2021">[@Danisch2021]</span> to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.</p>
+<div id="packages" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie       </span><span class="co"># graphics back-end</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CategoricalArrays</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros  </span><span class="co"># simplified dplyr-like data wrangling </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelDensity    </span><span class="co"># density estimation</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie </span><span class="co"># diagnostic plots</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random           </span><span class="co"># random number generators</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RCall            </span><span class="co"># call R from Julia</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span>: boxplot</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span>: density</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span>: qqnorm</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span>: ridgeplot</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span>: scatter</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span>: caterpillar</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>The data are available as an arrow file.</li>
+<li>Most of preprocessing was done with R in RStudio.</li>
+<li>Order of factor levels should be checked.</li>
+</ul>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="st">"./data/Bakay_rating.arrow"</span>));</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(df, <span class="op">:</span>Subj <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Subj))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(df, <span class="op">:</span>Item <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Item))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(df, <span class="op">:</span>Case <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Case))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(df, <span class="op">:</span>Gram <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Gram))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(df, <span class="op">:</span>tr_c <span class="op">=</span> <span class="op">:</span>trial <span class="op">-</span> <span class="fl">30</span>);</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+
+<div class="data-frame"><p>7 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="Type">Type</th></tr></thead><tbody><tr><th>1</th><td>Subj</td><td></td><td>S01</td><td></td><td>S57</td><td>0</td><td>Union{Missing, CategoricalValue{String, UInt32}}</td></tr><tr><th>2</th><td>Item</td><td></td><td>I01</td><td></td><td>I24</td><td>0</td><td>Union{Missing, CategoricalValue{String, UInt32}}</td></tr><tr><th>3</th><td>trial</td><td>31.2412</td><td>2.0</td><td>31.5</td><td>60.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>4</th><td>Case</td><td></td><td>High</td><td></td><td>Low</td><td>0</td><td>Union{Missing, CategoricalValue{String, UInt32}}</td></tr><tr><th>5</th><td>Gram</td><td></td><td>Gra</td><td></td><td>Ungra</td><td>0</td><td>Union{Missing, CategoricalValue{String, UInt32}}</td></tr><tr><th>6</th><td>rating</td><td>2.45614</td><td>1.0</td><td>2.0</td><td>5.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>7</th><td>tr_c</td><td>1.24123</td><td>-28.0</td><td>1.5</td><td>30.0</td><td>0</td><td>Float64</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="figures" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Figures</h1>
+<section id="case-x-gram" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="case-x-gram"><span class="header-section-number">3.1</span> Case x Gram</h2>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>RCall.<span class="fu">ijulia_setdevice</span>(<span class="fu">MIME</span>(<span class="st">"image/svg+xml"</span>); width<span class="op">=</span><span class="fl">10</span>, height<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">@rput</span> df;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>R<span class="st">"""</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">suppressWarnings(suppressMessages(library(tidyverse)))</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st"># respecting color vision deficiency</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">cbPalette &lt;- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">                "#F0E442", "#56B4E9", "#999999", "#E69F00")</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">table1 &lt;- </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">  df |&gt; </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">  group_by(Subj, Case, Gram) |&gt; </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="st">  summarise(N=n(), rating=mean(rating)) |&gt; </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="st">  ungroup() |&gt; </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="st">  group_by(Case, Gram) |&gt; </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="st">  summarise(N=n(), rating_M=mean(rating), </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">            rating_SD=sd(rating), rating_SE=rating_SD/sqrt(N))</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st"> fig1 &lt;-           </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">  table1 |&gt; </span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">  mutate(Case=fct_rev(Case)) |&gt; </span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">  ggplot(aes(x=Case, y=rating_M, group=Gram, color=Gram)) +</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="st">  geom_point(position=position_dodge(width=.1)) +</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="st">  geom_line(position=position_dodge(width=.1)) +</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="st">  geom_errorbar(aes(ymax=rating_M + 2*rating_SE,</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="st">                    ymin=rating_M - 2*rating_SE), width=.05,</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="st">                position=position_dodge(width=.1)) +</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="st">  scale_color_manual("", labels=c("grammatical", "ungrammatical"), values=cbPalette)+</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="st">  scale_y_continuous("Rating", limits=c(1,5)) +</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="st">  theme_bw() + theme(legend.position = c(.99, .99), legend.justification = c(.99,.99))</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="st">print(fig1)</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>┌ Warning: RCall.jl: `summarise()` has grouped output by 'Subj', 'Case'. You can override using the
+│ `.groups` argument.
+│ `summarise()` has grouped output by 'Case'. You can override using the
+│ `.groups` argument.
+└ @ RCall /Users/reinholdkliegl/.julia/packages/RCall/6kphM/src/io.jl:172</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Bakay_SMPL_Juila_files/figure-html/fig1-output-2.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Case x Grammaticality interaction</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="trial" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="trial"><span class="header-section-number">3.2</span> Trial</h2>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"""</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">fig2 &lt;-</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">  df |&gt; </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">  ggplot(aes(x=trial, y=rating)) +</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">  geom_smooth() +</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">  xlab("Trial") + </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">  scale_y_continuous("Rating", limits=c(1,5)) +</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">  theme_bw() + theme(legend.position = "top")</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">print(fig2)</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>┌ Warning: RCall.jl: `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+└ @ RCall /Users/reinholdkliegl/.julia/packages/RCall/6kphM/src/io.jl:172</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Bakay_SMPL_Juila_files/figure-html/fig2-output-2.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Figure 2</em>. Trial main effect with default smooth() parameters.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="trial-x-case-x-gram" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="trial-x-case-x-gram"><span class="header-section-number">3.3</span> Trial x Case x Gram</h2>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"""</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">fig3 &lt;-</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">  df |&gt; </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">  ggplot(aes(x=trial, y=rating, group=Case, color=Case)) +</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">  geom_smooth() +</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">  xlab("Trial") + </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">  scale_y_continuous("Rating", limits=c(1,5)) +</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">  scale_colour_manual("Condition", values=cbPalette) +</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">  theme_bw() + theme(legend.position = "top")</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">print(fig3)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>┌ Warning: RCall.jl: `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+└ @ RCall /Users/reinholdkliegl/.julia/packages/RCall/6kphM/src/io.jl:172</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Bakay_SMPL_Juila_files/figure-html/fig3-output-2.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Figure 3</em>. Trial effect for four conditions with default smooth() parameters.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Not much evidence for a trial effect.</p>
+</section>
+</section>
+<section id="lmm" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> LMM</h1>
+<section id="contrasts" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="contrasts"><span class="header-section-number">4.1</span> Contrasts</h2>
+<div id="contrasts" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">merge</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Dict</span>(<span class="op">:</span>Case <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(base<span class="op">=</span> <span class="st">"Low"</span>; levels<span class="op">=</span>[<span class="st">"Low"</span>, <span class="st">"High"</span>])),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Dict</span>(<span class="op">:</span>Gram <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(base<span class="op">=</span> <span class="st">"Ungra"</span>; levels<span class="op">=</span>[<span class="st">"Ungra"</span>, <span class="st">"Gra"</span>])),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Dict</span>(nm <span class="op">=&gt;</span> <span class="fu">Grouping</span>() <span class="cf">for</span> nm <span class="kw">in</span> (<span class="op">:</span>Subj, <span class="op">:</span>Item))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>   );</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="varying-only-gm" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="varying-only-gm"><span class="header-section-number">4.2</span> Varying only GM</h2>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a> m0 <span class="op">=</span> <span class="kw">let</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(rating <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> tr_c <span class="op">+</span> Case <span class="op">*</span> Gram <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span>Subj) <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span>Item));</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, df; contrasts);</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>;</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>m0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="m0" class="cell-output cell-output-display" data-execution_count="30">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+<th style="text-align: right;">σ_Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4558</td>
+<td style="text-align: right;">0.1190</td>
+<td style="text-align: right;">20.63</td>
+<td style="text-align: right;">&lt;1e-93</td>
+<td style="text-align: right;">0.8590</td>
+<td style="text-align: right;">0.1095</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tr_c</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: right;">0.0016</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.8688</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Case: High</td>
+<td style="text-align: right;">0.0941</td>
+<td style="text-align: right;">0.0269</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gram: Gra</td>
+<td style="text-align: right;">0.1435</td>
+<td style="text-align: right;">0.0269</td>
+<td style="text-align: right;">5.33</td>
+<td style="text-align: right;">&lt;1e-07</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Case: High &amp; Gram: Gra</td>
+<td style="text-align: right;">-0.0144</td>
+<td style="text-align: right;">0.0269</td>
+<td style="text-align: right;">-0.54</td>
+<td style="text-align: right;">0.5926</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.9901</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Remove trial covariate</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a> m1 <span class="op">=</span> <span class="kw">let</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(rating <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Case <span class="op">*</span> Gram <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span>Subj) <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span>Item));</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, df; contrasts);</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>;</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>m1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="m1" class="cell-output cell-output-display" data-execution_count="31">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+<th style="text-align: right;">σ_Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4561</td>
+<td style="text-align: right;">0.1190</td>
+<td style="text-align: right;">20.64</td>
+<td style="text-align: right;">&lt;1e-93</td>
+<td style="text-align: right;">0.8591</td>
+<td style="text-align: right;">0.1094</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High</td>
+<td style="text-align: right;">0.0940</td>
+<td style="text-align: right;">0.0269</td>
+<td style="text-align: right;">3.50</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gram: Gra</td>
+<td style="text-align: right;">0.1436</td>
+<td style="text-align: right;">0.0269</td>
+<td style="text-align: right;">5.34</td>
+<td style="text-align: right;">&lt;1e-07</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High &amp; Gram: Gra</td>
+<td style="text-align: right;">-0.0142</td>
+<td style="text-align: right;">0.0269</td>
+<td style="text-align: right;">-0.53</td>
+<td style="text-align: right;">0.5959</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.9901</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We don’t need trial as a covariate. Probably, we could also drop the interaction at least from the random-effect structure.</p>
+</section>
+<section id="individual-and-item-differences-in-main-effects" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="individual-and-item-differences-in-main-effects"><span class="header-section-number">4.3</span> Individual and item differences in main effects</h2>
+<p>Relative to the factorial design this is not the maximal CLMM; we do not include Subj- and Item-related VCs for the interaction term.</p>
+<div id="m2" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a> m2 <span class="op">=</span> <span class="kw">let</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(rating <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Case <span class="op">*</span> Gram <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> Case <span class="op">+</span> Gram <span class="op">|</span>Subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> Case <span class="op">+</span> Gram <span class="op">|</span>Item));</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, df; contrasts);</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>;</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">issingular</span>(m2))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(m2.PCA[<span class="op">:</span>Subj])</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(m2.PCA[<span class="op">:</span>Item])</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">lrtest</span>(m1, m2))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>m2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Minimizing 1093      Time: 0:00:00 ( 0.51 ms/it)</code></pre>
+</div>
+<div id="m2-1" class="cell-output cell-output-display">
+<pre><code>true</code></pre>
+</div>
+<div id="m2-2" class="cell-output cell-output-display">
+<pre><code>
+Principal components based on correlation matrix
+ (Intercept)   1.0     .      .
+ Case: High   -0.4    1.0     .
+ Gram: Gra     0.23  -0.99   1.0
+
+Normalized cumulative variances:
+[0.7193, 1.0, 1.0]
+
+Component loadings
+                PC1    PC2   PC3
+ (Intercept)  -0.36  -0.92  0.13
+ Case: High    0.67  -0.16  0.72
+ Gram: Gra    -0.65   0.35  0.68</code></pre>
+</div>
+<div id="m2-3" class="cell-output cell-output-display">
+<pre><code>
+Principal components based on correlation matrix
+ (Intercept)  1.0    .     .
+ Case: High   0.1   1.0    .
+ Gram: Gra    0.62  0.84  1.0
+
+Normalized cumulative variances:
+[0.6984, 1.0, 1.0]
+
+Component loadings
+                PC1    PC2    PC3
+ (Intercept)  -0.45   0.8   -0.39
+ Case: High   -0.57  -0.59  -0.57
+ Gram: Gra    -0.69  -0.03   0.72</code></pre>
+</div>
+<div id="m2-4" class="cell-output cell-output-display">
+<pre><code>Likelihood-ratio test: 2 models fitted on 1368 observations
+─────────────────────────────────────────────────────────
+     DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
+─────────────────────────────────────────────────────────
+[1]    7        -2017.6198  4035.2397                    
+[2]   17    10  -1986.1561  3972.3122  62.9275     &lt;1e-08
+─────────────────────────────────────────────────────────</code></pre>
+</div>
+<div id="m2-5" class="cell-output cell-output-display" data-execution_count="32">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+<th style="text-align: right;">σ_Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4551</td>
+<td style="text-align: right;">0.1196</td>
+<td style="text-align: right;">20.52</td>
+<td style="text-align: right;">&lt;1e-92</td>
+<td style="text-align: right;">0.8638</td>
+<td style="text-align: right;">0.1170</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High</td>
+<td style="text-align: right;">0.0924</td>
+<td style="text-align: right;">0.0295</td>
+<td style="text-align: right;">3.14</td>
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">0.0096</td>
+<td style="text-align: right;">0.0723</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gram: Gra</td>
+<td style="text-align: right;">0.1429</td>
+<td style="text-align: right;">0.0494</td>
+<td style="text-align: right;">2.89</td>
+<td style="text-align: right;">0.0039</td>
+<td style="text-align: right;">0.2899</td>
+<td style="text-align: right;">0.0869</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High &amp; Gram: Gra</td>
+<td style="text-align: right;">-0.0154</td>
+<td style="text-align: right;">0.0256</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">0.5461</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.9372</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The random-effect structure is overparaemterized. Actually, the program crashed.</p>
+</section>
+<section id="zero-correlation-parameters-clmm" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="zero-correlation-parameters-clmm"><span class="header-section-number">4.4</span> Zero-correlation parameters CLMM</h2>
+<div id="m3" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> m3 <span class="op">=</span> <span class="kw">let</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(rating <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Case <span class="op">*</span> Gram <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> Case <span class="op">+</span> Gram <span class="op">|</span> Subj) <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> Case <span class="op">+</span> Gram <span class="op">|</span> Item));</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, df; contrasts);</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>;</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">issingular</span>(m3))</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(m3.PCA[<span class="op">:</span>Subj])</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(m3.PCA[<span class="op">:</span>Item])</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">lrtest</span>(m1, m3, m2))</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>m3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="m3-1" class="cell-output cell-output-display">
+<pre><code>true</code></pre>
+</div>
+<div id="m3-2" class="cell-output cell-output-display">
+<pre><code>
+Principal components based on correlation matrix
+ (Intercept)  1.0  .    .
+ Case: High   0.0  0.0  .
+ Gram: Gra    0.0  0.0  1.0
+
+Normalized cumulative variances:
+[0.5, 1.0, 1.0]
+
+Component loadings
+               PC1   PC2     PC3
+ (Intercept)  1.0   0.0     0.0
+ Case: High   0.0   0.0   NaN
+ Gram: Gra    0.0   1.0     0.0</code></pre>
+</div>
+<div id="m3-3" class="cell-output cell-output-display">
+<pre><code>
+Principal components based on correlation matrix
+ (Intercept)  1.0  .    .
+ Case: High   0.0  1.0  .
+ Gram: Gra    0.0  0.0  1.0
+
+Normalized cumulative variances:
+[0.3333, 0.6667, 1.0]
+
+Component loadings
+               PC1   PC2   PC3
+ (Intercept)  1.0   0.0   0.0
+ Case: High   0.0   1.0   0.0
+ Gram: Gra    0.0   0.0   1.0</code></pre>
+</div>
+<div id="m3-4" class="cell-output cell-output-display">
+<pre><code>Likelihood-ratio test: 3 models fitted on 1368 observations
+─────────────────────────────────────────────────────────
+     DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
+─────────────────────────────────────────────────────────
+[1]    7        -2017.6198  4035.2397                    
+[2]   11     4  -1989.8545  3979.7089  55.5308     &lt;1e-10
+[3]   17     6  -1986.1561  3972.3122   7.3967     0.2857
+─────────────────────────────────────────────────────────</code></pre>
+</div>
+<div id="m3-5" class="cell-output cell-output-display" data-execution_count="33">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+<th style="text-align: right;">σ_Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4569</td>
+<td style="text-align: right;">0.1191</td>
+<td style="text-align: right;">20.62</td>
+<td style="text-align: right;">&lt;1e-93</td>
+<td style="text-align: right;">0.8603</td>
+<td style="text-align: right;">0.1153</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High</td>
+<td style="text-align: right;">0.0946</td>
+<td style="text-align: right;">0.0276</td>
+<td style="text-align: right;">3.43</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0506</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gram: Gra</td>
+<td style="text-align: right;">0.1425</td>
+<td style="text-align: right;">0.0484</td>
+<td style="text-align: right;">2.94</td>
+<td style="text-align: right;">0.0032</td>
+<td style="text-align: right;">0.2890</td>
+<td style="text-align: right;">0.0726</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High &amp; Gram: Gra</td>
+<td style="text-align: right;">-0.0161</td>
+<td style="text-align: right;">0.0256</td>
+<td style="text-align: right;">-0.63</td>
+<td style="text-align: right;">0.5294</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.9406</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Some of the VCs are very close to zero. Program crashed, again.</p>
+</section>
+<section id="parsimonious-clmm" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="parsimonious-clmm"><span class="header-section-number">4.5</span> Parsimonious CLMM</h2>
+<div id="m4" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> m4 <span class="op">=</span> <span class="kw">let</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(rating <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Case <span class="op">*</span> Gram <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> Gram <span class="op">|</span> Subj) <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> Case <span class="op">|</span> Item));</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>;</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">issingular</span>(m4))</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">lrtest</span>(m1, m4, m3, m2))</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>m4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="m4-1" class="cell-output cell-output-display">
+<pre><code>false</code></pre>
+</div>
+<div id="m4-2" class="cell-output cell-output-display">
+<pre><code>Likelihood-ratio test: 4 models fitted on 1368 observations
+─────────────────────────────────────────────────────────
+     DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
+─────────────────────────────────────────────────────────
+[1]    7        -2017.6198  4035.2397                    
+[2]    9     2  -1990.3539  3980.7079  54.5318     &lt;1e-11
+[3]   11     2  -1989.8545  3979.7089   0.9990     0.6068
+[4]   17     6  -1986.1561  3972.3122   7.3967     0.2857
+─────────────────────────────────────────────────────────</code></pre>
+</div>
+<div id="m4-3" class="cell-output cell-output-display" data-execution_count="34">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+<th style="text-align: right;">σ_Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4563</td>
+<td style="text-align: right;">0.1192</td>
+<td style="text-align: right;">20.60</td>
+<td style="text-align: right;">&lt;1e-93</td>
+<td style="text-align: right;">0.8609</td>
+<td style="text-align: right;">0.1160</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High</td>
+<td style="text-align: right;">0.0940</td>
+<td style="text-align: right;">0.0279</td>
+<td style="text-align: right;">3.37</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.0548</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gram: Gra</td>
+<td style="text-align: right;">0.1425</td>
+<td style="text-align: right;">0.0461</td>
+<td style="text-align: right;">3.09</td>
+<td style="text-align: right;">0.0020</td>
+<td style="text-align: right;">0.2883</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High &amp; Gram: Gra</td>
+<td style="text-align: right;">-0.0155</td>
+<td style="text-align: right;">0.0256</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">0.5459</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.9432</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Looking good!</p>
+</section>
+<section id="extending-the-parsimonious-clmm-with-cps" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="extending-the-parsimonious-clmm-with-cps"><span class="header-section-number">4.6</span> Extending the parsimonious CLMM with CPs</h2>
+<div id="m5" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a> m5 <span class="op">=</span> <span class="kw">let</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(rating <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> Case <span class="op">*</span> Gram <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> Gram <span class="op">|</span> Subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> Case <span class="op">|</span> Item)) ;</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, df; contrasts)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>;</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">issingular</span>(m5))</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">lrtest</span>(m4, m5))</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>m5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="m5-1" class="cell-output cell-output-display">
+<pre><code>false</code></pre>
+</div>
+<div id="m5-2" class="cell-output cell-output-display">
+<pre><code>Likelihood-ratio test: 2 models fitted on 1368 observations
+────────────────────────────────────────────────────────
+     DOF  ΔDOF      LogLik   Deviance   Chisq  p(&gt;Chisq)
+────────────────────────────────────────────────────────
+[1]    9        -1990.3539  3980.7079                   
+[2]   11     2  -1989.2994  3978.5988  2.1091     0.3483
+────────────────────────────────────────────────────────</code></pre>
+</div>
+<div id="m5-3" class="cell-output cell-output-display" data-execution_count="35">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+<th style="text-align: right;">σ_Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4563</td>
+<td style="text-align: right;">0.1192</td>
+<td style="text-align: right;">20.61</td>
+<td style="text-align: right;">&lt;1e-93</td>
+<td style="text-align: right;">0.8606</td>
+<td style="text-align: right;">0.1154</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High</td>
+<td style="text-align: right;">0.0940</td>
+<td style="text-align: right;">0.0280</td>
+<td style="text-align: right;">3.36</td>
+<td style="text-align: right;">0.0008</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.0554</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gram: Gra</td>
+<td style="text-align: right;">0.1416</td>
+<td style="text-align: right;">0.0461</td>
+<td style="text-align: right;">3.07</td>
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">0.2887</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Case: High &amp; Gram: Gra</td>
+<td style="text-align: right;">-0.0155</td>
+<td style="text-align: right;">0.0256</td>
+<td style="text-align: right;">-0.60</td>
+<td style="text-align: right;">0.5458</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">0.9432</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Looking also good, but the two CPs are not significant.</p>
+</section>
+</section>
+<section id="summary" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Summary</h1>
+<ul>
+<li>There is evidence for significant individual differences in the effect of Gram and in the Grand Mean</li>
+<li>There is evidence for significant item differences in the effect of Case and in the Grand Mean</li>
+<li>There is no evidence for correlation parameters.</li>
+<li>There are two significant main effects of Case and Gram, irrespective of the complexity of the random-effect struture.</li>
+</ul>
+</section>
+<section id="appendix" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Appendix</h1>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Julia Version 1.8.0
+Commit 5544a0fab76 (2022-08-17 13:38 UTC)
+Platform Info:
+  OS: macOS (x86_64-apple-darwin21.4.0)
+  CPU: 12 × Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
+  WORD_SIZE: 64
+  LIBM: libopenlibm
+  LLVM: libLLVM-13.0.1 (ORCJIT, skylake)
+  Threads: 1 on 6 virtual cores</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

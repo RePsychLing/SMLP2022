@@ -216,7 +216,9 @@ VarCorr(m_zcp)
 anova(m_voi, m_zcp, m_cpx)
 ```
 
-We do no loose goodness of fit with LMM `m_zcp` relative to LMM `m_cpx`; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM `m_voi`. 
+We do no loose goodness of fit with LMM `m_zcp` relative to LMM `m_cpx`; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM `m_voi`.
+
+LMM `m_zcp`  is still overparameterized. 
 
 ### Parsimonious LMM
 

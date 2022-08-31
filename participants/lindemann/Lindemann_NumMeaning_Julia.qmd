@@ -44,9 +44,6 @@ using DataFrameMacros  # simplified dplyr-like data wrangling
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-if contains(first(Sys.cpu_info()).model, "Intel")
-  using MKL             # faster LAPACK on Intel processors
-end
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
@@ -177,15 +174,13 @@ VarCorr(m_prsm)
 lrtest(m_voi, m_prsm,  m_zcp)
 ```
 
-This LMM is supported by the data. We can try an even smaller LMM. 
-
 # Figures
 
 ## Caterpillar plot 
 
 ```{julia}
-#| fig-cap: Prediction intervals on subject random effects for model prsm
-#| label: fig-cm_prsm
+#| fig-cap1: Prediction intervals on subject random effects for model prsm
+#| label: fig-cm_prsm1
 #| 
 cm_prsm = first(ranefinfo(m_prsm))
 caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=2)
@@ -194,14 +189,15 @@ caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=2)
 Some individual differences in the numerical-distance effect. 
 
 ```{julia}
-#| fig-cap: Prediction intervals on subject random effects for model prsm
-#| label: fig-cm_prsm
+#| label: fig-cm_prsm2
 #| 
 cm_prsm = first(ranefinfo(m_prsm))
 caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=3)
 ```
 
 Some individual differences in the size effect. 
+
+No evidence for individual differences in the other two VCs. Do we need them in the LMM?
 
 ```{julia}
 #| label: m_prsm2
@@ -218,6 +214,7 @@ VarCorr(m_prsm2)
 lrtest(m_voi, m_prsm2,  m_prsm)
 ```
 
+No, not really. 
 
 ## Shrinkage plots
 
@@ -228,7 +225,6 @@ lrtest(m_voi, m_prsm2,  m_prsm)
 #| fig-cap: Shrinkage plots of the subject random effects in model m_prsm2
 shrinkageplot!(Figure(; resolution=(1000, 1200)), m_prsm2)
 ```
-
 
 # Appendix
 ```{julia}

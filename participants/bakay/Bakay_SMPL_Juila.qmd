@@ -43,9 +43,6 @@ using DataFrameMacros  # simplified dplyr-like data wrangling
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-if contains(first(Sys.cpu_info()).model, "Intel")
-  using MKL             # faster LAPACK on Intel processors
-end
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
@@ -168,11 +165,10 @@ Not much evidence for a trial effect.
 
 # LMM
 
-
 ## Contrasts
 
 ```{julia}
-#| lst-label: contrasts
+#| label: contrasts
 
 contrasts = merge(
       Dict(:Case => EffectsCoding(base= "Low"; levels=["Low", "High"])),
@@ -184,8 +180,8 @@ contrasts = merge(
 ## Varying only GM
 
 ```{julia}
-#| lst-label: m0
-#| 
+#| label: m0
+
  m0 = let 
     form = @formula(rating ~ 1 + tr_c + Case * Gram + (1|Subj) + (1|Item));
     fit(MixedModel, form, df; contrasts);
@@ -197,8 +193,8 @@ m0
 Remove trial covariate
 
 ```{julia}
-#| lst-label: m1
-#| 
+#| label: m1
+
  m1 = let 
     form = @formula(rating ~ 1 + Case * Gram + (1|Subj) + (1|Item));
     fit(MixedModel, form, df; contrasts);
@@ -215,7 +211,6 @@ Relative to the factorial design this is not the maximal CLMM; we do not include
 
 ```{julia}
 #| label: m2
-#| eval: false
 
  m2 = let 
     form = @formula(rating ~ 1 + Case * Gram + (1 + Case + Gram |Subj) + (1 + Case + Gram |Item));
@@ -235,8 +230,7 @@ The random-effect structure is overparaemterized. Actually, the program crashed.
 
 ```{julia}
 #| label: m3
-#| eval: false
-#| 
+
  m3 = let 
     form = @formula(rating ~ 1 + Case * Gram + zerocorr(1 + Case + Gram | Subj) + zerocorr(1 + Case + Gram | Item));
     fit(MixedModel, form, df; contrasts);
@@ -255,7 +249,6 @@ Some of the VCs are very close to zero. Program crashed, again.
 
 ```{julia}
 #| label: m4
-#| eval: false
 
  m4 = let 
     form = @formula(rating ~ 1 + Case * Gram + zerocorr(1 + Gram | Subj) + zerocorr(1 + Case | Item));
@@ -273,7 +266,7 @@ Looking good!
 
 ```{julia}
 #| label: m5
-#| eval: false
+#| eval: true
 
  m5 = let 
     form = @formula(rating ~ 1 + Case * Gram + (1 + Gram | Subj) + (1 + Case | Item)) ;
