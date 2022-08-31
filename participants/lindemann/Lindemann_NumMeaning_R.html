@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.165">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Reinhold Kliegl">
+<meta name="dcterms.date" content="2022-08-25">
+
+<title>Oliver Lindemann: Two attributes of numerical meaning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Lindemann_NumMeaning_R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Lindemann_NumMeaning_R_files/libs/quarto-html/quarto.js"></script>
+<script src="Lindemann_NumMeaning_R_files/libs/quarto-html/popper.min.js"></script>
+<script src="Lindemann_NumMeaning_R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Lindemann_NumMeaning_R_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Lindemann_NumMeaning_R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Lindemann_NumMeaning_R_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Lindemann_NumMeaning_R_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Lindemann_NumMeaning_R_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Lindemann_NumMeaning_R_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="toc-section-number">1</span>  Description</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">2</span>  Data</a>
+  <ul class="collapse">
+  <li><a href="#code-book-of-the-relevant-vaiables" id="toc-code-book-of-the-relevant-vaiables" class="nav-link" data-scroll-target="#code-book-of-the-relevant-vaiables"><span class="toc-section-number">2.1</span>  Code book (of the relevant vaiables)</a></li>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing"><span class="toc-section-number">2.2</span>  Data preprocessing</a></li>
+  <li><a href="#show-data-and-save-as-arrow-file" id="toc-show-data-and-save-as-arrow-file" class="nav-link" data-scroll-target="#show-data-and-save-as-arrow-file"><span class="toc-section-number">2.3</span>  Show data and save as arrow file</a></li>
+  <li><a href="#residual-distribution---speed" id="toc-residual-distribution---speed" class="nav-link" data-scroll-target="#residual-distribution---speed"><span class="toc-section-number">2.4</span>  Residual distribution -&gt; speed</a></li>
+  </ul></li>
+  <li><a href="#rk-alternative-top-down-strategy" id="toc-rk-alternative-top-down-strategy" class="nav-link" data-scroll-target="#rk-alternative-top-down-strategy"><span class="toc-section-number">3</span>  RK Alternative: Top-down strategy</a>
+  <ul class="collapse">
+  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection"><span class="toc-section-number">3.1</span>  Model selection</a></li>
+  </ul></li>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures"><span class="toc-section-number">4</span>  Figures</a>
+  <ul class="collapse">
+  <li><a href="#conditional-means" id="toc-conditional-means" class="nav-link" data-scroll-target="#conditional-means"><span class="toc-section-number">4.1</span>  Conditional means</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="toc-section-number">4.2</span>  </a></li>
+  </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix"><span class="toc-section-number">5</span>  Appendix</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Oliver Lindemann: Two attributes of numerical meaning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Reinhold Kliegl </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 25, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># respecting color vision deficiency</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>cbPalette <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#009E73"</span>, <span class="st">"#CC79A7"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"#F0E442"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="description" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Description</h1>
+<p>The study aims to examine the interactions of space- and size-congruity effects while number processing.</p>
+<p>The numbers 1 to 9 (<span class="math inline">\(N\)</span>) were presented in different six font sizes (<span class="math inline">\(V_\text{size}=[-3, -2, -1, 1, 2, 3]\)</span>) and at six different stimulus locations (three left and three right from screen center, <span class="math inline">\(V_\text{space}=[-3, -2, -1, 1, 2, 3]\)</span>). For each trial, a size and space-congruity parameter, <span class="math inline">\(C\)</span>, could be calculated that varies between <span class="math inline">\(-1\)</span> and <span class="math inline">\(+1\)</span> (see formula below).</p>
+<p>The mixed effect model of the reaction times aims to consider, beside these two congruity parameters and their interaction, also the size- or space-congruity in the previous trial (<span class="math inline">\(n-1\)</span>, ‘Gratton effect’).</p>
+<p>Congruity was defined as <span class="math display">\[C =  \frac{V}{3}  \cdot \frac{N-5}{4} = \frac{V(N-5)}{12}\]</span></p>
+<div class="cell">
+
+</div>
+</section>
+<section id="data" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Data</h1>
+<section id="code-book-of-the-relevant-vaiables" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="code-book-of-the-relevant-vaiables"><span class="header-section-number">2.1</span> Code book (of the relevant vaiables)</h2>
+<ul>
+<li><strong><code>Subject</code></strong>: Subject ID</li>
+<li><strong><code>digit</code></strong>: Presented digit (1 to 9, except 5)</li>
+<li><strong><code>rt</code></strong>: Reaction time in ms</li>
+<li><strong><code>size_rc</code></strong>: Stimulus size (-3 to +3) (recalculated)</li>
+<li><strong><code>pos_rc</code></strong>: Stimulus position (-3 to +3) (recalculated)</li>
+<li><strong><code>numerical_distance</code></strong>: Distance to 5 (abs(5-digit))</li>
+<li><strong><code>SiC</code></strong>: Size congruity parameter (-1 to +1)</li>
+<li><strong><code>SpC</code></strong>: Spatial congruity parameter (-1 to +1)</li>
+<li><strong><code>P_SiC</code></strong>: Size congruity of the previous trial (-1 to +1)</li>
+<li><strong><code>P_SpC</code></strong>: Spatial congruity of the previous trial (-1 to +1)</li>
+</ul>
+</section>
+<section id="data-preprocessing" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-preprocessing"><span class="header-section-number">2.2</span> Data preprocessing</h2>
+<div class="cell">
+
+</div>
+</section>
+<section id="show-data-and-save-as-arrow-file" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="show-data-and-save-as-arrow-file"><span class="header-section-number">2.3</span> Show data and save as arrow file</h2>
+<p>We use the arrow file as input for Julia.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 12,346
+Columns: 12
+$ Subj               &lt;fct&gt; S101, S101, S101, S101, S101, S101, S101, S101, S10…
+$ digit              &lt;dbl&gt; 1, 9, 4, 2, 8, 9, 8, 3, 1, 2, 9, 3, 2, 7, 1, 2, 9, …
+$ size               &lt;dbl&gt; 30, 42, 30, 59, 165, 30, 30, 232, 59, 165, 59, 42, …
+$ pos                &lt;dbl&gt; 100, -300, -300, -300, 300, -200, -100, 300, 300, 2…
+$ rt                 &lt;dbl&gt; 551, 560, 658, 598, 458, 557, 555, 518, 540, 442, 5…
+$ pos_rc             &lt;dbl&gt; 1, -3, -3, -3, 3, -2, -1, 3, 3, 2, -2, -1, 3, 2, -1…
+$ size_rc            &lt;dbl&gt; -3, -2, -3, -1, 2, -3, -3, 3, -1, 2, -1, -2, -1, 1,…
+$ numerical_distance &lt;dbl&gt; 4, 4, 1, 3, 3, 4, 3, 2, 4, 3, 4, 2, 3, 2, 4, 3, 4, …
+$ SiC                &lt;dbl&gt; 1.00000000, -0.66666667, 0.25000000, 0.25000000, 0.…
+$ SpC                &lt;dbl&gt; -0.33333333, -1.00000000, 0.25000000, 0.75000000, 0…
+$ P_SiC              &lt;dbl&gt; NA, 1.00000000, -0.66666667, 0.25000000, 0.25000000…
+$ P_SpC              &lt;dbl&gt; NA, -0.33333333, -1.00000000, 0.25000000, 0.7500000…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(<span class="fu">dfSummary</span>(dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Switching method to 'browser'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Output file written: /var/folders/nd/l59kkqd951xdb29k4rt4yzj80000gn/T//Rtmpg87WcW/file59974c536732.html</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(dat, <span class="st">"Lindemann_NumMeaning.arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="residual-distribution---speed" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="residual-distribution---speed"><span class="header-section-number">2.4</span> Residual distribution -&gt; speed</h2>
+<p>Check the distributions of</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MASS<span class="sc">::</span><span class="fu">boxcox</span>(rt <span class="sc">~</span><span class="dv">1</span><span class="sc">+</span>numerical_distance<span class="sc">+</span>size_rc<span class="sc">+</span>SpC<span class="sc">+</span>Subj, <span class="at">data=</span>dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/boxcox-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>speed <span class="ot">&lt;-</span> <span class="dv">1000</span><span class="sc">/</span>dat<span class="sc">$</span>rt</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># boxcox is in favor or response speed (i.e., Hz)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x=</span>speed)) <span class="sc">+</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>( <span class="fu">aes</span>(<span class="at">y=</span>..density..), <span class="at">colour=</span><span class="st">"lightblue"</span>, <span class="at">fill=</span><span class="st">"lightblue"</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dnorm, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">2</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">args=</span><span class="fu">list</span>(<span class="at">mean=</span><span class="fu">mean</span>(dat<span class="sc">$</span>speed), </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sd=</span><span class="fu">sd</span>(dat<span class="sc">$</span>speed))) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Speed [1/s]"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">3</span>)) <span class="sc">+</span><span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/boxcox-2.png" class="img-fluid" width="768"></p>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with response time</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(<span class="at">x=</span>rt)) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>( <span class="fu">aes</span>(<span class="at">y=</span>..density..), <span class="at">colour=</span><span class="st">"lightblue"</span>, <span class="at">fill=</span><span class="st">"lightblue"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dnorm, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">2</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">args=</span><span class="fu">list</span>(<span class="at">mean=</span><span class="fu">mean</span>(dat<span class="sc">$</span>rt), </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sd=</span><span class="fu">sd</span>(dat<span class="sc">$</span>rt))) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Response time [ms]"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">1500</span>)) <span class="sc">+</span><span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/boxcox-3.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="rk-alternative-top-down-strategy" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> RK Alternative: Top-down strategy</h1>
+<section id="model-selection" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="model-selection"><span class="header-section-number">3.1</span> Model selection</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start with complex LMM; not maximal because no interaction terms in RES</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m_cpx <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">*</span>SpC<span class="sc">*</span>P_SiC<span class="sc">*</span>P_SpC <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>SpC <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                      (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                          size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span> SiC <span class="sc">+</span> SpC <span class="sc">+</span> P_SiC <span class="sc">+</span> P_SpC <span class="sc">|</span> Subj),  </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>boundary (singular) fit: see help('isSingular')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_cpx))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Subj
+Importance of components:
+                         [,1]    [,2]    [,3]    [,4]     [,5]     [,6]
+Standard deviation     0.6910 0.08924 0.06911 0.05117 0.001407 0.000513
+Proportion of Variance 0.9688 0.01616 0.00969 0.00531 0.000000 0.000000
+Cumulative Proportion  0.9688 0.98499 0.99468 1.00000 1.000000 1.000000
+                            [,7] [,8]
+Standard deviation     5.996e-05    0
+Proportion of Variance 0.000e+00    0
+Cumulative Proportion  1.000e+00    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name               Std.Dev.  Corr                              
+ Subj     (Intercept)        0.1810577                                   
+          numerical_distance 0.0156651  0.047                            
+          size_rc            0.0082052  0.767  0.259                     
+          pos_rc             0.0050487 -0.196  0.427  0.352              
+          SiC                0.0151067  0.487  0.121  0.308  0.333       
+          SpC                0.0159576  0.547  0.102  0.936  0.520  0.208
+          P_SiC              0.0095010  0.574 -0.784  0.209 -0.486  0.268
+          P_SpC              0.0189172  0.130 -0.094  0.439 -0.105 -0.702
+ Residual                    0.2628653                                   
+              
+              
+              
+              
+              
+              
+              
+  0.185       
+  0.514  0.053
+              </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># zero-correlation parameters</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>m_zcp <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">*</span>SpC<span class="sc">*</span>P_SiC<span class="sc">*</span>P_SpC <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>SpC <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                      (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                          size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span> SiC <span class="sc">+</span> SpC <span class="sc">+</span> P_SiC <span class="sc">+</span> P_SpC <span class="sc">||</span> Subj),  </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>boundary (singular) fit: see help('isSingular')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_zcp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Subj
+Importance of components:
+                         [,1]    [,2]    [,3]    [,4]    [,5]    [,6]      [,7]
+Standard deviation     0.6902 0.05953 0.05608 0.03154 0.02880 0.01849 0.0001761
+Proportion of Variance 0.9818 0.00730 0.00648 0.00205 0.00171 0.00070 0.0000000
+Cumulative Proportion  0.9818 0.98906 0.99554 0.99759 0.99930 1.00000 1.0000000
+                            [,8]
+Standard deviation     3.107e-05
+Proportion of Variance 0.000e+00
+Cumulative Proportion  1.000e+00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_zcp, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: dat
+Models:
+m_zcp: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + pos_rc | Subj) + (0 + SiC | Subj) + (0 + SpC | Subj) + (0 + P_SiC | Subj) + (0 + P_SpC | Subj))
+m_cpx: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj)
+      npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)  
+m_zcp   28 2444.9 2652.6 -1194.4   2388.9                       
+m_cpx   56 2455.0 2870.4 -1171.5   2343.0 45.822 28    0.01818 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_zcp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name               Std.Dev.  
+ Subj     (Intercept)        1.8172e-01
+ Subj.1   numerical_distance 1.5672e-02
+ Subj.2   size_rc            7.5823e-03
+ Subj.3   pos_rc             4.8682e-03
+ Subj.4   SiC                4.6365e-05
+ Subj.5   SpC                8.3048e-03
+ Subj.6   P_SiC              8.1812e-06
+ Subj.7   P_SpC              1.4764e-02
+ Residual                    2.6328e-01</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parsimonious LMM: remove small VCs </span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>m_prsm1 <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">*</span>SpC<span class="sc">*</span>P_SiC<span class="sc">*</span>P_SpC <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>SpC <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                       (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> P_SpC <span class="sc">|</span> Subj),  </span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_prsm1))  <span class="co"># Looks ok</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Subj
+Importance of components:
+                         [,1]    [,2]    [,3]
+Standard deviation     0.6859 0.06305 0.05011
+Proportion of Variance 0.9864 0.00834 0.00526
+Cumulative Proportion  0.9864 0.99474 1.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_prsm1, m_zcp, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: dat
+Models:
+m_prsm1: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + P_SpC | Subj)
+m_zcp: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + pos_rc | Subj) + (0 + SiC | Subj) + (0 + SpC | Subj) + (0 + P_SiC | Subj) + (0 + P_SpC | Subj))
+m_cpx: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj)
+        npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+m_prsm1   26 2458.9 2651.8 -1203.5   2406.9                         
+m_zcp     28 2444.9 2652.6 -1194.4   2388.9 18.048  2  0.0001205 ***
+m_cpx     56 2455.0 2870.4 -1171.5   2343.0 45.822 28  0.0181814 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prsm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name               Std.Dev. Corr         
+ Subj     (Intercept)        0.181083              
+          numerical_distance 0.015521  0.046       
+          P_SpC              0.014795  0.179 -0.205
+ Residual                    0.264037              </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parsimonious LMM: remove small VCs</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>m_prsm2 <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">*</span>SpC<span class="sc">*</span>P_SiC<span class="sc">*</span>P_SpC <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>SpC <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>                       (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> SpC <span class="sc">+</span> P_SpC <span class="sc">||</span> Subj),  </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_prsm2))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Subj
+Importance of components:
+                         [,1]    [,2]    [,3]    [,4]
+Standard deviation     0.6890 0.05921 0.05559 0.03184
+Proportion of Variance 0.9842 0.00727 0.00641 0.00210
+Cumulative Proportion  0.9842 0.99149 0.99790 1.00000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_prsm2, m_prsm1, m_zcp, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: dat
+Models:
+m_prsm2: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + SpC | Subj) + (0 + P_SpC | Subj))
+m_prsm1: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + P_SpC | Subj)
+m_zcp: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + size_rc | Subj) + (0 + pos_rc | Subj) + (0 + SiC | Subj) + (0 + SpC | Subj) + (0 + P_SiC | Subj) + (0 + P_SpC | Subj))
+m_cpx: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj)
+        npar    AIC    BIC  logLik deviance   Chisq Df Pr(&gt;Chisq)    
+m_prsm2   24 2455.2 2633.3 -1203.6   2407.2                          
+m_prsm1   26 2458.9 2651.8 -1203.5   2406.9  0.3312  2  0.8473676    
+m_zcp     28 2444.9 2652.6 -1194.4   2388.9 18.0483  2  0.0001205 ***
+m_cpx     56 2455.0 2870.4 -1171.5   2343.0 45.8221 28  0.0181814 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prsm2)   <span class="co"># Very similar in magnitude; keep all of them?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name               Std.Dev. 
+ Subj     (Intercept)        0.1818837
+ Subj.1   numerical_distance 0.0156319
+ Subj.2   SpC                0.0084045
+ Subj.3   P_SpC              0.0146768
+ Residual                    0.2640012</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extend with CPs</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>m_ext <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">*</span>SpC<span class="sc">*</span>P_SiC<span class="sc">*</span>P_SpC <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>SpC <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>                     (<span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> SpC <span class="sc">+</span> P_SpC <span class="sc">|</span> Subj),  </span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>boundary (singular) fit: see help('isSingular')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(m_ext))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$Subj
+Importance of components:
+                         [,1]    [,2]    [,3]      [,4]
+Standard deviation     0.6868 0.06596 0.05598 2.155e-05
+Proportion of Variance 0.9844 0.00908 0.00654 0.000e+00
+Cumulative Proportion  0.9844 0.99346 1.00000 1.000e+00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_prsm2, m_ext, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: dat
+Models:
+m_prsm2: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + SpC | Subj) + (0 + P_SpC | Subj))
+m_ext: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + SpC + P_SpC | Subj)
+m_cpx: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 + numerical_distance + size_rc + pos_rc + SiC + SpC + P_SiC + P_SpC | Subj)
+        npar    AIC    BIC  logLik deviance   Chisq Df Pr(&gt;Chisq)    
+m_prsm2   24 2455.2 2633.3 -1203.6   2407.2                          
+m_ext     30 2463.1 2685.6 -1201.5   2403.1  4.1883  6   0.651216    
+m_cpx     56 2455.0 2870.4 -1171.5   2343.0 60.0134 26   0.000167 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_ext)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name               Std.Dev. Corr                
+ Subj     (Intercept)        0.181071                     
+          numerical_distance 0.015520  0.047              
+          SpC                0.011530  0.762  0.090       
+          P_SpC              0.015245  0.168 -0.196  0.739
+ Residual                    0.263968                     </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>m_voi <span class="ot">=</span>  <span class="fu">lmer</span>(speed <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> numerical_distance <span class="sc">+</span> size_rc <span class="sc">+</span> pos_rc <span class="sc">+</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">*</span>SpC<span class="sc">*</span>P_SiC<span class="sc">*</span>P_SpC <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>SpC <span class="sc">+</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                         SiC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SiC <span class="sc">+</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>                         SpC<span class="sc">:</span>P_SpC <span class="sc">+</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>                      (<span class="dv">1</span> <span class="sc">|</span> Subj),  </span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">REML =</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>), <span class="at">data =</span>dat)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m_prsm2, m_voi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: dat
+Models:
+m_voi: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + (1 | Subj)
+m_prsm2: speed ~ 1 + numerical_distance + size_rc + pos_rc + SiC * SpC * P_SiC * P_SpC + SiC:SpC + SiC:P_SiC + SiC:P_SpC + SpC:P_SiC + SpC:P_SpC + ((1 | Subj) + (0 + numerical_distance | Subj) + (0 + SpC | Subj) + (0 + P_SpC | Subj))
+        npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+m_voi     21 2469.7 2625.5 -1213.8   2427.7                         
+m_prsm2   24 2455.2 2633.3 -1203.6   2407.2 20.473  3  0.0001355 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="figures" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Figures</h1>
+<section id="conditional-means" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="conditional-means"><span class="header-section-number">4.1</span> Conditional means</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>cond_means <span class="ot">&lt;-</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="fu">ranef</span>(m_prsm2, <span class="at">condVar=</span><span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Term=</span>term, <span class="at">Subj=</span>grp)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>cond_means <span class="sc">|&gt;</span> </span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>Subj, <span class="at">x=</span>condval)) <span class="sc">+</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>Term, <span class="at">scales=</span><span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_errorbarh</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>condval <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>condsd,</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmax=</span>condval <span class="sc">+</span><span class="dv">2</span><span class="sc">*</span>condsd), <span class="at">height=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/condmeans-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subjects ordered by numerical_distance effect</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>ord_subj <span class="ot">&lt;-</span> cond_means <span class="sc">|&gt;</span> <span class="fu">filter</span>(Term<span class="sc">==</span><span class="st">"numerical_distance"</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(condval) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Subj)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>cond_means <span class="sc">|&gt;</span> </span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">factor</span>(Subj, <span class="at">levels=</span>ord_subj), <span class="at">x=</span>condval)) <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>Term, <span class="at">scales=</span><span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_errorbarh</span>(<span class="fu">aes</span>(<span class="at">xmin=</span>condval <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>condsd,</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xmax=</span>condval <span class="sc">+</span><span class="dv">2</span><span class="sc">*</span>condsd), <span class="at">height=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/condmeans-2.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Large individual differences in the numerical-distance effect.</p>
+</section>
+<section id="section" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="section"><span class="header-section-number">4.2</span> </h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Subj', 'digit', 'size_cat'. You can
+override using the `.groups` argument.
+`summarise()` has grouped output by 'digit', 'size_cat'. You can override using
+the `.groups` argument.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Lindemann_NumMeaning_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="appendix" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Appendix</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.2.1 (2022-06-23)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Monterey 12.5.1
+
+Matrix products: default
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] summarytools_1.0.1  lme4_1.1-30         Matrix_1.4-1       
+ [4] report_0.5.5        see_0.7.2           correlation_0.8.2  
+ [7] modelbased_0.8.5    effectsize_0.7.0.5  parameters_0.18.2  
+[10] performance_0.9.2   bayestestR_0.12.1.2 datawizard_0.5.1   
+[13] insight_0.18.2      easystats_0.5.1     forcats_0.5.2      
+[16] stringr_1.4.1       dplyr_1.0.9         purrr_0.3.4        
+[19] readr_2.1.2         tidyr_1.2.0         tibble_3.1.8       
+[22] ggplot2_3.3.6       tidyverse_1.3.2     arrow_9.0.0        
+
+loaded via a namespace (and not attached):
+ [1] TH.data_1.1-1       googledrive_2.0.0   minqa_1.2.4        
+ [4] colorspace_2.0-3    pryr_0.1.5          ellipsis_0.3.2     
+ [7] estimability_1.4.1  base64enc_0.1-3     fs_1.5.2           
+[10] rstudioapi_0.14     farver_2.1.1        bit64_4.0.5        
+[13] fansi_1.0.3         mvtnorm_1.1-3       lubridate_1.8.0    
+[16] xml2_1.3.3          codetools_0.2-18    splines_4.2.1      
+[19] knitr_1.40          jsonlite_1.8.0      nloptr_2.0.3       
+[22] broom_1.0.0         dbplyr_2.2.1        compiler_4.2.1     
+[25] httr_1.4.4          emmeans_1.8.0       backports_1.4.1    
+[28] assertthat_0.2.1    fastmap_1.1.0       gargle_1.2.0       
+[31] cli_3.3.0           htmltools_0.5.3     tools_4.2.1        
+[34] coda_0.19-4         gtable_0.3.0        glue_1.6.2         
+[37] reshape2_1.4.4      Rcpp_1.0.9          cellranger_1.1.0   
+[40] vctrs_0.4.1         nlme_3.1-159        xfun_0.32          
+[43] rvest_1.0.3         lifecycle_1.0.1     googlesheets4_1.0.1
+[46] MASS_7.3-58.1       zoo_1.8-10          scales_1.2.1       
+[49] vroom_1.5.7         hms_1.1.2           parallel_4.2.1     
+[52] sandwich_3.0-2      yaml_2.3.5          pander_0.6.5       
+[55] stringi_1.7.8       checkmate_2.1.0     boot_1.3-28        
+[58] rlang_1.0.4         pkgconfig_2.0.3     matrixStats_0.62.0 
+[61] evaluate_0.16       lattice_0.20-45     rapportools_1.1    
+[64] htmlwidgets_1.5.4   labeling_0.4.2      bit_4.0.4          
+[67] tidyselect_1.1.2    plyr_1.8.7          magrittr_2.0.3     
+[70] R6_2.5.1            magick_2.7.3        generics_0.1.3     
+[73] multcomp_1.4-20     DBI_1.1.3           pillar_1.8.1       
+[76] haven_2.5.1         withr_2.5.0         survival_3.4-0     
+[79] modelr_0.1.9        crayon_1.5.1        utf8_1.2.2         
+[82] tzdb_0.3.0          rmarkdown_2.15      grid_4.2.1         
+[85] readxl_1.4.1        reprex_2.0.2        digest_0.6.29      
+[88] xtable_1.8-4        munsell_0.5.0       tcltk_4.2.1        </code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
