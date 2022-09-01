@@ -27,3 +27,9 @@ Manifest.toml
 .CondaPkg/
 
 *.*~
+.vscode/
+.Rproj.user
+*.Rproj
+*R_files/
+
+.gitignore
