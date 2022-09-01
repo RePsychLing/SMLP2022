@@ -1,23 +1,70 @@
 ---
 title: Analysis of the sleepstudy data
 jupyter: julia-1.8
+callout-appearance: simple
 ---
 
 The `sleepstudy` data are from a study of the effects of sleep deprivation on response time reported in  @Balkin2000 and in @Belenky2003.
 Eighteen subjects were allowed only 3 hours of time to sleep each night for 9 successive nights.
 Their reaction time was measured each day, starting the day before the first night of sleep deprivation, when the subjects were on their regular sleep schedule.
 
-::: {.callout-note}
-This description is inaccurate.
+::: {.callout-note collapse="true"}
+## This description is inaccurate
+
 In fact the first two days were acclimatization, the third was a baseline and sleep deprivation was only enforced after day 2.
 To allow for comparison with earlier analyses of these data we retain the old data description for this notebook only.
+
+A more accurate description follows.
+
+### Background
+
+@Belenky2003 reported effects of sleep deprivation across a 14-day study of 30-to-40-year old men and women holding commercial vehicle driving licenses.
+Their analyses are based on a subset of tasks and ratings from very large and comprehensive test and questionnaire battery [@Balkin2000].
+
+Initially 66 subjects were assigned to one of four time-in-bed (TIB) groups with 9 hours  (22:00-07:00) of sleep augmentation or 7 hours (24:00-07:00), 5 hours (02:00-07:00), and 3 hours (04:00-0:00) of sleep restrictions per night, respectively.
+The final sample comprised 56 subjects. The Psychomotor Vigilance Test (PVT) measures simple reaction time to a visual stimulus, presented approximately 10 times ⁄ minute (interstimulus interval varied from 2 to 10 s in 2-s increments) for 10 min and implemented in a thumb-operated, hand-held device [@Dinges1985].
+
+### Design
+
+The study comprised 2 training days (T1, T2), one day with baseline measures (B), seven days with sleep deprivation (E1 to E7), and four recovery days (R1 to R4). T1 and T2 were devoted to training on the performance tests and familiarization with study procedures.
+PVT baseline testing commenced on the morning of the third day (B) and testing continued for the duration of the study (E1–E7, R1–R3; no measures were taken on R4). Bed times during T, B, and R days were 8 hours (23:00-07:00).
+
+### Test schedule within days
+
+The PVT (along with the Stanford Sleepiness Scale) was administered as a battery four times per day (09:00, 12:00, 15:00, and 21:00 h); the battery included other tests not reported here [see @Balkin2000].
+The sleep latency test was administered at 09:40 and 15:30 h for all groups. Subjects in the 3- and 5-h TIB groups performed an additional battery at 00:00 h and 02:00 h to occupy their additional time awake.
+The PVT and SSS were administered in this battery; however, as data from the 00:00 and 02:00 h sessions were not common to all TIB groups, these data were not included in the statistical analyses reported in the paper.
+
+### Statistical analyses
+
+The authors analyzed response speed, that is (1/RT)*1000 -- completely warranted according to a Box-Cox check of the current data -- with mixed-model ANOVAs using group as between- and day as within-subject factors.
+The ANOVA was followed up with simple tests of the design effects implemented over days for each of the four groups.
+
+### Current data
+
+The current data distributed with the _RData_ collection is attributed to the 3-hour TIB group, but the means do not agree at all with those reported for this group in [@Belenky2003 Figure 3] where the 3-hour TIB group is also based on only 13 (not 18) subjects.
+Specifically, the current data show a much smaller slow-down of response speed across E1 to E7 and do not reflect the recovery during R1 to R3.
+The currrent data also cover only 10 not 11 days, but it looks like only R3 is missing. The closest match of the current means was with the average of the 3-hour and 7-hour TIB groups; if only males were included, this would amount to 18 subjects.
+(This conjecture is based only on visual inspection of graphs.)
+
 :::
 
 ## Loading the data
 
-First attach the MixedModels package and other packages for plotting.
-The CairoMakie package allows the Makie graphics system [@Danisch2021] to generate high quality static images.
+First attach MixedModels.jl and other packages such as DataFrames.jl and DataFrameMacros.jl, which provide data manipulation facilities.
+RCall.jl is used to run and communicate with an R process so as to take advantage of specialized plots available with R packages like `{ggplot2}` and `{lattice}`.
+
+::: {.callout-note collapse="true"}
+### Explanation for loading and configuring other packages
+
+Another package, CairoMakie.jl, allows the Makie graphics system [@Danisch2021] to generate high quality static images.
 Activate that package with the SVG (Scalable Vector Graphics) backend.
+
+On computers with Intel processors we attach MKL.jl to take advantage of Intel's Math Kernel Library for faster numerical linear algebra.
+
+Finally, the ProgressMeter.jl package is used by MixedModels.jl to show progress of the iterations when fitting a model.
+Its configuration is adjusted for a cleaner display within Jupyter (IJulia) notebooks.
+:::
 
 ```{julia}
 #| code-fold: true
@@ -108,7 +155,7 @@ By default, the levels of the grouping factor are sorted by increasing value of 
 #| code-fold: true
 #| fig-cap: Prediction intervals on random effects for model m1
 #| label: fig-m1caterpillar
-caterpillar(m1)
+caterpillar!(Figure(resolution=(800,350)), first(ranefinfo(m1)))
 ```
 
 @fig-m1caterpillar reinforces the conclusion that there is little correlation between the random effect for intercept and the random effect for slope.
@@ -164,10 +211,13 @@ An alternative, more geometrically inspired definition of "degrees of freedom", 
 Interestingly, the model with fewer parameters, `m2`, has a greater sum of the leverage values than the model with more parameters, `m1`.
 We're not sure what to make of that.
 
-In both cases the sum of the leverage values is toward the upper end of the range of possible values, which is the rank of the fixed-effects model matrix (2) up to the rank of the fixed-effects plus the random effects model matrix (2 + 36 = 38).
+In both cases the sum of the leverage values is toward the upper end of the range of possible values, which is the rank of the fixed-effects model matrix (2) up to the rank of the combined fixed-effects and random effects model matrices (36).
 
 ::: {.callout-note}
-I think that the upper bound may be 36, not 38, because the two columns of X lie in the column span of Z
+### Why an upper bound of 36?
+
+The upper bound is 36, not 38, because the two columns of $\mathbf{X}$, the fixed-effects model matrix, lie in the span of the 36 columns of $\mathbf{Z}$, the random effects model matrix.
+Thus the rank of the combined matrices is 36.
 :::
 
 This comparison does show, however, that a simple count of the parameters in a mixed-effects model can underestimate, sometimes drastically, the model complexity.
@@ -191,7 +241,9 @@ If the BLUPs are strongly shrunk towards zero then the additional complexity in 
 shrinkageplot!(Figure(; resolution=(500, 500)), m1)
 ```
 
-::: {.callout-note}
+::: {.callout-note collapse="true"}
+### Controlling image size in the plot
+
 This plot could be drawn as `shrinkageplot(m1)`.
 The reason for explicitly creating a `Figure` to be modified by `shrinkageplot!` is to control the resolution.
 :::

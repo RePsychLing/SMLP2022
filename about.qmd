@@ -2,4 +2,4 @@
 title: "About"
 ---
 
-About this site
+This site provides materials for the "Advanced frequentist methods" section of the Summer School on Statistical Methods to be held at the University of Potsdam, 12-16 September, 2022
