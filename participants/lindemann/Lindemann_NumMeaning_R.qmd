@@ -23,7 +23,7 @@ library(arrow)
 library(tidyverse)
 library(easystats)
 library(lme4)
-library(summarytools)
+#library(summarytools)
 
 # respecting color vision deficiency
 cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
