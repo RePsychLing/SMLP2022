@@ -78,7 +78,7 @@ John Fox's `effects` package in R (and the related `ggeffects` package for plott
 
 ### Estimated Marginal / Least Square Means
 
-To our knowledge, There is currently nothing like the R package `emmeans` package in Julia. However, it is often better to use sensible, hypothesis-driven contrast coding than to compute all pairwise comparisons after the fact. 😃
+[`Effects.jl`](https://beacon-biosignals.github.io/Effects.jl/stable/) provides a subset of the functionality (basic estimated-marginal means and exhaustive pairwise comparisons) of the R package `emmeans` package. However, it is often better to use sensible, hypothesis-driven contrast coding than to compute all pairwise comparisons after the fact. 😃
 
 ## Hypothesis Testing
 
@@ -112,7 +112,7 @@ Using Julia doesn't mean you have to leave all the packages you knew in other la
 
 [RCall.jl](https://juliainterop.github.io/RCall.jl/stable/gettingstarted/) provides a very convenient interface for interacting with R. [JellyMe4.jl](https://github.com/palday/JellyMe4.jl/) add support for moving MixedModels.jl and `lme4` models back and forth between the languages (which means that you can use `emmeans`, `sjtools`, `DHARMa`, `car`, etc. to examine MixedModels.jl models!). [RData.jl](https://github.com/JuliaData/RData.jl) provides support for reading `.rds` and `.rda` files from Julia, while [RDatasets.jl](https://github.com/JuliaStats/RDatasets.jl) provides convenient access to many of the standard datasets provided by R and various R packages.
 
-[PyCall.jl](https://github.com/JuliaPy/PyCall.jl/) provides a very convenient way for interacting with Python code and packages. [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl) builds upon this foundation to provide support for Python's `matplotlib`. Similarly, [PyMNE.jl](https://github.com/beacon-biosignals/PyMNE.jl) and [PyFOOOF.jl](https://github.com/beacon-biosignals/pyfooof.jl) provide some additional functionality to make interacting with MNE-Python and FOOOF from within Julia even easier than with vanilla PyCall.
+[PyCall.jl](https://github.com/JuliaPy/PyCall.jl/) provides a very convenient way for interacting with Python code and packages. [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl) builds upon this foundation to provide support for Python's `matplotlib`. Similarly, [PyMNE.jl](https://github.com/beacon-biosignals/PyMNE.jl) and [PyFOOOF.jl](https://github.com/beacon-biosignals/pyfooof.jl) provide some additional functionality to make interacting with MNE-Python and FOOOF from within Julia even easier than with vanilla PyCall. More recently, [PythonCall.jl](https://github.com/cjdoris/PythonCall.jl) has proven to be a populat alternative to PyCall.jl.
 
 For MATLAB users, there is also [MATLAB.jl](https://github.com/JuliaInterop/MATLAB.jl)
 

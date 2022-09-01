@@ -9,7 +9,7 @@ project:
     - useful_packages.qmd
     - sleepstudy.qmd
     - sleepstudy_speed.qmd
-    - Arrow.qmd
+    - arrow.qmd
     - glmm.qmd
     - kb07.qmd
     - kwdyz11.qmd
