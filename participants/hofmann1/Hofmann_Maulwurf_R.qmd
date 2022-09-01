@@ -2,21 +2,14 @@
 title: "Andrea Hofmann: Maulwurf Analysis"
 author: "Reinhold Kliegl"
 date: "2022-08-24 (last revised: `r format(Sys.time())`)"
-output:
-  html_document:
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
-    fig_width: 8
-    fig_height: 6
-    fig_caption: true
-  pdf_document:
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
-    fig_width: 7
-    fig_height: 5
-    fig_caption: true
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
 editor_options: 
   chunk_output_type: console
 ---
@@ -27,7 +20,7 @@ library(arrow)
 library(lme4)
 library(tidyverse)
 library(easystats)
-library(summarytools)
+#library(summarytools)
 
 # respecting color vision deficiency
 cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",

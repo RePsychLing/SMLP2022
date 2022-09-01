@@ -80,7 +80,7 @@ The IAT measures people's implicit associations between a target concept and an 
 library(arrow)
 suppressWarnings(suppressMessages(library(tidyverse)))
 suppressWarnings(suppressMessages(library(easystats)))
-library(summarytools)
+#library(summarytools)
 library(lme4)
 library(car)
 library(GGally)
@@ -117,7 +117,7 @@ iat <-
   filter(rt >= 400 & rt <= 10000) |> 
   as_tibble()
 
-stview(dfSummary(iat), method="render")
+#stview(dfSummary(iat), method="render")
 ```
 
 + `factor()` generates alphabetic sorting of factor leveks; `as_factor()` sorts them by occurrence.
@@ -144,7 +144,7 @@ sinfo <-
    mutate(age = ifelse(is.na(age),median(age, na.rm = TRUE), age),
           Gender = as_factor(ifelse(is.na(Gender), "female", Gender)))
 
-stview(dfSummary(sinfo), method="render")
+#stview(dfSummary(sinfo), method="render")
 ```
 
 ## Item data
@@ -162,7 +162,7 @@ items <-
     Item = factor(paste0("I", str_pad(Item, width = 2, side = "left", pad = "0")))
   )
 
-stview(dfSummary(items), method="render")
+#stview(dfSummary(items), method="render")
 ```
 
 ## Combine data
@@ -221,8 +221,8 @@ This section reproduces logic of the original model selection, but where necessa
 ## Define contrasts
 
 ```{r}
-ctable(dat$Group, dat$Time)
-ctable(dat$Switch, dat$Block)
+#ctable(dat$Group, dat$Time)
+#ctable(dat$Switch, dat$Block)
 
 contrasts(dat$Group)  <- contr.treatment(2)
 contrasts(dat$Time)   <- contr.treatment(2)
