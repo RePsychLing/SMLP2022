@@ -16,9 +16,6 @@ using DataFrames
 using LinearAlgebra
 using MixedModels
 using MixedModelsMakie
-if contains(first(Sys.cpu_info()).model, "Intel")
-  using MKL             # faster LAPACK on Intel processors
-end
 using Random
 using ProgressMeter
 
