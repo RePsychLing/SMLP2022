@@ -17,11 +17,16 @@ This site provides materials for the **Advanced frequentist methods** stream of 
 
 # Installation of tools prior to the course
 
-This section of the summer school will use the [Julia programming language](https://julialang.org/) and related tools. Because most participants have more experience with [R](https://r-project.org) and the [RStudio](https://rstudio.com) integrated development environment (IDE), it is necessary to install and configure several software systems prior to the course.
+This section of the summer school will use the [Julia programming language](https://julialang.org/) and related tools.
+Because most students in the course will have more experience with [R](https://r-project.org) and the [RStudio](https://rstudio.com) integrated development environment (IDE), it is necessary to install and configure several software systems prior to the course.
 
 ## git
 
-We will assume that you have git installed and are able to clone a repository from github. This website is built using [quarto](https://quarto.org), described below, from a [git repository] (https://github.com/RePsychLing/SMLP2022). Clone this repository with, e.g.
+We will assume that you have git installed and are able to clone a repository from github.
+If not, [Happy Git with R](https://happygitwithr.org/) is a good place to learn about git for data science.
+
+This website is built using [quarto](https://quarto.org), described below, from the [repository](https://github.com/RePsychLing/SMLP2022).
+Clone this repository with, e.g.
 
 ```sh
 git clone https://github.com/RePsychLing/SMLP2022
