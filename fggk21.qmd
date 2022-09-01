@@ -17,6 +17,8 @@ The script is structured in four main sections:
 
 ```{julia}
 #| code-fold: true
+# use the project in the current working directory
+using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using AlgebraOfGraphics: linear
 using Arrow
@@ -50,7 +52,7 @@ Number of scores: 525126 in './data/fggk21.arrow'
  4. Sex: "Girls" (n=55,086), "Boys" (n= 53,209)
  5. age: testdate - middle of month of birthdate
  6. Test: 5 levels
-    
+
       + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
       + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
       + Speed(`S20_r`): 20-meters sprint [m/s]
@@ -734,7 +736,7 @@ Postprocessing related to conditional modes will be dealt with in a different tu
 ### Overall summary statistics
 
 ```
-+ julia> m1.optsum         # MixedModels.OptSummary:  gets all info 
++ julia> m1.optsum         # MixedModels.OptSummary:  gets all info
 + julia> loglikelihood(m1) # StatsBase.loglikelihood: return loglikelihood
 							 of the model
 + julia> deviance(m1)      # StatsBase.deviance: negative twice the log-likelihood
@@ -794,11 +796,11 @@ bic(m1)  # objective(m1) + dof(m1)*log(nobs(m1))
 ### Fixed-effect statistics
 
 ```
-+ julia> coeftable(m1)     # StatsBase.coeftable: fixed-effects statiscs; 
++ julia> coeftable(m1)     # StatsBase.coeftable: fixed-effects statiscs;
 						     default level=0.95
 + julia> Arrow.write("./data/m_cpx_fe.arrow", DataFrame(coeftable(m1)));
 + julia> coef(m1)          # StatsBase.coef - parts of the table
-+ julia> fixef(m1)         # MixedModels.fixef: not the same as coef() 
++ julia> fixef(m1)         # MixedModels.fixef: not the same as coef()
                              for rank-deficient case
 + julia> m1.beta           # alternative extractor
 + julia> fixefnames(m1)    # works also for coefnames(m1)

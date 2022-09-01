@@ -1,0 +1,32 @@
+---
+title: "Package management and reproducible environments"
+---
+
+*Julius Krumbiegel also has a [great blog post](https://jkrumbiegel.com/pages/2022-08-26-pkg-introduction/) with more details on Julia environments.*
+
+Julia packages can be configured (in a file called `Project.toml`) on a per-project basis.
+The packaged sources and compiled versions are stored in a central location, e.g. `~/.julia/packages` and `~/.julia/compiled` on Linux systems, but the configuration of packages to be used can be local to a project.
+The `Pkg` package is used to modify the local project's configuration.
+(An alternative is "package mode" in the read-eval-print-loop or REPL, which we will show at the summer school.)
+Start julia in the directory of the cloned `SMLP2022` repository
+```{julia}
+#| eval: false
+using Pkg        # there's a package called 'Pkg' to manipulate package configs
+Pkg.activate(".")# activate the current directory as the project
+```
+
+If you've recieved an environment from someone/somwhere else -- such as this course repository -- then you'll need to first "instantiate" it (i.e., install all the dependencies).
+```{julia}
+#| eval: false
+Pkg.instantiate()# only needed the first time you work in a project
+Pkg.update()     # get the latest package versions compatible with the project
+```
+
+```{julia}
+#| eval: false
+Pkg.status()
+```
+
+Occasionally the `Pkg.status` function call will give info about new versions being available but blocked by requirements of other packages.
+This is to be expected - the package system is large and the web of dependencies are complex.
+Generally the Julia package system is very good at resolving dependencies.
