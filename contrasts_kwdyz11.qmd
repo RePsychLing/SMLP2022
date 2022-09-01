@@ -4,6 +4,8 @@ title: Contrast Coding of Visual Attention Effects
 
 ```{julia}
 #| code-fold: true
+# use the project in the current working directory
+using Pkg; Pkg.activate(".")
 using Arrow
 using Chain
 using DataFrames

@@ -35,6 +35,8 @@ The script is structured in three main sections:
 
 ```{julia}
 #| code-fold: true
+# use the project in the current working directory
+using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using AlgebraOfGraphics: linear
 using Arrow
@@ -62,7 +64,7 @@ Number of scores: 525126
  4. Sex: "Girls" (n=55,086), "Boys" (n= 53,209)
  5. age: testdate - middle of month of birthdate
  6. Test: 5 levels
-    
+
       + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
       + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
       + Speed(`S20_r`): 20-meters sprint [m/s]
@@ -586,7 +588,7 @@ begin
   m_School_HeC0 = fit(MixedModel, f_School0, dat; contrasts=contr2)
   m_School_HyC0 = fit(MixedModel, f_School0, dat; contrasts=contr3)
   m_School_PCA0 = fit(MixedModel, f_School0, dat; contrasts=contr4)
-  # 	
+  #
   zcpLMM2 = ["SDC0", "HeC0", "HyC0", "PCA0"]
   mods2 = [
     m_School_SDC0, m_School_HeC0, m_School_HyC0, m_School_PCA0

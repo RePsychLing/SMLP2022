@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday &amp; Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-08-31">
+<meta name="dcterms.date" content="2022-09-01">
 
 <title>SMLP2022 - Sixth Summer School on Statistical Methods for Linguistics and Psychology</title>
 <style>
@@ -195,6 +195,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./pkg.html" class="sidebar-item-text sidebar-link">Package management and reproducible environments</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./sleepstudy.html" class="sidebar-item-text sidebar-link">Analysis of the sleepstudy data</a>
   </div>
 </li>
@@ -205,7 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Arrow.html" class="sidebar-item-text sidebar-link">Notes on saved data files</a>
+  <a href="./arrow.html" class="sidebar-item-text sidebar-link">Notes on saved data files</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -276,7 +281,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-08-31</p>
+      <p class="date">2022-09-01</p>
     </div>
   </div>
     
@@ -288,10 +293,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This site provides materials for the <strong>Advanced frequentist methods</strong> stream of the <a href="https://vasishth.github.io/smlp2022/">Summer School on Statistical Methods</a> to be held at the University of Potsdam, 12-16 September, 2022</p>
 <section id="installation-of-tools-prior-to-the-course" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Installation of tools prior to the course</h1>
-<p>This section of the summer school will use the <a href="https://julialang.org/">Julia programming language</a> and related tools. Because most participants have more experience with <a href="https://r-project.org">R</a> and the <a href="https://rstudio.com">RStudio</a> integrated development environment (IDE), it is necessary to install and configure several software systems prior to the course.</p>
+<p>This section of the summer school will use the <a href="https://julialang.org/">Julia programming language</a> and related tools. Because most students in the course will have more experience with <a href="https://r-project.org">R</a> and the <a href="https://rstudio.com">RStudio</a> integrated development environment (IDE), it is necessary to install and configure several software systems prior to the course.</p>
 <section id="git" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="git"><span class="header-section-number">1.1</span> git</h2>
-<p>We will assume that you have git installed and are able to clone a repository from github. This website is built using <a href="https://quarto.org">quarto</a>, described below, from a [git repository] (https://github.com/RePsychLing/SMLP2022). Clone this repository with, e.g.</p>
+<p>We will assume that you have git installed and are able to clone a repository from github. If not, <a href="https://happygitwithr.org/">Happy Git with R</a> is a good place to learn about git for data science.</p>
+<p>This website is built using <a href="https://quarto.org">quarto</a>, described below, from the <a href="https://github.com/RePsychLing/SMLP2022">repository</a>. Clone this repository with, e.g.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/RePsychLing/SMLP2022</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="julia-programming-language" class="level2" data-number="1.2">

@@ -8,6 +8,8 @@ This script uses a subset of data reported in Fühner, Golle, Granacher, & Klieg
 All children were between 6.0 and 6.99 years at legal keydate (30 September) of school enrollement, that is they were in their ninth year of life in the third grade. To speed up we work with a reduced data set and less complex models than those in the reference publication. This illustrates also drawing a stratified subsample from a large data set.
 
 ```{julia}
+# use the project in the current working directory
+using Pkg; Pkg.activate(".")
 using DataFrames
 using Chain
 using DataFrameMacros
@@ -35,7 +37,7 @@ Number of scores: 525126
  4. Sex: "Girls" (n=55,086), "Boys" (n= 53,209)
  5. age: testdate - middle of month of birthdate
  6. Test: 5 levels
-    
+
       + Endurance (`Run`):  6 minute endurance run [m]; to nearest 9m in 9x18m field
       + Coordination (`Star_r`): star coordination run [m/s]; 9x9m field, 4 x diagonal = 50.912 m
       + Speed(`S20_r`): 20-meters sprint [m/s]

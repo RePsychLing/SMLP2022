@@ -31,6 +31,8 @@ First we attach the various packages needed, define a few helper functions, read
 
 ```{julia}
 #| code-fold: true
+# use the project in the current working directory
+using Pkg; Pkg.activate(".")
 using CairoMakie         # device driver for static (SVG, PDF, PNG) plots
 using Chain              # like pipes but cleaner
 using DataFrameMacros

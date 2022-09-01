@@ -27,6 +27,8 @@ Load the packages to be used.
 
 ```{julia}
 #| code-fold: true
+# use the project in the current working directory
+using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using Arrow
 using CairoMakie
@@ -35,7 +37,7 @@ using DataFrameMacros
 using DataFrames
 using Downloads
 using KernelDensity
-using PyCall  # show reading Arrow in Python
+using PythonCall  # show reading Arrow in Python
 using RCall   # show reading Arrow in R
 using StatsBase
 
@@ -271,26 +273,20 @@ parent(gdf)
 ## Reading Arrow files in other languages
 
 There are Arrow implementations for R (the `arrow` package) and for Python (`pyarrow`).
-They can be accessed within Julia using the `RCall` and `PyCall` packages.
 
-```{julia}
-feather = pyimport("pyarrow.feather");
+```{python}
+#| eval: false
+import pyarrow.feather: read_table
+read_table("./data/fggk21.arrow")
 ```
 
-```{julia}
-feather.read_table("./data/fggk21.arrow")
-```
-
-```{julia}
-R"""
-fggk21 <- arrow::read_feather("./data/fggk21.arrow")
+```{R}
+#| eval: false
+library("arrow")
+fggk21 <- read_feather("./data/fggk21.arrow")
 nrow(fggk21)
-"""
 ```
 
-```{julia}
-R"tibble::glimpse(fggk21)";
-```
 
 # References
 

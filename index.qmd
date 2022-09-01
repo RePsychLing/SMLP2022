@@ -9,7 +9,7 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -17,17 +17,22 @@ This site provides materials for the **Advanced frequentist methods** stream of 
 
 # Installation of tools prior to the course
 
-This section of the summer school will use the [Julia programming language](https://julialang.org/) and related tools. Because most participants have more experience with [R](https://r-project.org) and the [RStudio](https://rstudio.com) integrated development environment (IDE), it is necessary to install and configure several software systems prior to the course.
+This section of the summer school will use the [Julia programming language](https://julialang.org/) and related tools.
+Because most students in the course will have more experience with [R](https://r-project.org) and the [RStudio](https://rstudio.com) integrated development environment (IDE), it is necessary to install and configure several software systems prior to the course.
 
 ## git
 
-We will assume that you have git installed and are able to clone a repository from github. This website is built using [quarto](https://quarto.org), described below, from a [git repository] (https://github.com/RePsychLing/SMLP2022). Clone this repository with, e.g.
+We will assume that you have git installed and are able to clone a repository from github.
+If not, [Happy Git with R](https://happygitwithr.org/) is a good place to learn about git for data science.
+
+This website is built using [quarto](https://quarto.org), described below, from the [repository](https://github.com/RePsychLing/SMLP2022).
+Clone this repository with, e.g.
 
 ```sh
 git clone https://github.com/RePsychLing/SMLP2022
 ```
 
-## Julia Programming Language 
+## Julia Programming Language
 
 We will use Julia v1.8.0 in the summer school. You can download the version appropriate for your setup from here: [Julia Programming Language](https://julialang.org/downloads/)
 
@@ -35,13 +40,12 @@ We will use Julia v1.8.0 in the summer school. You can download the version appr
 
 We will use VS Code IDE, that is Julia : VS Code ~ R : RStudio. You can download the version appropriate for your setup from here: [VS Code](https://code.visualstudio.com/download)
 
-## Quarto 
+## Quarto
 
 The web site and other documents for this course are rendered using a `knitr`-like system called Quarto. You can download the version appropriate for your setup from here: [quarto](https://quarto.org/docs/get-started/)
 
 # Summary
 
-We assume everybody will succeed with the installations. If not, please get in touch! 
+We assume everybody will succeed with the installations. If not, please get in touch!
 
-You may also want to give it a try to get these tools to play nicely with each other -- but don't spend too much time on this.  
-
+You may also want to give it a try to get these tools to play nicely with each other -- but don't spend too much time on this.
