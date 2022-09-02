@@ -1,9 +1,11 @@
 ---
-title: "Cardiac Synchrony and its Role in Language Development"
-author: "Monica Vanoncini"
+title: "Monica Vanoncini: Cardiac Synchrony and its Role in Language Development"
+subtitle: "RePsychling in SMLP2022"
+author: "Reinhold Kliegl"
 date: "2022-08-25 (last revised: `r format(Sys.time())`)"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     code-fold: false

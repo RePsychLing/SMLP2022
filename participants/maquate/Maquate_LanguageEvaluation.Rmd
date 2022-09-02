@@ -1,0 +1,154 @@
+---
+title: "Language Evaluation"
+author: "Katja Maquate"
+output:
+  pdf_document:
+    keep_md: yes
+    fig_caption: yes
+    latex_engine: lualatex
+  html_document:
+    df_print: paged
+documentclass: article
+#bibliography: SMLP2022.bib
+header-includes:
+- \usepackage{longtable}
+- \usepackage{indentfirst}
+- \setlength{\parindent}{20pt}
+- \usepackage{graphicx}
+- \usepackage{fvextra}
+- \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Packages, include=FALSE}
+#install.packages
+library(dplyr)
+library(tidyr)
+library(doBy)
+require(tidyverse)
+require(lme4)
+require(RePsychLing)
+require(Rmisc)
+library(kableExtra)  #useful for creating tales (install kableExtra package first)
+library(stargazer) #good for summary tables (install Stargazer package first)
+library(lmerTest)
+require(broman) ## for rounding number of model outputs
+library(ggplot2)
+library(papaja)
+library(magick)
+library(rticles)
+library(pastecs)
+```
+
+# Background of the data
+
+Do participants take the situational-functional setting into account when evaluating language? How do semantic incongruencies compare to incongruencies in register? Do they interact?
+Participants were presented with a picture prime of either formally or informally dressed speakers. They then heard that speaker utter a target sentence that either matched or mismatched the register and / or matched of mismatched the semantic verb-argument congruency of the target sentence. 
+
+# Variables needed for analysis
+\textbf{Dependent Variable:}
+Acceptability ratings on a fully-anchored 7-point Likert-type scale: How acceptable is the sentence when spoken by the presented speaker (1=not at all - 7=completely)
+
+
+\textbf{Independent Variables:}
+  \begin{itemize}
+    \item register congruency (match vs. mismatch): target sentence final noun either matches or mismatches in register with the prime picture. Example mismatch: prime picture showing formally dressed speaker, target sentence heard: "Ich binde jetzt meinen Latschen." (lit. transl: I tie now my shoes\textsubscript{colloquial})
+    \item semantic congruency (yes vs. no): verb and argument in target sentence are either semantically congruent or not. Example mismatch: "Ich binde jetzt meine Klamotten" (lit. transl: I tie now my clothes\textsubscript{colloquial})
+  \end{itemize}
+
+\textbf{Design:} 2x2, fully crossed Latin square
+
+# summary stats
+\textbf{Analysis:}
+The data was analysed using linear mixed models. According to Harper (2015) rating scales that are fully anchored with 7 points can be seen as continuous data.
+Factors were sum coded, such that the output can be interpreted as main effects and interactions. 
+Starting with the maximal model, the fit of the model will be improved step by step by
+reducing the random effect structure. Random effect structure reduction is done with
+REML=FALSE. Random effect structure reduction will be done by assessing the variance each
+of the random slopes captures in the model (using VarCorr(model) and
+summary(rePCA(model)). If a variance component does not capture any (meaningful)
+variance, it will be removed from the model. The random effect structure will be reduced until
+the model converges and all variance components capture variance explained by the model.
+This is the most parsimonious (in contrast to the maximal and often overfitted) model (Bates et al., 2015). The fixed effects are not looked at before the most parsimonious model
+has been obtained. If two (or more) models converge and seem to capture the variance
+equally well, the models will be compared using the anova (model1, model2) function to
+determine which model provides the better fit for the data. When the model that best fits the
+data is found, REML is set to TRUE for more precise parameter estimation in that model and
+only then will the fixed effects be inspected using summary(model). The fixed effects part of the
+model remains unchanged.
+Significant interactions will be followed up with post hoc tests (emmeans) correcting for multiple comparisons using bonferroni correction if more than 2 levels are compared.
+
+
+\textbf{summary statistics:}
+```{r echo=FALSE}
+data<-read.delim2("data_example.txt")
+
+## convert to factors
+data$semantic_congruency<-as.factor(data$semantic_congruency) 
+data$register_congruency<-as.factor(data$register_congruency) 
+
+data$participant<-as.factor(data$participant) 
+data$item<-as.factor(data$item)
+
+## set contrast coding
+contrasts(data$semantic_congruency)=contr.sum(2)
+contrasts(data$register_congruency)=contr.sum(2)
+```
+
+```{r echo=TRUE}
+head(data)
+str(data)
+summary(data)
+round(desc_rating<-stat.desc(data$rating), 2)
+
+print(register_congruency<- summarySEwithin(data, measurevar="rating", withinvars="register_congruency",
+                            idvar="participant", na.rm=FALSE, conf.interval=.95))
+
+print(semantic_congruency<- summarySEwithin(data, measurevar="rating", withinvars="semantic_congruency",
+                                       idvar="participant", na.rm=FALSE, conf.interval=.95))
+
+print(all<- summarySEwithin(data, measurevar="rating", withinvars=c("register_congruency","semantic_congruency"),
+                                       idvar="participant", na.rm=FALSE, conf.interval=.95))
+```
+
+
+# R chunk with fit of lme4
+
+After random effect structure reduction, this model proved to be the best fit for the data.
+Results: Sign. main effect of register congruency: Higher acceptability ratings for register matching (vs. mismatching) target sentences. Sign. main effect of semantic congruence: Higher acceptability ratings for target sentences which have semantically congruent verbs and arguments.
+```{r echo=TRUE}
+options(scipen=999)
+acc4 <- lmer(rating ~ register_congruency*semantic_congruency + (1+semantic_congruency| participant) + (1+semantic_congruency| item), data, REML=FALSE, control=lmerControl(optCtrl=list(maxfun=1000000)))
+VarCorr(acc4) ## this just gives out the random effect structure, so you're not tempted to already look at the fixed effects
+# run PCA to see if all variance is captured by model: looks good
+summary(rePCA(acc4))
+
+## set REML to true and look at fixed effects
+acc4_final <- lmer(rating ~ register_congruency*semantic_congruency + (1+semantic_congruency| participant) + (1+semantic_congruency| item), data, REML=TRUE, control=lmerControl(optCtrl=list(maxfun=1000000)))
+summary(acc4_final)
+```
+
+
+# List of issues to be disucssed
+
+A few things that still confuse me and that would be nice to discuss are:
+
+\begin{enumerate}
+  \item the importance of 0-correlation models for random effect-structure reduction
+  \item setting REML to FALSE for random effect structure reduction - some do it, some don't. What do you advice and why?
+  \item sometimes a model with REML=FALSE converges, rePCA shows that all the variance is captured by the random effect structure, but when set back to REML=TRUE it doesn't converge anymore. Why is that and how would you advice to proceed?
+  \item getting power estimates for main studies based on pilot data and simulations, i.e., how many participants will I need (the observed-power issue / debate)
+\end{enumerate}
+
+# Session Info
+
+
+```{r echo=FALSE} 
+sessionInfo()
+```
+
+
+
