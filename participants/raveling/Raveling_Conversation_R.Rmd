@@ -21,6 +21,7 @@ summary(df.lme)
 ```
 
 ## Basic Boxplot
+
 A boxplot of the turn gap duration in combination with the head gesture types 
 
 ```{r plot dependent variable, echo=TRUE}
