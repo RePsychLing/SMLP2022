@@ -1140,14 +1140,16 @@ plot_vincentiles
 #       height = 12, width = 16, dpi = 300)
 ```
 
-# RK: Save dataframes for transfer to Julia
+# RK extensions
+
+## Save dataframes for transfer to Julia
 
 ```{r}
 library(arrow)
 dat_acc <- 
   accuracydata |> 
   as_tibble() |> 
-  dplyr::select(Subj=Participant, Item, Condition, Match, ACN=AntecedentNumber, nerr=NumberError) |> 
+  dplyr::select(Subj=Participant, Item, Condition, Strct=Structure, Match, ACN=AntecedentNumber, nerr=NumberError) |> 
   mutate(
     Subj = factor(paste0("S", str_pad(str_remove(Subj, "s"), width = 2, side = "left", pad = "0"))),
     Item = factor(paste0("I", str_pad(Item, width = 3, side = "left", pad = "0"))))
@@ -1156,12 +1158,32 @@ write_feather(dat_acc, "./data/Bahmanian_acc.arrow")
 dat_dur <- 
   latencydata |> 
   as_tibble() |> 
-  dplyr::select(Subj=Participant, Item, Condition, Match, ACN=AntecedentNumber, Segment, dur=Duration, pause=Pause) |> 
+  dplyr::select(Subj=Participant, Item, Condition, Strct=Structure, Match, ACN=AntecedentNumber, Segment, dur=Duration, pause=Pause) |> 
   mutate(
     Subj = factor(paste0("S", str_pad(str_remove(Subj, "s"), width = 2, side = "left", pad = "0"))),
     Item = factor(paste0("I", str_pad(Item, width = 3, side = "left", pad = "0"))))
 write_feather(dat_dur, "./data/Bahmanian_dur.arrow")
 ```
+
+## Boxcox
+
+```{r}
+library(arrow)
+library(tidyverse)
+
+dat <- read_feather("./data/Bahmanian_dur.arrow")
+dat_dur <- dat |> filter(!is.na(dur))
+
+MASS::boxcox(dur ~ 1 + Match + ACN + Subj, data=dat_dur)    # reciprocal value
+
+dat_pronoun <- dat_dur |> filter(Segment == "pronoun") 
+MASS::boxcox(dur ~ 1 + Match + ACN + Subj, data=dat_pronoun) # original value
+
+dat_onset <- dat_dur |> filter(Segment == "onset")
+MASS::boxcox(dur ~ 1 + Match + ACN + Subj, data=dat_onset)   # log-transformed value
+```
+
+Depending on which segment we look at, we get different proposals; not quite sure what to recommend in this case. Reciprocal is out. We could tap into different processes for pronoun and onset segments, requiring different metrics. However, if at all possible, I would not change metrics across analyses for the same data, because this is very difficult to communicate. The log-transform sounds like a reasonable choice, not the least because that's usually required for all kinds of fixation measures. 
 
 # Appendix
 
