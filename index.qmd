@@ -23,7 +23,7 @@ Because most students in the course will have more experience with [R](https://r
 ## git
 
 We will assume that you have git installed and are able to clone a repository from github.
-If not, [Happy Git with R](https://happygitwithr.com/) is a good place to learn about git for data science.
+If not, [Happy Git with R](https://happygitwithr.org/) is a good place to learn about git for data science.
 
 This website is built using [quarto](https://quarto.org), described below, from the [repository](https://github.com/RePsychLing/SMLP2022).
 Clone this repository with, e.g.

@@ -5,6 +5,7 @@ author: "Reinhold Kliegl"
 date: "2022-08-25"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     code-fold: false

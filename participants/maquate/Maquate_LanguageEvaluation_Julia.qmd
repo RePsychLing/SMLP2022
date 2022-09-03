@@ -1,0 +1,510 @@
+---
+title: "Katja Maquate: Language Evaluation"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-09-03"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+jupyter: julia-1.8
+---
+
+# List of issues to be disucssed
+
+A few things that still confuse me and that would be nice to discuss are:
+
++ The importance of 0-correlation models for random effect-structure reduction
++ Setting REML to FALSE for random effect structure reduction - some do it, some don't. What do you advice and why?
++ Sometimes a model with REML=FALSE converges, rePCA shows that all the variance is captured by the random effect structure, but when set back to REML=TRUE it doesn't converge anymore. Why is that and how would you advice to proceed?
++ Getting power estimates for main studies based on pilot data and simulations, i.e., how many participants will I need (the observed-power issue / debate)
+
+# Background of the data
+
+Do participants take the situational-functional setting into account when evaluating language? How do semantic incongruencies compare to incongruencies in register? Do they interact? Participants were presented with a picture prime of either formally or informally dressed speakers. They then heard that speaker utter a target sentence that either matched or mismatched the register and / or matched of mismatched the semantic verb-argument congruency of the target sentence. 
+
+# Design and variables
+
++ Design: 2x2, fully crossed Latin square
++ Dependent Variable: Acceptability ratings on a fully-anchored 7-point Likert-type scale: How acceptable is the sentence when spoken by the presented speaker (1=not at all - 7=completely)
+
++ Independent Variables
+     + _RC_ (match vs. mismatch): target sentence final noun either matches or mismatches in register with the prime picture. Example mismatch: prime picture showing formally dressed speaker, target sentence heard: "Ich binde jetzt meinen Latschen." (lit. transl: I tie now my shoes\textsubscript{colloquial})
+    + _SC_ (yes vs. no): verb and argument in target sentence are either semantically congruent or not. Example mismatch: "Ich binde jetzt meine Klamotten" (lit. transl: I tie now my clothes\textsubscript{colloquial})
+
+# Setup
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using KernelDensity    # density estimation
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsBase
+using StatsModels
+
+using AlgebraOfGraphics: density
+using AlgebraOfGraphics: boxplot
+using MixedModelsMakie: qqnorm
+using MixedModelsMakie: ridgeplot
+using MixedModelsMakie: scatter
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
+
+```{julia}
+#| label: read_data
+dat = DataFrame(Arrow.Table("./data/Maquate_LanguageEvaluation.arrow"));
+
+describe(dat)
+```
+
+# Linear mixed models 
+
+## Contrasts
+
+```{julia}
+#| label: contrasts
+
+contrasts = merge(
+      Dict(:RC => EffectsCoding(base= "mismatch"; levels=["match", "mismatch"])),
+      Dict(:SC => EffectsCoding(base= "no"; levels=["yes", "no"])),
+      Dict(:Subj => Grouping()),
+      Dict(:Item => Grouping())
+   );
+```
+
+## LMM analysis
+
+Just a low baseline reference LMM varying only the GMs for subjects and items.
+
+```{julia}
+#| label: m_voi
+m_voi = let
+  form = @formula(rating ~ 1 + RC*SC + (1 | Subj) + (1 | Item));
+  fit(MixedModel, form, dat; contrasts);
+end
+```
+
+Katja Maquate's selection.
+
+```{julia}
+#| label: m_KM
+m_KM = let
+  form = @formula(rating ~ 1 + RC*SC + (1+SC | Subj) + (1+SC | Item));
+  fit(MixedModel, form, dat; contrasts);
+end
+
+display(issingular(m_KM))
+display(m_KM.PCA[:Subj])  # also: MixedModels.PCA(m_KM)[:Subj]
+display(m_KM.PCA[:Item])  # also: MixedModels.PCA(m_KM)[:Item]
+
+m_KM
+```
+
+Maximal LMM (for this design)
+
+```{julia}
+#| lst-label: m_max
+m_max = let 
+    form = @formula(rating ~ 1 + RC*SC + (1+SC*RC | Subj) + (1+SC*RC | Item));
+
+    fit(MixedModel, form, dat; contrasts);
+  end 
+
+display(issingular(m_max))
+display(m_max.PCA[:Subj]) 
+display(m_max.PCA[:Item]) 
+
+VarCorr(m_max) 
+```
+
+Overparameterized according to all criteria. Force the correlation parameters to zero.
+
+```{julia}
+#| lst-label: m_zcp
+m_zcp = let 
+    form = @formula(rating ~ 1 + RC*SC + zerocorr(1+SC*RC | Subj) + zerocorr(1+SC*RC | Item));
+
+    fit(MixedModel, form, dat; contrasts);
+  end 
+
+display(issingular(m_zcp))
+display(m_zcp.PCA[:Subj]) 
+display(m_zcp.PCA[:Item]) 
+display(VarCorr(m_zcp))
+```
+
+There is no evidence for `Item`-related VC for interaction and `Item`-related VC for `RC` is also very small compared to the other VCs. This causes overparameterization. We remove them from the model
+
+```{julia}
+#| lst-label: m_prsm
+
+m_prsm = let 
+    form = @formula(rating ~ 1 + RC*SC + zerocorr(1+SC*RC | Subj) + zerocorr(1+SC | Item));
+
+    fit(MixedModel, form, dat; contrasts);
+  end 
+
+display(issingular(m_prsm))
+display(m_prsm.PCA[:Subj]) 
+display(m_prsm.PCA[:Item]) 
+
+display(VarCorr(m_prsm)) 
+
+display(lrtest(m_prsm, m_zcp, m_max))
+
+lrtest(m_prsm, m_max)
+
+m_prsm
+```
+
+The LMM is defensible. It does not fit worse than `m_max`.
+
+Let's check the extension with CPs for this reduced version.
+
+```{julia}
+#| lst-label: m_ext
+
+m_ext = let 
+    form = @formula(rating ~ 1 + RC*SC + zerocorr(1+SC*RC | Subj) + (1+SC | Item));
+
+    fit(MixedModel, form, dat; contrasts);
+  end 
+
+display(issingular(m_ext))
+display(m_ext.PCA[:Subj]) 
+display(m_ext.PCA[:Item]) 
+
+display(VarCorr(m_ext)) 
+
+display(lrtest( m_prsm, m_ext, m_max))
+```
+
+No, the CP is not needed. How about the `Subj`-related CPs?
+
+```{julia}
+#| lst-label: m_ext2
+
+m_ext2 = let 
+    form = @formula(rating ~ 1 + RC*SC + (1+SC*RC | Subj) + zerocorr(1+SC | Item));
+
+    fit(MixedModel, form, dat; contrasts);
+  end 
+
+display(issingular(m_ext2))
+display(m_ext2.PCA[:Subj]) 
+display(m_ext2.PCA[:Item]) 
+
+display(VarCorr(m_ext2)) 
+
+display(lrtest( m_prsm, m_ext2, m_max))
+```
+
+No, they are not needed either. 
+
+# Compare models
+
+LMM `p_rsm` is a defensible selection. It fits the same number of model parameters as Katja Maquate's` m_KM`; the models are not nested. Therefore,the LRT does not work. Let's compare them anyway with AIC and BIC statistics. 
+
+```{julia}
+display(coeftable(m_KM))
+display(coeftable(m_prsm))
+
+let mods = [m_voi, m_KM, m_prsm, m_max];
+ DataFrame(;
+    model=[:m_voi, :m_KM, :m_prsm, :m_max],
+    pars=dof.(mods),
+    geomdof=round.(Int, (sum ∘ leverage).(mods)),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
+AIC and BIC are 6 points smaller for ` m_prsm ` than `m_KM`.  Using the rule of thumb that 5 points smaller indicates a better fit, according to these statistics we select LMM `m_prsm`. There is no relevant difference in fixed-effect estimates between the two models. In an RES-exploratory setting, we still may want to test the significance the VCs of both models and  the CPs of LMM `m_KM`.
+
+# Observation-level residual diagnostics
+
+## Residual-over-fitted plot
+
+The slant in residuals show a lower and upper boundary of ratings, that is we have have too few short and too few long residuals. Not ideal.
+
+```{julia}
+#| code-fold: true
+#| label: fig-m1fittedresid
+#| fig-cap: Residuals versus fitted values for model m1
+scatter(fitted(m_prsm), residuals(m_prsm))
+```
+
+Contour plots or heatmaps may be an alternative.
+
+```{julia}
+#| code-fold: true
+#| label: fig-m1fittedresid2
+#| fig-cap: Heatmap of residuals versus fitted values for model m_prsm
+
+set_aog_theme!()
+draw(
+  data((; f=fitted(m_prsm), r=residuals(m_prsm))) *
+  mapping(
+    :f => "Fitted values from m_prsm", :r => "Residuals from m_prsm"
+  ) *
+  density();
+)
+```
+
+## Q-Q plot
+
+The plot of quantiles of model residuals over corresponding quantiles of the normal distribution should yield a straight line along the main diagonal.
+
+```{julia}
+#| code-fold: true
+#| label: fig-qqnormm1
+#| fig-cap: Quantile-quantile plot of the residuals for model m1 versus a standard normal
+#| eval: false
+qqnorm(m_prsm; qqline=:none)
+```
+
+This looks very good. 
+
+## Observed and theoretical normal distribution
+
+ Overall, it does not look too bad.
+
+```{julia}
+#| code-fold: true
+#| label: fig-stdresidm1dens
+#| fig-cap: '  Kernel density plot of the standardized residuals for model m1 versus a  standard normal'
+let
+  n = nrow(dat)
+  dat_rz = (;
+    value=vcat(residuals(m_prsm) ./ std(residuals(m_prsm)), randn(n)),
+    curve=repeat(["residual", "normal"]; inner=n),
+  )
+  draw(
+    data(dat_rz) *
+    mapping(:value; color=:curve) *
+    density(; bandwidth=0.1);
+  )
+end
+```
+
+# Conditional modes of random effects 
+
+## Caterpillar plot
+
+### Subj-related 
+
+```{julia}
+#| code-fold: true
+#| label: fig-caterpillarm1
+#| fig-cap: Prediction intervals of the subject random effects in model m_prsm
+#| 
+cm_prsm = first(ranefinfo(m_prsm));
+caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=2)
+```
+
+Do the credibility intervals cross the vertical (imagined) zero line? Clear evidence for individual differences in `GM` and `SC` effect; not so much for `RC` effect.
+
+### Item-related 
+
+```{julia}
+#| code-fold: true
+#| label: fig-caterpillarm2
+#| fig-cap: Prediction intervals of the item random effects in model m_prsm
+#| 
+cm_prsm = last(ranefinfo(m_prsm));
+caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=1)
+```
+
+Item 17 sticks out. Might be worth a check.
+
+## Shrinkage plot
+
+Here we use LMM `m_KM`. 
+
+```{julia}
+#| code-fold: true
+#| label: fig-caterpillarm1L
+#| fig-cap: Shrinkage plots of the subject random effects in model m_KM
+
+shrinkageplot!(Figure(; resolution=(1000, 1200)), m_KM)
+```
+
+# Parametric bootstrap
+
+Using LMM `m_KM`  we:
+
+  - generate a bootstrap sample
+  - compute shortest covergage intervals for the LMM parameters
+  - plot densities of bootstrapped parameter estimates for residual, fixed effects, variance components, and correlation parameters
+
+## Generate a bootstrap sample
+
+We generate 2500 samples for the 11 model parameters (4 fixed effect, 4 VCs, 2 CPs, and 1 residual).
+
+```{julia}
+Random.seed!(1234321)
+samp = parametricbootstrap(2500, m_KM);
+```
+
+```{julia}
+dat2 = DataFrame(samp.allpars)
+first(dat2, 10)
+```
+
+```{julia}
+nrow(dat2) # 2500 estimates for each of 15 model parameters
+```
+
+## Shortest coverage interval
+
+```{julia}
+DataFrame(shortestcovint(samp))
+```
+
+We can also visualize the shortest coverage intervals for fixed effects with the `ridgeplot()` command:
+
+```{julia}
+#| code-fold: true
+#| label: fig-bsridgem1
+#| fig-cap: Ridge plot of fixed-effects bootstrap samples from model m_KM
+ridgeplot(samp; show_intercept=false)
+```
+
+## Comparative density plots of bootstrapped parameter estimates
+
+### Residual
+
+```{julia}
+#| code-fold: true
+#| label: fig-sigmadensitym1
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the residual standard  deviation for model m_KM'
+draw(
+  data(@subset(dat2, :type == "σ" && :group == "residual")) *
+  mapping(:value => "Residual") *
+  density();
+  figure=(; resolution=(800, 400)),
+)
+```
+
+### Fixed effects (w/o GM)
+
+```{julia}
+#| code-fold: true
+#| label: fig-betadensity_fe
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the fixed effects for model  m1L'
+rn = renamer([
+  "(Intercept)" => "GM",
+  "SC: yes" => "Semantic congruity effect",
+  "RC: match" => "Register congruity effect",
+  "RC: match & SC: yes" => "SC x RC interaction effect",
+  "(Intercept), SC: yes" => "CP for GM and SC effect" 
+])
+draw(
+  data(@subset(dat2, :type == "β" && :names ≠ "(Intercept)")) *
+  mapping(
+    :value => "Experimental effect size [ms]";
+    color=:names => rn => "Experimental effects",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+The densitiies correspond nicely with the shortest coverage intervals.
+
+### VCs and CP for `Subj`
+
+```{julia}
+#| code-fold: true
+#| label: fig-sigmasdensitym_Subj
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the `Subj`-related VCs for  model m_KM'
+draw(
+  data(@subset(dat2, :type == "σ" && :group == "Subj" )) *
+  mapping(
+    :value => "Standard deviations [ms]";
+    color=:names => rn => "Variance components",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+#| code-fold: true
+#| label: fig-corrdensity_Subj
+#| fig-cap: '  Kernel density estimate from bootstrap samples of `Subj`-related CP for  model m1_KM'
+draw(
+  data(@subset(dat2, :type == "ρ" && :group == "Subj")) *
+  mapping(
+    :value => "Correlation";
+    color=:names => rn => "Correlation parameter",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+The VC are  very nicely defined; the CP not so much.
+
+### VCs and CP for `Item`
+
+```{julia}
+#| code-fold: true
+#| label: fig-sigmasdensitym_Item
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the `Item`-related VCs for  model m_KM'
+draw(
+  data(@subset(dat2, :type == "σ" && :group == "Item" )) *
+  mapping(
+    :value => "Standard deviations [ms]";
+    color=:names => rn => "Variance components",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+#| eval: false
+#| code-fold: true
+#| label: fig-corrdensity_Item
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the `Item`-related CP for  model m1_KM'
+draw(
+  data(@subset(dat2, :type == "ρ" && :group == "Item")) *
+  mapping(
+    :value => "Correlation";
+    color=:names => rn => "Correlation parameter",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+The VC are  very nicely defined; the CP chunk encounters missing values. Need to follow up.
+
+# Appendix
+```{julia}
+versioninfo()
+```
