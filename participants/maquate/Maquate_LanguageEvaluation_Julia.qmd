@@ -124,7 +124,7 @@ m_KM
 Maximal LMM (for this design)
 
 ```{julia}
-#| lst-label: m_max
+#| label: m_max
 m_max = let 
     form = @formula(rating ~ 1 + RC*SC + (1+SC*RC | Subj) + (1+SC*RC | Item));
 
@@ -141,7 +141,7 @@ VarCorr(m_max)
 Overparameterized according to all criteria. Force the correlation parameters to zero.
 
 ```{julia}
-#| lst-label: m_zcp
+#| label: m_zcp
 m_zcp = let 
     form = @formula(rating ~ 1 + RC*SC + zerocorr(1+SC*RC | Subj) + zerocorr(1+SC*RC | Item));
 
@@ -157,7 +157,7 @@ display(VarCorr(m_zcp))
 There is no evidence for `Item`-related VC for interaction and `Item`-related VC for `RC` is also very small compared to the other VCs. This causes overparameterization. We remove them from the model
 
 ```{julia}
-#| lst-label: m_prsm
+#| label: m_prsm
 
 m_prsm = let 
     form = @formula(rating ~ 1 + RC*SC + zerocorr(1+SC*RC | Subj) + zerocorr(1+SC | Item));
@@ -183,7 +183,7 @@ The LMM is defensible. It does not fit worse than `m_max`.
 Let's check the extension with CPs for this reduced version.
 
 ```{julia}
-#| lst-label: m_ext
+#| label: m_ext
 
 m_ext = let 
     form = @formula(rating ~ 1 + RC*SC + zerocorr(1+SC*RC | Subj) + (1+SC | Item));
@@ -203,7 +203,7 @@ display(lrtest( m_prsm, m_ext, m_max))
 No, the CP is not needed. How about the `Subj`-related CPs?
 
 ```{julia}
-#| lst-label: m_ext2
+#| label: m_ext2
 
 m_ext2 = let 
     form = @formula(rating ~ 1 + RC*SC + (1+SC*RC | Subj) + zerocorr(1+SC | Item));
@@ -227,6 +227,8 @@ No, they are not needed either.
 LMM `p_rsm` is a defensible selection. It fits the same number of model parameters as Katja Maquate's` m_KM`; the models are not nested. Therefore,the LRT does not work. Let's compare them anyway with AIC and BIC statistics. 
 
 ```{julia}
+#| label: compare_models
+
 display(coeftable(m_KM))
 display(coeftable(m_prsm))
 
@@ -312,45 +314,58 @@ end
 
 # Conditional modes of random effects 
 
-## Caterpillar plot
+Here we check conditional modes of random effects for LMM `m_KM`. 
 
-### Subj-related 
+## Subj-related 
+
+### Caterpillar plots
 
 ```{julia}
 #| code-fold: true
-#| label: fig-caterpillarm1
-#| fig-cap: Prediction intervals of the subject random effects in model m_prsm
+#| label: fig-caterpillar_Subj
+#| fig-cap: Credibility intervals of subject-related radom effects in LMM m_KM
 #| 
-cm_prsm = first(ranefinfo(m_prsm));
-caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=2)
+cm_KM_Subj = first(ranefinfo(m_KM));
+caterpillar!(Figure(; resolution=(800, 1200)), cm_KM_Subj; orderby=2)
 ```
 
 Do the credibility intervals cross the vertical (imagined) zero line? Clear evidence for individual differences in `GM` and `SC` effect; not so much for `RC` effect.
 
-### Item-related 
+### Shrinkage plot
 
 ```{julia}
 #| code-fold: true
-#| label: fig-caterpillarm2
-#| fig-cap: Prediction intervals of the item random effects in model m_prsm
+#| label: fig-shrinkage_Subj
+#| fig-cap: Shrinkage plot of subject-related random effects in LMM m_KM
+
+shrinkageplot!(Figure(; resolution=(1000, 1200)), m_KM, :Subj)
+```
+
+## Item-related 
+
+### Caterpillar plots
+
+```{julia}
+#| code-fold: true
+#| label: fig-caterpillar_item
+#| fig-cap: Credibility intervals of item-related random effects in LMM m_KM
 #| 
-cm_prsm = last(ranefinfo(m_prsm));
-caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=1)
+cm_KM_Item = last(ranefinfo(m_KM));
+caterpillar!(Figure(; resolution=(800, 1200)), cm_KM_Item; orderby=1)
 ```
 
 Item 17 sticks out. Might be worth a check.
 
-## Shrinkage plot
-
-Here we use LMM `m_KM`. 
+### Shrinkage plot
 
 ```{julia}
 #| code-fold: true
-#| label: fig-caterpillarm1L
-#| fig-cap: Shrinkage plots of the subject random effects in model m_KM
+#| label: fig-shrinkage_Item
+#| fig-cap: Shrinkage plots of item-related random effects in LMM m_KM
 
-shrinkageplot!(Figure(; resolution=(1000, 1200)), m_KM)
+shrinkageplot!(Figure(; resolution=(1000, 1200)), m_KM, :Item)
 ```
+
 
 # Parametric bootstrap
 
@@ -375,7 +390,7 @@ first(dat2, 10)
 ```
 
 ```{julia}
-nrow(dat2) # 2500 estimates for each of 15 model parameters
+nrow(dat2) # 2500 estimates for each of 11 model parameters
 ```
 
 ## Shortest coverage interval
@@ -502,7 +517,56 @@ draw(
 )
 ```
 
-The VC are  very nicely defined; the CP chunk encounters missing values. Need to follow up.
+The VC are  very nicely defined; the CP chunk encounters missing values. 
+
+>ERROR: ArgumentError: quantiles are undefined in presence of NaNs or missing values
+
+Need to follow up. Let's look at the bootstrap values.  I will do this in R first. 
+
+```{julia}
+|# label: check missing values 
+nrow(dat2)
+describe(dat2)
+
+RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=10.0)
+@rput dat2;
+
+R"""
+print(nrow(dat2))
+suppressWarnings(suppressMessages(library(tidyverse)))
+dat3 <- dat2 |> filter(!is.na(value)) 
+print(nrow(dat2))
+"""
+@rget dat3;
+```
+
+We miss three values in 2500 bootstrapping attempts. Back to Julia.
+
+```{julia}
+#| eval: false
+#| code-fold: true
+#| label: fig-corrdensity_Item_2
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the `Item`-related CP for  model m1_KM'
+
+describe(dat3)
+
+draw(
+  data(@subset(dat3, :type == "ρ" && :group == "Item")) *
+  mapping(
+    :value => "Correlation";
+    color=:names => rn => "Correlation parameter",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+How do you do it in Julia?
+
+```{julia}
+@subset(dat2, :value != NaN)
+describe(dat2)
+```
 
 # Appendix
 ```{julia}
