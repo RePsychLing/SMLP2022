@@ -1158,7 +1158,7 @@ write_feather(dat_acc, "./data/Bahmanian_acc.arrow")
 dat_dur <- 
   latencydata |> 
   as_tibble() |> 
-  dplyr::select(Subj=Participant, Item, Condition, Strct=Structure, Match, ACN=AntecedentNumber, Segment, dur=Duration, pause=Pause) |> 
+  dplyr::select(Subj=Participant, Item, Condition, Strct=Structure, syl=Syllable, Match, ACN=AntecedentNumber, Segment, dur=Duration, pause=Pause) |> 
   mutate(
     Subj = factor(paste0("S", str_pad(str_remove(Subj, "s"), width = 2, side = "left", pad = "0"))),
     Item = factor(paste0("I", str_pad(Item, width = 3, side = "left", pad = "0"))))
