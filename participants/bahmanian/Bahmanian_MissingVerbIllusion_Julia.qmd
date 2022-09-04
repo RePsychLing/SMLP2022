@@ -82,8 +82,8 @@ dat_acc = DataFrame(Arrow.Table("./data/Bahmanian_acc.arrow"));
           :Match= @bycol categorical(:Match)
           :ACN  = @bycol categorical(:ACN)      
           :Strct= @bycol categorical(:Strct)
-          :Nerr = Int(:nerr)
 end; 
+@transform!(dat_acc, :Nerr = Int(:nerr));
 
 describe(dat_acc)
 ```
@@ -114,8 +114,8 @@ dat_dur = dat[ok1, : ]; # keeping rows with valid dur's'
           :Match= @bycol categorical(:Match)
           :ACN  = @bycol categorical(:ACN)      
           :Strct= @bycol categorical(:Strct)
-          :ldur = log(:dur)
 end;          
+@transform!(dat_dur, :ldur = log(:dur));
 
 describe(dat_dur)
 
@@ -254,8 +254,6 @@ display(smp2_dur_n.PCA[:Subj])   # ok
 display(smp2_dur_n.PCA[:Item])   # ok
 
 display(VarCorr(smp2_dur_n))
-
-lrtest(smp2_dur_n, max_dur_n)
 ```
 
 ```{julia}
@@ -273,11 +271,11 @@ display(smp3_dur_n.PCA[:Subj])   # not ok
 display(smp3_dur_n.PCA[:Item])   # not ok
 
 display(VarCorr(smp3_dur_n))
-
-lrtest(smp2_dur_n, smp3_dur_n)
 ```
 
 ```{julia}
+#| label: max_dur_n
+
 max_dur_n = let
   form= @formula(ldur ~ 1 + ACN / Match  +
                        (1 + ACN / Match | Subj) +
@@ -285,7 +283,7 @@ max_dur_n = let
   fit(MixedModel, form, gdur[7]; contrasts)
 end
 
-display(issingular(max_dur_n))  # ok
+display(issingular(max_dur_n))  # not ok
 
 VarCorr(max_dur_n)
 
@@ -313,7 +311,7 @@ VarCorr(max_dur_n)
 We start with the maximal LMM given the design; it takes about 1 minute to fit.
 
 ```{julia}
-#| max_acc
+#| label: max_acc
 
 max_acc = let
   form= @formula(Nerr ~ 1 + ACN * Match + 
@@ -334,7 +332,7 @@ This model looks like it is supported by the data. We are really done.
 We  check whether correlation parameters (CPs) are significantly different from zero. 
 
 ```{julia}
-#| zcp_acc
+#| label: zcp_acc
 
 zcp_acc = let
   form= @formula(Nerr ~ 1 + ACN * Match + 
@@ -345,7 +343,6 @@ end
 
 display(VarCorr(zcp_acc))
 
-display(lrtest(zcp_acc, max_acc))
 coeftable(zcp_acc)
 ```
 
@@ -356,7 +353,7 @@ No evidence for significant CPs. This looks like a very nice GLMM solution. Ther
  A nested model may be a good _a priori_ alternative LMM, especially if the meaning of  `Match` depends on the `ACN`; in other words if the two factors are not _really_ crossed. 
 
  ```{julia}
-#| max_acc_n
+#| label: max_acc_n
 
 max_acc_n = let
   form= @formula(Nerr ~ 1 + ACN / Match + 
@@ -378,7 +375,7 @@ objective(max_acc_n)
 Again, the GLMM looks very good. The CPs are larger. 
 
 ```{julia}
-#| zcp_acc_n
+#| label: zcp_acc_n
 
 zcp_acc_n = let
   form= @formula(Nerr ~ 1 + ACN / Match + 
@@ -388,8 +385,6 @@ zcp_acc_n = let
 end
 
 display(VarCorr(zcp_acc_n))
-
-display(lrtest(zcp_acc_n, max_acc_n))
 
 coeftable(zcp_acc_n)
 ```
