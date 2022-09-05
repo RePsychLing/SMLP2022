@@ -1,0 +1,119 @@
+---
+title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
+subtitle: "Model fitting"
+author: "Douglas Bates"
+date: "2022-09-05"
+output: 
+  html:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    self-contained: true
+callout-appearance: simple
+jupyter: julia-1.8
+---
+
+# Fitting and examining models for the IAT data
+
+Packages to be used
+
+```{julia}
+using Arrow           # to restore the data
+using DataFrames      # data frame representation and manipulation
+using MixedModels     # fit and examine mixed-effects models
+using ProgressMeter   # for the progress indicator during model fitting
+
+ProgressMeter.ijulia_behavior(:clear); # set behavior for Jupyter (IJulia)
+```
+
+## Read and trim the data
+
+```{julia}
+iat = DataFrame(Arrow.Table("./data/IAT_data.arrow"))
+iat_trimmed = subset(iat, :RT => x -> 400 .≤ x .≤ 10_000)
+describe(iat_trimmed)
+```
+
+::: {.callout-note collapse="true"}
+### Why not use subset! to operate in-place
+
+The way Arrow tables are read makes them read-only.
+Instead of using `subset!` to operate in place, we create a new data frame of reduced size
+:::
+
+::: {.callout-note collapse="true"}
+### Why write 10000 as 10_000?
+
+Julia allows for (and ignores) underscores in numerical literals (i.e. numbers that are written out).
+Writing `10_000` helps the human reader to parse the number, just as it would sometimes be written as `10,000` in North America or `10.000` in Europe.
+:::
+
+## Specifying contrasts
+
+In R contrast specifications are stored with a factor but in Julia they are passed to the model-fitting functions as a separate `Dict` (dictionary) structure of key/value pairs.
+The keys are `Symbol`s.
+The simplest way to write a symbol is by prefacing its name with a colon, as in `:ID`.
+
+The values in this dictionary can be contrast specifications from the `StatsModels` package or standardizing transformations from the `StandardizedPredictors` package.
+The `MixedModels` package defines a special `Grouping` "contrast", which is not really a contrast at all but most of the others are technically not contrasts either so we ignore the inaccuracy in naming.
+For models with many levels in one or more grouping factors (the name or expression behind the `|` in a random-effects term) it is important to specify the `Grouping` contrast.
+It is not as important for grouping factors with fewer levels but always defining the grouping contrasts is a good habit to form.
+
+We assign each of the two-level experimental factors the `EffectsCoding` contrast which results in a $\pm 1$ coding.
+If it is important which of the levels corresponds to -1 and which to +1, use the optional argument `base` to declare the level that will be -1.
+
+The contrasts are special "types" in Julia - often what is called "a singleton type" meaning that there is only one object of that type and that single object is just a label.
+The single value is created by, e.g. `Grouping()`.
+
+```{julia}
+contrasts = Dict{Symbol,Any}(
+  :ID => Grouping(),
+  :Item => Grouping(),
+  :Time => EffectsCoding(; base="Baseline"),
+  :Group => EffectsCoding(; base="No_Faking"),
+  :Block => EffectsCoding(; base="Incompatible"),
+  :TaskSwitch => EffectsCoding(; base="No"),
+);
+```
+
+## Model with scalar random effects
+
+For comparison with the results from R, the models are fit to the response speed (`1/RT`), but 
+I think a better scale would be the rate in Hz, evaluated as `1000 / RT`)
+```{julia}
+model12 = let
+  f = @formula(inv(RT) ~ 1 + Group * Time * Block * TaskSwitch + (1|ID) + (1|Item))
+  fit(MixedModel, f, iat_trimmed; contrasts)
+end
+```
+
+```{julia}
+VarCorr(model12)
+```
+
+
+```{julia}
+model13 = let
+  f = @formula(
+    inv(RT) ~ 1 + Group * Time * Block * TaskSwitch +
+    (1 + Time+TaskSwitch+Block|ID) + (1|Item)
+  )
+  fit(MixedModel, f, iat_trimmed; contrasts)
+end
+```
+
+```{julia}
+VarCorr(model13)
+```
+
+```{julia}
+issingular(model13)
+```
+
+```{julia}
+model13.PCA.ID
+```
+
+```{julia}
+versioninfo()
+```
