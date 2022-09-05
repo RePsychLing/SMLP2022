@@ -3,14 +3,16 @@ title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-15"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
-    toc-depth: 3
+    toc-depth: 2
     number-sections: true
     fig-width: 8
     fig-height: 6
+    code-fold: false
+    code-link: true
 editor_options: 
   chunk_output_type: console
 jupyter: julia-1.8
