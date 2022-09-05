@@ -1,0 +1,829 @@
+---
+title: "Detecting Faked IATs via Task-Switch Costs"
+author: "Anke Cajar (& a fewrevisions: Reinhold Kliegl)"
+date: "2022-08-09 (last revised: `r format(Sys.time())`)"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Anke Cajar (AC): Analysis/modeling issues
+
++ Is the contrast coding appropriate?
++ What is currently the best method for model selection (concerning questions like: from maximal to minimal model, doing rePCA, ...)? Is the stuff from the RePsychLing package and vignettes still the way to do it?
++ How do I make sure that the random effects structure of my selected model is really supported by the data (again, rePCA?)?
++ How do I decide which optimizer to use for model fitting? I heard bobyqa is supposed to be good...
++ It seems that the order in which I put the factors in the formula changes the outcome. How do I decide on the order (most important factor first, than second etc.?)?
++ Model results (model 13) don't really fit the mean response time/switch costs plot, as part of the effects you see in the figure goes into the random effects (By chance, there were more older subjects > 45 years in the no-faking group, who had considerably longer mean response times in the baseline IAT). How do I report this in a paper? Should I plot the fixed effects from the model instead of mean response times (which I'd rather not)?
+
+# Background and overview 
+
++ Data are from André Krügel.
++ Revisions and additions for SMLP2022 by Reinhold Kliegl (RK)
++ Revisions do not affect the main conclusion, but highlight common problems with fitting LMMs related to 
+    + contrast specification
+    + convergence issue
+    + zero correlation parameters 
++ Addition of new chunks illustrate
+    + selection of parsimonious LMM using random-effects PCA (`rePCA()`) and LRTs (`anova()`)
+    + plotting partial effect of high-order interaction (`remef()`)
+    + plotting conditional means 
+    
+## Data
+
+This is data from an experiment showing that we can reliably detect whether outcomes from the Implicit Association Test (IAT) are faked by analysing task-switch costs in the combined blocks of the IAT (see next paragraph) Every participant performed two IATs: the control group performed the same normative IAT twice and the faking group was instructed to fake the second IAT by deliberately slowing down response times in the compatible block. It has been shown that switches from a target-concept word to an attribute-dimension word between consecutive trials produces stronger switch costs (i.e., response-time differences between task-repetition and task-switch trials) in the incompatible block than in the compatible block. The present data show that even after successful faking of the IAT, these switch costs are preserved (although the true compatible block became the faked incompatible block). Thus, switch costs can be used to detect IAT faking reliably and with high accuracy.
+
+## IAT and faking strategies
+
+The IAT measures people's implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories---two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.
+
+# Readme 
+
+## Design
+
++ Design: 2 (B-Subj/W-Item) x 2 (W) x 2 (W) x 2 (W) factorial mixed design
++ N trials: 38 Subj x 20 Item x 8 W-Item x 2 repetition of items = 12160
++ N errors: 391 (3.2%)
++ N observations: 12160-391=11769
+
+## Variables
+
++ `Subj`: Participant ID (renamed from `ID`; random factor)
++ `Item`: Word ID (random factor)
++ `Group` (between-Subj/within-Item): 
+    + No_Faking: control group, where people took the same normative IAT twice
+    + Faking: experimental group, where people were instructed to fake the retest IAT by slowing down response times in the compatible block
++ `Time` (within-Subj/within-Item): 
+    + Baseline: first IAT (normative IAT)
+    + Retest: second IAT (normative or faked, depending on Group)
++ `Block` (within-Subj/within-Item): 
+    + Compatible: IAT combined block with shorter response times
+    + Incompatible: IAT combined block with longer response times
++ `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item): 
+    + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next 
+    + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next 
++ `rt`: trial response time (DV, renamed from `RT`)
+
+# Load packages
+
+```{r, message=FALSE}
+library(arrow)
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(easystats)))
+#library(summarytools)
+library(lme4)
+library(car)
+library(GGally)
+library(ellipse)
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+```
+
+# Preprocessing
+
+## Trial data
+
++ Random factors should be factors, not integers! 
++ RK style preferences
+    + Factors capitalized, continuous variables in lower case
+    + `Subj` instead of `ID`; prefix subject and item numbers with `S` and `I` 
+    + Short variable names and factor levels, but respect tradeoff with mmemonic value
+    + Labels should be of equal length
+    + Hint: Leave out vowels in names and labels
++ See Jenny Bryan's [Naming Things](https://docplayer.net/55248970-Naming-things-prepared-by-jenny-bryan-for-reproducible-science-workshop.html)
+
+
+```{r}
+iat <- 
+  read.table("./data/IAT_data.dat", header=TRUE, stringsAsFactors=TRUE) |> 
+  rename("Subj" = "ID", "rt" = "RT", "Switch" = "TaskSwitch") |>
+  mutate(
+    Group = relevel(Group, ref="No_Faking"),
+    Subj = factor(paste0("S", str_pad(Subj, width = 3, side = "left", pad = "0"))),
+    Item = factor(paste0("I", str_pad(Item, width = 2, side = "left", pad = "0")))
+    ) |> 
+  filter(rt >= 400 & rt <= 10000) |> 
+  as_tibble()
+
+#stview(dfSummary(iat), method="render")
+```
+
++ `factor()` generates alphabetic sorting of factor leveks; `as_factor()` sorts them by occurrence.
++ See IAT scoring procedure from Greenwald et al. (2003) for removal of `rt` outliers.
+
+## Subject data
+
++ Rename variables
++ Convert types
++ Add membership in experimental `Group` 
++ Replace missing `age` with median and missing `Gender` with mode
+
+```{r}
+sinfo <- 
+  read.table("./data/IAT_subj.dat", header=TRUE, stringsAsFactors=FALSE) |> 
+  rename(Subj=ID, age=Age) |> 
+  mutate(Subj = factor(paste0("S", str_pad(Subj, width = 3, side = "left", pad = "0"))))
+
+sGroup <- iat |> count(Subj, Group)  
+
+sinfo <- 
+  sinfo |> 
+  left_join(sGroup, by="Subj") |> 
+   mutate(age = ifelse(is.na(age),median(age, na.rm = TRUE), age),
+          Gender = as_factor(ifelse(is.na(Gender), "female", Gender)))
+
+#stview(dfSummary(sinfo), method="render")
+```
+
+## Item data
+
++ Item categories: 
+    + Task (target concept vs. attribute)
+    + Valence (positive vs. negative words, included as nested within levels of `Task`
+ 
+```{r fig.height=15, unit="cm"}
+items <- 
+  read.table("./data/IAT_item.dat", header=TRUE, encoding = "UTF-8") |> 
+  mutate(
+    Task = as_factor(if_else(Item <=10, "target", "attribute")),
+    Valence = as_factor(if_else(Item <= 5 | (Item >=11 & Item <= 15), "+", "-")),
+    Item = factor(paste0("I", str_pad(Item, width = 2, side = "left", pad = "0")))
+  )
+
+#stview(dfSummary(items), method="render")
+```
+
+## Combine data
+
+The dataframe will be used in analyses with `MixedModels.jl` in Julia.
+
+```{r}
+dat <- 
+  iat |> 
+  left_join(sinfo, by=c( "Group", "Subj")) |> 
+  left_join(items, by="Item") |> 
+  select(Subj, Gender, age, Item, Word, Task, Valence, Group, Time, Block, Switch, rt)
+
+write_feather(dat, "./data/Cajar_IAT.arrow")
+```
+
+Separate files for data, subject info, and item info are easier to maintain and are preferred for storage in a public repository. The information can be combined as needed. The redundant format of one integrated file chosen here is to facilitate transition to working with Julia `MixedModels.jl` at SMLP2022.
+
+## Check distribution of rt's
+
+```{r}
+lambdaList <- MASS::boxcox(lm(rt ~ Group*Time*Block*Switch, data=dat))
+(lambda <- lambdaList$x[which.max(lambdaList$y)]) 
+
+hist(1000/dat$rt)
+
+dat$speed <- 1000/dat$rt
+```
+
+The check suggests reciprocal transformation of `rt`, that is to use `speed`.
+
+# Plot switch costs
+
+RK: Put `Time` on blocks of x-axis?
+
+```{r}
+switch_costs <- dat|> 
+  group_by(Time, Group, Block, Switch)|>
+  summarise(M = mean(rt), SD=sd(rt), N=n(), SE=SD/sqrt(N))
+
+fig_rt <- ggplot(switch_costs, aes(x=Switch, y=M, color=Block)) +
+  geom_point(size=2) +
+  geom_line(size=0.7, aes(group=Block)) +
+  geom_errorbar(aes(ymin=M-2*SE, ymax=M+2*SE), width=.1, size=0.7) +
+  facet_grid(Group~Time) +
+  scale_color_manual("Block", values=cbPalette) +
+  labs(x="Task switch", y="Response time [ms]") +
+  theme_bw(base_size=13)
+print(fig_rt)
+```
+
+# AC's model selection (revised)
+
+This section reproduces logic of the original model selection, but where necessary with corrected LMM syntax. 
+
+## Define contrasts
+
+```{r}
+#ctable(dat$Group, dat$Time)
+#ctable(dat$Switch, dat$Block)
+
+contrasts(dat$Group)  <- contr.treatment(2)
+contrasts(dat$Time)   <- contr.treatment(2)
+contrasts(dat$Block)  <- contr.sum(2)/-2
+contrasts(dat$Switch) <- contr.sum(2)/-2
+
+```
+
+RK:
+
++ If you mix treatment and sum contrasts in the context of multifactorial experiments you really need to know what the coefficients are estimating. They are not representing the usual ANOVA main effects and interactions. 
++ The contrasts are not orthogonal. This means you are bound to lose statistical power, except for contrasts that map directly on your hypotheses. 
++ For hypothesis-guided contrast specification (recommended!) it may be better to explicitly specify the model matrix, rather than relying on a mixture of canned contrasts.
++ In the revision I use sum contrasts. They are orthogonal when all factors of have two levels. A direct comparison of the revised selected LMM `model13` with the one based on treatment contrasts is provided in the Appendix.
++ Order of factor levels. The order of factor levels is relevant for figures and tables. I prefer time and difficulty shown in a left-to-right or top-to-bottom order. The order chosen here is in agreement with this preference: 
++ Order of factor levels also determines the signs of effects estimated in LMMs -- unless explicitly specified. In general, I prefer a specification that yields positive effects, but order by time and difficulty may generate a conflict in this respect.
++ For sum contrasts division by (-2) yields estimates of the difference between levels (instead of differences from Grand Mean) and the sign of the effects is reversed (i.e., Switch: yes - no; Block: incompatible - compaible). The division by 2 is strongly discouraged by Douglas Bates because indicators for higher order interaction terms become very small. Since we analyze response speed these effects are expected to be negative. Therefore, for my own model selection (see below), I will **not** divide by 2 and I will **not** reverse the direction of effects for sum contrasts.
+
+## Models that do not (or did not) converge
+
++ AC: I tried model selection by starting with the maximal model and working my way down to the minimal model.
++ RK. Some convergence issues were due to false positives. Double-bar syntax does not work with factors; you need to convert to indicator variables -- see next chunk. 
+
+```{r}
+mm <- model.matrix(~ 1 + Group*Time*Block*Switch, data=dat)
+gr <- mm[,2]
+tm <- mm[,3]
+bl <- mm[,4]
+sw <- mm[,5] 
+```
+
++ RK: Always use `control=lmerControl(calc.derivs=FALSE)`. Most convergence warnings are false positives.
++ RK: `Group` is a within-item factor; added as item-related VC.
++ RK: Save objects that take a long time to fit to be available for quick load later.
++ RK: Add LRTs for model comparisons (i.e., `anova()`)
+
+```{r eval=TRUE}
+f1 <- "./fits/model1.rda"
+if(!file.exists(f1)){
+  model1 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                        (1 +       Time*Block*Switch|Subj) + 
+                        (1 + Group*Time*Block*Switch|Item), 
+                data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+  save(model1, file=f1)
+} else load(f1)
+
+summary(rePCA(model1))  # definitely overparameterized in Item, probably also in Subj
+VarCorr(model1)
+
+# Replace factor with indicator variables in RES
+f2 <- "./fits/model2.rda"
+if(!file.exists(f2)){
+  model2 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                        (1 +    tm*bl*sw||Subj) + 
+                        (1 + gr*tm*bl*sw||Item), 
+                 data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+  save(model2, file=f2)
+} else load(f2)
+
+summary(rePCA(model2))  # Still overparameterized for Subj and Item
+VarCorr(model2)
+anova(model2, model1)   # nothing lost, but anova() is questionable for overparameterized models
+
+# RK: model3 is nested under model1, not model2
+f3 <- "./fits/model3.rda"
+if(!file.exists(f3)){
+  model3 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                        (1 +       Time+Block+Switch|Subj) + 
+                        (1 + Group+Time+Block+Switch|Item), 
+                 data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+  save(model3, file=f3)
+} else load(f3)
+
+summary(rePCA(model3)) # Still overparameterized for Item
+VarCorr(model3)
+anova(model3, model1)  # looks like we are losing information
+
+# RK: model4 is nested under model1 and model2. Need indicator variables!
+model4 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                        (1 +    tm+bl+sw||Subj) + 
+                        (1 + gr+tm+bl+sw||Item), 
+               data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model4)) # Still overparameterized for Item
+VarCorr(model4)
+anova(model4, model1)  # loss of information
+anova(model4, model2)  # loss of information
+
+# RK: model5 is nested under model1
+model5 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                      (1 +       Time*Block*Switch|Subj) + (1|Item), 
+               data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model5)) # Still overparameterized for Subj
+VarCorr(model5)
+anova(model5, model1)  # loss of information
+
+# RK: model6 is nested under model2. Need indicator variables!
+model6 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                      (1 + tm*bl*sw||Subj) + (1|Item), 
+               data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model6))  # Still overparameterized for Subj
+VarCorr(model6)
+anova(model6, model2)   # No loss of information with removing item-related VCs (except for GM)
+
+# RK: model7 is nested under model5
+model7 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                     (1 + Time+Block+Switch|Subj) + (1|Item), 
+               data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model7))  # looking good, but ...
+VarCorr(model7)
+anova(model7, model5, model1)  # much loss of information
+
+# RK: model8 is nested under model6. Need indicator variables!
+model8 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                      (1 + tm+bl+sw||Subj) + (1|Item), 
+               data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model8))  # looking good, but ...
+VarCorr(model8)
+anova(model8, model6, model2) # ... loss of information with removal of Subj-related interaction VCs
+
+# RK: model 9 is nester under model8. Need indicator variables!
+model9 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                      (1 + tm+sw||Subj) + (1|Item), 
+               data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model9))  # looking good, but ...
+VarCorr(model9)
+anova(model9, model8, model6, model2) # ... there is reliable Subj-related VC for Block
+
+# RK: model10 is nested under model9. Need indicator variables!
+model10 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                       (1 + tm||Subj) + (1|Item),
+                data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE) )
+summary(rePCA(model10))
+VarCorr(model10)
+anova(model10, model9, model8, model6, model2) 
+# ... there is reliable Subj-related VC for Switch
+
+# RK: model11 is above model10. Need indicator variables!
+model11 <- lmer(speed ~ 1 + Group*Time*Block*Switch + 
+                      (1 + tm||Subj) + (1 + tm||Item),
+                data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model11)) # overparameterized
+VarCorr(model11)
+anova(model10, model11) # No evidence for Item-related VC for Time
+```
+
+## Minimal model works
+
+RK: As shown above, many other models also converge! Some of them were discarded due to false positive convergence errors with default setting of `control=lmerControl(calc.derivs=TRUE)`.
+
+```{r}
+model12 <- lmer(speed ~ 1 + Group*Time*Block*Switch + (1|Subj) + (1|Item), 
+                data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model12))
+VarCorr(model12)
+```
+
+AC: Surprisingly, this one also works (same as `model7`, but with different order of factors):
+
+```{r}
+model13 <- lmer(speed ~ 1 + Group*Time*Switch*Block + 
+                       (1 + Time+Switch+Block|Subj) + (1|Item), 
+                data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(model13))
+VarCorr(model13)
+print(summary(model13))
+anova(model7, model13)
+
+compare_models(model7, model13)
+
+VarCorr(model7)
+VarCorr(model13)
+```
+
+RK: There is no difference due to different order of factors here. The problem in original code was perhaps the false-positive convergence error that is no longer present in `model7` with `control=lmerControl(calc.derivs=FALSE)`.
+
+## Regression diagnostics for model13
+
+```{r}
+hist(resid(model13))
+
+qqPlot(resid(model13))
+
+qplot(x=fitted(model13), y=resid(model13), geom="point",  shape=I("."), 
+      xlab="Fitted values", ylab="Standardized residuals") + 
+  geom_hline(yintercept=0) + theme_bw() + geom_hex() + geom_density2d(size=1) 
+```
+
+# RK's proposal
+
+## Contrasts and indicator variables
+
+```{r}
+contrasts(dat$Group)   <- contr.sum(2)
+contrasts(dat$Time)    <- contr.sum(2)
+contrasts(dat$Block)   <- contr.sum(2)
+contrasts(dat$Switch)  <- contr.sum(2)
+contrasts(dat$Task)    <- contr.sum(2)
+contrasts(dat$Valence) <- contr.sum(2)
+
+
+mm <- model.matrix(~ 1 + Group*Time*Block*Switch + Task*Valence, data=dat)
+gr <- mm[,2]
+tm <- mm[,3]
+bl <- mm[,4]
+sw <- mm[,5] 
+tk <- mm[,6]
+vc <- mm[,7]
+```
+
+## Model selection
+
+### Maximal LMM `m_max`
+
+I use `MixedModels.jl` in script `Cajar_IAT_Julia.qmd` to demonstrate model selection starting with a maximal LMM (relative to the experimental design, that is without inclusion of covariates such as trial number, subject age, or items' frequency), but including also the two item factors `Task` and `Valence`.  
+
+```
+m_max <- lmer(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
+                     (1 +       Time*Block*Switch*Task*Valence | Subj) +  
+                     (1 + Group*Time*Block*Switch              | Item),
+             data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+```
+
+With this model we estimate the maximal number of fixed effects (2^6 = 64 terms) and their corresponding VCs and CPs for `Subj` and for `Item` grouping variables, that is we estimate variance components (VCs) and correlation parameters (CPs) for within-subject factors for `Subj` (i.e., 2^5 = 32 VCs and 32 x 31 /2 = 496 CPs) and  for within-item factors for `Item` (i.e., 2^4 = 16 VCs and 16 x 15 /2 = 120 CPs), plus the observation-level residual variance. Thus,  64+(32+496)+(16+120)+1=729 model parameters are estimated from 11679 observations. Given 38 subjects and 20 items, there are also 38 subject x 32 parameters + 20 items x 16 parameters = 1536 conditional means of the random effects for the two random factors.
+
+I was not able to fit this LMM with `lme4::lmer()`. 
+
+### Selected LMM `m1`
+
+Model selection led to the model refit here. 
+
+```{r}
+f_m1 <- "./fits/m1.rda"
+if(!file.exists(f_m1)){
+  m1 <- lmer(speed ~ 1 + gr*tm*bl*sw + tk*vc + 
+                    (1 +    tm+bl+tm:bl |Subj) + 
+                    (0+sw+tk+vc + tm:vc + bl:sw + bl:vc  || Subj) +
+                    (1 + bl || Item), 
+             data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+  save(m1, file=f_m1)
+} else {
+  load(f_m1)
+}
+summary(rePCA(m1))
+print(summary(m1), cor=FALSE)
+```
+
+There is no evidence for fixed efffects of word characteristics on response speed, but there are reliable individual differences associated with them.
+
+## Diagnostics for model `m1`
+
+Using an easystats function from the {performance} package.
+
+```{r fig.width=8, fig.height=16, units="cm"}
+check_model(m1)
+```
+
+The diagnostics look fine.
+
+## Plot of switch costs for speed scores
+
+```{r}
+switch_costs <- dat |> 
+  group_by(Time, Group, Block, Switch)|>
+  summarise(M = mean(speed), SD=sd(speed), N=n(), SE=SD/sqrt(N))
+
+fig_speed <- 
+  switch_costs |> 
+  ggplot(aes(x=Switch, y=M, color=Block)) +
+  geom_point(size=2) +
+  geom_line(size=0.7, aes(group=Block)) +
+  geom_errorbar(aes(ymin=M-2*SE, ymax=M+2*SE), width=.1, size=0.7) +
+  scale_colour_manual("Block", values=cbPalette) +
+  facet_grid(Group~Time) +
+  labs(x="Task switch", y="Response speed [1/s]") +
+  theme_bw(base_size=13) + theme(legend.position = "top")
+```
+
+## Partial effect plot
+
+For this you need the {remef} package: https://github.com/hohenstein/remef 
+
+```
+# install.packages("devtools")
+devtools::install_github("hohenstein/remef")
+```
+
+A more recent alternative with more options appears to be the {modelbased} package to compute marginal means. However, I have not worked with the package myself. So I stick with our own package for now. 
+
+```{r fig.width=6, fig.height=12, units="cm"}
+library(remef)
+dat$pe_ia <- remef(m1, ran="all")
+
+# Plot partial-effect switch costs 
+
+pe_switch_costs <- dat |> 
+  group_by(Time, Group, Block, Switch)|>
+  summarise(M = mean(pe_ia), SD=sd(pe_ia), N=n(), SE=SD/sqrt(N))
+
+pe_fig_speed <- ggplot(pe_switch_costs, aes(x=Switch, y=M, color=Block)) +
+  geom_point(size=2) +
+  geom_line(size=0.7, aes(group=Block)) +
+  geom_errorbar(aes(ymin=M-2*SE, ymax=M+2*SE), width=.1, size=0.7) +
+  scale_colour_manual("Block", values=cbPalette) +
+  facet_grid(Group~Time) +
+  labs(x="Task switch", y="Partial effects on response speed [1/s]") +
+  theme_bw(base_size=13) + theme(legend.position = "top")
+
+plots(fig_speed, pe_fig_speed, n_columns=1, tags=c("A", "B"), 
+      title="Comparison of zero-order (A) and partial effects (B) in response speed")
+```
+
+For typical balanced experimental designs zero-order and partial-effect plots will not differ much. This is much more relevant when correlated covariates and associated interactions are part of the model. 
+
+# Conditional means of random effects
+
+In this section we examine  _much under-appreciated_ information estimated in LMMs, that is predictions based on model parameters for subjects and items (i.e., for units of grouping variables/levels of random factors).
+
+## Subject-related conditional means of random experimental effects
+
+The CP's suggest that individual differences in `Time` and `Block` effects are highly negatively correlated and individual differences in the  `Time x Block` interaction also correlate very highly with individual differences in `Time` (positive) and `Block` (negative).  Such large correlations of effects are often due to some type of artefact. They are not necessarily a "problem", but they should be "understood" and therefore be examined in some detail. We can visualize these CPs with caterpillar plots of subjects' conditional means of random experimental effects.
+
+```{r}
+cm_m1 <- ranef(m1, drop=TRUE, condVar=TRUE, whichel="Subj")
+
+cm_m1 <- 
+  as_tibble(cm_m1) |> 
+  rename(Term=term, Subj=grp) |> 
+  mutate(Term = fct_recode(Term, GM = "(Intercept)", Time="tm", Block="bl",
+                           Switch="sw", TxB = "tm:bl", Task="tk", Valence="vc"),
+         Term = fct_relevel(Term, "Switch", after=1)) |> 
+  filter(Term %in% c("GM", "Switch", "Time", "Block", "TxB")) |> 
+  droplevels()
+
+# add subject info
+cm_m1 <- 
+  cm_m1 |> 
+  left_join(sinfo, by="Subj") |> 
+  select(Group, Subj, age, Gender, Term, condval, condsd)
+
+# Default: Subj ordered by GM ...
+cm_m1 |> 
+  ggplot(aes(y=Subj, x=condval, group=Group, color=Group)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Group", values=cbPalette) +
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+```
+
+Not that much clustering by group is visible in the default ordering by GM. How about when we order by the effect of  `Time`? We also ignore effects associated with `Task` and `Valence`
+for now.
+
+```{r}
+# Subj ordered by ...
+ord_subj <- cm_m1 |> filter(Term=="Time") |> arrange(condval) |> pull(Subj)
+
+# check clustering by Group
+cm_m1 |> 
+  filter(Term %in% c("GM", "Switch", "Time", "Block", "TxB")) |> 
+  ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval, group=Group, color=Group)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Group", values=cbPalette) +
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+```
+
+First, now we can see the correlation parameters in the alignments of orientations of `Time`, `Block`, and `TxB`.  
+
+Second, there are clear clustering effects of instruction. The instruction to fake in the retest slowed down a cluster of six subjects _beyond_ the `Time` main effect. There are also  six subjects who were not slowed down as much as expected from the main effect of `Time`.  In other words, the instruction generated much between-subject variance in the faking group. 
+
+The same relatively slow subjects show the reverse effect also for the main effect of `Block`, that is for them the speed difference between incompatible and compatible blocks was especially large or small, respectively. The reverse effect also holds for four of the six relatively fast subjects.
+
+Finally, for the same subsets of clusters of subjects, `TxB` interaction effect was especially small and large, respectively. The interaction translates into a congruency effect of `Block` and `Switch`, that is into the difference between mean of compatible/no-switch and incompatible/switch and mean of compatible/switch and incompatible no switch conditions.
+
+We can also order subject-related `Switch` costs.
+
+```{r}
+# Subj ordered by ...
+ord_subj <- cm_m1 |> filter(Term=="Switch") |> arrange(condval) |> pull(Subj)
+
+# check clustering by Group
+cm_m1 |> 
+  filter(Term %in% c("GM", "Switch", "Time", "Block", "TxB")) |> 
+  ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval, group=Group, color=Group)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Group", values=cbPalette) +
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+```
+
+In general, the instruction to fake does not reveal a distinct clustering of switch costs by instruction for between-subject differences. One exception might be subject S053 who showed the smallest difference in response speed between switch and no-switch trials relative to the main effect of `Switch`. This could have resulted from deliberate slowing of no-switch trials. 
+
+## Subject-related conditional means of random quasi-experimental effects
+
+Plots of conditional means can also be used to check for potential confounding of clustering related to  `Gender` and `age`, that is of covariates not included in the LMM. 
+
+```{r}
+# check clustering by Gender
+cm_m1 |> 
+  filter(Term %in% c("GM", "Switch", "Time", "Block", "TxB")) |> 
+  ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval, group=Gender, color=Gender)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Gender", values=cbPalette)+
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+
+# check clustering by Age
+cm_m1 |> 
+  filter(Term %in% c("GM", "Switch", "Time", "Block", "TxB")) |> 
+  mutate(Age = fct_rev(ifelse(age > median(age), "old", "young"))) |> 
+  ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval, group=Age, color=Age)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Age group", values=cbPalette) +
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+
+# Subj ordered by ...
+ord_subj <- cm_m1 |> filter(Term=="GM") |> arrange(condval) |> pull(Subj) 
+
+cm_m1 |> 
+  mutate(Age = fct_rev(ifelse(age > median(age), "old", "young"))) |> 
+  ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval, group=Age, color=Age)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Age group (median)", values=cbPalette) +
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+```
+
+Older subjects are slower overall and show a smaller change from baseline to retest (see `GM` and `Time`). For other effects, their credibility intervals mostly cross the zero line.
+
+## Add `age` as covariate to model `m1`
+
+We refit the model including `age` (centered) as an additional covariate. 
+
+```{r}
+dat$age_c <- dat$age - median(dat$age)
+
+if(!file.exists( "./fits/m1_age.rda")){
+  m1_age <- lmer(speed ~ 1 + gr*tm*bl*sw + tk*vc + age_c +
+                    (1 +    tm+bl+tm:bl |Subj) + 
+                    (0+sw+tk+vc + tm:vc + bl:sw + bl:vc  || Subj) +
+                    (1 + bl || Item), 
+             data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+  save(m1_age, file="./fits/m1_age.rda")
+} else {
+  load("./fits/m1_age.rda")
+}
+summary(rePCA(m1_age))
+
+compare_parameters(list("Selected LMM m1"=m1, "LMM m1 + age" = m1_age), 
+                   effects="fixed", style="se_p")
+
+param_m1_age <- 
+  model_parameters(m1_age, effects="random") |> 
+  pull(Coefficient)
+
+model_parameters(m1, effects="random") |> 
+  rename(Coeff_m1=Coefficient) |> 
+  mutate(Coeff_m1_age=param_m1_age)
+```
+
++ The linear trend of `age` is significant; other fixed effects stay significant.
++ Its inclusion reduces the subject-related VC for `GM` and increases the magnitude of associated CPs.
++ The quadratic trend of age was not significant (not shown).
++ Other VCs and CPs do not change.
+
+We check the conditional means of random effects again using functions from `easystats` package [{modelbased}](https://easystats.github.io/see/articles/modelbased.html). 
+
+```{r}
+cm_m1_age <- ranef(m1_age, drop=TRUE, condVar=TRUE, whichel="Subj")
+
+cm_m1_age <- 
+  as_tibble(cm_m1_age) |> 
+  rename(Term=term, Subj=grp) |> 
+  mutate(Term = fct_recode(Term, GM = "(Intercept)", Time="tm", Block="bl",
+                           Switch="sw", TxB = "tm:bl"),
+         Term = fct_relevel(Term, "Switch", after=1))
+
+# add subject info
+cm_m1_age <- 
+  cm_m1_age |> 
+  left_join(sinfo, by="Subj") |> 
+  select(Group, Subj, age, Gender, Term, condval, condsd)
+
+# Subj ordered by ...
+ord_subj <- cm_m1_age |> filter(Term=="GM") |> arrange(condval) |> pull(Subj) 
+
+cm_m1_age |> 
+  filter(Term %in% c("GM", "Switch", "Time", "Block", "TxB")) |> 
+  mutate(Age = fct_rev(ifelse(age > 45, "old", "young"))) |> 
+  ggplot(aes(y=factor(Subj, levels=ord_subj), x=condval, group=Age, color=Age)) +
+    geom_point() + 
+    facet_grid(. ~ Term, scales="free_x") +
+    geom_errorbarh(aes(xmin=condval -2*condsd,
+                       xmax=condval +2*condsd), height=0) +
+    scale_colour_manual("Age group", values=cbPalette) +
+    geom_vline(xintercept=0) +
+    xlab("Conditional mean") + ylab("Subject") +
+    theme_bw() + theme(legend.position = "top")
+```
+
+As expected, older subjects' conditional means for `GM` "moved" into the sample distribution when age is included as a covariate.
+
+## Item-related conditional means of random effects
+
++ There is only one VC for Grand Mean of speed of response by Item. 
++ Replace item number with actual word.
++ Check for outliers.
+
+Using [{modelbased}](https://easystats.github.io/modelbased/articles/estimate_grouplevel.html) with functions:
+
++ `estimate_grouplevel(model, deviation=FALSE)` # Group-specific effects
++ `estimate_grouplevel(model, type="total")`    # BLUPs: fe + cm
++ `reshape_grouplevel()`;                       # CMs to wide data; then `cbind()` with original dataframe.
++ `summary()` for objects of `reshaped_group_level()`
+
+
+```{r}
+cm_m1_item  <- 
+  estimate_grouplevel(m1) |> 
+  filter(Group=="Item")|>
+  left_join(items, by=c("Level"="Item")) 
+
+cm_m1_item |> 
+  as_tibble() |> 
+  mutate(out = if_else(Word %in% c("Liebe", "HORNISSE"), "red", "black"),
+         Parameter = fct_recode(Parameter, "GM" = "(Intercept)", "Block" = "bl"),
+         Word = fct_reorder(Word, Coefficient)) |> 
+  ggplot(aes(y=Word, x=Coefficient, group=out, color=out)) + 
+  geom_point() + 
+  facet_grid(. ~ Parameter, scales="free_x", ) +
+  geom_errorbarh(aes(xmin=Coefficient-2*SE, xmax=Coefficient+2*SE), height=0) +
+  scale_colour_manual("", values=c("black", "red")) +
+  geom_vline(xintercept=0) +
+  xlab("Conditional mean") + ylab("") +
+  theme_bw() + theme(legend.position = "none")
+```
+
+The sources of the two significant `Item`-related VCs of `GM` and `Block` are two items. **HORNISSE** (hornet) is the only item  with a significantly smaller than average `Block` effect (see right facet; i.e., no overlap of credibility interval with zero line). Note that *hornet* was also the item with the numerically slowest respond speed overall (see `GM`, left facet). There was also one item/word that was responded to significantly faster (i.e., no overlap of credibility interval with `GM`) than  **Liebe** (lover) than the Grand Mean. Makes sense. 
+ 
+# Appendix
+
+## Refit `model13` with sum contrasts
+
+In the original analysis, treatment contrasts  were chosen for `Group`  and `Time` because they provides a direct test of the critical cell against the average of the other three (which may be assumed to be equivalent because they do not involve fake behavior). There are four critical terms with this specification:
+
+1. Interaction of `Group x Time` tests the critical "fake" cell against the mean of other cells.  
+2. Interaction of `Group x Time x Block` tests whether 1. is moderated by `Block` 
+3. Interaction of `Group x Time x Switch` tests whether 1. is moderated by `Switch` 
+4. Interaction of `Group x Time x Block x Switch` tests whether 2. and 3. are additive.
+
+Theoretically critical interactions are: 2, 3, and 4. Interestingly, these interactions should yield the same test statistics if all four factors are specified with sum contrasts. In this respect, sum contrasts are ok.
+
+```{r}
+contrasts(dat$Group) <- contr.sum(2)/2
+contrasts(dat$Time)  <- contr.sum(2)/2
+contrasts(dat$Block) <- contr.sum(2)/-2
+contrasts(dat$Switch) <-contr.sum(2)/-2
+
+model12_sum <- lmer(speed ~ 1 + Group*Time*Block*Switch + (1|Subj) + (1|Item), 
+                data=dat, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+
+fe_ord <- c(6, 12, 13, 16, 1:5, 7:11, 14, 15)
+
+tibble(Parameter=names(fixef(model12)), 
+       "t w/ trt"=summary(model12)$coefficients[,3], 
+       "t w/ sum"=summary(model12_sum)$coefficients[,3],
+       "b w/ trt"=summary(model12)$coefficients[,1], 
+       "b w/ sum"=summary(model12_sum)$coefficients[,1])[fe_ord,]
+```
+
+Good. Expectations were met perfectly! 
+
+All other fixed-effect test statistics will depend on the chosen contrasts. In general, as sum contrasts are orthogonal, they should have better statistical power for the detection of significant main effects and other interactions than treatment contrasts. For example, the `Block x Switch`  is of theoretical interest, too.  For this interaction, with contr.sum, _t_ = -17.0, with contr.treatment  _t_=-8.9, despite averaging over `Group` and `Time` in this case in both models.  Other fixed effects have a different meaning in the two analyses; they do not refer to the same effects! Therefore, test statistics are not comparable. 
+
+## Session info
+
+```{r}
+sessionInfo()
+```
