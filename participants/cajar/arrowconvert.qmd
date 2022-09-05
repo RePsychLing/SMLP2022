@@ -1,0 +1,201 @@
+---
+title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
+subtitle: "Arrow file creation"
+author: "Douglas Bates"
+date: "2022-09-05"
+output: 
+  html:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    self-contained: true
+callout-appearance: simple
+jupyter: julia-1.8
+---
+
+# Background 
+
+## Overview 
+
++ Original analysis is by Anke Cajar.
++ Data are from André Krügel.
++ This document is a description of creating "canonical" Arrow-format data files
+
+## Data
+
+This is data from an experiment showing that we can reliably detect whether outcomes from the Implicit Association Test (IAT) are faked by analysing task-switch costs in the combined blocks of the IAT (see next paragraph) Every participant performed two IATs: the control group performed the same normative IAT twice and the faking group was instructed to fake the second IAT by deliberately slowing down response times in the compatible block. It has been shown that switches from a target-concept word to an attribute-dimension word between consecutive trials produces stronger switch costs (i.e., response-time differences between task-repetition and task-switch trials) in the incompatible block than in the compatible block. The present data show that even after successful faking of the IAT, these switch costs are preserved (although the true compatible block became the faked incompatible block). Thus, switch costs can be used to detect IAT faking reliably and with high accuracy.
+
+## IAT and faking strategies
+
+The IAT measures people's implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories---two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.
+
+## Design (almost balanced)
+
++ Design: 2 (B-Subj/W-Item) x 2 (W) x 2 (W) x 2 (W) factorial mixed design
++ N trials: 38 Subj x 20 Item x 8 W-Item x 2 repetition of items = 12160
++ N errors: 391 (3.2%)
++ N observations: 12160-391=11769
+
+## Variables
+
++ `ID`: Participant ID (stored as integer - should be a factor)
++ `Item`: Word ID (stored as integer - should be a factor)
++ `Group` (between-Subj/within-Item): 
+    + No_Faking: control group, where people took the same normative IAT twice
+    + Faking: experimental group, where people were instructed to fake the retest IAT by slowing down response times in the compatible block
++ `Time` (within-Subj/within-Item): 
+    + Baseline: first IAT (normative IAT)
+    + Retest: second IAT (normative or faked, depending on Group)
++ `Block` (within-Subj/within-Item): 
+    + Compatible: IAT combined block with shorter response times
+    + Incompatible: IAT combined block with longer response times
++ `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item): 
+    + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next 
+    + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next 
++ `RT`: trial response time
+
+# Setup
+
+We will follow the steps in the description of the R analysis by Anke Cajar
+
+Packages to be used
+```{julia}
+using Arrow             # for writing the result as an .arrow file
+using CSV               # read the original data file
+using CategoricalArrays # to convert to categorical arrays (i.e. factors)
+using DataFrames        # data frame representation and manipulation
+
+```
+
+## Read the original data file
+
+```{julia}
+iat = CSV.read("./data/IAT_data.dat", DataFrame; pool=true)
+describe(iat)
+```
+
+::: {.callout-note collapse="true"}
+### Why is there a ; after DataFrame in the call to CSV.read?
+
+In Julia named optional arguments in a function call must always follow the positional arguments.
+The comma after the last positional argument can be replaced by a semi-colon.
+In this case it doesn't make any difference but when we are fitting models with `contrasts` specifications we can take advantage of this semi-colon to use a more compact form of the call.
+:::
+
+## Converting ID and Item columns to factors
+
+Convert the integer `ID` values, which are between 1 and 156, to character strings of the form `S001` to `S156`, then convert these to a categorical array (similar to a factor in R).
+
+Note that we left-pad the numbers with zeros to a given length (3, in this case) so that sorting the strings lexicographically corresponds to sorting by numerical value.
+
+```{julia}
+iat.ID = let
+  strv = string.('S', lpad.(iat.ID, 3, '0'))
+  categorical(strv; levels=sort(unique(strv)))
+end;
+```
+::: {.callout-note collapse="true"}
+### A "let" block
+
+The expressions between `let` and `end` are evaluated in a temporary namespace that is discarded when finished.
+These allow the user to create temporary vectors without clogging up the global namespace.
+:::
+
+The `Item` column is similarly transformed
+```{julia}
+#| echo: false
+iat.Item = let
+  strv = string.('I', lpad.(iat.Item, 2, '0'))
+  categorical(strv; levels=sort(unique(strv)))
+end;
+```
+
+At this point we could re-order the levels of some of the two-level experimental factors but that is better accomplished when specifying contrasts for the models we fit.
+
+We do convert the response time, `RT`, to a 16-bit integer to save on space.
+
+```{julia}
+iat.RT = Int16.(iat.RT);
+```
+
+## Writing the Arrow file
+
+```{julia}
+Arrow.write("./data/IAT_data.arrow", iat; compress=:lz4)
+```
+
+We can examine the structure of this file in Python
+```python
+$ python
+Python 3.9.13 | packaged by conda-forge | (main, May 27 2022, 16:56:21) 
+[GCC 10.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pyarrow.feather as fea
+>>> fea.read_table('./data/IAT_data.arrow')
+pyarrow.Table
+ID: dictionary<values=string, indices=int8, ordered=0> not null
+Item: dictionary<values=string, indices=int8, ordered=0> not null
+Time: dictionary<values=string, indices=int8, ordered=0> not null
+Group: dictionary<values=string, indices=int8, ordered=0> not null
+Block: dictionary<values=string, indices=int8, ordered=0> not null
+TaskSwitch: dictionary<values=string, indices=int8, ordered=0> not null
+RT: int16 not null
+----
+ID: [  -- dictionary:
+["S001","S007","S008","S015","S017",...,"S142","S146","S154","S155","S156"]  -- indices:
+[0,0,0,0,0,...,37,37,37,37,37]]
+Item: [  -- dictionary:
+["I01","I02","I03","I04","I05",...,"I16","I17","I18","I19","I20"]  -- indices:
+[12,10,4,4,11,...,16,16,7,15,15]]
+Time: [  -- dictionary:
+["Baseline","Retest"]  -- indices:
+[0,0,0,0,0,...,1,1,1,1,1]]
+Group: [  -- dictionary:
+["No_Faking","Faking"]  -- indices:
+[0,0,0,0,0,...,1,1,1,1,1]]
+Block: [  -- dictionary:
+["Compatible","Incompatible"]  -- indices:
+[0,0,0,0,0,...,0,0,0,0,0]]
+TaskSwitch: [  -- dictionary:
+["Yes","No"]  -- indices:
+[0,1,0,1,0,...,0,1,0,0,1]]
+RT: [[795,551,656,477,668,...,665,435,630,547,402]]
+```
+or in R
+
+```r
+> library(arrow)
+Some features are not enabled in this build of Arrow. Run `arrow_info()` for more information.
+
+Attaching package: ‘arrow’
+
+The following object is masked from ‘package:utils’:
+
+    timestamp
+
+> library(tibble)
+> iat <- read_feather("./data/IAT_data.arrow")
+> glimpse(iat)
+Rows: 12,160
+Columns: 7
+$ ID         <fct> S001, S001, S001, S001, S001, S001, S001, S001, S001, S001,…
+$ Item       <fct> I13, I11, I05, I05, I12, I12, I20, I09, I09, I17, I10, I01,…
+$ Time       <fct> Baseline, Baseline, Baseline, Baseline, Baseline, Baseline,…
+$ Group      <fct> No_Faking, No_Faking, No_Faking, No_Faking, No_Faking, No_F…
+$ Block      <fct> Compatible, Compatible, Compatible, Compatible, Compatible,…
+$ TaskSwitch <fct> Yes, No, Yes, No, Yes, No, No, Yes, No, Yes, Yes, No, No, N…
+$ RT         <int> 795, 551, 656, 477, 668, 412, 634, 656, 464, 638, 588, 883,…
+```
+
+or in Julia
+
+```{julia}
+iat = DataFrame(Arrow.Table("./data/IAT_data.arrow"))
+describe(iat)
+```
+
+```{julia}
+versioninfo()
+```
+
+
