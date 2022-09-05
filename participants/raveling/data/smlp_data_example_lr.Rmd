@@ -1,0 +1,70 @@
+---
+title: "SMLP Task 1 Laura Raveling"
+output: md_document 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lme4)
+library(dplyr)
+```
+
+## Data Description 
+
+The data is a randomly sampled subset of variables of a conversation experiment. The experimental data consists of video recordings of conversations taking place between three participants (N Participants = 21, N Triads = 7). The conversation is analysed with an event-related coding approach. Each time a question-answer sequence occurs, gestural interactions and turn gaps (time interval between question and answer, "GDUR") are annotated. The Hypothesis is that turn gap duration varies along with the type of head gestures ("GRT") of the answers. If there is a significant main effect, the second assumption is that head shakes go along with longer a turn gap duration than head nods or head tilts. The types of head gestures are listed below the data summary and basic model specification."COND" indicated if the answer was starting with a mix of  non-verbal and verbal answers ("VV"), or purely non-verbal answers ("VG"). 
+
+```{r load data from githup, echo=TRUE}
+gh.link <- "https://raw.githubusercontent.com/lraveling/smlp/main/conversation_data.txt"
+df.lme <- read.delim(gh.link, sep = " ", header = TRUE, stringsAsFactors = TRUE)
+df.lme$TR <- as.factor(df.lme$TR)
+View(df.lme)
+summary(df.lme)
+```
+
+## Basic Boxplot
+A boxplot of the turn gap duration in combination with the head gesture types 
+
+```{r plot dependent variable, echo=TRUE}
+plot(df.lme$GRT,df.lme$GDUR)
+```
+
+```{r basic model specifications}
+base <- lmer(GDUR ~ GRT + (1 | GRT), data = df.lme)
+qa1 <- lmer(GDUR ~ GRT + (GRT | TR), data = df.lme)
+
+summary(base)
+summary(qa1)
+
+```
+
+* What exactly is singularity and how do i prevent it? 
+
+* How to specify the relative covariance factor? 
+
+
+
+### Types of head gestures 
+
+* lt = left turn
+* rt = right turn
+* lti = left tilt 
+* rti = right tilt 
+* uti = upward tilt 
+* dti = downward tilt 
+* fne = forward neck extension
+* bne = backward neck extension
+* udti = upward-downward tilt 
+* duti = downward-upward tilt 
+* lrs = left-right shake 
+* rsl = right-left shake 
+* uds = upward-downward shake 
+* dus = downward-upward shake 
+
+
+
+
+
+
+
+
+

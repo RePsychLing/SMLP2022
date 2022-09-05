@@ -1,0 +1,224 @@
+---
+title: "Laura Raveling: Conversation Gaps - Version 2"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-08-25 (last revised: `r format(Sys.time())`)"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(arrow)
+library(tidyverse)
+library(easystats)
+library(summarytools)
+library(lme4)
+```
+
+# Questions
+
+1. What exactly is singularity and how do i prevent it? 
+2. qa2: If the Person is nested within the Dyad, and the head gestures are nested within the Person, is the structure of random effects defined accurately that way? 
+3. How to specify the relative covariance factor? 
+
+# Data Description 
+
+The data is a randomly sampled subset of variables of a conversation experiment. The experimental data consists of video recordings of conversations taking place between three participants (N Participants = 21, N Triads = 7). The conversation is analysed with an event-related coding approach. Each time a question-answer sequence occurs, gestural interactions and turn gaps (time interval between question and answer, "GDUR") are annotated. The Hypothesis is that turn gap duration varies along with the type of head gestures ("GRT") of the answers. If there is a significant main effect, the second assumption is that head shakes go along with longer a turn gap duration than head nods or head tilts. The types of head gestures are listed below the data summary and basic model specification."COND" indicated if the answer was starting with a mix of  non-verbal and verbal answers ("VV"), or purely non-verbal answers ("VG"). 
+
+# Preprocessing 
+
++ Converting variable names to my personal style
++ Revert centring of gaze and convert to seconds 
++ Check distribution of fixed-effect residuals
+
+```{r load data from githup, echo=TRUE}
+dat.gh.link <- "https://raw.githubusercontent.com/lraveling/smlp/main/conversation_data.txt"
+dat <- 
+  read.delim(dat.gh.link, sep = " ", header = TRUE, stringsAsFactors = FALSE) |> 
+  as_tibble() |> 
+  rename(gdur=GDUR, Gesture=GRT, Answer=COND, Subj=PN, Triad=TR) |> 
+  mutate(Triad = ifelse(Subj %in% c("A4", "B4", "C4"), 4, Triad),
+         Triad = factor(paste0("T", str_pad(Triad, width = 2, side = "left", pad = "0"))),
+         Subj = factor(paste0("S", str_pad(parse_number(Subj), width = 2, side = "left", pad = "0"))),
+         Gesture=factor(Gesture),
+         Answer =factor(Answer, levels=c("VV", "VG"), labels=c("gv_mix", "g_only")),
+         gdur = (gdur + 3500)/1000) |> 
+  select(Triad, Subj, Gesture, Answer, gdur) |> 
+  filter(Triad != 1)
+
+MASS::boxcox(gdur ~ 1 + Triad + Subj + Answer, data=dat) 
+# stay with the duration  
+```
+
+## Design
+
++ There are 7 triads. This is a random factor with a marginally low number of levels. The number is small enough that you may consider also modeling them as levels of a fixed factor.
++ There are 21 subjects nested in triplets in the 7 triads They are uniquely coded as `A#`, `B#`, `C#` witihin `Triad` 1 to 7.  We provide them with unique labels: `A1`, `B1` .. `A7`, `B7`.
++ Each subject asks and answers questions, but here I assume is coded who answered.
++ `Answer `  (VG = purely gesture vs VV = mix of verbal and gesture) is included with an effect contrast as within-triad and within-subject factor.  
++ `Gesture` effects are tested with two _a priori_ special contrasts that also estimate GM in intercept.
+    1. head shakes (lrs, rls, uds, dus) > head nods (fne, bne)
+    2. head shakes (lrs, rls, uds, dus) > head tilts (lti, rti, dti, udti, duti)
++ `Gesture` is specified as a fixed within-Triad and within-Subj factor
+
+
+**Head gestures (20)
+
+* lt = left turn 
+* lti = left tilt 
+* rti = right tilt 
+* uti = upward tilt 
+* dti = downward tilt 
+* fne = forward neck extension
+* bne = backward neck extension
+* udti = upward-downward tilt 
+* duti = downward-upward tilt 
+* lrs = left-right shake 
+* rls = right-left shake 
+* uds = upward-downward shake 
+* dus = downward-upward shake
+* fb = <perhaps something with face>?
+* hg = head
+* hn = head
+* incrinbr = incremental breathing
+* lp = lip parting
+* sa = <probably something with shoulder>?
+* sh = <probably something with shoulder>?
+
+## Collapse factor levels
+
+Let's collapse Gesture cells according to the top-contrast categories. 
+
+```{r}
+dat$Gest <-  
+  fct_collapse(dat$Gesture, lrsh = c("lrs", "rls"),
+                            udsh = c("uds", "dus"),
+                            lrti = c("lti", "rti", "lt"),
+                            udti = c("udti", "duti", "dti", "uti"),
+                            nods = c("bne", "fne", "hg", "hn", "fb"),
+                            shld = c("sa", "sh", "incrinbr"),
+                            lips = "lp")
+
+dat$Gest <- factor(dat$Gest, 
+                       levels=c("lips", "lrsh", "lrti", "nods", "shld",  "udsh", "udti" ))
+
+summarytools::ctable(dat$Triad, dat$Gest)
+table(dat$Gest, dat$Answer)
+```
+
+## Hyptheses contrasts for `Gesture`
+
+The following is actually an orthogonal set of contrasts. More on this at the SMLP2022.
+
+```{r}
+library(hypr)
+
+## Contrasts
+gstrContr <- 
+  contr.hypothesis( lips ~ (nods+shld+udsh+lrsh+udti+lrti)/6, 
+                   (nods+shld)/2 ~ (udsh+lrsh)/2,
+                   (udti+lrti)/2 ~ (udsh+lrsh)/2,
+                    nods ~ shld,
+                    udsh ~ lrsh,
+                    lrti ~ udti)
+
+contrasts(dat$Gest) <- gstrContr
+contrasts(dat$Answer) <- contr.sum(2)
+
+mm <- model.matrix(~  1 + Answer*Gest, data=dat)
+dat$ans <- mm[,2] # answer
+dat$lip <- mm[,3] # others vs. lip parting
+dat$s_n <- mm[,4] # shake - (nods+shld)
+dat$s_t <- mm[,5] # shake - tilt
+dat$gc1 <- mm[,6] # shoulder - nods
+dat$gc2 <- mm[,7] # left-right vs. up-down shake
+dat$gc3 <- mm[,8] # up-down vs. left-rght tilt
+```
+
+## Save dataframes for transfer
+
+```{r}
+write_feather(dat,  "./data/Raveling_ConversationGap_v2.arrow")
+saveRDS(dat, file = "./data/Raveling_ConversationGap_v2.rds")
+```
+
+## LM check of contrast specification
+
+Two contrast x answewr interactions are not defined.
+
+```{r}
+table(dat$Gest, dat$Answer)
+summary(lm1 <- lm(gdur ~ 1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3, data=dat))
+```
+
+# LMMs 
+
+Probably we do not have enough observations to support a complex LMM. In a first step, we check the relevance of the three random factors:  `Subj`, `Gesture`,  and `Triad`.
+
+## `Subj`
+
+```{r}
+voi_S <- lmer(gdur ~  1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Subj), data=dat,
+           REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+print(summary(voi_S), corr=FALSE)
+```
+
+## `Gesture` / `Gest`
+
+```{r}
+voi_G1 <- lmer(gdur ~ 1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Gesture), data=dat,
+           REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+print(summary(voi_G1), corr=FALSE)
+
+voi_G2 <- lmer(gdur ~ 1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Gest), data=dat,
+           REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+print(summary(voi_G2), corr=FALSE)
+```
+
+No reliable VC for `Gesture` or `Gest.` 
+
+## Triad 
+
+```{r}
+voi_T <- lmer(gdur ~ 1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Triad), data=dat,
+              REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+print(summary(voi_T), cor=FALSE)
+```
+
+## `Subj` + `Triad`
+
+VCs for `Subj` and `Triad` were of similar magnitude when tested individually. What if we put both of them in the LMM?
+
+```{r}
+voi_ST <- lmer(gdur ~ 1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Subj) + (1 | Triad), data=dat,
+              REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+print(summary(voi_ST), cor=FALSE)
+
+anova(voi_S, voi_ST)
+anova(voi_T, voi_ST)
+```
+
+This suggests that `Triad` captures more of it, but neither of them significantly improves the fit over the LMM with only one of them.
+
+# Summary
+
+Not much to see, the number of observations is simply too small. Nevertheless a useful exercise of preprocessing and contrast specification.
+
+
+# Appendix
+
+```{r}
+sessionInfo()
+```
+
+

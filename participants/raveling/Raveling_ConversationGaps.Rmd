@@ -14,23 +14,23 @@ library(dplyr)
 The data is a randomly sampled subset of variables of a conversation experiment. The experimental data consists of video recordings of conversations taking place between two participants (N Participants = 14, N Dyads = 7). The conversation is analysed with an event-related coding approach. Each time a question-answer sequence occurs, gestural interactions and turn gaps (time interval between question and answer) are annotated. The Hypothesis is that turn gap durations vary along with the type of head gestures. If there is a significant main effect, the second assumption is that head shakes go along with longer turn gap durations than head nods or head tilts. The types of head gestures are listed below the data summary and basic model specification. 
 
 ```{r load data from githup, echo=TRUE}
-gh.link <- "https://raw.githubusercontent.com/lraveling/smlp/main/smlp_data.txt"
-df.lme <- read.delim(gh.link, sep = " ", header = TRUE, stringsAsFactors = TRUE)
-View(df.lme)
-summary(df.lme)
+sim.gh.link <- "https://raw.githubusercontent.com/lraveling/smlp/main/smlp_data.txt"
+sim <- read.delim(sim.gh.link, sep = " ", header = TRUE, stringsAsFactors = TRUE)
+View(sim)
+summary(sim)
 ```
 
 ## Basic Boxplot
 A boxplot of the turn gap duration in combination with the head gesture types 
 
 ```{r plot dependent variable, echo=TRUE}
-plot(df.lme$head.sample,df.lme$g.dur)
+plot(sim$head.sample,sim$g.dur)
 ```
 
 ```{r basic model specifications}
-base <- lmer(g.dur ~ head.sample + (1 | head.sample), data = df.lme)
-qa1 <- lmer(g.dur ~ head.sample + (head.sample | dyad.sample), data = df.lme)
-qa2 <- lmer(g.dur ~ head.sample + (id.a | head.sample) + (dyad.sample | id.a), data = df.lme)
+base <- lmer(g.dur ~ head.sample + (1 | head.sample), data = sim)
+qa1 <- lmer(g.dur ~ head.sample + (head.sample | dyad.sample), data = sim)
+qa2 <- lmer(g.dur ~ head.sample + (id.a | head.sample) + (dyad.sample | id.a), data = sim)
 
 summary(base)
 summary(qa1)
