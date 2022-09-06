@@ -4,6 +4,7 @@ author: "Anke Cajar (& a fewrevisions: Reinhold Kliegl)"
 date: "2022-08-09 (last revised: `r format(Sys.time())`)"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     number-sections: true
