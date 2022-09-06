@@ -1,6 +1,6 @@
 ---
 title: "Detecting Faked IATs via Task-Switch Costs"
-author: "Anke Cajar (& a fewrevisions: Reinhold Kliegl)"
+author: "Anke Cajar (plus a few revisions: Reinhold Kliegl)"
 date: "2022-08-09 (last revised: `r format(Sys.time())`)"
 format: 
   html:
