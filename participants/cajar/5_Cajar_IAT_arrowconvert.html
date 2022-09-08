@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.147">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Douglas Bates">
+<meta name="dcterms.date" content="2022-09-05">
+
+<title>Anke Cajar: Detecting Faked IATs via Task-Switch Costs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="5_Cajar_IAT_arrowconvert_files/libs/clipboard/clipboard.min.js"></script>
+<script src="5_Cajar_IAT_arrowconvert_files/libs/quarto-html/quarto.js"></script>
+<script src="5_Cajar_IAT_arrowconvert_files/libs/quarto-html/popper.min.js"></script>
+<script src="5_Cajar_IAT_arrowconvert_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="5_Cajar_IAT_arrowconvert_files/libs/quarto-html/anchor.min.js"></script>
+<link href="5_Cajar_IAT_arrowconvert_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="5_Cajar_IAT_arrowconvert_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="5_Cajar_IAT_arrowconvert_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="5_Cajar_IAT_arrowconvert_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="5_Cajar_IAT_arrowconvert_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Anke Cajar: Detecting Faked IATs via Task-Switch Costs</h1>
+<p class="subtitle lead">Arrow file creation</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Douglas Bates </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 5, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="background" class="level1">
+<h1>Background</h1>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<ul>
+<li>Original analysis is by Anke Cajar.</li>
+<li>Data are from André Krügel.</li>
+<li>This document is a description of creating “canonical” Arrow-format data files</li>
+</ul>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>This is data from an experiment showing that we can reliably detect whether outcomes from the Implicit Association Test (IAT) are faked by analysing task-switch costs in the combined blocks of the IAT (see next paragraph) Every participant performed two IATs: the control group performed the same normative IAT twice and the faking group was instructed to fake the second IAT by deliberately slowing down response times in the compatible block. It has been shown that switches from a target-concept word to an attribute-dimension word between consecutive trials produces stronger switch costs (i.e., response-time differences between task-repetition and task-switch trials) in the incompatible block than in the compatible block. The present data show that even after successful faking of the IAT, these switch costs are preserved (although the true compatible block became the faked incompatible block). Thus, switch costs can be used to detect IAT faking reliably and with high accuracy.</p>
+</section>
+<section id="iat-and-faking-strategies" class="level2">
+<h2 class="anchored" data-anchor-id="iat-and-faking-strategies">IAT and faking strategies</h2>
+<p>The IAT measures people’s implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories—two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.</p>
+</section>
+<section id="design-almost-balanced" class="level2">
+<h2 class="anchored" data-anchor-id="design-almost-balanced">Design (almost balanced)</h2>
+<ul>
+<li>Design: 2 (B-Subj/W-Item) x 2 (W) x 2 (W) x 2 (W) factorial mixed design</li>
+<li>N trials: 38 Subj x 20 Item x 8 W-Item x 2 repetition of items = 12160</li>
+<li>N errors: 391 (3.2%)</li>
+<li>N observations: 12160-391=11769</li>
+</ul>
+</section>
+<section id="variables" class="level2">
+<h2 class="anchored" data-anchor-id="variables">Variables</h2>
+<ul>
+<li><code>Subj</code>: Participant ID (stored as integer - should be a factor)</li>
+<li><code>Item</code>: Word ID (stored as integer - should be a factor)</li>
+<li><code>Group</code> (between-Subj/within-Item):
+<ul>
+<li>No_Faking: control group, where people took the same normative IAT twice</li>
+<li>Faking: experimental group, where people were instructed to fake the retest IAT by slowing down response times in the compatible block</li>
+</ul></li>
+<li><code>Time</code> (within-Subj/within-Item):
+<ul>
+<li>Baseline: first IAT (normative IAT)</li>
+<li>Retest: second IAT (normative or faked, depending on Group)</li>
+</ul></li>
+<li><code>Block</code> (within-Subj/within-Item):
+<ul>
+<li>Compatible: IAT combined block with shorter response times</li>
+<li>Incompatible: IAT combined block with longer response times</li>
+</ul></li>
+<li><code>Switch</code> (renamed from <code>TaskSwitch</code>; within-Subj/within-Item):
+<ul>
+<li>Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next</li>
+<li>No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next</li>
+</ul></li>
+<li><code>rt</code>: trial response time (renamed from <code>RT</code>)</li>
+</ul>
+</section>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>We will follow the steps in the description of the R analysis by Anke Cajar</p>
+<p>Packages to be used</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow             </span><span class="co"># for writing the result as an .arrow file</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV               </span><span class="co"># read the original data file</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CategoricalArrays </span><span class="co"># to convert to categorical arrays (i.e. factors)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames        </span><span class="co"># data frame representation and manipulation</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter   </span><span class="co"># for the progress indicator during model fitting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="read-the-original-data-file" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-original-data-file">Read the original data file</h2>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>iat <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"./data/IAT_data.dat"</span>, DataFrame; pool<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(iat)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>iat <span class="op">=</span> <span class="fu">rename</span>(iat, <span class="op">:</span>ID <span class="op">=&gt;</span> <span class="op">:</span>Subj, <span class="op">:</span>RT <span class="op">=&gt;</span> <span class="op">:</span>rt, <span class="op">:</span>TaskSwitch <span class="op">=&gt;</span> <span class="op">:</span>Switch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div class="data-frame"><p>12,160 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Subj</th><th>Item</th><th>Time</th><th>Group</th><th>Block</th><th>Switch</th><th>rt</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String15">String15</th><th title="String15">String15</th><th title="String15">String15</th><th title="String3">String3</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>13</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>795</td></tr><tr><th>2</th><td>1</td><td>11</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>551</td></tr><tr><th>3</th><td>1</td><td>5</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>656</td></tr><tr><th>4</th><td>1</td><td>5</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>477</td></tr><tr><th>5</th><td>1</td><td>12</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>668</td></tr><tr><th>6</th><td>1</td><td>12</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>412</td></tr><tr><th>7</th><td>1</td><td>20</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>634</td></tr><tr><th>8</th><td>1</td><td>9</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>656</td></tr><tr><th>9</th><td>1</td><td>9</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>464</td></tr><tr><th>10</th><td>1</td><td>17</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>638</td></tr><tr><th>11</th><td>1</td><td>10</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>588</td></tr><tr><th>12</th><td>1</td><td>1</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>883</td></tr><tr><th>13</th><td>1</td><td>1</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>420</td></tr><tr><th>14</th><td>1</td><td>8</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>731</td></tr><tr><th>15</th><td>1</td><td>8</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>567</td></tr><tr><th>16</th><td>1</td><td>19</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>1455</td></tr><tr><th>17</th><td>1</td><td>19</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>642</td></tr><tr><th>18</th><td>1</td><td>3</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>686</td></tr><tr><th>19</th><td>1</td><td>18</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>756</td></tr><tr><th>20</th><td>1</td><td>4</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>672</td></tr><tr><th>21</th><td>1</td><td>7</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>623</td></tr><tr><th>22</th><td>1</td><td>13</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>617</td></tr><tr><th>23</th><td>1</td><td>10</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>660</td></tr><tr><th>24</th><td>1</td><td>11</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>555</td></tr><tr><th>25</th><td>1</td><td>2</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>688</td></tr><tr><th>26</th><td>1</td><td>20</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>623</td></tr><tr><th>27</th><td>1</td><td>18</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>950</td></tr><tr><th>28</th><td>1</td><td>4</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>Yes</td><td>554</td></tr><tr><th>29</th><td>1</td><td>6</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>860</td></tr><tr><th>30</th><td>1</td><td>6</td><td>Baseline</td><td>No_Faking</td><td>Compatible</td><td>No</td><td>425</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="callout-note callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Why is there a ; after DataFrame in the call to CSV.read?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In Julia named optional arguments in a function call must always follow the positional arguments. The comma after the last positional argument can be replaced by a semi-colon. In this case it doesn’t make any difference but when we are fitting models with <code>contrasts</code> specifications we can take advantage of this semi-colon to use a more compact form of the call.</p>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+RK: Why renaming the variables?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>ID</code> is really a superordinate concept. I also prefer short names, to capitalize factor names and to have continuous variable names start with a lower-case letter. Last not least, such a naming convention facilitates adopting scripts across different project contexts.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="converting-subj-and-item-columns-to-factors" class="level2">
+<h2 class="anchored" data-anchor-id="converting-subj-and-item-columns-to-factors">Converting <code>Subj</code> and <code>Item</code> columns to factors</h2>
+<p>Convert the integer <code>Subj</code> values, which are between 1 and 156, to character strings of the form <code>S001</code> to <code>S156</code>, then convert these to a categorical array (similar to a factor in R).</p>
+<p>Note that we left-pad the numbers with zeros to a given length (3, in this case) so that sorting the strings lexicographically corresponds to sorting by numerical value.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>iat.Subj <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  strv <span class="op">=</span> <span class="fu">string</span>.(<span class="ch">'S'</span>, <span class="fu">lpad</span>.(iat.Subj, <span class="fl">3</span>, <span class="ch">'0'</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">categorical</span>(strv; levels<span class="op">=</span><span class="fu">sort</span>(<span class="fu">unique</span>(strv)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-note callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+A “let” block
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The expressions between <code>let</code> and <code>end</code> are evaluated in a temporary namespace that is discarded when finished. These allow the user to create temporary vectors without clogging up the global namespace.</p>
+</div>
+</div>
+</div>
+<p>The <code>Item</code> column is similarly transformed</p>
+<p>At this point we could re-order the levels of some of the two-level experimental factors but that is better accomplished when specifying contrasts for the models we fit.</p>
+<p>We do convert the response time, <code>rt</code>, to a 16-bit integer to save on space.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>iat.rt <span class="op">=</span> <span class="fu">Int16</span>.(iat.rt);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="writing-the-arrow-file" class="level2">
+<h2 class="anchored" data-anchor-id="writing-the-arrow-file">Writing the Arrow file</h2>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Arrow.<span class="fu">write</span>(<span class="st">"./data/IAT_data_v2.arrow"</span>, iat; compress<span class="op">=:</span>lz4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>"./data/IAT_data_v2.arrow"</code></pre>
+</div>
+</div>
+<p>We can examine the structure of this file in Python</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>$ python</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Python <span class="fl">3.9.13</span> <span class="op">|</span> packaged by conda<span class="op">-</span>forge <span class="op">|</span> (main, May <span class="dv">27</span> <span class="dv">2022</span>, <span class="dv">16</span>:<span class="dv">56</span>:<span class="dv">21</span>) </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>[GCC <span class="fl">10.3.0</span>] on linux</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Type <span class="st">"help"</span>, <span class="st">"copyright"</span>, <span class="st">"credits"</span> <span class="kw">or</span> <span class="st">"license"</span> <span class="cf">for</span> more information.</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> pyarrow.feather <span class="im">as</span> fea</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> fea.read_table(<span class="st">'./data/IAT_data_v2.arrow'</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>pyarrow.Table</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>Subj: dictionary<span class="op">&lt;</span>values<span class="op">=</span>string, indices<span class="op">=</span>int8, ordered<span class="op">=</span><span class="dv">0</span><span class="op">&gt;</span> <span class="kw">not</span> null</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>Item: dictionary<span class="op">&lt;</span>values<span class="op">=</span>string, indices<span class="op">=</span>int8, ordered<span class="op">=</span><span class="dv">0</span><span class="op">&gt;</span> <span class="kw">not</span> null</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>Time: dictionary<span class="op">&lt;</span>values<span class="op">=</span>string, indices<span class="op">=</span>int8, ordered<span class="op">=</span><span class="dv">0</span><span class="op">&gt;</span> <span class="kw">not</span> null</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>Group: dictionary<span class="op">&lt;</span>values<span class="op">=</span>string, indices<span class="op">=</span>int8, ordered<span class="op">=</span><span class="dv">0</span><span class="op">&gt;</span> <span class="kw">not</span> null</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>Block: dictionary<span class="op">&lt;</span>values<span class="op">=</span>string, indices<span class="op">=</span>int8, ordered<span class="op">=</span><span class="dv">0</span><span class="op">&gt;</span> <span class="kw">not</span> null</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>TaskSwitch: dictionary<span class="op">&lt;</span>values<span class="op">=</span>string, indices<span class="op">=</span>int8, ordered<span class="op">=</span><span class="dv">0</span><span class="op">&gt;</span> <span class="kw">not</span> null</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>rt: int16 <span class="kw">not</span> null</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">----</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>Subj: [  <span class="op">--</span> dictionary:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>[<span class="st">"S001"</span>,<span class="st">"S007"</span>,<span class="st">"S008"</span>,<span class="st">"S015"</span>,<span class="st">"S017"</span>,...,<span class="st">"S142"</span>,<span class="st">"S146"</span>,<span class="st">"S154"</span>,<span class="st">"S155"</span>,<span class="st">"S156"</span>]  <span class="op">--</span> indices:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,...,<span class="dv">37</span>,<span class="dv">37</span>,<span class="dv">37</span>,<span class="dv">37</span>,<span class="dv">37</span>]]</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>Item: [  <span class="op">--</span> dictionary:</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>[<span class="st">"I01"</span>,<span class="st">"I02"</span>,<span class="st">"I03"</span>,<span class="st">"I04"</span>,<span class="st">"I05"</span>,...,<span class="st">"I16"</span>,<span class="st">"I17"</span>,<span class="st">"I18"</span>,<span class="st">"I19"</span>,<span class="st">"I20"</span>]  <span class="op">--</span> indices:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">11</span>,...,<span class="dv">16</span>,<span class="dv">16</span>,<span class="dv">7</span>,<span class="dv">15</span>,<span class="dv">15</span>]]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>Time: [  <span class="op">--</span> dictionary:</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>[<span class="st">"Baseline"</span>,<span class="st">"Retest"</span>]  <span class="op">--</span> indices:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,...,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]]</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>Group: [  <span class="op">--</span> dictionary:</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>[<span class="st">"No_Faking"</span>,<span class="st">"Faking"</span>]  <span class="op">--</span> indices:</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,...,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]]</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>Block: [  <span class="op">--</span> dictionary:</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>[<span class="st">"Compatible"</span>,<span class="st">"Incompatible"</span>]  <span class="op">--</span> indices:</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,...,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]]</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>TaskSwitch: [  <span class="op">--</span> dictionary:</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>[<span class="st">"Yes"</span>,<span class="st">"No"</span>]  <span class="op">--</span> indices:</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,...,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>]]</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>rt: [[<span class="dv">795</span>,<span class="dv">551</span>,<span class="dv">656</span>,<span class="dv">477</span>,<span class="dv">668</span>,...,<span class="dv">665</span>,<span class="dv">435</span>,<span class="dv">630</span>,<span class="dv">547</span>,<span class="dv">402</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or in R</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(arrow)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Some features are not enabled <span class="cf">in</span> this build of Arrow. Run <span class="st">`</span><span class="at">arrow_info()</span><span class="st">`</span> <span class="cf">for</span> more information.</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> ‘arrow’</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>The following object is masked from ‘package<span class="sc">:</span>utils’<span class="sc">:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    timestamp</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(tibble)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> iat <span class="ot">&lt;-</span> <span class="fu">read_feather</span>(<span class="st">"./data/IAT_data_v2.arrow"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">glimpse</span>(iat)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>Rows<span class="sc">:</span> <span class="dv">12</span>,<span class="dv">160</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>Columns<span class="sc">:</span> <span class="dv">7</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> Subj       <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> S001, S001, S001, S001, S001, S001, S001, S001, S001, S001,…</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> Item       <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> I13, I11, I05, I05, I12, I12, I20, I09, I09, I17, I10, I01,…</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> Time       <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> Baseline, Baseline, Baseline, Baseline, Baseline, Baseline,…</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> Group      <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> No_Faking, No_Faking, No_Faking, No_Faking, No_Faking, No_F…</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> Block      <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> Compatible, Compatible, Compatible, Compatible, Compatible,…</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> Switch     <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> Yes, No, Yes, No, Yes, No, No, Yes, No, Yes, Yes, No, No, N…</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="sc">$</span> rt         <span class="sc">&lt;</span>int<span class="sc">&gt;</span> <span class="dv">795</span>, <span class="dv">551</span>, <span class="dv">656</span>, <span class="dv">477</span>, <span class="dv">668</span>, <span class="dv">412</span>, <span class="dv">634</span>, <span class="dv">656</span>, <span class="dv">464</span>, <span class="dv">638</span>, <span class="dv">588</span>, <span class="dv">883</span>,…</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or in Julia</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>iat <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="st">"./data/IAT_data_v2.arrow"</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(iat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+
+<div class="data-frame"><p>7 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="DataType">DataType</th></tr></thead><tbody><tr><th>1</th><td>Subj</td><td></td><td>S001</td><td></td><td>S156</td><td>0</td><td>String</td></tr><tr><th>2</th><td>Item</td><td></td><td>I01</td><td></td><td>I20</td><td>0</td><td>String</td></tr><tr><th>3</th><td>Time</td><td></td><td>Baseline</td><td></td><td>Retest</td><td>0</td><td>String</td></tr><tr><th>4</th><td>Group</td><td></td><td>Faking</td><td></td><td>No_Faking</td><td>0</td><td>String</td></tr><tr><th>5</th><td>Block</td><td></td><td>Compatible</td><td></td><td>Incompatible</td><td>0</td><td>String</td></tr><tr><th>6</th><td>Switch</td><td></td><td>No</td><td></td><td>Yes</td><td>0</td><td>String</td></tr><tr><th>7</th><td>rt</td><td>831.247</td><td>3</td><td>700.0</td><td>17620</td><td>0</td><td>Int16</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Julia Version 1.8.0
+Commit 5544a0fab76 (2022-08-17 13:38 UTC)
+Platform Info:
+  OS: macOS (x86_64-apple-darwin21.4.0)
+  CPU: 12 × Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
+  WORD_SIZE: 64
+  LIBM: libopenlibm
+  LLVM: libLLVM-13.0.1 (ORCJIT, skylake)
+  Threads: 1 on 6 virtual cores</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

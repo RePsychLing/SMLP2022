@@ -3,19 +3,14 @@ title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-15"
-output: 
+format: 
   html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    number-sections: true
     fig-width: 8
     fig-height: 6
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
-  pdf:
-    fig-width: 7
-    fig-height: 5
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
 editor_options: 
   chunk_output_type: console
 jupyter: julia-1.8
@@ -103,12 +98,18 @@ The IAT measures people's implicit associations between a target concept and an 
 
 # Setup
 
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
 First attach the _MixedModels.jl_ package and other packages for plotting.
 The _CairoMakie.jl_ package allows the Makie graphics system [@Danisch2021] to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.
 
 ```{julia}
 #| label: packages
-
 using AlgebraOfGraphics
 using Arrow
 using CairoMakie       # graphics back-end
@@ -116,10 +117,9 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-using ProgressMeter
+using ProgressMeter    # for the progress indicator during model fitting
 using Random           # random number generators
 using RCall            # call R from Julia
 using StatsModels
@@ -132,7 +132,6 @@ using MixedModelsMakie: ridgeplot
 using MixedModelsMakie: scatter
 using MixedModelsMakie: caterpillar
 
-ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
@@ -252,6 +251,8 @@ f_max = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                          (1 +       Time*Block*Switch*Task*Valence | Subj) +  
                          (1 + Group*Time*Block*Switch              | Item));
 ```
+
+We do not execute the next chunk, but will restore the saved model fit in the chunk after the next one.
 
 ```{julia}
 #| eval: false

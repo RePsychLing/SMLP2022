@@ -8,7 +8,7 @@ output:
     toc: yes
     toc_depth: 3
     number_sections: yes
-    self-contained: true
+    embed-resources: true
 callout-appearance: simple
 jupyter: julia-1.8
 ---
@@ -38,7 +38,7 @@ The IAT measures people's implicit associations between a target concept and an 
 
 ## Variables
 
-+ `ID`: Participant ID (stored as integer - should be a factor)
++ `Subj`: Participant ID  (stored as integer - should be a factor)
 + `Item`: Word ID (stored as integer - should be a factor)
 + `Group` (between-Subj/within-Item): 
     + No_Faking: control group, where people took the same normative IAT twice
@@ -52,9 +52,16 @@ The IAT measures people's implicit associations between a target concept and an 
 + `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item): 
     + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next 
     + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next 
-+ `RT`: trial response time
++ `rt`: trial response time (renamed from `RT`)
 
 # Setup
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
 
 We will follow the steps in the description of the R analysis by Anke Cajar
 
@@ -64,7 +71,7 @@ using Arrow             # for writing the result as an .arrow file
 using CSV               # read the original data file
 using CategoricalArrays # to convert to categorical arrays (i.e. factors)
 using DataFrames        # data frame representation and manipulation
-
+using ProgressMeter   # for the progress indicator during model fitting
 ```
 
 ## Read the original data file
@@ -72,6 +79,7 @@ using DataFrames        # data frame representation and manipulation
 ```{julia}
 iat = CSV.read("./data/IAT_data.dat", DataFrame; pool=true)
 describe(iat)
+iat = rename(iat, :ID => :Subj, :RT => :rt, :TaskSwitch => :Switch)
 ```
 
 ::: {.callout-note collapse="true"}
@@ -82,15 +90,21 @@ The comma after the last positional argument can be replaced by a semi-colon.
 In this case it doesn't make any difference but when we are fitting models with `contrasts` specifications we can take advantage of this semi-colon to use a more compact form of the call.
 :::
 
-## Converting ID and Item columns to factors
+::: {.callout-note collapse="true"}
+## RK: Why renaming the variables?
 
-Convert the integer `ID` values, which are between 1 and 156, to character strings of the form `S001` to `S156`, then convert these to a categorical array (similar to a factor in R).
+`ID` is really a superordinate concept. I also prefer short names, to capitalize factor names and to have continuous variable names start with a lower-case letter.  Last not least, such a naming convention facilitates adopting scripts across different project contexts. 
+:::
+
+## Converting `Subj` and `Item` columns to factors
+
+Convert the integer `Subj` values, which are between 1 and 156, to character strings of the form `S001` to `S156`, then convert these to a categorical array (similar to a factor in R).
 
 Note that we left-pad the numbers with zeros to a given length (3, in this case) so that sorting the strings lexicographically corresponds to sorting by numerical value.
 
 ```{julia}
-iat.ID = let
-  strv = string.('S', lpad.(iat.ID, 3, '0'))
+iat.Subj = let
+  strv = string.('S', lpad.(iat.Subj, 3, '0'))
   categorical(strv; levels=sort(unique(strv)))
 end;
 ```
@@ -112,36 +126,37 @@ end;
 
 At this point we could re-order the levels of some of the two-level experimental factors but that is better accomplished when specifying contrasts for the models we fit.
 
-We do convert the response time, `RT`, to a 16-bit integer to save on space.
+We do convert the response time, `rt`, to a 16-bit integer to save on space.
 
 ```{julia}
-iat.RT = Int16.(iat.RT);
+iat.rt = Int16.(iat.rt);
 ```
 
 ## Writing the Arrow file
 
 ```{julia}
-Arrow.write("./data/IAT_data.arrow", iat; compress=:lz4)
+Arrow.write("./data/IAT_data_v2.arrow", iat; compress=:lz4)
 ```
 
 We can examine the structure of this file in Python
+
 ```python
 $ python
 Python 3.9.13 | packaged by conda-forge | (main, May 27 2022, 16:56:21) 
 [GCC 10.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import pyarrow.feather as fea
->>> fea.read_table('./data/IAT_data.arrow')
+>>> fea.read_table('./data/IAT_data_v2.arrow')
 pyarrow.Table
-ID: dictionary<values=string, indices=int8, ordered=0> not null
+Subj: dictionary<values=string, indices=int8, ordered=0> not null
 Item: dictionary<values=string, indices=int8, ordered=0> not null
 Time: dictionary<values=string, indices=int8, ordered=0> not null
 Group: dictionary<values=string, indices=int8, ordered=0> not null
 Block: dictionary<values=string, indices=int8, ordered=0> not null
 TaskSwitch: dictionary<values=string, indices=int8, ordered=0> not null
-RT: int16 not null
+rt: int16 not null
 ----
-ID: [  -- dictionary:
+Subj: [  -- dictionary:
 ["S001","S007","S008","S015","S017",...,"S142","S146","S154","S155","S156"]  -- indices:
 [0,0,0,0,0,...,37,37,37,37,37]]
 Item: [  -- dictionary:
@@ -159,7 +174,7 @@ Block: [  -- dictionary:
 TaskSwitch: [  -- dictionary:
 ["Yes","No"]  -- indices:
 [0,1,0,1,0,...,0,1,0,0,1]]
-RT: [[795,551,656,477,668,...,665,435,630,547,402]]
+rt: [[795,551,656,477,668,...,665,435,630,547,402]]
 ```
 or in R
 
@@ -174,23 +189,23 @@ The following object is masked from ‘package:utils’:
     timestamp
 
 > library(tibble)
-> iat <- read_feather("./data/IAT_data.arrow")
+> iat <- read_feather("./data/IAT_data_v2.arrow")
 > glimpse(iat)
 Rows: 12,160
 Columns: 7
-$ ID         <fct> S001, S001, S001, S001, S001, S001, S001, S001, S001, S001,…
+$ Subj       <fct> S001, S001, S001, S001, S001, S001, S001, S001, S001, S001,…
 $ Item       <fct> I13, I11, I05, I05, I12, I12, I20, I09, I09, I17, I10, I01,…
 $ Time       <fct> Baseline, Baseline, Baseline, Baseline, Baseline, Baseline,…
 $ Group      <fct> No_Faking, No_Faking, No_Faking, No_Faking, No_Faking, No_F…
 $ Block      <fct> Compatible, Compatible, Compatible, Compatible, Compatible,…
-$ TaskSwitch <fct> Yes, No, Yes, No, Yes, No, No, Yes, No, Yes, Yes, No, No, N…
-$ RT         <int> 795, 551, 656, 477, 668, 412, 634, 656, 464, 638, 588, 883,…
+$ Switch     <fct> Yes, No, Yes, No, Yes, No, No, Yes, No, Yes, Yes, No, No, N…
+$ rt         <int> 795, 551, 656, 477, 668, 412, 634, 656, 464, 638, 588, 883,…
 ```
 
 or in Julia
 
 ```{julia}
-iat = DataFrame(Arrow.Table("./data/IAT_data.arrow"))
+iat = DataFrame(Arrow.Table("./data/IAT_data_v2.arrow"))
 describe(iat)
 ```
 
