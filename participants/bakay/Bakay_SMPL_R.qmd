@@ -5,6 +5,8 @@ author: "Reinhold Kliegl"
 date: "2022-08-31 (last revised: `r format(Sys.time())`)"
 format:
   html:
+    embed-resources: true
+    standalone: true
     toc: true
     toc-depth: 2
     number-sections: true
@@ -37,7 +39,7 @@ library(readxl)
 library(tidyverse)
 library(easystats)
 library(ordinal)
-library(summarytools)
+#library(summarytools)
 library(sciplot)
 
 # respecting color vision deficiency

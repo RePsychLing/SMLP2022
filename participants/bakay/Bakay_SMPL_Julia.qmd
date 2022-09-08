@@ -3,10 +3,12 @@ title: "Özge Bakay: Missing Verb Illusion"
 subtitle: "RePsychLing SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-27 (last revised: `r format(Sys.time())`)"
-format:
+format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
+    code-fold: false
     number-sections: true
     fig-width: 8
     fig-height: 6
@@ -25,7 +27,16 @@ With 56 (or 57) subjects and 24 items, assignment of items to conditions could n
 
 The gaol of the analysis is to test effects with a cumulative link mixed model for ordinal rating data,  basically an integrated set of logistic regressions, taking into account clustering of ratings by subjects and by items. 
 
-# Setup
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
 
 First attach the _MixedModels.jl_ package and other packages for plotting.
 The _CairoMakie.jl_ package allows the Makie graphics system [@Danisch2021] to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.
@@ -40,7 +51,6 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
