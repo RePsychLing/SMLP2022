@@ -1,0 +1,121 @@
+---
+title: "Laura Raveling: Conversation Gaps - Version 2"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-09-08"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+jupyter: julia-1.8
+---
+
+# Setup
+
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
+
+```{julia}
+#| label: packages
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsBase
+using StatsModels
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
+## Read data
+
+```{julia}
+dat = DataFrame(Arrow.Table("./data/Raveling_ConversationGap_v2.arrow"));
+describe(dat)
+```
+# LMMs 
+
+## Contrasts
+
+```{julia}
+contrasts = merge(
+      Dict(:Answer  => EffectsCoding(base= "g_only"; levels=["g_only", "gv_mix"])),
+      Dict(:Subj    => Grouping()),
+      Dict(:Gesture => Grouping()),
+      Dict(:Gest    => Grouping()),
+      Dict(:Triad   => Grouping())
+   );
+```
+
+Probably we do not have enough observations to support a complex LMM. In a first step, we check the relevance of the three random factors:  `Subj`, `Gesture`,  and `Triad`.
+
+## `Subj`
+
+```{julia}
+voi_S = let
+    form = @formula( gdur ~  1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Subj));
+    fit(MixedModel, form, dat; contrasts);
+end
+```
+
+## `Gesture` / `Gest`
+
+```{julia}
+voi_G1 = let
+    form = @formula( gdur ~  1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Gesture));
+    fit(MixedModel, form, dat; contrasts);
+end
+```
+
+```{julia}
+voi_G2 = let
+    form = @formula( gdur ~  1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Gest));
+    fit(MixedModel, form, dat; contrasts);
+end
+```
+
+No reliable VC for `Gesture` or `Gest.` 
+
+## Triad 
+
+```{julia}
+voi_T = let
+    form = @formula( gdur ~  1 + ans*(s_n+s_t+gc1+gc2) + lip + gc3 + (1 | Triad));
+    fit(MixedModel, form, dat; contrasts);
+end
+```
+
+# Summary
+
+Not much to see, the number of observations is simply too small. Nevertheless a useful exercise of preprocessing and contrast specification.
+
+# Appendix
+
+```{julia}
+versioninfo()
+```
+
