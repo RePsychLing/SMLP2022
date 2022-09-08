@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.147">
+<meta name="generator" content="quarto-1.1.165">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -2641,10 +2641,7 @@ vertical-align: -.125em;
 </header>
 
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code></pre>
-</div>
+
 </div>
 <section id="list-of-issues-to-be-disucssed" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> List of issues to be disucssed</h1>
@@ -2679,21 +2676,21 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
 <p>When the model that best fits the data is found, REML is set to TRUE for more precise parameter estimation in that model and only then will the fixed effects be inspected using <code>summary(model)</code>. The fixed effects part of the model remains unchanged. Significant interactions will be followed up with post hoc tests (<code>emmeans</code>) correcting for multiple comparisons using bonferroni correction if more than 2 levels are compared.</p>
 <p><strong>Summary statistics</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">read.delim2</span>(<span class="st">&quot;./data/Maquate_LanguageEvaluation.txt&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## convert to factors</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>semantic_congruency<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>semantic_congruency) </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>register_congruency<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>register_congruency) </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>participant<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>participant) </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>item<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>item)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## set contrast coding</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(data<span class="sc">$</span>semantic_congruency)<span class="ot">=</span><span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(data<span class="sc">$</span>register_congruency)<span class="ot">=</span><span class="fu">contr.sum</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">read.delim2</span>(<span class="st">&quot;./data/Maquate_LanguageEvaluation.txt&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## convert to factors</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>semantic_congruency<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>semantic_congruency) </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>register_congruency<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>register_congruency) </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>participant<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>participant) </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>item<span class="ot">&lt;-</span><span class="fu">as.factor</span>(data<span class="sc">$</span>item)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## set contrast coding</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(data<span class="sc">$</span>semantic_congruency)<span class="ot">=</span><span class="fu">contr.sum</span>(<span class="dv">2</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(data<span class="sc">$</span>register_congruency)<span class="ot">=</span><span class="fu">contr.sum</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  participant item semantic_congruency register_congruency rating
 1           1    3                  no               match      2
@@ -2703,7 +2700,7 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
 5           1   10                 yes            mismatch      4
 6           1    1                  no               match      2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&#39;data.frame&#39;:   1358 obs. of  5 variables:
  $ participant        : Factor w/ 34 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
@@ -2720,7 +2717,7 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
   .. .. ..$ : NULL
  $ rating             : int  2 2 2 5 4 2 2 7 1 4 ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  participant        item      semantic_congruency register_congruency
  1      :  40   1      :  34   no :680             match   :678       
@@ -2739,7 +2736,7 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
  Max.   :7.000  
                 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(desc_rating<span class="ot">&lt;-</span><span class="fu">stat.desc</span>(data<span class="sc">$</span>rating), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(desc_rating<span class="ot">&lt;-</span><span class="fu">stat.desc</span>(data<span class="sc">$</span>rating), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     nbr.val     nbr.null       nbr.na          min          max        range 
      1358.00         0.00         0.00         1.00         7.00         6.00 
@@ -2748,22 +2745,22 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
      std.dev     coef.var 
         2.31         0.65 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(register_congruency<span class="ot">&lt;-</span> <span class="fu">summarySEwithin</span>(data, <span class="at">measurevar=</span><span class="st">&quot;rating&quot;</span>, <span class="at">withinvars=</span><span class="st">&quot;register_congruency&quot;</span>,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">idvar=</span><span class="st">&quot;participant&quot;</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>, <span class="at">conf.interval=</span>.<span class="dv">95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(register_congruency<span class="ot">&lt;-</span> <span class="fu">summarySEwithin</span>(data, <span class="at">measurevar=</span><span class="st">&quot;rating&quot;</span>, <span class="at">withinvars=</span><span class="st">&quot;register_congruency&quot;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">idvar=</span><span class="st">&quot;participant&quot;</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>, <span class="at">conf.interval=</span>.<span class="dv">95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  register_congruency   N   rating      sd        se        ci
 1               match 678 3.645369 3.16151 0.1214171 0.2383993
 2            mismatch 680 3.440353 3.07007 0.1177318 0.2311621</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(semantic_congruency<span class="ot">&lt;-</span> <span class="fu">summarySEwithin</span>(data, <span class="at">measurevar=</span><span class="st">&quot;rating&quot;</span>, <span class="at">withinvars=</span><span class="st">&quot;semantic_congruency&quot;</span>,</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">idvar=</span><span class="st">&quot;participant&quot;</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>, <span class="at">conf.interval=</span>.<span class="dv">95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(semantic_congruency<span class="ot">&lt;-</span> <span class="fu">summarySEwithin</span>(data, <span class="at">measurevar=</span><span class="st">&quot;rating&quot;</span>, <span class="at">withinvars=</span><span class="st">&quot;semantic_congruency&quot;</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">idvar=</span><span class="st">&quot;participant&quot;</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>, <span class="at">conf.interval=</span>.<span class="dv">95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  semantic_congruency   N   rating       sd         se        ci
 1                  no 680 2.235941 2.153336 0.08257667 0.1621363
 2                 yes 678 4.853333 2.822934 0.10841414 0.2128684</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(all<span class="ot">&lt;-</span> <span class="fu">summarySEwithin</span>(data, <span class="at">measurevar=</span><span class="st">&quot;rating&quot;</span>, <span class="at">withinvars=</span><span class="fu">c</span>(<span class="st">&quot;register_congruency&quot;</span>,<span class="st">&quot;semantic_congruency&quot;</span>),</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">idvar=</span><span class="st">&quot;participant&quot;</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>, <span class="at">conf.interval=</span>.<span class="dv">95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(all<span class="ot">&lt;-</span> <span class="fu">summarySEwithin</span>(data, <span class="at">measurevar=</span><span class="st">&quot;rating&quot;</span>, <span class="at">withinvars=</span><span class="fu">c</span>(<span class="st">&quot;register_congruency&quot;</span>,<span class="st">&quot;semantic_congruency&quot;</span>),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">idvar=</span><span class="st">&quot;participant&quot;</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>, <span class="at">conf.interval=</span>.<span class="dv">95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  register_congruency semantic_congruency   N   rating       sd         se
 1               match                  no 340 2.352118 1.792723 0.09722404
@@ -2783,9 +2780,9 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
 <p>After random effect structure reduction, this model proved to be the best fit for the data. Results: Sign. main effect of register congruency: Higher acceptability ratings for register matching (vs. mismatching) target sentences. Sign. main effect of semantic congruence: Higher acceptability ratings for target sentences which have semantically congruent verbs and arguments.</p>
 <p>RK: Set <code>calc.derivs=FALSE</code> for <code>lmerControl</code> kwarg.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>acc4 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(rating <span class="sc">~</span> register_congruency<span class="sc">*</span>semantic_congruency <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> participant) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> item), data, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">maxfun=</span><span class="dv">1000000</span>)))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(acc4) <span class="do">## this just gives out the random effect structure, so you&#39;re not tempted to already look at the fixed effects</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>acc4 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(rating <span class="sc">~</span> register_congruency<span class="sc">*</span>semantic_congruency <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> participant) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> item), data, <span class="at">REML=</span><span class="cn">FALSE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">maxfun=</span><span class="dv">1000000</span>)))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(acc4) <span class="do">## this just gives out the random effect structure, so you&#39;re not tempted to already look at the fixed effects</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Groups      Name                 Std.Dev. Corr  
  item        (Intercept)          0.45552        
@@ -2794,8 +2791,8 @@ logical.return = TRUE, : there is no package called &#39;RePsychLing&#39;</code>
              semantic_congruency1 0.58212  -0.301
  Residual                         1.59119        </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run PCA to see if all variance is captured by model: looks good</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(acc4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run PCA to see if all variance is captured by model: looks good</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">rePCA</span>(acc4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$item
 Importance of components:
@@ -2811,9 +2808,9 @@ Standard deviation     0.4447 0.3198
 Proportion of Variance 0.6591 0.3409
 Cumulative Proportion  0.6591 1.0000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## set REML to true and look at fixed effects</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>acc4_final <span class="ot">&lt;-</span> <span class="fu">lmer</span>(rating <span class="sc">~</span> register_congruency<span class="sc">*</span>semantic_congruency <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> participant) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> item), data, <span class="at">REML=</span><span class="cn">TRUE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">maxfun=</span><span class="dv">1000000</span>)))</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(acc4_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## set REML to true and look at fixed effects</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>acc4_final <span class="ot">&lt;-</span> <span class="fu">lmer</span>(rating <span class="sc">~</span> register_congruency<span class="sc">*</span>semantic_congruency <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> participant) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>semantic_congruency<span class="sc">|</span> item), data, <span class="at">REML=</span><span class="cn">TRUE</span>, <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">calc.derivs=</span><span class="cn">FALSE</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">maxfun=</span><span class="dv">1000000</span>)))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(acc4_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
@@ -2864,18 +2861,14 @@ rgstr_c1:_1 -0.001 -0.002  0.001</code></pre>
 <h1 data-number="6"><span class="header-section-number">6</span> RK: Save dataframe for transfer to Julia</h1>
 <p>… with personal preference for variable names.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span> </span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Subj=</span>participant, <span class="at">Item=</span>item, <span class="at">RC=</span>register_congruency, <span class="at">SC=</span>semantic_congruency, rating) <span class="sc">|&gt;</span> </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Subj =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">&quot;S&quot;</span>, <span class="fu">str_pad</span>(Subj, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">&quot;left&quot;</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))),</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Item =</span> <span class="fu">factor</span>(<span class="fu">paste0</span>(<span class="st">&quot;I&quot;</span>, <span class="fu">str_pad</span>(Item, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">side =</span> <span class="st">&quot;left&quot;</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>)))</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(dat, <span class="st">&quot;./data/Maquate_LanguageEvaluation.arrow&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">Subj=</span>participant, <span class="at">Item=</span>item, <span class="at">RC=</span>register_congruency, <span class="at">SC=</span>semantic_congruency, rating)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">write_feather</span>(dat, <span class="st">&quot;./data/Maquate_LanguageEvaluation.arrow&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="session-info" class="level1" data-number="7">
@@ -2883,12 +2876,11 @@ rgstr_c1:_1 -0.001 -0.002  0.001</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.2.1 (2022-06-23)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Big Sur ... 10.16
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Monterey 12.5.1
 
 Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -2897,42 +2889,44 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] arrow_9.0.0      pastecs_1.3.21   rticles_0.24     magick_2.7.3    
- [5] papaja_0.1.1     tinylabels_0.2.3 broman_0.80      lmerTest_3.1-3  
- [9] stargazer_5.2.3  kableExtra_1.3.4 Rmisc_1.5.1      plyr_1.8.7      
-[13] lattice_0.20-45  lme4_1.1-30      Matrix_1.4-1     forcats_0.5.1   
-[17] stringr_1.4.0    dplyr_1.0.9      purrr_0.3.4      readr_2.1.2     
-[21] tidyr_1.2.0      tibble_3.1.8     ggplot2_3.3.6    tidyverse_1.3.2 
-[25] doBy_4.6.13     
+ [1] arrow_9.0.0       pastecs_1.3.21    rticles_0.24      magick_2.7.3     
+ [5] papaja_0.1.1      tinylabels_0.2.3  broman_0.80       lmerTest_3.1-3   
+ [9] stargazer_5.2.3   kableExtra_1.3.4  Rmisc_1.5.1       plyr_1.8.7       
+[13] lattice_0.20-45   RePsychLing_0.0.4 lme4_1.1-30       Matrix_1.4-1     
+[17] forcats_0.5.2     stringr_1.4.1     dplyr_1.0.9       purrr_0.3.4      
+[21] readr_2.1.2       tidyr_1.2.0       tibble_3.1.8      ggplot2_3.3.6    
+[25] tidyverse_1.3.2   doBy_4.6.13      
 
 loaded via a namespace (and not attached):
- [1] nlme_3.1-157         fs_1.5.2             bit64_4.0.5         
- [4] lubridate_1.8.0      insight_0.18.2       webshot_0.5.3       
- [7] httr_1.4.4           numDeriv_2016.8-1.1  Deriv_4.1.3         
-[10] tools_4.2.1          backports_1.4.1      utf8_1.2.2          
-[13] R6_2.5.1             DBI_1.1.3            colorspace_2.0-3    
-[16] withr_2.5.0          tidyselect_1.1.2     emmeans_1.8.0       
-[19] bit_4.0.4            compiler_4.2.1       cli_3.3.0           
-[22] rvest_1.0.2          xml2_1.3.3           microbenchmark_1.4.9
-[25] bayestestR_0.12.1    scales_1.2.0         mvtnorm_1.1-3       
-[28] systemfonts_1.0.4    digest_0.6.29        minqa_1.2.4         
-[31] rmarkdown_2.15       svglite_2.1.0        pkgconfig_2.0.3     
-[34] htmltools_0.5.3      dbplyr_2.2.1         fastmap_1.1.0       
-[37] htmlwidgets_1.5.4    rlang_1.0.5          readxl_1.4.1        
-[40] rstudioapi_0.13      generics_0.1.3       jsonlite_1.8.0      
-[43] googlesheets4_1.0.1  magrittr_2.0.3       parameters_0.18.2   
-[46] Rcpp_1.0.9           munsell_0.5.0        fansi_1.0.3         
-[49] lifecycle_1.0.1      stringi_1.7.8        yaml_2.3.5          
-[52] MASS_7.3-57          grid_4.2.1           crayon_1.5.1        
-[55] haven_2.5.0          splines_4.2.1        hms_1.1.2           
-[58] knitr_1.39           pillar_1.8.1         boot_1.3-28         
-[61] estimability_1.4.1   effectsize_0.7.0.5   reprex_2.0.2        
-[64] glue_1.6.2           evaluate_0.16        modelr_0.1.8        
-[67] vctrs_0.4.1          nloptr_2.0.3         tzdb_0.3.0          
-[70] cellranger_1.1.0     gtable_0.3.0         assertthat_0.2.1    
-[73] datawizard_0.5.1     xfun_0.32            xtable_1.8-4        
-[76] broom_1.0.0          coda_0.19-4          googledrive_2.0.0   
-[79] viridisLite_0.4.0    gargle_1.2.0         ellipsis_0.3.2      </code></pre>
+ [1] TH.data_1.1-1        googledrive_2.0.0    minqa_1.2.4         
+ [4] colorspace_2.0-3     ellipsis_0.3.2       estimability_1.4.1  
+ [7] parameters_0.18.2    fs_1.5.2             rstudioapi_0.14     
+[10] Deriv_4.1.3          bit64_4.0.5          fansi_1.0.3         
+[13] mvtnorm_1.1-3        lubridate_1.8.0      xml2_1.3.3          
+[16] codetools_0.2-18     splines_4.2.1        knitr_1.40          
+[19] jsonlite_1.8.0       nloptr_2.0.3         broom_1.0.1         
+[22] dbplyr_2.2.1         effectsize_0.7.0.5   compiler_4.2.1      
+[25] httr_1.4.4           emmeans_1.8.0        backports_1.4.1     
+[28] assertthat_0.2.1     fastmap_1.1.0        gargle_1.2.0        
+[31] cli_3.3.0            htmltools_0.5.3      tools_4.2.1         
+[34] coda_0.19-4          gtable_0.3.1         glue_1.6.2          
+[37] Rcpp_1.0.9           cellranger_1.1.0     vctrs_0.4.1         
+[40] svglite_2.1.0        nlme_3.1-159         insight_0.18.2      
+[43] xfun_0.32            rvest_1.0.3          lifecycle_1.0.1     
+[46] googlesheets4_1.0.1  MASS_7.3-58.1        zoo_1.8-10          
+[49] scales_1.2.1         microbenchmark_1.4.9 hms_1.1.2           
+[52] sandwich_3.0-2       yaml_2.3.5           stringi_1.7.8       
+[55] bayestestR_0.12.1.2  boot_1.3-28          rlang_1.0.5         
+[58] pkgconfig_2.0.3      systemfonts_1.0.4    evaluate_0.16       
+[61] htmlwidgets_1.5.4    bit_4.0.4            tidyselect_1.1.2    
+[64] magrittr_2.0.3       R6_2.5.1             generics_0.1.3      
+[67] multcomp_1.4-20      DBI_1.1.3            pillar_1.8.1        
+[70] haven_2.5.1          withr_2.5.0          survival_3.4-0      
+[73] datawizard_0.5.1     modelr_0.1.9         crayon_1.5.1        
+[76] utf8_1.2.2           tzdb_0.3.0           rmarkdown_2.16      
+[79] grid_4.2.1           readxl_1.4.1         reprex_2.0.2        
+[82] digest_0.6.29        webshot_0.5.3        xtable_1.8-4        
+[85] numDeriv_2016.8-1.1  munsell_0.5.0        viridisLite_0.4.1   </code></pre>
 </div>
 </div>
 </section>

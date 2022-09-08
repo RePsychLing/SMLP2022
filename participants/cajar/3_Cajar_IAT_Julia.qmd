@@ -3,16 +3,19 @@ title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-15"
-format:
+output: 
   html:
-    embed-resources: true
-    toc: true
-    toc-depth: 2
-    number-sections: true
     fig-width: 8
     fig-height: 6
-    code-fold: false
-    code-link: true
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+  pdf:
+    fig-width: 7
+    fig-height: 5
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
 editor_options: 
   chunk_output_type: console
 jupyter: julia-1.8
@@ -372,7 +375,7 @@ end
 
 LMM `m_cpx` is a defensible solution, because $\chi^2$  < 2*df and $\Delta$ AIC and $\Delta$ BIC do not decrease by more than 5 in absolute units; they actually even increase. In the absence of specific theoretical expectations about the removed VCs and CPs, they are likely to result from fitting noise in the data. (This is only a rule of thumb.)
 
-Note that for an LMM:  `objective(m)` = `deviance(m)` = `-2*loglikelihood(m)`
+Note that for an LMM:  `objective(m)` = `deviance(m)` = `-2 + loglikelihood(m)`
 
 The degrees of freedom in `StatsModels.lrtest` correspond to number of model parameters in `MixedModels.likelihoodratiotest`. The residual number of degrees of freedom is a red herring in mixed models. One proposal is to use the sum of the leverage values (i.e., the rank of the model matrix). This is also called the trace of the hat matrix or the number of geometric degrees of freedom (geomdof). For details check [MixedModels.jl documentation](https://juliastats.org/MixedModels.jl/stable/constructors/#StatsAPI.leverage):
 

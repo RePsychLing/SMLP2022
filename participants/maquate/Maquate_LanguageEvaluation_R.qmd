@@ -128,11 +128,7 @@ library(arrow)
 dat <- 
   data |> 
   as_tibble() |> 
-  select(Subj=participant, Item=item, RC=register_congruency, SC=semantic_congruency, rating) |> 
-  mutate(
-    Subj = factor(paste0("S", str_pad(Subj, width = 2, side = "left", pad = "0"))),
-    Item = factor(paste0("I", str_pad(Item, width = 2, side = "left", pad = "0")))
-  )
+  select(Subj=participant, Item=item, RC=register_congruency, SC=semantic_congruency, rating)
 
 write_feather(dat, "./data/Maquate_LanguageEvaluation.arrow")
 ```
