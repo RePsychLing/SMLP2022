@@ -61,8 +61,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
+using DataFrameMacros  # simplified dplyr-like data wrangling M
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
