@@ -5,6 +5,7 @@ author: "Reinhold Kliegl"
 date: "2022-08-24"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     code-fold: true
@@ -24,7 +25,7 @@ jupyter: julia-1.8
 +  Here we show that synthetic predictabilities explain eye movements, by re-analyzing eye movement recordings by Chandra et al. (2020)
 + In additional analyses (not reported here), we show that synthetic predictabilities are correlated with cloze predictabilities, and that synthetic predictabilities explain eye movements across several languages and corpora.
 
-Reference: Chandra, J., Krügel, A., & Engbert, R. (2020). Modulation of oculomotor control during reading of mirrored and inverted texts. Scientific Reports, 10 (1), 1-15. doi: 10.1038/s41598-020-60833-6
+Reference: Chandra, J., Krügel, A., & Engbert, R. (2020). Modulation of oculomotor control during reading of mirrored and inverted texts. _Scientific Reports_, _10 (1)_, 1-15. doi: 10.1038/s41598-020-60833-6
 
 # Readme 
 
@@ -49,6 +50,17 @@ Dependent variable
 
 # Setup
 
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
+
 ```{julia}
 #| label: packages
 
@@ -59,12 +71,8 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-if contains(first(Sys.cpu_info()).model, "Intel")
-  using MKL             # faster LAPACK on Intel processors
-end
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia

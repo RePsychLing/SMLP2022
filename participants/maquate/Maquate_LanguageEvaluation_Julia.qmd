@@ -41,6 +41,17 @@ Do participants take the situational-functional setting into account when evalua
 
 # Setup
 
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
+
 ```{julia}
 #| label: packages
 

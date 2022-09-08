@@ -5,6 +5,7 @@ author: "Reinhold Kliegl"
 date: "2022-08-31"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     code-fold: false
@@ -115,7 +116,7 @@ VarCorr(m_cpx)
 
 This model is overparameterized.
 
-## Very Simple LMM
+## Very simple LMM
 
 ```{julia}
 #| label: m_voi
