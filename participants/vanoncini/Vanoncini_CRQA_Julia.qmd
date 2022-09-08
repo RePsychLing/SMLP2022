@@ -23,9 +23,9 @@ jupyter: julia-1.8
 
 MV: This is part of my PhD project which examines the role of mother-infant interpersonal synchrony on language development. Specifically, in this script, I test the following RQ. Does mother-infant cardiac synchrony predict infants' word segmentation ability? We include data of 29 dyads who performed two different tasks: 
 
-* **word-segmentation task**: infants underwent an eye-tracking task. During the familiarization phase they were listening to a story containing target words (i.e., familiar words). Then, they were tested with familiar (6 trials) and novel (6 trials) words. We measured their looking time (LT) in msec while listening to novel vs. familiar words. LT was our dependent variable.
+* **Word-segmentation task**: Infants underwent an eye-tracking task. During the familiarization phase they were listening to a story containing target words (i.e., familiar words). Then, they were tested with familiar (6 trials) and novel (6 trials) words. We measured their looking time (LT) in msec while listening to novel vs. familiar words. LT was our dependent variable.
 
-* **5-minutes free play interaction**: mothers were asked to play with the baby as they would do at home. During this time we recorded dual ECG. We then followed the following processing steps: 
+* **Five-minutes free play interaction**: Mothers were asked to play with the baby as they would do at home. During this time we recorded dual ECG. We then followed the following processing steps: 
 1. We extracted offline Interbeat-intervals (IBIs) 
 2. We calculated Respiratory Sinus Arrhythmia (RSA) 
 3. to collect a more continuous measure of RSA, a sliding window of 15 s was used to extract a continuous estimate of cardiac vagal tone for both participants 
@@ -36,8 +36,14 @@ MV: This is part of my PhD project which examines the role of mother-infant inte
 # Setup
 
 ```{julia}
-#| label: packages
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
 
+```{julia}
+#| label: packages
 using AlgebraOfGraphics
 using Arrow
 using CairoMakie       # graphics back-end
@@ -45,7 +51,6 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -54,11 +59,9 @@ using RCall            # call R from Julia
 using StatsBase
 using StatsModels
 
-
 ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
-
 
 ```{julia}
 dat = DataFrame(Arrow.Table("./data/Vanoncini_lang_ECG.arrow"));
