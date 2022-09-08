@@ -36,6 +36,15 @@ MV: This is part of my PhD project which examines the role of mother-infant inte
 # Setup
 
 ```{julia}
+#| label: enviroment
+#| echo: false
+
+using Pkg
+Pkg.activate(".")
+```
+
+
+```{julia}
 #| label: packages
 
 using AlgebraOfGraphics
@@ -45,22 +54,22 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
+using JellyMe4         # move mixed-model object to R
 using MixedModels
 using MixedModelsMakie # diagnostic plots
-using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
-using StatsBase
-using StatsModels
+using StatsBase        # for mean()
+using StatsModels      # for lrtest()
 
-
-ProgressMeter.ijulia_behavior(:clear);
+using MixedModelsMakie: qqnorm
 CairoMakie.activate!(; type="svg");
 ```
 
 
 ```{julia}
+#| label: preprocessing
+
 dat = DataFrame(Arrow.Table("./data/Vanoncini_lang_ECG.arrow"));
 
 # transfromations using DataFrameMacros
@@ -169,6 +178,50 @@ end
 ```
 
 Not much evidence for the relevance of the principal-component predictors.
+ 
+# Residual diagnostics
+
+We select LMM `m_pc0`.   
+
+```{julia}
+qqnorm(m_pc0)
+```
+
+For a simple and complete set of observation-level and subject-level residual diagnostics we reproduce the model with `lmer` and use  `easystasts::check_model()`
+
+```{julia}
+#| label: lme4 fit
+#| #| warning: false
+@rput dat;
+
+R"""
+library(lme4)
+library(tidyverse)
+library(easystats)
+
+lmer_pc0 <- lmer(llt ~ 1 + Fam + (1 | Subj), 
+            data=dat, REML=FALSE, control=lmerControl(calc.derivs = FALSE))
+"""
+```
+
+```{julia}
+#| label: residdiagnostics
+#| warning: false
+
+R"check_model(lmer_pc0)"
+```
+
+Alternatively, we can use `JellyMe4` to transfer the fitted model object to R.
+
+```{julia}
+#| label: JellyMe4-transfer
+#| warning: false
+
+mm_pc0 = (m_pc0, dat);
+@rput mm_pc0;
+R"summary(mm_pc0)"
+R"check_model(mm_pc0)"
+```
 
 # Appendix
 ```{julia}
