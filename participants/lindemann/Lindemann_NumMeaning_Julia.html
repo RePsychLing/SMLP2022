@@ -117,8 +117,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="toc-section-number">1</span>  Description</a></li>
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="toc-section-number">2</span>  Setup</a>
   <ul class="collapse">
-  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">2.1</span>  Packages</a></li>
-  <li><a href="#code-book" id="toc-code-book" class="nav-link" data-scroll-target="#code-book"><span class="toc-section-number">2.2</span>  Code book</a></li>
+  <li><a href="#environment" id="toc-environment" class="nav-link" data-scroll-target="#environment"><span class="toc-section-number">2.1</span>  Environment</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">2.2</span>  Packages</a></li>
+  <li><a href="#code-book" id="toc-code-book" class="nav-link" data-scroll-target="#code-book"><span class="toc-section-number">2.3</span>  Code book</a></li>
   </ul></li>
   <li><a href="#contrasts" id="toc-contrasts" class="nav-link" data-scroll-target="#contrasts"><span class="toc-section-number">3</span>  Contrasts</a></li>
   <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection"><span class="toc-section-number">4</span>  Model selection</a>
@@ -177,9 +178,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="setup" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
-<section id="packages" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">2.1</span> Packages</h2>
-<div id="packages" class="cell" data-execution_count="1">
+<section id="environment" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="environment"><span class="header-section-number">2.1</span> Environment</h2>
+</section>
+<section id="packages" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="packages"><span class="header-section-number">2.2</span> Packages</h2>
+<div id="packages" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie       </span><span class="co"># graphics back-end</span></span>
@@ -187,21 +191,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros  </span><span class="co"># simplified dplyr-like data wrangling </span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelDensity    </span><span class="co"># density estimation</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie </span><span class="co"># diagnostic plots</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random           </span><span class="co"># random number generators</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RCall            </span><span class="co"># call R from Julia</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie </span><span class="co"># diagnostic plots</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random           </span><span class="co"># random number generators</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RCall            </span><span class="co"># call R from Julia</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">"svg"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="code-book" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="code-book"><span class="header-section-number">2.2</span> Code book</h2>
+<section id="code-book" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="code-book"><span class="header-section-number">2.3</span> Code book</h2>
 <p>For preprocessing see earlier script. Here we have only the relevant variables for the following analyses.</p>
 <ul>
 <li><strong><code>Subj</code></strong>: Subject ID</li>
@@ -217,10 +220,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong><code>P_SpC</code></strong>: Spatial congruity of the previous trial (-1 to +1)</li>
 <li><strong><code>speed</code></strong>: Speed of responding in Hz, [1/s]</li>
 </ul>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="st">"./data/Lindemann_NumMeaning.arrow"</span>));</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="data" class="cell-output cell-output-display" data-execution_count="33">
+<div id="data" class="cell-output cell-output-display" data-execution_count="7">
 
 <div class="data-frame"><p>12 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="Union">Union</th></tr></thead><tbody><tr><th>1</th><td>Subj</td><td></td><td>S101</td><td></td><td>S223</td><td>0</td><td>Union{Missing, String}</td></tr><tr><th>2</th><td>digit</td><td>5.00421</td><td>1.0</td><td>4.0</td><td>9.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>3</th><td>size</td><td>107.739</td><td>30.0</td><td>117.0</td><td>232.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>4</th><td>size_rc</td><td>0.00874777</td><td>-3.0</td><td>1.0</td><td>3.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>5</th><td>pos</td><td>0.0971975</td><td>-300.0</td><td>100.0</td><td>300.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>6</th><td>pos_rc</td><td>0.000971975</td><td>-3.0</td><td>1.0</td><td>3.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>7</th><td>numerical_distance</td><td>2.50235</td><td>1.0</td><td>3.0</td><td>4.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>8</th><td>SiC</td><td>-0.000344241</td><td>-1.0</td><td>0.0833333</td><td>1.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>9</th><td>SpC</td><td>0.000256493</td><td>-1.0</td><td>0.0833333</td><td>1.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>10</th><td>P_SiC</td><td>0.000636598</td><td>-1.0</td><td>0.0833333</td><td>1.0</td><td>41</td><td>Union{Missing, Float64}</td></tr><tr><th>11</th><td>P_SpC</td><td>0.00141541</td><td>-1.0</td><td>0.0833333</td><td>1.0</td><td>41</td><td>Union{Missing, Float64}</td></tr><tr><th>12</th><td>speed</td><td>1.68934</td><td>0.667557</td><td>1.67785</td><td>3.90625</td><td>0</td><td>Union{Missing, Float64}</td></tr></tbody></table></div>
 </div>
@@ -230,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="contrasts" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Contrasts</h1>
 <p>We have only the random factor <code>Subj</code> and declare it as a grouping variable.</p>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>Subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>());</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -239,7 +242,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="complex-lmm" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="complex-lmm"><span class="header-section-number">4.1</span> Complex LMM</h2>
 <p>We start with a complex LMM; it is not <em>maximal</em> because no interaction terms in RES.</p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>m_cpx <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> numerical_distance <span class="op">+</span> size_rc <span class="op">+</span> pos_rc <span class="op">+</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                                SiC<span class="op">+</span>SpC<span class="op">+</span>P_SiC<span class="op">+</span>P_SpC <span class="op">+</span> SiC<span class="op">&amp;</span>SpC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SpC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SpC <span class="op">+</span></span>
@@ -249,10 +252,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">issingular</span>(m_cpx)  <span class="co"># overparameterized</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 2176      Time: 0:00:00 ( 0.15 ms/it)
+<pre><code>Minimizing 2175      Time: 0:00:00 ( 0.40 ms/it)
   objective:  2344.8413230134</code></pre>
 </div>
-<div id="m_cpx" class="cell-output cell-output-display" data-execution_count="35">
+<div id="m_cpx" class="cell-output cell-output-display" data-execution_count="9">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 9%">
@@ -408,7 +411,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="very-simple-lmm" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="very-simple-lmm"><span class="header-section-number">4.2</span> Very Simple LMM</h2>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m_voi <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> numerical_distance <span class="op">+</span> size_rc <span class="op">+</span> pos_rc <span class="op">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                                SiC<span class="op">+</span>SpC<span class="op">+</span>P_SiC<span class="op">+</span>P_SpC <span class="op">+</span> SiC<span class="op">&amp;</span>SpC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SpC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SpC <span class="op">+</span></span>
@@ -416,7 +419,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(MixedModel, form, dat; contrasts);</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(m_voi, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="m_voi" class="cell-output cell-output-display" data-execution_count="36">
+<div id="m_voi" class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>Likelihood-ratio test: 2 models fitted on 12305 observations
 ─────────────────────────────────────────────────────────
      DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
@@ -429,7 +432,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="zero-correlation-parameter-lmm" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="zero-correlation-parameter-lmm"><span class="header-section-number">4.3</span> Zero-correlation parameter LMM</h2>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m_zcp <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> numerical_distance <span class="op">+</span> size_rc <span class="op">+</span> pos_rc <span class="op">+</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                SiC<span class="op">+</span>SpC<span class="op">+</span>P_SiC<span class="op">+</span>P_SpC <span class="op">+</span> SiC<span class="op">&amp;</span>SpC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SpC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SpC <span class="op">+</span></span>
@@ -440,7 +443,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_zcp)</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(m_voi, m_zcp, m_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="m_zcp" class="cell-output cell-output-display" data-execution_count="37">
+<div id="m_zcp" class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>Likelihood-ratio test: 3 models fitted on 12305 observations
 ─────────────────────────────────────────────────────────
      DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
@@ -451,7 +454,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ─────────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> mods <span class="op">=</span> [m_voi, m_zcp, m_cpx];</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">DataFrame</span>(;</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>[<span class="op">:</span>m_voi, <span class="op">:</span>m_zcp, <span class="op">:</span>m_cpx],</span>
@@ -462,7 +465,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">round</span>.(<span class="dt">Int</span>, <span class="fu">bic</span>.(mods)),</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div class="cell-output cell-output-display" data-execution_count="12">
 
 <div class="data-frame"><p>3 rows × 6 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>model</th><th>pars</th><th>geomdof</th><th>AIC</th><th>AICc</th><th>BIC</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>m_voi</td><td>15</td><td>56</td><td>2460</td><td>2460</td><td>2571</td></tr><tr><th>2</th><td>m_zcp</td><td>22</td><td>125</td><td>2435</td><td>2435</td><td>2598</td></tr><tr><th>3</th><td>m_cpx</td><td>50</td><td>116</td><td>2445</td><td>2445</td><td>2816</td></tr></tbody></table></div>
 </div>
@@ -474,7 +477,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="parsimonious-lmms" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Parsimonious LMMs</h1>
 <p>We remove small variance components (VCs)</p>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_prsm <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> numerical_distance <span class="op">+</span> size_rc <span class="op">+</span> pos_rc <span class="op">+</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                SiC<span class="op">+</span>SpC<span class="op">+</span>P_SiC<span class="op">+</span>P_SpC <span class="op">+</span> SiC<span class="op">&amp;</span>SpC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SpC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SpC <span class="op">+</span></span>
@@ -485,7 +488,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prsm)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(m_voi, m_prsm,  m_zcp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="m_prsm1" class="cell-output cell-output-display" data-execution_count="39">
+<div id="m_prsm1" class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>Likelihood-ratio test: 3 models fitted on 12305 observations
 ─────────────────────────────────────────────────────────
      DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
@@ -501,10 +504,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 data-number="6"><span class="header-section-number">6</span> Figures</h1>
 <section id="caterpillar-plot" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="caterpillar-plot"><span class="header-section-number">6.1</span> Caterpillar plot</h2>
-<div class="cell" data-fig-cap1="Prediction intervals on subject random effects for model prsm" data-execution_count="9">
+<div class="cell" data-fig-cap1="Prediction intervals on subject random effects for model prsm" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cm_prsm <span class="op">=</span> <span class="fu">first</span>(<span class="fu">ranefinfo</span>(m_prsm))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar!</span>(<span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">1200</span>)), cm_prsm; orderby<span class="op">=</span><span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div id="fig-cm_prsm1" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="Lindemann_NumMeaning_Julia_files/figure-html/fig-cm_prsm1-output-1.svg" class="img-fluid figure-img"></p>
@@ -514,10 +517,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>Some individual differences in the numerical-distance effect.</p>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cm_prsm <span class="op">=</span> <span class="fu">first</span>(<span class="fu">ranefinfo</span>(m_prsm))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">caterpillar!</span>(<span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">1200</span>)), cm_prsm; orderby<span class="op">=</span><span class="fl">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="41">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div id="fig-cm_prsm2" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="Lindemann_NumMeaning_Julia_files/figure-html/fig-cm_prsm2-output-1.svg" class="img-fluid figure-img"></p>
@@ -528,7 +531,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Some individual differences in the size effect.</p>
 <p>No evidence for individual differences in the other two VCs. Do we need them in the LMM?</p>
-<div class="cell" data-execution_count="11">
+<div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m_prsm2 <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    form <span class="op">=</span> <span class="pp">@formula</span>(speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> numerical_distance <span class="op">+</span> size_rc <span class="op">+</span> pos_rc <span class="op">+</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                SiC<span class="op">+</span>SpC<span class="op">+</span>P_SiC<span class="op">+</span>P_SpC <span class="op">+</span> SiC<span class="op">&amp;</span>SpC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SiC<span class="op">&amp;</span>P_SpC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SiC <span class="op">+</span> SpC<span class="op">&amp;</span>P_SpC <span class="op">+</span></span>
@@ -539,7 +542,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_prsm2)</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(m_voi, m_prsm2,  m_prsm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="m_prsm2" class="cell-output cell-output-display" data-execution_count="42">
+<div id="m_prsm2" class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>Likelihood-ratio test: 3 models fitted on 12305 observations
 ─────────────────────────────────────────────────────────
      DOF  ΔDOF      LogLik   Deviance    Chisq  p(&gt;Chisq)
@@ -554,12 +557,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="shrinkage-plots" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="shrinkage-plots"><span class="header-section-number">6.2</span> Shrinkage plots</h2>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="13">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot!</span>(<span class="fu">Figure</span>(; resolution<span class="op">=</span>(<span class="fl">1000</span>, <span class="fl">1200</span>)), m_prsm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="43">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <div id="fig-shrinkage" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="Lindemann_NumMeaning_Julia_files/figure-html/fig-shrinkage-output-1.svg" class="img-fluid figure-img"></p>
@@ -572,7 +575,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="appendix" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Appendix</h1>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Julia Version 1.8.0

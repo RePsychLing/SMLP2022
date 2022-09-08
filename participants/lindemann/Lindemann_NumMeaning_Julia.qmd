@@ -29,6 +29,15 @@ Congruity was defined as $$C =  \frac{V}{3}  \cdot \frac{N-5}{4} = \frac{V(N-5)}
 
 # Setup
 
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
 ## Packages
 
 ```{julia}
@@ -41,7 +50,6 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
