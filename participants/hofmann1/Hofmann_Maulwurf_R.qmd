@@ -4,6 +4,7 @@ author: "Reinhold Kliegl"
 date: "2022-08-24 (last revised: `r format(Sys.time())`)"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     code-fold: true

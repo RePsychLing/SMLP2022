@@ -2,9 +2,9 @@
 title: "Antje Hofmann: Learning Syntactic Relations with the Mole Task (2)"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
-date: "2022-08-24"
 format: 
   html:
+    embed-resources: true
     toc: true
     toc-depth: 2
     code-fold: true
@@ -50,6 +50,17 @@ Children's (age: 4-8 years)reaction times in a task teaching them syntactic rela
 
 # Setup
 
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
+
 First attach the _MixedModels.jl_ package and other packages for plotting.
 The _CairoMakie.jl_ package allows the Makie graphics system [@Danisch2021] to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.
 
@@ -63,7 +74,6 @@ using CategoricalArrays
 using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -351,6 +361,8 @@ sort(DataFrame(cm.Subj), :trng)
 cm_Item = last(ranefinfo(m_prm2))
 caterpillar!(Figure(; resolution=(800, 1200)), cm_Item; orderby=1)
 ```
+
+# Appendix
 
 ```{julia}
 versioninfo()
