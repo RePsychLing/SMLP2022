@@ -3,21 +3,25 @@ title: "Patrick Schöngrundner: GLMM Simulations"
 subtitle: "Using MixedModels.jl"
 author: "Reinhold Kliegl"
 date: "2022-09-09"
-output: 
+format: 
   html:
-    toc: yes
-    toc_depth: 3
-    number_sections: yes
     embed-resources: true
-callout-appearance: simple
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
 jupyter: julia-1.8
 ---
 
 # Background 
 
-See Example1.HTML
+For a descripton see Example1.HTML.
 
-## Design (balanced)
+Data are from simulating the following design:
 
 + Design: 2 (`Sex`: B-Subj/W-Item) x 2 (`Item`: W-Subj/B-Item) factorial mixed design ...
 + ... with 18 `Subj` (9 male, 9 female) x 18 `Item` (9 pos images, 9 negative images)= 324 responses
@@ -45,6 +49,7 @@ using Arrow
 using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
+using CSV
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling 
 using KernelDensity    # density estimation
@@ -87,7 +92,7 @@ dat2 = @transform dat2 :Cat = @bycol categorical(:Cat)
 
 ## Converting `Subj` and `Item` columns to factors
 
-DB: Convert the integer `Subj` and `Item` values, which are between 1 and 18, to character strings of the form `S01` to `S18` and `I01` to `I18`, then convert these to a categorical array (similar to a factor in R). Note that we left-pad the numbers with zeros to a given length (2, in this case) so that sorting the strings lexicographically corresponds to sorting by numerical value.
+Paraphrasing Douglas Bates: Convert the integer `Subj` and `Item` values, which are between 1 and 18, to character strings of the form `S01` to `S18` and `I01` to `I18`, then convert these to a categorical array (similar to a factor in R). Note that we left-pad the numbers with zeros to a given length (2, in this case) so that sorting the strings lexicographically corresponds to sorting by numerical value.
 
 ```{julia}
 dat1.Subj = let
@@ -114,54 +119,207 @@ end;
 ## Contrasts
 
 ```{julia}
-contrasts = (
-      Dict(:Sex   => EffectsCoding(base= "male"; levels=["M", "F"])),
-      Dict(:Cat   => EffectsCoding(base= "A"; levels=["A", "B"])),
-      Dict(:Subj  => Grouping()),
-      Dict(:Item  => Grouping())
-   );
+contrasts =  Dict(:Sex   => EffectsCoding(),
+                  :Cat   => EffectsCoding(),
+                  :Subj  => Grouping(),
+                  :Item  => Grouping());
 ```
 
 # Basic GLMM fit
 
+## ... using factors
+
 ```{julia}
-fit1a = let
-     form = @formula(resp ~ 1 + Sex*Cat + (1 | Subj) + (1 | Item))
-     fit(MixedModel, form, dat1; contrasts)
-end
+frm1a = @formula(resp ~ 1 + Sex*Cat + (1|Subj) + (1|Item));
+fit1a = fit(MixedModel, frm1a, dat1, Bernoulli(); contrasts)
 ```
 
+## ... using PS's indicator variables
+
 ```{julia}
-fit1b = let
-     form = @formula(resp ~ 1 + sex1*cat1 + (1 | Subj) + (1 | Item))
-     fit(MixedModel, form, dat1, Bernoulli(); contrasts)
-end
+frm1b = @formula(resp ~ 1 + sex1*cat1 + (1|Subj) + (1|Item));
+fit1b= fit(MixedModel, frm1b, dat1, Bernoulli())
 ```
 
-# Compare models
+## ... extracting indicator variables from the model matrix
+
+The indicator variables in the dataframe are also available from the factor-based model matrix.
 
 ```{julia}
-display(lrtest(f1a, m_pc1, m_pc2, m_pc3))
+mm1 = fit1a.X;
+dat1[!, :sex] = mm1[:, 2]
+dat1[!, :cat] = mm1[:, 3]
 
- lrtest(m_pc0, m_pc3)
+frm1c = @formula(resp ~ 1 + sex*cat + (1|Subj) + (1|Item));
+fit1c= fit(MixedModel, frm1c, dat1, Bernoulli())
 ```
 
-```{julia}
-MixedModels.likelihoodratiotest(m_pc0, m_pc1, m_pc2, m_pc3)
-```
+## Compare models
 
 ```{julia}
-let mods = [m_pc0, m_pc1, m_pc2, m_pc3];
+display(MixedModels.likelihoodratiotest(fit1a, fit1b, fit1c))
+
+let mods = [fit1a, fit1b, fit1c];
  DataFrame(;
-    model=[:m_pc0, :m_pc1, :m_pc2, :m_pc3],
+    model=[:fit1a, :fit1b, :fit1c],
     pars=dof.(mods),
-    geomdof=round.(Int, (sum ∘ leverage).(mods)),
     AIC=round.(Int, aic.(mods)),
     AICc=round.(Int, aicc.(mods)),
     BIC=round.(Int, bic.(mods)),
   )
 end
 ```
+
+# Boosted-parameter GLMM fit
+
+## ... using factors
+
+```{julia}
+frm2a = @formula(resp ~ 1 + Sex*Cat + (1|Subj) + (1|Item));
+fit2a = fit(MixedModel, frm2a, dat2, Bernoulli(); contrasts)
+```
+
+## ... using PS's indicator variables
+
+```{julia}
+frm2b = @formula(resp ~ 1 + sex1*cat1 + (1|Subj) + (1|Item));
+fit2b= fit(MixedModel, frm2b, dat2, Bernoulli())
+```
+
+## ... extracting indicator variables from the model matrix
+
+The indicator variables in the dataframe are also available from the factor-based model matrix.
+
+```{julia}
+mm2 = fit2a.X;
+dat2[!, :sex] = mm2[:, 2]
+dat2[!, :cat] = mm2[:, 3]
+
+frm2c = @formula(resp ~ 1 + sex*cat + (1|Subj) + (1|Item));
+fit2c= fit(MixedModel, frm2c, dat2, Bernoulli())
+```
+
+## Compare models
+
+```{julia}
+display(MixedModels.likelihoodratiotest(fit2a, fit2b, fit2c))
+
+let mods = [fit2a, fit2b, fit2c];
+ DataFrame(;
+    model=[:fit2a, :fit2b, :fit2c],
+    pars=dof.(mods),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
+# Parametric bootstrap
+
+Using LMM `fit1a`  we:
+
+  - generate a bootstrap sample
+  - compute shortest covergage intervals for the LMM parameters
+  - plot densities of bootstrapped parameter estimates for fixed effects and variance components
+
+## Generate a bootstrap sample
+
+We generate 2500 samples for the 6 model parameters (4 fixed effects and 2 VCs).
+
+```{julia}
+Random.seed!(42)
+samp = parametricbootstrap(2500, fit1a);
+```
+
+```{julia}
+dat3 = DataFrame(samp.allpars)
+first(dat3, 10)
+```
+
+Sometimes the bootstrap does not work, ...
+
+```{julia}
+@subset(dat3, :value != NaN)
+display(describe(dat3))
+nrow(dat3) # 2500 estimates for each of 6 model parameters
+```
+
+... but in this case we did not lose any estimates. 
+
+## Shortest coverage interval
+
+```{julia}
+sci = DataFrame(shortestcovint(samp))
+```
+
+We can also visualize the shortest coverage intervals for fixed effects with the `ridgeplot()` command:
+
+```{julia}
+#| code-fold: true
+#| label: fig-bsridgem1
+#| fig-cap: Ridge plot of fixed-effects bootstrap samples from model m_KM
+ridgeplot(samp; show_intercept=false)
+```
+
+## Comparative density plots of bootstrapped parameter estimates
+
+### Fixed effects (w/o GM)
+
+```{julia}
+#| code-fold: true
+#| label: fig-betadensity_fe
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the fixed effects for model  m1L'
+rn = renamer([
+  "(Intercept)" => "GM",
+  "Sex: M" => "Sex effect",
+  "Cat: B" => "Image category effect",
+  "Sex: M & Cat: B" => "Sex x Cat interaction effect"
+])
+draw(
+  data(@subset(dat3, :type == "β" && :names ≠ "(Intercept)")) *
+  mapping(
+    :value => "Experimental effect size [ms]";
+    color=:names => rn => "Experimental effects",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+The densitiies correspond nicely with the shortest coverage intervals.
+
+### VCs  for `Subj` and `Item`
+
+```{julia}
+#| code-fold: true
+#| label: fig-sigmasdensitym_Subj
+#| fig-cap: '  Kernel density estimate from bootstrap samples of `Subj`-related VC for GM'
+draw(
+  data(@subset(dat3, :type == "σ" &&  :group == "Subj")) *
+  mapping(
+    :value => "Standard deviation [ms]"
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+#| code-fold: true
+#| label: fig-sigmasdensitym_Item
+#| fig-cap: '  Kernel density estimate from bootstrap samples of `Item`-related VC for GM'
+draw(
+  data(@subset(dat3, :type == "σ" &&  :group == "Item")) *
+  mapping(
+    :value => "Standard deviation [ms]"
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+# Appendix
 
 ```{julia}
 versioninfo()
