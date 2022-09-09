@@ -1,0 +1,170 @@
+---
+title: "Patrick Schöngrundner: GLMM Simulations"
+subtitle: "Using MixedModels.jl"
+author: "Reinhold Kliegl"
+date: "2022-09-09"
+output: 
+  html:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    embed-resources: true
+callout-appearance: simple
+jupyter: julia-1.8
+---
+
+# Background 
+
+See Example1.HTML
+
+## Design (balanced)
+
++ Design: 2 (`Sex`: B-Subj/W-Item) x 2 (`Item`: W-Subj/B-Item) factorial mixed design ...
++ ... with 18 `Subj` (9 male, 9 female) x 18 `Item` (9 pos images, 9 negative images)= 324 responses
++ `Cat`: positive (A) vs. negative (B) categroy of image/item
++ `resp`: dependent variable: Are you scared? Yes/No; (Bernoulli 0/1 variable)
+
+# Setup
+
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling 
+using KernelDensity    # density estimation
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsBase
+using StatsModels
+
+using AlgebraOfGraphics: density
+using AlgebraOfGraphics: boxplot
+using MixedModelsMakie: qqnorm
+using MixedModelsMakie: ridgeplot
+using MixedModelsMakie: scatter
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+## Read the original data file
+```
+
+## Read simulated data sets
+
+```{julia}
+dat1 = CSV.read("./data/DataEx1.csv", DataFrame; pool=true)
+dat1 = rename(dat1, :subj_ID => :Subj, :subj_sex => :Sex, :item_ID => :Item, :item_cat => :Cat)
+dat1=@transform dat1 :Sex = @bycol categorical(:Sex)
+dat1=@transform dat1 :Cat = @bycol categorical(:Cat)
+describe(dat1)
+```
+
+```{julia}
+dat2 = CSV.read("./data/DataEx2.csv", DataFrame; pool=true)
+describe(dat2)
+dat2 = rename(dat2, :subj_ID => :Subj, :subj_sex => :Sex, :item_ID => :Item, :item_cat => :Cat)
+dat2 = @transform dat2 :Sex = @bycol categorical(:Sex)
+dat2 = @transform dat2 :Cat = @bycol categorical(:Cat)
+```
+
+## Converting `Subj` and `Item` columns to factors
+
+DB: Convert the integer `Subj` and `Item` values, which are between 1 and 18, to character strings of the form `S01` to `S18` and `I01` to `I18`, then convert these to a categorical array (similar to a factor in R). Note that we left-pad the numbers with zeros to a given length (2, in this case) so that sorting the strings lexicographically corresponds to sorting by numerical value.
+
+```{julia}
+dat1.Subj = let
+  strv = string.('S', lpad.(dat1.Subj, 2, '0'))
+  categorical(strv; levels=sort(unique(strv)))
+end;
+
+dat1.Item = let
+  strv = string.('I', lpad.(dat1.Item, 2, '0'))
+  categorical(strv; levels=sort(unique(strv)))
+end
+
+dat2.Subj = let
+  strv = string.('S', lpad.(dat2.Subj, 2, '0'))
+  categorical(strv; levels=sort(unique(strv)))
+end;
+
+dat2.Item = let
+  strv = string.('I', lpad.(dat2.Item, 2, '0'))
+  categorical(strv; levels=sort(unique(strv)))
+end;
+```
+
+## Contrasts
+
+```{julia}
+contrasts = (
+      Dict(:Sex   => EffectsCoding(base= "male"; levels=["M", "F"])),
+      Dict(:Cat   => EffectsCoding(base= "A"; levels=["A", "B"])),
+      Dict(:Subj  => Grouping()),
+      Dict(:Item  => Grouping())
+   );
+```
+
+# Basic GLMM fit
+
+```{julia}
+fit1a = let
+     form = @formula(resp ~ 1 + Sex*Cat + (1 | Subj) + (1 | Item))
+     fit(MixedModel, form, dat1; contrasts)
+end
+```
+
+```{julia}
+fit1b = let
+     form = @formula(resp ~ 1 + sex1*cat1 + (1 | Subj) + (1 | Item))
+     fit(MixedModel, form, dat1, Bernoulli(); contrasts)
+end
+```
+
+# Compare models
+
+```{julia}
+display(lrtest(f1a, m_pc1, m_pc2, m_pc3))
+
+ lrtest(m_pc0, m_pc3)
+```
+
+```{julia}
+MixedModels.likelihoodratiotest(m_pc0, m_pc1, m_pc2, m_pc3)
+```
+
+```{julia}
+let mods = [m_pc0, m_pc1, m_pc2, m_pc3];
+ DataFrame(;
+    model=[:m_pc0, :m_pc1, :m_pc2, :m_pc3],
+    pars=dof.(mods),
+    geomdof=round.(Int, (sum ∘ leverage).(mods)),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
+```{julia}
+versioninfo()
+```
+
+

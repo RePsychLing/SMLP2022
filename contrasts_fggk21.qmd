@@ -437,6 +437,7 @@ m_cpx_1_PC_2.PCA
 ```
 
 ```{julia}
+f_zcp_1 = @formula(zScore ~ 1 + Test*a1*Sex + zerocorr(1 + Test | Child))
 m_zcp_1_PC_2 = fit(MixedModel, f_zcp_1, dat; contrasts=contr4b)
 ```
 

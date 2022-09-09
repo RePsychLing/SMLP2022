@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.165">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Patrick Schöngrundner">
+
+<title>Example of GLMM fit in lme4</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Example1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Example1_files/libs/quarto-html/quarto.js"></script>
+<script src="Example1_files/libs/quarto-html/popper.min.js"></script>
+<script src="Example1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Example1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Example1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Example1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Example1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Example1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Example1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+</head><body class="fullcontent">\usepackage{array}
+\usepackage{amsfonts}
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+
+
+
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Example of GLMM fit in lme4</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Patrick Schöngrundner </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Invalid Date</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Here we consider a simulated database. In our example we have 18 participants (9 male and 9 female) that are presented with 8 images (stimuli), 4 of which are of type A and 4 of B. We can think of an image of type A as an image of positive valence (e.g., a screenshot of a nice Disney movie), and an image of type B as an image of negative valence (e.g., a screenshot of a scary scene of The Ring). We show each stimulus to each participant (i.e., balanced design), and immediately after showing a given stimulus we ask our participant if she/he was scared or not. Hence, our response variable is a Bernoulli 0/1 variable, where 0 represents the fact that the participant was not scared, and 1 represents the fact that the participant was scared. Finally, in order to increase replicability (!), we include the random effect of participants and items.</p>
+<p>Our model can be mathematically written as follows: <span class="math display">\[\begin{align*}
+    &amp; y_{ij} \sim \text{Bernoulli}(\mu _{ijk})\\
+    &amp; \mu_{ij} = \mathbb{E}\left[ g(\mu + \alpha_\text{sex} + \psi_\text{type} + (\alpha \psi)_\text{sex:type} + \pi _i + \omega _j) \right]
+\end{align*}\]</span></p>
+<p>Here, <span class="math inline">\(y_{ij}\)</span> represents the response of the <span class="math inline">\(i\)</span>th participant, presented to stimulus <span class="math inline">\(j\)</span> and is a random variable that follows a Bernoulli distribution with parameters <span class="math inline">\(\mu_{ij} = \mu_\text{b}\)</span>. Moreover, we model the parameter $ _$ as the expectation of a linear predictor, modulo a link function. As <span class="math inline">\(\mu_\text{b}\)</span> can only range from 0 to 1, and the linear predictor ranges on all <span class="math inline">\(\mathbb{R}\)</span>, the link function <span class="math inline">\(g\)</span> maps the the linear predictor back into the interval <span class="math inline">\([0, 1]\)</span>. In this example, we will use the canonical link function (logit function). Modulo the link function and the expectation operator, we model the mean <span class="math inline">\(\mu _p\)</span> as a general mean <span class="math inline">\(\mu\)</span>, plus the effect of the sex of the subject <span class="math inline">\(\alpha_\text{sex}\)</span>, plus the effect of the type of the stimulus <span class="math inline">\(\psi_\text{type}\)</span>, plus their interaction <span class="math inline">\((\alpha \psi)_\text{sex:type}\)</span>. Moreover, we add the subject <span class="math inline">\(\pi_i\)</span> and item <span class="math inline">\(\omega_j\)</span> random effect, where <span class="math display">\[\begin{align}
+&amp; \pi \sim \mathcal{N}(0, \sigma_{\text{part}}^2)\\
+&amp; \omega \sim \mathcal{N}(0, \sigma_{\text{item}}^2)\\
+\end{align}\]</span> We assume that all participant share the same variance <span class="math inline">\(\sigma_{\text{part}}^2\)</span>, and all items share the same variance <span class="math inline">\(\sigma_{\text{item}}^2\)</span>.</p>
+<p>Note that the sex of participant is a between subject factor, and the type of the stimulus is a within item factor.</p>
+<p>We generate the data sets considering 18 subjects and 18 item as described above. We assume there is no significant effect for our explanatory variables at all. More precisely we set: <span class="math display">\[\begin{align*}
+    &amp; n_\text{subj} = n_\text{male} + n_\text{female} = 9 + 9 = 18 \\
+    &amp; n_\text{item} = n_\text{A} + n_\text{B} = 9 + 9 = 18 \\
+    &amp; \mu = \alpha_\text{sex} = \psi_\text{type} = (\alpha \psi)_\text{sex:type} = 0\\
+    &amp; \sigma_{\text{part}}^2 = \sigma_{\text{item}}^2 = 1
+\end{align*}\]</span></p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>In the following we use a database 1 (DataEx1.csv) to illustrate some of the questions I have. For the moment we only consider the first five columns of the first data set (the remaining columns will be useful soon). Database 2 (DataEx2.csv) was generated in a similar way, but we will use it to illustrate a problem (that appear quite frequently).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/dataex1.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>subj_ID <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data1<span class="sc">$</span>subj_ID)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>subj_sex <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data1<span class="sc">$</span>subj_sex)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>item_ID <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data1<span class="sc">$</span>item_ID)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data1<span class="sc">$</span>item_cat <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data1<span class="sc">$</span>item_cat)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/DataEx2.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span>subj_ID <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data2<span class="sc">$</span>subj_ID)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span>subj_sex <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data2<span class="sc">$</span>subj_sex)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span>item_ID <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data2<span class="sc">$</span>item_ID)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span>item_cat <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data2<span class="sc">$</span>item_cat)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data1[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  subj_ID subj_sex item_ID item_cat resp
+1       1        M       1        A    0
+2       1        M       2        A    0
+3       1        M       3        A    1
+4       1        M       4        A    0
+5       1        M       5        A    0
+6       1        M       6        A    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data1[ , <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    subj_ID    subj_sex    item_ID    item_cat      resp       
+ 1      : 18   F:162    1      : 18   A:162    Min.   :0.0000  
+ 2      : 18   M:162    2      : 18   B:162    1st Qu.:0.0000  
+ 3      : 18            3      : 18            Median :0.0000  
+ 4      : 18            4      : 18            Mean   :0.4753  
+ 5      : 18            5      : 18            3rd Qu.:1.0000  
+ 6      : 18            6      : 18            Max.   :1.0000  
+ (Other):216            (Other):216                            </code></pre>
+</div>
+</div>
+</section>
+<section id="some-fits" class="level2">
+<h2 class="anchored" data-anchor-id="some-fits">Some fits</h2>
+<p>For our fits, we import following R packages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We set the contrasts as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts =</span> <span class="fu">c</span>(<span class="st">"contr.sum"</span>, <span class="st">"contr.sum"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span style="color:blue"><em>Is this enough for the rest of the analysis? Is there a way to define the contrasts directly in the glmer function, as an argument?</em></span>.</p>
+<p>For simplicity let us focus in the variable sex. Given the data (assuming we do not know which underlying mechanism generated it), we are interested to understand if the sex of the participant is significant when it comes to explain the response variable.</p>
+<section id="basic-fit" class="level3">
+<h3 class="anchored" data-anchor-id="basic-fit">Basic fit</h3>
+<p>Let us start with two rather basic fits:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fit1a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span> subj_sex <span class="sc">+</span> item_cat <span class="sc">+</span> subj_sex<span class="sc">:</span>item_cat <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data1, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ =</span> <span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>fit1b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span>            item_cat <span class="sc">+</span> subj_sex<span class="sc">:</span>item_cat <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data1, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ =</span> <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>(s<span class="ot">&lt;-</span><span class="fu">summary</span>(fit1a))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: resp ~ subj_sex + item_cat + subj_sex:item_cat + (1 | subj_ID) +  
+    (1 | item_ID)
+   Data: data1
+
+     AIC      BIC   logLik deviance df.resid 
+   405.4    428.1   -196.7    393.4      318 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.5411 -0.6909 -0.3093  0.6724  3.0027 
+
+Random effects:
+ Groups  Name        Variance Std.Dev.
+ subj_ID (Intercept) 1.3177   1.1479  
+ item_ID (Intercept) 0.8269   0.9093  
+Number of obs: 324, groups:  subj_ID, 18; item_ID, 18
+
+Fixed effects:
+                      Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)         -1.317e-01  3.699e-01  -0.356    0.722
+subj_sex1            7.152e-07  3.013e-01   0.000    1.000
+item_cat1            2.762e-01  2.518e-01   1.097    0.273
+subj_sex1:item_cat1 -2.808e-02  1.312e-01  -0.214    0.830
+
+Correlation of Fixed Effects:
+            (Intr) sbj_s1 itm_c1
+subj_sex1    0.003              
+item_cat1   -0.002  0.000       
+sbj_sx1:t_1  0.000 -0.003  0.010</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(a<span class="ot">&lt;-</span><span class="fu">anova</span>(fit1a, fit1b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: data1
+Models:
+fit1a: resp ~ subj_sex + item_cat + subj_sex:item_cat + (1 | subj_ID) + (1 | item_ID)
+fit1b: resp ~ item_cat + subj_sex:item_cat + (1 | subj_ID) + (1 | item_ID)
+      npar    AIC    BIC  logLik deviance Chisq Df Pr(&gt;Chisq)
+fit1a    6 405.38 428.06 -196.69   393.38                    
+fit1b    6 405.38 428.06 -196.69   393.38     0  0           </code></pre>
+</div>
+</div>
+<p>Thanks to the summary R function, see that the Wald p-value for sex is 1.000, which suggests that sex is not significant (as expected). We see that for the LRT p-value (obtained with the anova function), things are a little bit suspicious. Hence, my fist real question: <span style="color:blue"><em>Why can’t I obtain the LRT p-value by simply comparing these two models, i.e.&nbsp;using these formulas? It would really nice of the previous code worked as “expected”</em></span>.</p>
+<p>In any case, I found an alternative, that is using the contrasts coding (the remaining columns of the dataset):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit2a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span> sex1 <span class="sc">+</span> cat1 <span class="sc">+</span> sex1<span class="sc">:</span>cat1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data1, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ=</span><span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fit2b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span>        cat1 <span class="sc">+</span> sex1<span class="sc">:</span>cat1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data1, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ=</span><span class="dv">1</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>(s<span class="ot">&lt;-</span><span class="fu">summary</span>(fit2a))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: resp ~ sex1 + cat1 + sex1:cat1 + (1 | subj_ID) + (1 | item_ID)
+   Data: data1
+
+     AIC      BIC   logLik deviance df.resid 
+   405.4    428.1   -196.7    393.4      318 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.5411 -0.6909 -0.3093  0.6724  3.0027 
+
+Random effects:
+ Groups  Name        Variance Std.Dev.
+ subj_ID (Intercept) 1.3177   1.1479  
+ item_ID (Intercept) 0.8269   0.9093  
+Number of obs: 324, groups:  subj_ID, 18; item_ID, 18
+
+Fixed effects:
+              Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept) -1.317e-01  3.699e-01  -0.356    0.722
+sex1         7.152e-07  3.013e-01   0.000    1.000
+cat1         2.762e-01  2.518e-01   1.097    0.273
+sex1:cat1   -2.808e-02  1.312e-01  -0.214    0.830
+
+Correlation of Fixed Effects:
+          (Intr) sex1   cat1  
+sex1       0.003              
+cat1      -0.002  0.000       
+sex1:cat1  0.000 -0.003  0.010</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(a<span class="ot">&lt;-</span><span class="fu">anova</span>(fit2a, fit2b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: data1
+Models:
+fit2b: resp ~ cat1 + sex1:cat1 + (1 | subj_ID) + (1 | item_ID)
+fit2a: resp ~ sex1 + cat1 + sex1:cat1 + (1 | subj_ID) + (1 | item_ID)
+      npar    AIC    BIC  logLik deviance Chisq Df Pr(&gt;Chisq)
+fit2b    5 403.38 422.28 -196.69   393.38                    
+fit2a    6 405.38 428.06 -196.69   393.38     0  1          1</code></pre>
+</div>
+</div>
+<p>Let’s try to complicate a little bit things and boost the parameters:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit3a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span> sex1 <span class="sc">+</span> cat1 <span class="sc">+</span> sex1<span class="sc">:</span>cat1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data1, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ=</span><span class="dv">1</span>,  <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optimizer =</span><span class="st">'optimx'</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">method=</span><span class="st">'L-BFGS-B'</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required namespace: optimx</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit3b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span>        cat1 <span class="sc">+</span> sex1<span class="sc">:</span>cat1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data1, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ=</span><span class="dv">1</span>, <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optimizer =</span><span class="st">'optimx'</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">method=</span><span class="st">'L-BFGS-B'</span>)))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>(s<span class="ot">&lt;-</span><span class="fu">summary</span>(fit3a))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: resp ~ sex1 + cat1 + sex1:cat1 + (1 | subj_ID) + (1 | item_ID)
+   Data: data1
+Control: 
+glmerControl(optimizer = "optimx", optCtrl = list(method = "L-BFGS-B"))
+
+     AIC      BIC   logLik deviance df.resid 
+   405.4    428.1   -196.7    393.4      318 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.5410 -0.6909 -0.3093  0.6724  3.0027 
+
+Random effects:
+ Groups  Name        Variance Std.Dev.
+ subj_ID (Intercept) 1.3177   1.1479  
+ item_ID (Intercept) 0.8269   0.9093  
+Number of obs: 324, groups:  subj_ID, 18; item_ID, 18
+
+Fixed effects:
+              Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept) -1.317e-01  3.699e-01  -0.356    0.722
+sex1        -1.741e-05  3.013e-01   0.000    1.000
+cat1         2.762e-01  2.518e-01   1.097    0.273
+sex1:cat1   -2.808e-02  1.312e-01  -0.214    0.830
+
+Correlation of Fixed Effects:
+          (Intr) sex1   cat1  
+sex1       0.003              
+cat1      -0.002  0.000       
+sex1:cat1  0.000 -0.003  0.010
+optimizer (optimx) convergence code: 0 (OK)
+Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(a<span class="ot">&lt;-</span><span class="fu">anova</span>(fit3a, fit3b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data: data1
+Models:
+fit3b: resp ~ cat1 + sex1:cat1 + (1 | subj_ID) + (1 | item_ID)
+fit3a: resp ~ sex1 + cat1 + sex1:cat1 + (1 | subj_ID) + (1 | item_ID)
+      npar    AIC    BIC  logLik deviance Chisq Df Pr(&gt;Chisq)
+fit3b    5 403.38 422.28 -196.69   393.38                    
+fit3a    6 405.38 428.06 -196.69   393.38     0  1          1</code></pre>
+</div>
+</div>
+<p>Let’s consider Other techniques to decide whether a variable is significant or not: confidence intervals (cf.&nbsp;link vignette).</p>
+<p>Wald CI:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(confW <span class="ot">&lt;-</span> <span class="fu">confint.merMod</span>(fit3a, <span class="at">method =</span> <span class="st">"Wald"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %    97.5 %
+.sig01              NA        NA
+.sig02              NA        NA
+(Intercept) -0.8567397 0.5933399
+sex1        -0.5905634 0.5905285
+cat1        -0.2172303 0.7696920
+sex1:cat1   -0.2851683 0.2289983</code></pre>
+</div>
+</div>
+<p><span style="color:blue"><em>Why are the sigma CIs bounds labelled with NA?</em></span></p>
+<p>Profiled CI:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(confP <span class="ot">&lt;-</span> <span class="fu">confint.merMod</span>(fit3a, <span class="at">method =</span> <span class="st">"profile"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Computing profile confidence intervals ...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in nextpar(mat, cc, i, delta, lowcut, upcut): unexpected decrease in
+profile: using minstep
+
+Warning in nextpar(mat, cc, i, delta, lowcut, upcut): unexpected decrease in
+profile: using minstep</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optwrap(optimizer, par = start, fn = function(x) dd(mkpar(npar1, :
+convergence code 52 from optimx: none</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in FUN(X[[i]], ...): non-monotonic profile for sex1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in confint.thpr(pp, level = level, zeta = zeta): bad spline fit for
+sex1: falling back to linear interpolation</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %    97.5 %
+.sig01       0.7289713 1.8204705
+.sig02       0.5382513 1.4797769
+(Intercept) -0.8984513 0.6297058
+sex1        -0.6351009 0.6353144
+cat1        -0.2458534 0.8121841
+sex1:cat1   -0.2901162 0.2335921</code></pre>
+</div>
+</div>
+<p><span style="color:blue"><em>Are all these warnings concerning?</em></span> Now the CI bounds for the CI are not NA.</p>
+<p>As suggested in the second link below, I try to visualize the profile as well. Ideally the plot for the variable sex should look at least monotonic, which is not the case here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">profile</span>(fit3a, <span class="at">devtol =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in nextpar(mat, cc, i, delta, lowcut, upcut): unexpected decrease in
+profile: using minstep
+
+Warning in nextpar(mat, cc, i, delta, lowcut, upcut): unexpected decrease in
+profile: using minstep</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optwrap(optimizer, par = start, fn = function(x) dd(mkpar(npar1, :
+convergence code 52 from optimx: none</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in FUN(X[[i]], ...): non-monotonic profile for sex1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.
+
+Warning in optimx.check(par, optcfg$ufn, optcfg$ugr, optcfg$uhess, lower, : Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>lattice<span class="sc">::</span><span class="fu">xyplot</span>(pp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Example1_files/figure-html/plot%20profile%20CI-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>If I run the same analysis for the second database, I get following message, even if the (very small) LRT p-value was computed without particular trouble: Error in zeta(shiftpar, start = opt[seqpar1][-w]) : profiling detected new, lower deviance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fit4a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span> sex1 <span class="sc">+</span> cat1 <span class="sc">+</span> sex1<span class="sc">:</span>cat1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ=</span><span class="dv">1</span>,  <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optimizer =</span><span class="st">'optimx'</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">method=</span><span class="st">'L-BFGS-B'</span>)))</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>fit4b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(resp <span class="sc">~</span> cat1 <span class="sc">+</span> sex1<span class="sc">:</span>cat1 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subj_ID) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>item_ID), <span class="at">data=</span>data2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), <span class="at">nAGQ=</span><span class="dv">1</span>,  <span class="at">control =</span> <span class="fu">glmerControl</span>(<span class="at">optimizer =</span><span class="st">'optimx'</span>, <span class="at">optCtrl=</span><span class="fu">list</span>(<span class="at">method=</span><span class="st">'L-BFGS-B'</span>)))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>(a<span class="ot">&lt;-</span><span class="fu">anova</span>(fit4a, fit4b))</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>(confP_prob <span class="ot">&lt;-</span> <span class="fu">confint.merMod</span>(fit4a, <span class="at">method =</span> <span class="st">"profile"</span>))</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>(confP_prob_dev <span class="ot">&lt;-</span> <span class="fu">confint.merMod</span>(fit4a, <span class="at">method =</span> <span class="st">"profile"</span>, <span class="at">devtol =</span> <span class="cn">Inf</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This happened to me with several simulated databases so far. I goggled the problem, and I fond these following two sources: https://stackoverflow.com/questions/53120614/error-when-estimating-ci-for-glmm-using-confint https://stackoverflow.com/questions/70788531/boosting-the-devtol-parameter-in-lme4</p>
+<p>Even adding devtol = Inf as suggested in the second link won’t solve the problem here (Error in approxfun(obj1[, 2], obj1[, 1]) : need at least two non-NA values to interpolate).</p>
+<p>Finally let’s see bootstrap CI (for fit3a, i.e., with the first database that did not give problems):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fboot <span class="ot">&lt;-</span> <span class="cf">function</span>(fit) {<span class="fu">return</span>(<span class="fu">fixef</span>(fit))}</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>(confB <span class="ot">&lt;-</span> <span class="fu">confint.merMod</span>(fit3a, <span class="at">method =</span> <span class="st">"boot"</span>, <span class="at">FUN =</span> fboot))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+500 warning(s): Parameters or bounds appear to have different scalings.
+  This can cause poor performance in optimization. 
+  It is important for derivative free methods like BOBYQA, UOBYQA, NEWUOA.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %    97.5 %
+(Intercept) -0.8990539 0.5757376
+sex1        -0.6118270 0.6086827
+cat1        -0.1821457 0.7737643
+sex1:cat1   -0.2706703 0.2221497</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
+<p>More general questions:</p>
+<ol type="1">
+<li><p>How to decide which p-value or tool use for inference (LRT vs Wald vs CIs)? Is there any good rule of thumb?</p></li>
+<li><p>What is the difference between n_AGQ=0 and n_AGQ=1? Would n_AGQ &gt; 1 be possible in principle? Why is it not implemented? Would it be beneficial to have it implemented (e.g., better p-values)?</p></li>
+<li><p>What about the Anova function of a glmer fit? It displays SS, F etc. It doesn’t make sense, does it? Is it a bug?</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit3a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+          npar Sum Sq Mean Sq F value
+sex1         1 0.0000  0.0000  0.0000
+cat1         1 1.2292  1.2292  1.2292
+sex1:cat1    1 0.0483  0.0483  0.0483</code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li>How to decide which random effect include in a model? It seems that adding random effects will change significantly the inference (i.e., the p-value of the fixed effects). Shall we include them all and see which are significant, and re run the fit only with there random effects?</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
