@@ -1,0 +1,172 @@
+---
+title: "Example of GLMM fit in lme4"
+author: "Patrick Schöngrundner"
+date: "31.08.2022"
+header-includes:
+  - \usepackage{array}
+  - \usepackage{amsfonts}
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+Here we consider a simulated database. In our example we have 18 participants (9 male and 9 female) that are presented with 8 images (stimuli), 4 of which are of type A and 4 of B. We can think of an image of type A as an image of positive valence (e.g., a screenshot of a nice Disney movie), and an image of type B as an image of negative valence (e.g., a screenshot of a scary scene of The Ring). We show each stimulus to each participant (i.e., balanced design), and immediately after showing a given stimulus we ask our participant if she/he was scared or not. Hence, our response variable is a Bernoulli 0/1 variable, where 0 represents the fact that the participant was not scared, and 1 represents the fact that the participant was scared. Finally, in order to increase replicability (!), we include the random effect of participants and items.
+
+Our model can be mathematically written as follows:
+\begin{align*}
+    & y_{ij} \sim \text{Bernoulli}(\mu _{ijk})\\
+    & \mu_{ij} = \mathbb{E}\left[ g(\mu + \alpha_\text{sex} + \psi_\text{type} + (\alpha \psi)_\text{sex:type} + \pi _i + \omega _j) \right]
+\end{align*}
+
+
+Here, $y_{ij}$ represents the response of the $i$th participant, presented to stimulus $j$ and is a random variable that follows a Bernoulli distribution with parameters $\mu_{ij} = \mu_\text{b}$. Moreover, we model the parameter $ \mu_\text{b}$ as the expectation of a linear predictor, modulo a link function. As $\mu_\text{b}$ can only range from 0 to 1, and the linear predictor ranges on all $\mathbb{R}$, the link function $g$ maps the the linear predictor back into the interval $[0, 1]$. In this example, we will use the canonical link function (logit function). Modulo the link function and the expectation operator, we model the mean $\mu _p$ as a general mean $\mu$, plus the effect of the sex of the subject $\alpha_\text{sex}$, plus the effect of the type of the stimulus $\psi_\text{type}$, plus their interaction $(\alpha \psi)_\text{sex:type}$. Moreover, we add the subject $\pi_i$ and item $\omega_j$ random effect, where
+\begin{align}
+ & \pi \sim \mathcal{N}(0, \sigma_{\text{part}}^2)\\
+ & \omega \sim \mathcal{N}(0, \sigma_{\text{item}}^2)\\
+\end{align}
+We assume that all participant share the same variance $\sigma_{\text{part}}^2$, and all items share the same variance $\sigma_{\text{item}}^2$.
+
+Note that the sex of participant is a between subject factor, and the type of the stimulus is a within item factor.
+
+We generate the data sets considering 18 subjects and 18 item as described above. We assume there is no significant effect for our explanatory variables at all. More precisely we set:
+\begin{align*}
+    & n_\text{subj} = n_\text{male} + n_\text{female} = 9 + 9 = 18 \\
+    & n_\text{item} = n_\text{A} + n_\text{B} = 9 + 9 = 18 \\
+    & \mu = \alpha_\text{sex} = \psi_\text{type} = (\alpha \psi)_\text{sex:type} = 0\\
+    & \sigma_{\text{part}}^2 = \sigma_{\text{item}}^2 = 1
+\end{align*}
+
+## Data
+
+In the following we use a database 1 (DataEx1.csv) to illustrate some of the questions I have. For the moment we only consider the first five columns of the first data set (the remaining columns will be useful soon). Database 2 (DataEx2.csv) was generated in a similar way, but we will use it to illustrate a problem (that appear quite frequently).
+
+```{r data}
+
+data1 <- read.csv("data/dataex1.csv")
+data1$subj_ID <- as.factor(data1$subj_ID)
+data1$subj_sex <- as.factor(data1$subj_sex)
+data1$item_ID <- as.factor(data1$item_ID)
+data1$item_cat <- as.factor(data1$item_cat)
+
+data2 <- read.csv("data/DataEx2.csv")
+data2$subj_ID <- as.factor(data2$subj_ID)
+data2$subj_sex <- as.factor(data2$subj_sex)
+data2$item_ID <- as.factor(data2$item_ID)
+data2$item_cat <- as.factor(data2$item_cat)
+
+
+head(data1[ , 1:5])
+summary(data1[ , 1:5])
+```
+
+## Some fits
+For our fits, we import following R packages:
+```{r packages, results = FALSE, message = FALSE}
+library(lme4)
+library(lmerTest)
+```
+
+We set the contrasts as follows.
+```{r contrasts, results = FALSE, message = FALSE}
+options(contrasts = c("contr.sum", "contr.sum"))
+```
+<span style="color:blue">*Is this enough for the rest of the analysis? Is there a way to define the contrasts directly in the glmer function, as an argument?*</span>. 
+
+For simplicity let us focus in the variable sex. Given the data (assuming we do not know which underlying mechanism generated it), we are interested to understand if the sex of the participant is significant when it comes to explain the response variable. 
+
+### Basic fit 
+Let us start with two rather basic fits:
+```{r basic fits}
+fit1a <- glmer(resp ~ subj_sex + item_cat + subj_sex:item_cat + (1|subj_ID) + (1|item_ID), data=data1, family=binomial(link="logit"), nAGQ = 1)
+
+fit1b <- glmer(resp ~            item_cat + subj_sex:item_cat + (1|subj_ID) + (1|item_ID), data=data1, family=binomial(link="logit"), nAGQ = 1)
+
+(s<-summary(fit1a))
+(a<-anova(fit1a, fit1b))
+```
+
+Thanks to the summary R function, see that the Wald p-value for sex is 1.000, which suggests that sex is not significant (as expected). We see that for the LRT p-value (obtained with the anova function), things are a little bit suspicious. Hence, my fist real question:  <span style="color:blue">*Why can't I obtain the LRT p-value by simply comparing these two models, i.e. using these formulas? It would really nice of the previous code worked as "expected"*</span>.
+
+In any case, I found an alternative, that is using the contrasts coding (the remaining columns of the dataset):
+```{r better fits}
+fit2a <- glmer(resp ~ sex1 + cat1 + sex1:cat1 + (1|subj_ID) + (1|item_ID), data=data1, family=binomial(link="logit"), nAGQ=1)
+
+fit2b <- glmer(resp ~        cat1 + sex1:cat1 + (1|subj_ID) + (1|item_ID), data=data1, family=binomial(link="logit"), nAGQ=1)
+
+(s<-summary(fit2a))
+(a<-anova(fit2a, fit2b))
+```
+
+Let's try to complicate a little bit things and boost the parameters:
+```{r other fits}
+fit3a <- glmer(resp ~ sex1 + cat1 + sex1:cat1 + (1|subj_ID) + (1|item_ID), data=data1, family=binomial(link="logit"), nAGQ=1,  control = glmerControl(optimizer ='optimx', optCtrl=list(method='L-BFGS-B')))
+
+fit3b <- glmer(resp ~        cat1 + sex1:cat1 + (1|subj_ID) + (1|item_ID), data=data1, family=binomial(link="logit"), nAGQ=1, control = glmerControl(optimizer ='optimx', optCtrl=list(method='L-BFGS-B')))
+
+(s<-summary(fit3a))
+(a<-anova(fit3a, fit3b))
+```
+
+Let's consider Other techniques to decide whether a variable is significant or not: confidence intervals (cf. link vignette).
+
+Wald CI:
+```{r Wald CI}
+(confW <- confint.merMod(fit3a, method = "Wald"))
+```
+<span style="color:blue">*Why are the sigma CIs bounds labelled with NA?*</span>
+
+Profiled CI:
+```{r profile CI}
+(confP <- confint.merMod(fit3a, method = "profile"))
+```
+<span style="color:blue">*Are all these warnings concerning?*</span> Now the CI bounds for the CI are not NA.
+
+As suggested in the second link below, I try to visualize the profile as well. Ideally the plot for the variable sex should look at least monotonic, which is not the case here.
+```{r plot profile CI}
+pp <- profile(fit3a, devtol = Inf)
+lattice::xyplot(pp)
+```
+
+If I run the same analysis for the second database, I get following message, even if the (very small) LRT p-value was computed without particular trouble:
+Error in zeta(shiftpar, start = opt[seqpar1][-w]) : profiling detected new, lower deviance. 
+```{r profiled CI problem, eval = FALSE}
+fit4a <- glmer(resp ~ sex1 + cat1 + sex1:cat1 + (1|subj_ID) + (1|item_ID), data=data2, family=binomial(link="logit"), nAGQ=1,  control = glmerControl(optimizer ='optimx', optCtrl=list(method='L-BFGS-B')))
+
+fit4b <- glmer(resp ~ cat1 + sex1:cat1 + (1|subj_ID) + (1|item_ID), data=data2, family=binomial(link="logit"), nAGQ=1,  control = glmerControl(optimizer ='optimx', optCtrl=list(method='L-BFGS-B')))
+
+(a<-anova(fit4a, fit4b))
+(confP_prob <- confint.merMod(fit4a, method = "profile"))
+(confP_prob_dev <- confint.merMod(fit4a, method = "profile", devtol = Inf))
+
+```
+
+This happened to me with several simulated databases so far. I goggled the problem, and I fond these following two sources:
+https://stackoverflow.com/questions/53120614/error-when-estimating-ci-for-glmm-using-confint
+https://stackoverflow.com/questions/70788531/boosting-the-devtol-parameter-in-lme4
+
+Even adding devtol = Inf as suggested in the second link won't solve the problem here (Error in approxfun(obj1[, 2], obj1[, 1]) : need at least two non-NA values to interpolate).
+
+
+Finally let's see bootstrap CI (for fit3a, i.e., with the first database that did not give problems):
+```{r bootstrap CI}
+fboot <- function(fit) {return(fixef(fit))}
+(confB <- confint.merMod(fit3a, method = "boot", FUN = fboot))
+```
+
+## Questions
+More general questions:
+
+1. How to decide which p-value or tool use for inference (LRT vs Wald vs CIs)? Is there any good rule of thumb?
+
+2. What is the difference between n_AGQ=0 and n_AGQ=1? Would n_AGQ > 1 be possible in principle? Why is it not implemented? Would it be beneficial to have it implemented (e.g., better p-values)?
+
+3. What about the Anova function of a glmer fit? It displays SS, F etc. It doesn't make sense, does it? Is it a bug?
+```{r  anova fit2b}
+anova(fit3a)
+```
+
+4. How to decide which random effect include in a model? It seems that adding random effects will change significantly the inference (i.e., the p-value of the fixed effects). Shall we include them all and see which are significant, and re run the fit only with there random effects? 
+
