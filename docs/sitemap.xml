@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://RePsychLing.github.io/SMLP2022/index.html</loc>
-    <lastmod>2022-09-01T06:10:18.103Z</lastmod>
+    <lastmod>2022-09-09T09:12:13.600Z</lastmod>
   </url>
   <url>
     <loc>https://RePsychLing.github.io/SMLP2022/about.html</loc>
@@ -47,5 +47,13 @@
   <url>
     <loc>https://RePsychLing.github.io/SMLP2022/shrinkageplot.html</loc>
     <lastmod>2022-09-01T06:09:57.665Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RePsychLing.github.io/SMLP2022/contrasts_fggk21.html</loc>
+    <lastmod>2022-09-09T09:10:37.105Z</lastmod>
+  </url>
+  <url>
+    <loc>https://RePsychLing.github.io/SMLP2022/contrasts_kwdyz11.html</loc>
+    <lastmod>2022-09-09T09:12:02.588Z</lastmod>
   </url>
 </urlset>
