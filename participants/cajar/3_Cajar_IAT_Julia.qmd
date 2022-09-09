@@ -133,6 +133,7 @@ using MixedModelsMakie: scatter
 using MixedModelsMakie: caterpillar
 
 CairoMakie.activate!(; type="svg");
+ProgressMeter.ijulia_behavior(:clear);
 ```
 
 + The data are available as an arrow file. 
@@ -219,16 +220,16 @@ For this contrast specification, the LMM returns estimates for three `(Intercept
 ```{julia}
 #| lst-label: contrasts
 
-contrasts = merge(
-      Dict(:Group => EffectsCoding(base= "Faking"; levels=["No_Faking", "Faking"])),
-      Dict(:Time => EffectsCoding(base= "Retest"; levels=["Baseline", "Retest"])),
-      Dict(:Block => EffectsCoding(base= "Incompatible"; levels=["Compatible", "Incompatible"])),
-      Dict(:Switch => EffectsCoding(base= "Yes"; levels=["No", "Yes"])),
-      Dict(:Task => EffectsCoding(base= "attribute"; levels=["target", "attribute"])),
-      Dict(:Valence => EffectsCoding(base= "-"; levels=["+", "-"])),
-#     Dict(nm => EffectsCoding(; base=) for nm in (:Group, :Time, :Block, :Switch, :Task, :Valence)),
-      Dict(nm => Grouping() for nm in (:Subj, :Item))
-   );
+contrasts = Dict(
+  :Group => EffectsCoding(;base="Faking"),
+  :Time => EffectsCoding(; base="Retest"),
+  :Block => EffectsCoding(; base= "Incompatible"),
+  :Switch => EffectsCoding(; base= "Yes"),
+  :Task => EffectsCoding(; base= "attribute"),
+  :Valence => EffectsCoding(; base= "-"),
+  :Subj => Grouping(),
+  :Item => Grouping(),
+);
 ```
 
 ## A maximal LMM `m_max` 

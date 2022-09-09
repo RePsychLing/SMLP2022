@@ -121,11 +121,12 @@ describe(dat)
 ```{julia}
 #| lst-label: contrasts
 
-contrasts = merge(
-      Dict(:Target => EffectsCoding()),
-      Dict(:Block => SeqDiffCoding()),
-      Dict(nm => Grouping() for nm in (:Subj, :Item))
-   );
+contrasts = Dict(
+    :Target => EffectsCoding(),
+    :Block => SeqDiffCoding(),
+    :Subj => Grouping(),
+    :Item => Grouping()
+);
 ```
 
 ## Varying only intercepts LMM `m_voi`
