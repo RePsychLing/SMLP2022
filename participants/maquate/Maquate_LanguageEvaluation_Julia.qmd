@@ -61,8 +61,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
-using KernelDensity    # density estimation
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -96,12 +95,12 @@ describe(dat)
 ```{julia}
 #| label: contrasts
 
-contrasts = merge(
-      Dict(:RC => EffectsCoding(base= "mismatch"; levels=["match", "mismatch"])),
-      Dict(:SC => EffectsCoding(base= "no"; levels=["yes", "no"])),
-      Dict(:Subj => Grouping()),
-      Dict(:Item => Grouping())
-   );
+contrasts = Dict(
+  :RC => EffectsCoding(; base= "mismatch"),
+  :SC => EffectsCoding(; base= "no"),
+  :Subj => Grouping(),
+  :Item => Grouping()
+);
 ```
 
 ## LMM analysis

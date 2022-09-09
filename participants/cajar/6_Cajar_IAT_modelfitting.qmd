@@ -86,13 +86,14 @@ The single value is created by, e.g. `Grouping()`.
 ```{julia}
 #| lst-label: contrasts
 
-contrasts = merge(
-      Dict(:Group   => EffectsCoding(base= "Faking"; levels=["No_Faking", "Faking"])),
-      Dict(:Time    => EffectsCoding(base= "Retest"; levels=["Baseline", "Retest"])),
-      Dict(:Block   => EffectsCoding(base= "Incompatible"; levels=["Compatible", "Incompatible"])),
-      Dict(:Switch  => EffectsCoding(base= "Yes"; levels=["No", "Yes"])),
-      Dict(nm => Grouping() for nm in (:Subj, :Item))
-   );
+contrasts = Dict(
+  :Group   => EffectsCoding(; base= "Faking"),
+  :Time    => EffectsCoding(; base= "Retest"),
+  :Block   => EffectsCoding(; base= "Incompatible"),
+  :Switch  => EffectsCoding(; base= "Yes"),
+  :Subj    => Grouping(),
+  :Item    => Grouping(),
+);
 ```
 
 :::{.callout-note collapse="true"}

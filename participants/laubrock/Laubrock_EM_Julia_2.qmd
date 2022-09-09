@@ -103,9 +103,7 @@ dat = DataFrame(Arrow.Table("./data/Laubrock_EM.arrow"))
                  :l =  :l  - .25, :l1 = :l1 - .25, :l2 = :l2 - .25,
                  :p  = :p  + 5, :p1 = :p1 + 5, :p2 = :p2 + 5);
 show(describe(dat))
-contrasts = merge(
-      Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W))
-   );
+contrasts = Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W));
 ```
 
 # LMM analysis

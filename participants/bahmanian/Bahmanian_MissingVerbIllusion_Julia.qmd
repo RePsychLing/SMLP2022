@@ -139,13 +139,13 @@ gdur = groupby(dat_dur, :Segment);
 ```{julia}
 #| label: contrasts
 
-contrasts = merge(
-      Dict(:Match => EffectsCoding(base= "match"; levels=["match", "mismatch"])),
-      Dict(:ACN   => EffectsCoding(base= "singular"; levels=["singular", "plural"])),
-      Dict(:Strct => EffectsCoding(base= "without"; levels=["without", "with"])),
-      Dict(:Subj  => Grouping()),
-      Dict(:Item  => Grouping())
-   );
+contrasts = Dict(
+  :Match => EffectsCoding(base= "match"; levels=["match", "mismatch"]),
+  :ACN   => EffectsCoding(base= "singular"; levels=["singular", "plural"]),
+  :Strct => EffectsCoding(base= "without"; levels=["without", "with"]),
+  :Subj  => Grouping(),
+  :Item  => Grouping()
+);
 ```
 
 # LMMs for duration 
