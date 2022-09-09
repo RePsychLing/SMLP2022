@@ -1,0 +1,169 @@
+---
+title: "Oliver Lindemann: Two attributes of numerical meaning"
+subtitle: "Data manipulation and initial model fits"
+author: "Douglas Bates"
+date: "2022-09-09"
+output: 
+  html:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    self-contained: true
+callout-appearance: simple
+jupyter: julia-1.8
+---
+
+# Restore the raw data
+
+```{julia}
+using Arrow              # to restore the data
+using AlgebraOfGraphics  # high-level data graphics
+using CairoMakie         # Cairo back end for Makie graphics
+using DataFrames         # data frame representation and manipulation
+using MixedModels        # fit and examine mixed-effects models
+using ProgressMeter      # for the progress indicator during model fitting
+
+ProgressMeter.ijulia_behavior(:clear); # set behavior for Jupyter (IJulia)
+CairoMakie.activate!(; type="svg"); # Scalable Vector Graphics format
+```
+
+```{julia}
+raw = Arrow.Table(joinpath(@__DIR__, "data", "WBL16_raw_data.arrow"))
+```
+
+## Transformations
+
+The R code for the transformations is
+```r
+congruity_parameter = function(num_size, variable) {
+  n = num_size
+  v = variable
+  return(v*(n-5)/12)
+}
+# filter and sort and create new variables
+data = raw %>%
+    filter(trial>=0) %>%
+    arrange(Subject, trial) %>%
+    mutate(
+      magnitude = factor(digit >5, levels=c(FALSE,TRUE),
+                        labels=c("small", "large")),
+      pos_rc = pos/100, # pos recoded
+      size_rc = as.integer(as.factor(size))-4, # size recoded to -3,-2,-1,1,2,3
+      size_rc = ifelse(size_rc>=0, size_rc+1, size_rc),
+      numerical_distance = abs(digit-5),
+      SiC = congruity_parameter(digit, size_rc),
+      SpC = congruity_parameter(digit, pos_rc)
+      )
+
+# Determine congruity of previous trails (Gratton effect)
+# previous size and space congruence
+data = data %>% 
+  mutate(P_SiC = append(NA, SiC[2:n()-1]),
+         P_SpC = append(NA, SpC[2:n()-1]))
+
+# set first "previous congruity" of each subject to NaN
+for (x in unique(data$Subject)) {
+  t = min(subset(data, Subject==x)$trial)
+  idx = which((data$Subject==x) & (data$trial==t))
+  data[idx,"P_SiC"]  = NA
+  data[idx,"P_SpC"]  = NA
+}
+
+
+## Select data
+rt.data = data %>%
+  filter(error==0, resp !="no", rt>200) %>%
+  select(-trial, -resp, -magnitude, -mapping, -error, -ISI)
+```
+
+which we express as
+
+```{julia}
+                   # utility functions
+congruity(dig, var) = var .* (dig .- 5) ./ 12  # .op (e.g. '.*) vectorizes op
+function lag(v::AbstractVector)
+  val = circshift!(allowmissing(v), v, 1)
+  val[first(first(axes(val)))] = missing
+  return val
+end
+
+dat = sort!(filter(:trial => ≥(0), DataFrame(raw)), [:Subject, :trial])
+dat.pos_rc = Int8.(div.(dat.pos, 100))
+dat.size_rc = Int8.(replace(dat.size, 30=>3, 42=>2, 59=>1, 117=>1, 165=>2, 232=>3))
+dat.dist = Int8.(abs.(dat.digit .- 5))
+dat.SiC = congruity(dat.digit, dat.size_rc)
+dat.SpC = congruity(dat.digit, dat.pos_rc)
+transform!(groupby(dat, :Subject), :SiC => lag => :P_SiC, :SpC => lag => :P_SpC)
+filter!(:error => iszero, dat)
+filter!(:resp => ≠("no"), dat)
+filter!(:rt => !ismissing, dat)
+filter!(:rt => >(200), dat)
+disallowmissing!(
+  select!(dat, Not([:trial, :size, :pos, :resp, :mapping, :error, :ISI]));
+  error=false,
+)
+```
+
+I notice that the lagged variables don't have a missing value for each new subject.
+
+```{julia}
+(length(unique(dat.Subject)), sum(ismissing, dat.P_SiC))
+```
+
+```{julia}
+filter(x -> !ismissing(first(x.P_SiC)), groupby(dat, :Subject))
+```
+
+This could be because of the filtering on `error`, `resp` and `rt` in the data manipulation.
+
+# Scale of response
+
+The original measurement is response time in milliseconds but often the distribution of `rt` is skewed.
+As shown in @fig-rtdensity, the distribution of response time is not badly skewed.
+
+```{julia}
+#| code-fold: true
+#| label: fig-rtdensity
+#| fig-cap: "Density plot of the response time (ms.)"
+data(dat) * mapping(:rt => "Response time (ms.)") * AlgebraOfGraphics.density() |> draw
+```
+
+When the response time is transformed to speed (responses per second or Hz), the density plot, @fig-speeddensity,
+is not substantially improved.
+
+```{julia}
+#| code-fold: true
+#| label: fig-speeddensity
+#| fig-cap: "Density plot of the response speed (Hz)"
+data(dat) * mapping(:rt => (x -> 1000 ./ x) => "Response speed (Hz)") * AlgebraOfGraphics.density() |> draw
+```
+
+# Fitting models
+
+```{julia}
+contrasts = Dict(:Subject => Grouping())
+```
+
+```{julia}
+m1 = let
+  f = @formula(rt ~ 1 + dist + size_rc + pos_rc + SiC*SpC*P_SiC*P_SpC + (1|Subject))
+  fit(MixedModel, f, dat; contrasts)
+end
+```
+
+```{julia}
+m2 = let
+  f = @formula(rt ~ 1 + dist + size_rc + pos_rc + SiC*SpC*P_SiC*P_SpC + (1+dist|Subject))
+  fit(MixedModel, f, dat; contrasts)
+end
+```
+
+```{julia}
+MixedModels.likelihoodratiotest(m1, m2)
+```
+
+
+```{julia}
+versioninfo()
+```
+

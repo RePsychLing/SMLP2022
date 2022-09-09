@@ -1,0 +1,82 @@
+---
+title: "Oliver Lindemann: Two attributes of numerical meaning"
+subtitle: "Arrow file creation"
+author: "Douglas Bates"
+date: "2022-09-06"
+output: 
+  html:
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+    self-contained: true
+callout-appearance: simple
+jupyter: julia-1.8
+---
+
+# Reading the raw data file
+
+The raw data are available as a [CSV file](https://osf.io/download/8ka7g/) as part of [OSF project t54xv](https://osf.io/t54xv).
+
+There is a copy of the file available as `data/WBL16_raw_dat.csv`.
+Both this file and the original on osf.io have an extra space at the beginning of the first line so the first column ends up being named " Subject" if this space is not removed.
+
+The simplest approach is to edit the file and remove that space but we never do things simply.
+
+```{julia}
+using Arrow
+using CSV
+using CategoricalArrays
+using DataFrames
+```
+
+
+```{julia}
+raw = let
+  csvfn = joinpath(@__DIR__, "data", "WBL16_raw_data.csv")
+  types = [Int16,Int16,Int16,Int8,Int16,Int16,String,Int16,Int8,String]
+  missingstring = "None"
+  pool = true
+  open(csvfn) do io
+    read(io, Char)    # skip the first character
+    CSV.read(io, DataFrame; types, missingstring, pool)
+  end
+end
+```
+
+The R code to modify some of the fields is
+
+```r
+raw = read_csv("./data/WBL16_raw_data.csv", na =c("NA", "None"), show_col_types = FALSE) %>%
+    mutate(Subject = as_factor(Subject),
+           resp = factor(resp, levels=c(32, 105, 111), labels=c("no", "ti", "to")), 
+           mapping = as_factor(mapping)
+           )
+```
+
+We do one more transformation to the `Subject` column which is to prepend an `S`
+```{julia}
+raw.Subject = categorical(string.('S', raw.Subject); compress=true)
+replace!(raw.resp, "32" => "no", "105" => "ti", "111" => "to");
+```
+
+### Write the Arrow file
+
+```{julia}
+arrownm = let
+  metadata = Dict(
+    "url" => "https://osf.io/download/8ka7g/",
+    "title" => "Raw data from 'Two attributes of numerical meaning'"
+  )
+  Arrow.write(joinpath(@__DIR__, "data", "WBL16_raw_data.arrow"), raw; metadata, compress=:lz4)
+end
+```
+
+### Check the structure by reading the Arrow file
+
+```{julia}
+Arrow.Table(arrownm)
+```
+
+```{julia}
+versioninfo()
+```
