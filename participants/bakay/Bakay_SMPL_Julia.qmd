@@ -180,11 +180,12 @@ Not much evidence for a trial effect.
 ```{julia}
 #| label: contrasts
 
-contrasts = merge(
-      Dict(:Case => EffectsCoding(base= "Low"; levels=["Low", "High"])),
-      Dict(:Gram => EffectsCoding(base= "Ungra"; levels=["Ungra", "Gra"])),
-      Dict(nm => Grouping() for nm in (:Subj, :Item))
-   );
+contrasts = Dict(
+  :Case => EffectsCoding(; base= "Low"),
+  :Gram => EffectsCoding(; base= "Ungra"),
+  :Subj => Grouping(),
+  :Item => Grouping(),
+);
 ```
 
 ## Varying only GM
@@ -192,12 +193,10 @@ contrasts = merge(
 ```{julia}
 #| label: m0
 
- m0 = let 
-    form = @formula(rating ~ 1 + tr_c + Case * Gram + (1|Subj) + (1|Item));
-    fit(MixedModel, form, df; contrasts);
-  end;
-  
-m0
+m0 = let 
+    form = @formula(rating ~ 1 + tr_c + Case * Gram + (1|Subj) + (1|Item))
+    fit(MixedModel, form, df; contrasts)
+end
 ```
 
 Remove trial covariate
