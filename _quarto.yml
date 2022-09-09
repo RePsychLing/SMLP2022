@@ -16,6 +16,8 @@ project:
     - kwdyz11.qmd
     - kkl15.qmd
     - shrinkageplot.qmd
+    - contrasts_fggk21.qmd
+    - contrasts_kwdyz11.qmd
 
 website:
   title: "SMLP2022"
@@ -46,6 +48,8 @@ website:
       - kwdyz11.qmd
       - kkl15.qmd
       - shrinkageplot.qmd
+      - contrasts_fggk21.qmd
+      - contrasts_kwdyz11.qmd
   page-navigation: true
 
 date: today
