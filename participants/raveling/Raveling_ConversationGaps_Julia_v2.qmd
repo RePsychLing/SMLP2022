@@ -62,13 +62,13 @@ describe(dat)
 ## Contrasts
 
 ```{julia}
-contrasts = Dict(
-    :Answer  => EffectsCoding(base= "g_only"; levels=["g_only", "gv_mix"]),
-    :Subj    => Grouping(),
-    :Gesture => Grouping(),
-    :Gest    => Grouping(),
-    :Triad   => Grouping()
-);
+contrasts = merge(
+      Dict(:Answer  => EffectsCoding(base= "g_only"; levels=["g_only", "gv_mix"])),
+      Dict(:Subj    => Grouping()),
+      Dict(:Gesture => Grouping()),
+      Dict(:Gest    => Grouping()),
+      Dict(:Triad   => Grouping())
+   );
 ```
 
 Probably we do not have enough observations to support a complex LMM. In a first step, we check the relevance of the three random factors:  `Subj`, `Gesture`,  and `Triad`.

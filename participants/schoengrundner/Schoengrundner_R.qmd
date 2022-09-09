@@ -1,0 +1,134 @@
+---
+title: "Patrick Schöngrundner: GLMM Simulations"
+subtitle: "Using MixedModels.jl"
+author: "Reinhold Kliegl"
+date: "2022-09-09 (last revised: `r format(Sys.time())`)"
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+editor_options: 
+  chunk_output_type: console
+---
+
+# Preprocessing
+
+## Packages
+
+```{r}
+library(easystats)
+library(tidyverse)
+library(lme4)
+```
+
+## Read simulated data
+
+```{r}
+dat1 <- 
+  read_delim("./data/DataEx1.csv", col_types = "cfcfliii") |> 
+  rename(Subj = subj_ID, Sex = subj_sex, Item = item_ID, Cat = item_cat, GM=`(Intercept)`) |> 
+   mutate(
+    Subj = factor(paste0("S", str_pad(Subj, width = 2, side = "left", pad = "0"))),
+    Item = factor(paste0("I", str_pad(Item, width = 2, side = "left", pad = "0"))),
+    ) |> 
+  as_tibble()
+```
+
+# Contrasts
+
+```{r}
+# contrasts for accuracy data
+contrasts(dat1$Sex) <- -contr.sum(2)  
+contrasts(dat1$Cat) <- contr.sum(2)  
+```
+
+# GLMMs
+
+## Factor contrast
+
+```{r}
+fit1a <- glmer(resp ~ 1 + Sex + Cat + Sex:Cat + (1 | Subj) + (1 | Item), 
+                    family = binomial, data = dat1,
+                    control = glmerControl(calc.derivs=FALSE))
+print(summary(fit1a), corr=FALSE)
+```
+
+Dropping the `Sex` main effect leads to estimating the effexct of `Sex` within the levels of the factor `Cat`, that is a nested re-parameterization with the same number of degrees of freedom. 
+
+```{r}
+fit1b <- glmer(resp ~ 1 + Cat + Sex:Cat + (1 | Subj) + (1 | Item), 
+                    family = binomial, data = dat1,
+                    control = glmerControl(calc.derivs=FALSE))
+print(summary(fit1b), corr=FALSE)
+```
+
+We can see this also in the LRT. 
+
+```{r}
+anova(fit1b, fit1a)
+```
+
+The model reparameterization does not change the goodness of fit. 
+
+## Source: PS 
+
+```{r}
+fit2a <- glmer(resp ~ 1 + sex1 + cat1 + sex1:cat1 + (1 | Subj) + (1 | Item), 
+                    family = binomial, data = dat1,
+                    control = glmerControl(calc.derivs=FALSE))
+print(summary(fit2a), corr=FALSE)
+```
+
+Without factors there are no levels. The model estimates the two coefficients we ask for.
+
+```{r}
+fit2b <- glmer(resp ~ 1        + cat1 + sex1:cat1 + (1 | Subj) + (1 | Item), 
+                    family = binomial, data = dat1,
+                    control = glmerControl(calc.derivs=FALSE))
+print(summary(fit2b), corr=FALSE)
+```
+
+Now the model degrees of freedom are different and we also have a meaningful LRT
+
+```{r}
+anova(fit2b, fit2a)
+```
+
+## Source: Model matrix  
+
+We can get indicators also from the model matrix.
+
+```{r}
+mm1 <- model.matrix(~ 1 + Sex*Cat, data=dat1)
+dat1$sex <- mm1[, 2]
+dat1$cat <- mm1[, 3]
+
+fit3a <- glmer(resp ~ 1 + sex + cat + sex:cat + (1 | Subj) + (1 | Item), 
+                    family = binomial, data = dat1,
+                    control = glmerControl(calc.derivs=FALSE))
+print(summary(fit3a), corr=FALSE)
+```
+
+
+```{r}
+
+fit3b <- glmer(resp ~ 1       + cat + sex:cat + (1 | Subj) + (1 | Item), 
+                    family = binomial, data = dat1,
+                    control = glmerControl(calc.derivs=FALSE))
+print(summary(fit3b), corr=FALSE)
+```
+
+```{r}
+anova(fit3b, fit3a)
+```
+
+# Appendix
+
+```{r}
+sessionInfo()
+```
+

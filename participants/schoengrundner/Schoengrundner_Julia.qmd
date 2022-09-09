@@ -130,15 +130,41 @@ contrasts =  Dict(:Sex   => EffectsCoding(),
 ## ... using factors
 
 ```{julia}
-frm1a = @formula(resp ~ 1 + Sex*Cat + (1|Subj) + (1|Item));
+frm1a = @formula(resp ~ 1 + Sex + Cat + Sex&Cat + (1|Subj) + (1|Item));
 fit1a = fit(MixedModel, frm1a, dat1, Bernoulli(); contrasts)
+```
+
+Dropping the `Sex` main effect lead to the model estimating the effect as nested within levels of `Cat`.
+
+```{julia}
+frm1b = @formula(resp ~ 1       + Cat + Sex&Cat + (1|Subj) + (1|Item));
+fit1b = fit(MixedModel, frm1b, dat1, Bernoulli(); contrasts)
+```
+
+This a re-parameterization with the same number of model parameters.
+
+```{julia}
+display(MixedModels.likelihoodratiotest(fit1a, fit1b))
 ```
 
 ## ... using PS's indicator variables
 
 ```{julia}
-frm1b = @formula(resp ~ 1 + sex1*cat1 + (1|Subj) + (1|Item));
-fit1b= fit(MixedModel, frm1b, dat1, Bernoulli())
+frm2a = @formula(resp ~ 1 + sex1 + cat1 + sex1&cat1 + (1|Subj) + (1|Item));
+fit2a= fit(MixedModel, frm2a, dat1, Bernoulli())
+```
+
+Now we don't have factor levels. The model estimates the two coefficiets we ask for.
+
+```{julia}
+frm2b = @formula(resp ~ 1        + cat1 + sex1&cat1 + (1|Subj) + (1|Item));
+fit2b = fit(MixedModel, frm2b, dat1, Bernoulli())
+```
+
+The model degrees of freedom are correct.
+
+```{julia}
+display(MixedModels.likelihoodratiotest(fit2b, fit2a))
 ```
 
 ## ... extracting indicator variables from the model matrix
@@ -146,22 +172,50 @@ fit1b= fit(MixedModel, frm1b, dat1, Bernoulli())
 The indicator variables in the dataframe are also available from the factor-based model matrix.
 
 ```{julia}
-mm1 = fit1a.X;
-dat1[!, :sex] = mm1[:, 2]
-dat1[!, :cat] = mm1[:, 3]
+mm = fit1a.X;
+dat1[!, :sex] = mm[:, 2]
+dat1[!, :cat] = mm[:, 3]
 
-frm1c = @formula(resp ~ 1 + sex*cat + (1|Subj) + (1|Item));
-fit1c= fit(MixedModel, frm1c, dat1, Bernoulli())
+frm3a = @formula(resp ~ 1 +  sex + cat + sex&cat + (1|Subj) + (1|Item));
+fit3a = fit(MixedModel, frm3a, dat1, Bernoulli())
+```
+
+```{julia}
+frm3b = @formula(resp ~ 1        + cat + sex&cat + (1|Subj) + (1|Item));
+fit3b = fit(MixedModel, frm3b, dat1, Bernoulli())
+```
+
+
+```{julia}
+display(MixedModels.likelihoodratiotest(fit3b, fit3a))
+```
+
+## Simulation with boosted effect 
+
+# ... using PS's indicator variables
+
+```{julia}
+frm4a = @formula(resp ~ 1 + sex1 + cat1 + sex1&cat1 + (1|Subj) + (1|Item));
+fit4a= fit(MixedModel, frm4a, dat2, Bernoulli())
+```
+
+```{julia}
+frm4b = @formula(resp ~ 1        + cat1 + sex1&cat1 + (1|Subj) + (1|Item));
+fit4b= fit(MixedModel, frm4b, dat2, Bernoulli())
+```
+
+```{julia}
+display(MixedModels.likelihoodratiotest(fit4b, fit4a))
 ```
 
 ## Compare models
 
 ```{julia}
-display(MixedModels.likelihoodratiotest(fit1a, fit1b, fit1c))
+display(MixedModels.likelihoodratiotest(fit1a, fit2a, fit3a))
 
-let mods = [fit1a, fit1b, fit1c];
+let mods = [fit1a, fit2a, fit3a];
  DataFrame(;
-    model=[:fit1a, :fit1b, :fit1c],
+    model=[:fit1a, :fit2a, :fit3a],
     pars=dof.(mods),
     AIC=round.(Int, aic.(mods)),
     AICc=round.(Int, aicc.(mods)),
@@ -170,43 +224,60 @@ let mods = [fit1a, fit1b, fit1c];
 end
 ```
 
+```{julia}
+display(MixedModels.likelihoodratiotest(fit2b, fit3b, fit1b))
+
+let mods = [fit2b, fit3b, fit1b, ];
+ DataFrame(;
+    model=[:fit2b, :fit3b, :fit1b],
+    pars=dof.(mods),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods))
+    )
+end
+```
+
 # Boosted-parameter GLMM fit
 
 ## ... using factors
 
 ```{julia}
-frm2a = @formula(resp ~ 1 + Sex*Cat + (1|Subj) + (1|Item));
-fit2a = fit(MixedModel, frm2a, dat2, Bernoulli(); contrasts)
+frm5a = @formula(resp ~ 1 + Sex + Cat + Sex&Cat + (1|Subj) + (1|Item));
+fit5a = fit(MixedModel, frm5a, dat2, Bernoulli(); contrasts)
 ```
-
-## ... using PS's indicator variables
 
 ```{julia}
-frm2b = @formula(resp ~ 1 + sex1*cat1 + (1|Subj) + (1|Item));
-fit2b= fit(MixedModel, frm2b, dat2, Bernoulli())
+frm5b = @formula(resp ~ 1       + Cat + Sex&Cat + (1|Subj) + (1|Item));
+fit5b = fit(MixedModel, frm5b, dat2, Bernoulli(); contrasts)
 ```
 
-## ... extracting indicator variables from the model matrix
+### ... extracting indicator variables from the model matrix
 
 The indicator variables in the dataframe are also available from the factor-based model matrix.
 
 ```{julia}
-mm2 = fit2a.X;
+mm2 = fit5a.X;
 dat2[!, :sex] = mm2[:, 2]
 dat2[!, :cat] = mm2[:, 3]
 
-frm2c = @formula(resp ~ 1 + sex*cat + (1|Subj) + (1|Item));
-fit2c= fit(MixedModel, frm2c, dat2, Bernoulli())
+frm6a = @formula(resp ~ 1 + sex + cat + sex&cat + (1|Subj) + (1|Item));
+fit6a = fit(MixedModel, frm6a, dat2, Bernoulli())
+```
+
+```{julia}
+frm6b = @formula(resp ~ 1       + cat + sex&cat + (1|Subj) + (1|Item));
+fit6b = fit(MixedModel, frm6b, dat2, Bernoulli())
 ```
 
 ## Compare models
 
 ```{julia}
-display(MixedModels.likelihoodratiotest(fit2a, fit2b, fit2c))
+display(MixedModels.likelihoodratiotest(fit6b, fit6a))
 
-let mods = [fit2a, fit2b, fit2c];
+let mods = [fit6b, fit6a];
  DataFrame(;
-    model=[:fit2a, :fit2b, :fit2c],
+    model=[:fit6b, :fit6a],
     pars=dof.(mods),
     AIC=round.(Int, aic.(mods)),
     AICc=round.(Int, aicc.(mods)),

@@ -106,10 +106,10 @@ MASS::boxcox(lt ~ 1 + Fam + Subj, data=dat)
 ## Contrasts
 
 ```{julia}
-contrasts = Dict(
-  :Fam => EffectsCoding(; base= "familiar"),
-  :Subj => Grouping(),
-);
+contrasts = merge(
+      Dict(:Fam => EffectsCoding(base= "familiar"; levels=["familiar", "novel"])),
+      Dict(:Subj => Grouping())
+   );
 ```
 
 ## LMM analysis

@@ -97,7 +97,9 @@ CairoMakie.activate!(; type="svg");
 dat = DataFrame(Arrow.Table("./data/Laubrock_EM.arrow"))
 describe(dat)
 
-contrasts = Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W));
+contrasts = merge(
+      Dict(nm => Grouping() for nm in (:Subj, :Sent, :Ord_W))
+   );
 ```
 
 # LMM analysis

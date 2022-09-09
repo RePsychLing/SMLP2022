@@ -120,12 +120,11 @@ dat = filter(row -> row.Subj != "p10", dat)
 ```{julia}
 #| lst-label: contrasts
 
-contrasts = Dict(
-    :Target => EffectsCoding(),
-    :Block => SeqDiffCoding(),
-    :Subj => Grouping(),
-    :Item => Grouping()
-);
+contrasts = merge(
+      Dict(:Target => EffectsCoding()),
+      Dict(:Block => SeqDiffCoding()),
+      Dict(nm => Grouping() for nm in (:Subj, :Item))
+   );
 ```
 
 ## Varying only intercepts LMM `m_voi`
