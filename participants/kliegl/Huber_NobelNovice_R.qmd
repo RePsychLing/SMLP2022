@@ -1,0 +1,243 @@
+---
+title: "Huber et al. (2022). Nobel and Novice: Author prominence affects peer review"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-09-09 (last revised: `r format(Sys.time())`)"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+    fig-format: svg
+editor_options: 
+  chunk_output_type: console
+---
+
+# Source
+
+Huber, J., Inoua, S., Kerschbamer, R., König-Kersting, C., Palan, S., Smith, V. L., 2022. “Nobel and novice: Author prominence affects peer review”, University of Graz, School of Business, Economics and Social Sciences Working Paper 2022-01.
+
+[SSRN link to download](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4190976)
+
+## Abstract
+
+>Peer-review is a well-established cornerstone of the scientific process, yet it is not immune to status bias. Merton identified the problem as one in which prominent researchers get disproportionately great credit for their contribution while relatively unknown researchers get disproportionately little credit (Merton, 1968). We measure the extent of this effect in the peer-review process through a pre-registered field experiment. We invite more than 3,300 researchers to review a paper jointly written by a prominent author -- a Nobel laureate -- and by a relatively unknown author -- an early-career research associate --, varying whether reviewers see the prominent author's name, an anonymized version of the paper, or the less well-known author's name. We find strong evidence for the status bias: while only 23 percent recommend “reject” when the prominent researcher is the only author shown, 48 percent do so when the paper is anonymized, and 65 percent do so when the little-known author is the only author shown. Our findings complement and extend earlier results on double-anonymized vs. single-anonymized review (Peters and Ceci, 1982; Blank, 1991; Cox et al., 1993; Okike et al., 2016; Tomkins et al., 2017; Card and Della Vigna, 2020) and strongly suggest that double-anonymization is a minimum requirement for an unbiased review process.
+
+## Data and code
+
+Data and code are available at [OSF repo](https://osf.io/mjh8s/). 
+
+# Setup
+
+```{r}
+#| label: setup
+#| echo: true
+#| message: false
+
+library(haven)
+library(labelled)
+library(tidyverse)
+library(easystats)
+library(hypr)
+library(lme4)
+#library(summarytools)
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+```
+
+# Preprocessing
+
+```{r}
+#| label: preprocess
+dat <- 
+  read_dta("./processed_data/nobel_data.dta") |> 
+  filter(!(is.na(recommendation))) |> 
+  select(Rvwr = reviewer_code, time=time_to_report_h, 
+         Cond = treatment, 14, 17, 13, 19) |> 
+  mutate(Rvwr = factor(Rvwr),
+         time = time / 24.,  # convert from hours to days
+         rating = remove_val_labels(recommendation),
+         new = remove_val_labels(new_information),
+         Rating = to_factor(recommendation),
+         Cond = fct_relevel(Cond, "HH", "AH", "AA", "AL", "LL")) |> 
+  select(Rvwr, Cond, time, Rating, rating, worthy=worthy_subject, new, 
+         supported=conclusions_supported)
+
+#stview(dfSummary(dat))
+```
+
+# Descriptives
+
+[Plot grouped data](
+http://www.sthda.com/english/articles/32-r-graphics-essentials/132-plot-grouped-data-box-plot-bar-plot-and-more/)
+
+## Conditions non-anonymized vs. anonymized emails
+
+Status revailed in email and correspondent.  
+
+## Conditions with anonymized invitation letters
+
+```{r}
+#| label: figure1 
+#| fig-cap: Anonymized recommendation percentages by condition. L stands for the relatively unknown author, L stands for novice author and H stands for the highly prominent author. In conditions AL and AH, the invitation email is anonymized, but the respective corresponding author’s name appears on the manuscript, while in AA both the invitation and the paper are anonymized.
+
+tbl1 <- 
+  dat %>%
+  filter(Cond %in% c("AH", "AA", "AL")) |> 
+  group_by(Cond, Rating) |> 
+  summarise(n = n()) |> 
+  mutate(perc = 100 * n/sum(n))
+
+# Check: 
+tbl1 |> group_by(Cond) |> summarize(N=sum(perc))
+
+# Use position = position_dodge() 
+ggplot(tbl1, aes(x = Rating, y = perc)) +
+  geom_bar(
+    aes(color = Cond, fill = Cond),
+#  stat = "identity", position = position_stack()) +
+   stat = "identity", position = position_dodge(0.8), width = 0.7) +
+  scale_color_manual("Treatment", values =cbPalette[c(5,3,1)]) +
+  scale_fill_manual("Treatment", values = cbPalette[c(5,3,1)]) +
+  xlab("Recommendation") + ylab("Percentage within Treatment") +
+  theme_bw() + theme(legend.position = c(.9,.9), legend.justification = c(.9,.9))
+```
+
+## Non-anonymous conditions
+
+```{r}
+#| label: figure2 
+#| fig-cap: Unanonymized recommendation percentages. LL stands for the relatively unknown author and HH stands for the highly prominent author. The respective corresponding author’s name appears both in the invitation letter and on the manuscript.
+
+tbl2 <- 
+  dat %>%
+  filter(Cond %in% c("HH", "LL")) |> 
+  group_by(Cond, Rating) |> 
+  summarise(n = n()) |> 
+  mutate(perc = 100 * n/sum(n))
+
+# Check: 
+tbl2 |> group_by(Cond) |> summarize(N=sum(perc))
+
+# Use position = position_dodge() 
+ggplot(tbl2, aes(x = Rating, y = perc)) +
+  geom_bar(
+    aes(color = Cond, fill = Cond),
+#  stat = "identity", position = position_stack()) +
+   stat = "identity", position = position_dodge(0.8), width = 0.7) +
+  scale_color_manual("Treatment", values =cbPalette[c(5,1)]) +
+  scale_fill_manual("Treatment", values = cbPalette[c(5,1)]) +
+  xlab("Recommendation") + ylab("Percentage within Treatment") +
+  theme_bw() + theme(legend.position = c(.9,.9), legend.justification = c(.9,.9))
+```
+
+## Ratings graph
+
+```{r}
+dat |> 
+  group_by(Cond) |> 
+  summarise(N=n(), M=mean(rating), SE=sd(rating)/sqrt(N)) |> 
+  ggplot(aes(x=Cond, y=M, group=0), color="blue") +
+  geom_point() + geom_line() + 
+  geom_errorbar(aes(ymax = M + 2*SE, ymin = M - 2*SE), width=.1) +
+  geom_hline(yintercept = 2.5) +
+  scale_y_continuous("Recommendation", limit=c(1,4), n.breaks=4, labels=levels(dat$Rating)) +
+  xlab("Treatment") + theme_bw()
+```
+
+# Contrasts
+
+```{r}
+contrasts(dat$Cond) <- MASS::contr.sdif(5)
+```
+
+# Linear model
+
+```{r}
+lm1 <- lm(rating ~ 1 + Cond, data=dat)
+summary(lm1)
+```
+
+# Linear Mixed Model
+
+We assign the overall rating to ten missing subscale ratings.
+
+## Preprocessing
+
+```{r}
+cor(dat[, 5:8], use="complete.obs")
+
+dat2 <- 
+  dat |> 
+  mutate(worthy = if_else(is.na(worthy), rating, worthy),
+         new = if_else(is.na(new), rating, new), 
+         supported = if_else(is.na(supported), rating, supported)) |> 
+  pivot_longer(c("worthy", "new", "supported"), names_to="Scale", values_to="sub_rating") |> 
+  mutate(Scale = fct_relevel(Scale, "worthy", "new", "supported"))
+
+dat2 |> group_by(Scale) |> summarise(M=mean(sub_rating), SD=sd(sub_rating))
+```
+
+
+## Contrasts
+
+```{r}
+contrasts(dat2$Cond) <- MASS::contr.sdif(5)
+contrasts(dat2$Scale) <- MASS::contr.sdif(3)
+```
+
+## Fit the model
+
+```{r}
+lmm1 <- lmer(sub_rating ~ 1 + Cond*Scale + (1 | Rvwr), data=dat2, REML=FALSE,
+             control=lmerControl(calc.derivs=FALSE))
+print(summary(lmm1), corr=FALSE)
+```
+
+Remove interactions.
+
+```{r}
+lmm2 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 | Rvwr), data=dat2, REML=FALSE,
+             control=lmerControl(calc.derivs=FALSE))
+print(summary(lmm2), corr=FALSE)
+
+anova(lmm2, lmm1)
+```
+
+Add VCs and CPs. 
+
+```{r}
+lmm3 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 + Scale | Rvwr), data=dat2, REML=FALSE,
+             control=lmerControl(calc.derivs=FALSE, check.nobs.vs.nRE="ignore"))
+print(summary(lmm3), corr=FALSE)
+
+anova(lmm2, lmm3)
+```
+
+Check the CPs.
+
+```{r}
+mm   <- model.matrix(~ 1 + Cond + Scale, data=dat2)
+sc2_1 <- mm[,6]
+sc3_2 <- mm[,7]
+lmm4 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 + sc2_1+sc3_2 || Rvwr), data=dat2, REML=FALSE,
+             control=lmerControl(calc.derivs=FALSE, check.nobs.vs.nRE="ignore"))
+print(summary(lmm4), corr=FALSE)
+
+anova(lmm2, lmm4, lmm3)
+```
+
+# Session Info
+
+```{r echo=FALSE} 
+sessionInfo()
+```
+
+
+
