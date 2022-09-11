@@ -2,4 +2,4 @@
 
 SMLP2022: Advanced methods in frequentist statistics with Julia
 
-The rendered website version of the coarse materials is available [here](https://repsychling.github.io/SMLP2022/).
+The rendered website version of the course materials is available [here](https://repsychling.github.io/SMLP2022/).
