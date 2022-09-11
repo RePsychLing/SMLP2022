@@ -15,6 +15,7 @@ format:
 editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
 ---
 
 # Background
@@ -57,7 +58,6 @@ The script is structured in four main sections:
 #| label: packages
 #| code-fold: true
 
-using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using AlgebraOfGraphics: linear
 using Arrow

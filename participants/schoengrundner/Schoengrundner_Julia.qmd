@@ -3,7 +3,7 @@ title: "Patrick Schöngrundner: GLMM Simulations"
 subtitle: "Using MixedModels.jl"
 author: "Reinhold Kliegl"
 date: "2022-09-09"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,12 +12,13 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
 ---
 
-# Background 
+# Background
 
 For a descripton see Example1.HTML.
 
@@ -29,15 +30,6 @@ Data are from simulating the following design:
 + `resp`: dependent variable: Are you scared? Yes/No; (Bernoulli 0/1 variable)
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 ## Packages
 
@@ -51,7 +43,7 @@ using CategoricalArrays
 using Chain
 using CSV
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using KernelDensity    # density estimation
 using MixedModels
 using MixedModelsMakie # diagnostic plots
@@ -190,7 +182,7 @@ fit3b = fit(MixedModel, frm3b, dat1, Bernoulli())
 display(MixedModels.likelihoodratiotest(fit3b, fit3a))
 ```
 
-## Simulation with boosted effect 
+## Simulation with boosted effect
 
 # ... using PS's indicator variables
 
@@ -316,7 +308,7 @@ display(describe(dat3))
 nrow(dat3) # 2500 estimates for each of 6 model parameters
 ```
 
-... but in this case we did not lose any estimates. 
+... but in this case we did not lose any estimates.
 
 ## Shortest coverage interval
 
@@ -395,5 +387,3 @@ draw(
 ```{julia}
 versioninfo()
 ```
-
-

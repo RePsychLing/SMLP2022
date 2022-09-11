@@ -3,7 +3,7 @@ title: "Laura Raveling: Conversation Gaps - Version 2"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-09-08"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,21 +12,13 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
 ---
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 ## Packages
 
@@ -38,7 +30,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -57,7 +49,7 @@ CairoMakie.activate!(; type="svg");
 dat = DataFrame(Arrow.Table("./data/Raveling_ConversationGap_v2.arrow"));
 describe(dat)
 ```
-# LMMs 
+# LMMs
 
 ## Contrasts
 
@@ -98,9 +90,9 @@ voi_G2 = let
 end
 ```
 
-No reliable VC for `Gesture` or `Gest.` 
+No reliable VC for `Gesture` or `Gest.`
 
-## Triad 
+## Triad
 
 ```{julia}
 voi_T = let
@@ -118,4 +110,3 @@ Not much to see, the number of observations is simply too small. Nevertheless a 
 ```{julia}
 versioninfo()
 ```
-

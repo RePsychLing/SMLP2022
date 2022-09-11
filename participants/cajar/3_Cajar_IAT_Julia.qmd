@@ -3,7 +3,7 @@ title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-15"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -11,25 +11,26 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
 ---
 
-# Background 
+# Background
 
-## Overview 
+## Overview
 
 + Original analysis is by Anke Cajar.
 + Data are from André Krügel.
-+ Revisions do not affect the main conclusion, but highlight common problems with fitting LMMs related to 
++ Revisions do not affect the main conclusion, but highlight common problems with fitting LMMs related to
     + contrast specification
     + convergence issue
-    + zero correlation parameters 
+    + zero correlation parameters
 + Addition of new chunks illustrate
-    + selection of parsimonious LMM using random-effects PCA 
-    + plotting conditional means 
-    + illustration of borrowing strength 
+    + selection of parsimonious LMM using random-effects PCA
+    + plotting conditional means
+    + illustration of borrowing strength
 
 ## Anke Cajar: Analysis/modeling issues
 
@@ -48,19 +49,19 @@ This is data from an experiment showing that we can reliably detect whether outc
 
 The IAT measures people's implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories---two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.
 
-# Background and overview 
+# Background and overview
 
 + Data are from André Krügel.
 + Revisions and additions for SMLP2022 by Reinhold Kliegl (RK)
-+ Revisions do not affect the main conclusion, but highlight common problems with fitting LMMs related to 
++ Revisions do not affect the main conclusion, but highlight common problems with fitting LMMs related to
     + contrast specification
     + convergence issue
-    + zero correlation parameters 
+    + zero correlation parameters
 + Addition of new chunks illustrate
     + selection of parsimonious LMM using random-effects PCA (`rePCA()`) and LRTs (`anova()`)
     + plotting partial effect of high-order interaction (`remef()`)
-    + plotting conditional means 
-    
+    + plotting conditional means
+
 ## Data
 
 This is data from an experiment showing that we can reliably detect whether outcomes from the Implicit Association Test (IAT) are faked by analysing task-switch costs in the combined blocks of the IAT (see next paragraph) Every participant performed two IATs: the control group performed the same normative IAT twice and the faking group was instructed to fake the second IAT by deliberately slowing down response times in the compatible block. It has been shown that switches from a target-concept word to an attribute-dimension word between consecutive trials produces stronger switch costs (i.e., response-time differences between task-repetition and task-switch trials) in the incompatible block than in the compatible block. The present data show that even after successful faking of the IAT, these switch costs are preserved (although the true compatible block became the faked incompatible block). Thus, switch costs can be used to detect IAT faking reliably and with high accuracy.
@@ -69,7 +70,7 @@ This is data from an experiment showing that we can reliably detect whether outc
 
 The IAT measures people's implicit associations between a target concept and an attribute dimension. People have to assign consecutively presented words as fast as possible to one of four categories---two categories belong to the target concept (e.g., family vs career words) and two categories belong to the attribute dimension (e.g., male vs female words). When strongly associated concepts share the same response key in the categorization task (e.g., career and male words or family and female words), response times are usually shorter than when less associated concepts share the same response key (e.g., career and female words or family and male words). The IAT block with shorter response times is called the compatible block, whereas the block with longer response times is called the incompatible block. IAT results can be deliberately faked, most easily and reliably by slowing down response times in the actual compatible block (making it look like the incompatible block and thus reversing associations). To date, an effective and accurate method for detecting faked IATs is still missing.
 
-# Readme 
+# Readme
 
 ## Design (almost balanced)
 
@@ -82,28 +83,21 @@ The IAT measures people's implicit associations between a target concept and an 
 
 + `Subj`: Participant ID (renamed from `ID`; random factor)
 + `Item`: Word ID (random factor)
-+ `Group` (between-Subj/within-Item): 
++ `Group` (between-Subj/within-Item):
     + No_Faking: control group, where people took the same normative IAT twice
     + Faking: experimental group, where people were instructed to fake the retest IAT by slowing down response times in the compatible block
-+ `Time` (within-Subj/within-Item): 
++ `Time` (within-Subj/within-Item):
     + Baseline: first IAT (normative IAT)
     + Retest: second IAT (normative or faked, depending on Group)
-+ `Block` (within-Subj/within-Item): 
++ `Block` (within-Subj/within-Item):
     + Compatible: IAT combined block with shorter response times
     + Incompatible: IAT combined block with longer response times
-+ `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item): 
-    + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next 
-    + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next 
++ `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item):
+    + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next
+    + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next
 + `rt`: trial response time (DV, renamed from `RT`)
 
 # Setup
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 First attach the _MixedModels.jl_ package and other packages for plotting.
 The _CairoMakie.jl_ package allows the Makie graphics system [@Danisch2021] to generate high quality static images. Activate that package with the SVG (Scalable Vector Graphics) backend.
@@ -116,7 +110,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter    # for the progress indicator during model fitting
@@ -135,13 +129,13 @@ using MixedModelsMakie: caterpillar
 CairoMakie.activate!(; type="svg");
 ```
 
-+ The data are available as an arrow file. 
++ The data are available as an arrow file.
 + Most of preprocessing was done with R in RStudio.
 + Order of factor levels should be checked.
 
 ```{julia}
 dat = DataFrame(Arrow.Table("./data/Cajar_IAT.arrow"))
-transform!(dat, 
+transform!(dat,
     :Task => categorical => :Task,
     :Valence => categorical => :Valence,
     :Group => categorical => :Group,
@@ -153,7 +147,7 @@ levels!(dat.Group, ["No_Faking", "Faking"])
 describe(dat)
 ```
 
-+ Always check factor levels! In this case levels of `Group` needed to be reverted. 
++ Always check factor levels! In this case levels of `Group` needed to be reverted.
 + Note: Factor levels can also be set when contrasts are defined (see below).
 + BoxCox check showed that reaction time `RT` [ms] should be transformed to `speed` [1/s] = [Hz]
 
@@ -162,7 +156,7 @@ describe(dat)
 The plot shows the critical interaction. Note the different profile of means for the Retest-Faking facet.
 
 ```{julia}
-#| label: fig-speed 
+#| label: fig-speed
 #| fig-cap: Response speed for Group x Time x Block x Switch cells
 
 RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=10.0)
@@ -176,7 +170,7 @@ suppressWarnings(suppressMessages(library(tidyverse)))
 cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
                 "#F0E442", "#56B4E9", "#999999", "#E69F00")
 
-switch_costs <- dat |> 
+switch_costs <- dat |>
   group_by(Time, Group, Block, Switch) |>
   summarise(M = mean(speed), SD=sd(speed), N=n(), SE=SD/sqrt(N))
 
@@ -201,9 +195,9 @@ print(fig_speed)
 
 A few comments on the choice of fixed effects.
 
-     + The first task is to make sure that the fixed effects represent the hypotheses we intend to test. This is usually implemented with contrasts for factors and  polynomial degrees for covariates. 
-     + The second taks to decide on the degree of the highest-order interaction. If there is a distinction between theoretically motivated and control (e.g., counterbalancing) factors, include interactions for the former. 
-     + In (close to) counterbalanced design, leaving high-order interaction(s) of theoretically motivated factors in the model does not cause any problems. However, we consider it unlikely that interpretations of interactions between, say, five and more factors are interpretable. 
+     + The first task is to make sure that the fixed effects represent the hypotheses we intend to test. This is usually implemented with contrasts for factors and  polynomial degrees for covariates.
+     + The second taks to decide on the degree of the highest-order interaction. If there is a distinction between theoretically motivated and control (e.g., counterbalancing) factors, include interactions for the former.
+     + In (close to) counterbalanced design, leaving high-order interaction(s) of theoretically motivated factors in the model does not cause any problems. However, we consider it unlikely that interpretations of interactions between, say, five and more factors are interpretable.
      + In observational studies with a combination of (quasi-)experimental factors and correlated covariates, it is important to eliminate non-significant higher-order interaction terms involving covariates. Their correlations with lower-order terms may render important main effects or simple interactions non-significant (i.e., cause false negative errors).
      + During model selection with respect to the complexity of the RES, the significance of fixed effects must not be considered. Therefore, after we decide on a defensible fixed-effect structure, we only use `VarCorr(model)` to facilitate model selection.
      + Here we keep the full 2^6 factorial design in the fixed effects during model selection.  We prune some of the higher-order fixed-effect interaction terms only after model selection.
@@ -212,9 +206,9 @@ A few comments on the choice of fixed effects.
 
 For this experiment, we use effect coding for six fixed two-level factors. As this is an almost balanced design, the specification yields an almost orthognal set of test statistics for main effects and interactions. `EffectsCoding()` corresponds to `contr.sum` in R, but by default it uses the first level as base. To obtain the same direction of effects as in R, the base is changed to the second factor level for all of them.
 
-Random factors, here `Subj` and `Item`, are also called grouping variables.  `Grouping()` declares them as such. 
+Random factors, here `Subj` and `Item`, are also called grouping variables.  `Grouping()` declares them as such.
 
-For this contrast specification, the LMM returns estimates for three `(Intercept)` parameters. They refer to the Grand Mean (`GM`) and associated `GM` for `Subj`-related and  `Item`-related VCs in the random-effect structure (RES), respectively. 
+For this contrast specification, the LMM returns estimates for three `(Intercept)` parameters. They refer to the Grand Mean (`GM`) and associated `GM` for `Subj`-related and  `Item`-related VCs in the random-effect structure (RES), respectively.
 
 ```{julia}
 #| lst-label: contrasts
@@ -231,13 +225,13 @@ contrasts = merge(
    );
 ```
 
-## A maximal LMM `m_max` 
+## A maximal LMM `m_max`
 
 **This is a didactic exercise, not part of the usual workflow.**
 
 We start w/ estimation of the maximal number of fixed effects (2^6 = 64 terms) and their corresponding VCs and CPs for `Subj` and for `Item` grouping variables, that is we estimate variance components (VCs) and correlation parameters (CPs) for within-subject factors for `Subj` (i.e., 2^5 = 32 VCs and 32 x 31 /2 = 496 CPs) and  for within-item factors for `Item` (i.e., 2^4 = 16 VCs and 16 x 15 /2 = 120 CPs), plus the observation-level residual variance. Thus,  64+(32+496)+(16+120)+1=729 model parameters are estimated from 11679 observations. Given 38 subjects and 20 items, there are also 38 subject x 32 parameters + 20 items x 16 parameters = 1536 conditional means of the random effects for the two random factors.
 
-As far as the experimental design is concerned, this is the maximal LMM. Note, however, that we do not include covariates such as trial number, age of subjects, or word frequency. These covariates could also be modelled with higher-order polynomial trends. Thus, in principle, there is not really a maximal LMM for an experiment. Explicitly or implicitly, we are always deciding on an upper limit. 
+As far as the experimental design is concerned, this is the maximal LMM. Note, however, that we do not include covariates such as trial number, age of subjects, or word frequency. These covariates could also be modelled with higher-order polynomial trends. Thus, in principle, there is not really a maximal LMM for an experiment. Explicitly or implicitly, we are always deciding on an upper limit.
 
 ### Random-effect structure
 
@@ -248,7 +242,7 @@ We need to arrive at a representation that is supported by the data. Unfortunate
 ```{julia}
 #| lst-label: f_max
 f_max = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
-                         (1 +       Time*Block*Switch*Task*Valence | Subj) +  
+                         (1 +       Time*Block*Switch*Task*Valence | Subj) +
                          (1 + Group*Time*Block*Switch              | Item));
 ```
 
@@ -263,7 +257,7 @@ saveoptsum("./fits/cajar_iat_max_optsum.json", m_max);
 ```
 
 We save the fitted model object, because a model of this complexity takes some time to fit -- also with Julia MixedModels.jl. Specifically, for a Macbook Pro M1 Max:
-Minimizing 92709 Time: 0 Time: 5:00:40 
+Minimizing 92709 Time: 0 Time: 5:00:40
 
 
 ### Restore fitted model object
@@ -284,7 +278,7 @@ We check whether the model, specifically the variance-covariance matrix of the r
 issingular(m_max)
 ```
 
-The variance-covariance matrix of the RES is singular. 
+The variance-covariance matrix of the RES is singular.
 
 2. We check the number of Subj- and Item-related principal components (PCs)
 
@@ -296,9 +290,9 @@ m_max.PCA[:Subj]  # also: MixedModels.PCA(m0)[:Subj]
 m_max.PCA[:Item]  # also: MixedModels.PCA(m_max)[:Subj]
 ```
 
- Almost all of information in this matrix (>99.8%) can be recoverd with a smaller number of `Subj`-related and  `Item`-related PCs (i.e., weighted composites of the VCs). 
+ Almost all of information in this matrix (>99.8%) can be recoverd with a smaller number of `Subj`-related and  `Item`-related PCs (i.e., weighted composites of the VCs).
 
-The statistics show the overparameterization of the `Subj` and `Item` parts of the random-effect structure (RES). The variance-covariance matrix usually provides hints about sources of the problem. Specifically, we look for the smallest variance components (VCs) and implausible correlation parameters (CPs; i.e., 1.0). Such VCs are CPs are candidates for removal in the next iteration. VCs of interaction terms are also likely candidates. 
+The statistics show the overparameterization of the `Subj` and `Item` parts of the random-effect structure (RES). The variance-covariance matrix usually provides hints about sources of the problem. Specifically, we look for the smallest variance components (VCs) and implausible correlation parameters (CPs; i.e., 1.0). Such VCs are CPs are candidates for removal in the next iteration. VCs of interaction terms are also likely candidates.
 
 ```{julia}
 VarCorr(m_max)
@@ -317,7 +311,7 @@ f_cpx = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                          (1 +       Time+Block+Switch+Task+Valence +
                             Time&Block+Time&Switch+Time&Task+Time&Valence +
                             Block&Switch+Block&Task+Block&Valence +
-                            Switch&Task + Switch&Valence + Task&Valence | Subj) +  
+                            Switch&Task + Switch&Valence + Task&Valence | Subj) +
                          (1 + Group+Time+Block+Switch +
                            Group&Time+Group&Block+Group&Switch +
                            Time&Block+Time&Switch+Block&Switch          | Item));
@@ -351,7 +345,7 @@ show(m_cpx.PCA[:Subj])
 show(m_cpx.PCA[:Item])
 ```
 
-Still overparameterized with at most nine VCs needed for `Subj` and five VCs needed for `Item`. 
+Still overparameterized with at most nine VCs needed for `Subj` and five VCs needed for `Item`.
 A likelihood-ratio test can be used to compare these nested models. We can also compute other traditional goodness-of-fit statistics.
 
 ```{julia}
@@ -380,22 +374,22 @@ Note that for an LMM:  `objective(m)` = `deviance(m)` = `-2 + loglikelihood(m)`
 
 The degrees of freedom in `StatsModels.lrtest` correspond to number of model parameters in `MixedModels.likelihoodratiotest`. The residual number of degrees of freedom is a red herring in mixed models. One proposal is to use the sum of the leverage values (i.e., the rank of the model matrix). This is also called the trace of the hat matrix or the number of geometric degrees of freedom (geomdof). For details check [MixedModels.jl documentation](https://juliastats.org/MixedModels.jl/stable/constructors/#StatsAPI.leverage):
 
-"For a linear mixed model the sum of the leverage values will be between $p$, the rank of the fixed-effects model matrix, and $p + q$ where $q$ is the total number of random effects. This number does not represent a dimension (or "degrees of freedom") of a linear subspace of all possible fitted values because the projection is not an orthogonal projection. Nevertheless, it is a reasonable measure of the effective degrees of freedom of the model and $n - sum(leverage(m))$ can be considered the effective residual degrees of freedom." 
+"For a linear mixed model the sum of the leverage values will be between $p$, the rank of the fixed-effects model matrix, and $p + q$ where $q$ is the total number of random effects. This number does not represent a dimension (or "degrees of freedom") of a linear subspace of all possible fitted values because the projection is not an orthogonal projection. Nevertheless, it is a reasonable measure of the effective degrees of freedom of the model and $n - sum(leverage(m))$ can be considered the effective residual degrees of freedom."
 
 LMM `m_cpx` is still overparameterized. Let's check for a different simplification options.
 
 ## A zero-correlation parameter LMM `m_zcp`
 
-An alternative approach is to start with VCs for main effects and simple interactions and force CPs to zero. This often reveals VCs with zero or no reliable VCs. It is very rare that one observes reliable individual or item differences for higher-order interaction terms. When they do occur, they are often/usually based on crossing of factors where the interaction represents a congruity effect. In this case it is advised to recode factors such that the interaction term is represented as main effect of congruity. 
+An alternative approach is to start with VCs for main effects and simple interactions and force CPs to zero. This often reveals VCs with zero or no reliable VCs. It is very rare that one observes reliable individual or item differences for higher-order interaction terms. When they do occur, they are often/usually based on crossing of factors where the interaction represents a congruity effect. In this case it is advised to recode factors such that the interaction term is represented as main effect of congruity.
 
 ```{julia}
 #| lst-label: m_zcp1
- m_zcp1 = let 
+ m_zcp1 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                     zerocorr(1 +       Time+Block+Switch+Task+Valence +
                              Time&Block+Time&Switch+Time&Task+Time&Valence +
                              Block&Switch+Block&Task+Block&Valence +
-                             Switch&Task + Switch&Valence + Task&Valence | Subj) +  
+                             Switch&Task + Switch&Valence + Task&Valence | Subj) +
                     zerocorr(1 + Group+Time+Block+Switch +
                              Group&Time+Group&Block+Group&Switch +
                              Time&Block+Time&Switch+Block&Switch          | Item));
@@ -409,37 +403,37 @@ Quite a large number of VCs are estimated to be negligible. We take out zero-ter
 
 ```{julia}
 #| lst-label: m_zcp2
- m_zcp2 = let 
+ m_zcp2 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                     zerocorr(1+Time+Block+Switch+Task+Valence +
                              Time&Block+Time&Valence+Block&Switch+
-                             Block&Task+Block&Valence+Task&Valence | Subj) +  
+                             Block&Task+Block&Valence+Task&Valence | Subj) +
                     zerocorr(1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_zcp2))
-show(lrtest(m_zcp2, m_zcp1)) 
+show(lrtest(m_zcp2, m_zcp1))
 VarCorr(m_zcp2)
 ```
 
-This a RES supported by the data. 
+This a RES supported by the data.
 
 We check the reliability of the small `Subj`-related VCs (i.e., < .015 for Std.Dev.)
 
 ```{julia}
 #| lst-label: m_zcp3
- m_zcp3 = let 
+ m_zcp3 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                     zerocorr(1+Time+Block+Switch+Task+Valence +
-                             Time&Block+Time&Valence+Block&Switch+Block&Valence | Subj) +  
+                             Time&Block+Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_zcp3))
-show(lrtest(m_zcp3, m_zcp2, m_zcp1, m_max)) 
-show(lrtest(m_zcp3, m_max)) 
+show(lrtest(m_zcp3, m_zcp2, m_zcp1, m_max))
+show(lrtest(m_zcp3, m_max))
 VarCorr(m_zcp3)
 ```
 
@@ -453,52 +447,52 @@ We start with the `Item`-related CP.
 
 ```{julia}
 #| lst-label: m_prm1
- m_prm1 = let 
+ m_prm1 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                     zerocorr(1+Time+Block+Switch+Task+Valence +
-                             Time&Block+Time&Valence+Block&Switch+Block&Valence | Subj) +  
+                             Time&Block+Time&Valence+Block&Switch+Block&Valence | Subj) +
                              (1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_prm1))
-show(lrtest(m_zcp3, m_prm1)) 
+show(lrtest(m_zcp3, m_prm1))
 VarCorr(m_prm1)
 ```
 
-This CP is not needed. Now we test `Subj`-related CPs. 
+This CP is not needed. Now we test `Subj`-related CPs.
 
 ```{julia}
 #| lst-label: m_prm2
- m_prm2 = let 
+ m_prm2 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                             (1+Time+Block+Switch+Task+Valence +
-                               Time&Block+Time&Valence+Block&Switch+Block&Valence | Subj) +  
+                               Time&Block+Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_prm2))
-show(lrtest(m_zcp3, m_prm2, m_max)) 
+show(lrtest(m_zcp3, m_prm2, m_max))
 VarCorr(m_prm2)
 ```
 
-LMM `m_prsm2` is a defensible solution according to  $\Delta$ AIC; LMM `m_zcp3` is preferred according to  $\Delta$ BIC. 
+LMM `m_prsm2` is a defensible solution according to  $\Delta$ AIC; LMM `m_zcp3` is preferred according to  $\Delta$ BIC.
 
-We can prune some of the `Subj`-related CPs. 
+We can prune some of the `Subj`-related CPs.
 
 ```{julia}
 #| lst-label: m_prm3
- m_prm3 = let 
+ m_prm3 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
                             (1+Time+Block+Time&Block | Subj) +
-                    zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +  
+                    zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_prm3))
-show(lrtest(m_zcp3, m_prm3, m_prm2, m_max)) 
+show(lrtest(m_zcp3, m_prm3, m_prm2, m_max))
 VarCorr(m_prm3)
 ```
 
@@ -524,37 +518,37 @@ LMM `m_prm3` is a defensible solution according to both  $\Delta$ AIC and  $\Del
 coeftable(m_prm3)
 ```
 
-## Pruning fixed-effects 
+## Pruning fixed-effects
 
-We do no longer touch the RES, but introduce a distinction between theoretically motivated and control factors. 
+We do no longer touch the RES, but introduce a distinction between theoretically motivated and control factors.
 
 ```{julia}
 #| lst-label: m1
- m1 = let 
+ m1 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch+Task*Valence +
                             (1+Time+Block+Time&Block | Subj) +
-                    zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +  
+                    zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
-show(lrtest(m1, m_prm3)) 
+show(lrtest(m1, m_prm3))
 m1
 ```
 
-The interactions between theoretically motivated and control variables can be eliminated without loss of goodness of fit. The control variables and their interaction are not significant in the fixed effects, but we already know that there are reliable individual differences assocdated with them. Here once more a check removing them 
+The interactions between theoretically motivated and control variables can be eliminated without loss of goodness of fit. The control variables and their interaction are not significant in the fixed effects, but we already know that there are reliable individual differences assocdated with them. Here once more a check removing them
 
 ```{julia}
 #| lst-label: m2
- m2 = let 
+ m2 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch+Task*Valence +
                             (1+Time+Block+Time&Block | Subj) +
-                    zerocorr(Switch+Block&Switch | Subj) +  
+                    zerocorr(Switch+Block&Switch | Subj) +
                     zerocorr(1+Block | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
-show(MixedModels.likelihoodratiotest(m2, m1)) 
+show(MixedModels.likelihoodratiotest(m2, m1))
 ```
 
 # Further checks and analyses of final LMM m1
@@ -567,7 +561,7 @@ coeftable(m1)
 
 ## Diagnostic plots
 
-Various visualizations are used to check whether or not data are _defensibly_ modeled with an LMM. They may lead to removal of outliers, transformations of the dependent variable, and deliver valuable heuristic information to be followed up with exploratory post-hoc analyses or ideally replication of new insights gained this way. In practice, it appears that only severe violations will stop people from reporting a model. 
+Various visualizations are used to check whether or not data are _defensibly_ modeled with an LMM. They may lead to removal of outliers, transformations of the dependent variable, and deliver valuable heuristic information to be followed up with exploratory post-hoc analyses or ideally replication of new insights gained this way. In practice, it appears that only severe violations will stop people from reporting a model.
 
 ### Residuals over fitted
 
@@ -583,7 +577,7 @@ qqnorm(m1; qqline=:none)
 
 ### Residual distributions: observed vs. theoretical
 
-Curves for residulas based on observed and theoretical values should correspond. 
+Curves for residulas based on observed and theoretical values should correspond.
 
 ```{julia}
 #| code-fold: true
@@ -624,9 +618,9 @@ The left and right orientations of conditional means of `Time`, `Block`, and `Ti
 
 Shrinkage refers to the adjustment of subject-level or item-level predictions by taking population estimates into account. The further a subject's/item's estimate is from the fixed effect or the more variable or less reliable the subject's/item's estimate, the more the prediction will be shrunk towards the population estimate. Alternative terms for shrinkage are "borrowing strength" (Tukey) and regularization. My favorite is actually Tukey's because indeed we borrow strength from the population estimates to make predictions for individual subjects' effects. The goal of this section to illustrate the results of borrowing strength.
 
-Subject-related conditional means of random effects revealed information about individual differences beyond fixed effects. Would these results also be visible in _unconditional_ means, that is when we compute GM and experimental effects _within_ subjects (i.e., as fixed effects) without borrowing strength from the population estimates? 
+Subject-related conditional means of random effects revealed information about individual differences beyond fixed effects. Would these results also be visible in _unconditional_ means, that is when we compute GM and experimental effects _within_ subjects (i.e., as fixed effects) without borrowing strength from the population estimates?
 
-In the following plots, effect estimates based on alone on each subject's data (i.e., no pooling of data, no borrowing of strength) are plotted in pink and the subjects' conditional means shown in the caterpillar plots are plotted in blue. The arrows indicate how much a subject's prediction is changed by borrowing strength from knowledge of the population estimates.  
+In the following plots, effect estimates based on alone on each subject's data (i.e., no pooling of data, no borrowing of strength) are plotted in pink and the subjects' conditional means shown in the caterpillar plots are plotted in blue. The arrows indicate how much a subject's prediction is changed by borrowing strength from knowledge of the population estimates.
 
 ```{julia}
 #| code-fold: true
@@ -635,7 +629,7 @@ In the following plots, effect estimates based on alone on each subject's data (
 shrinkageplot!(Figure(; resolution=(1000, 1200)), m1)
 ```
 
-In general, the predictions are shrunk towards the center of gravity of each panel, but overall there is relatively little shrinkage (compared to other studies). Thus, there was not much need for borrowing strength in this experiment. 
+In general, the predictions are shrunk towards the center of gravity of each panel, but overall there is relatively little shrinkage (compared to other studies). Thus, there was not much need for borrowing strength in this experiment.
 
 
 ### Item-related conditional means of random effects
@@ -644,10 +638,10 @@ Finally, we also check the items for _outliers_ in how fast they are responded t
 
 ```{julia}
 #| lst-label: m1x
- m1x = let 
+ m1x = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch+Task*Valence +
                             (1+Time+Block+Time&Block | Subj) +
-                    zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +  
+                    zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Word));
     fit(MixedModel, form, dat; contrasts);
   end;
@@ -660,9 +654,8 @@ cm1_Item = last(ranefinfo(m1x))
 caterpillar!(Figure(; resolution=(800, 1200)), cm1_Item; orderby=1)
 ```
 
-One item's credibility interval does not overlap with the Grand Mean -- _love_. Makes sense. 
+One item's credibility interval does not overlap with the Grand Mean -- _love_. Makes sense.
 
 ```{julia}
 versioninfo()
 ```
-

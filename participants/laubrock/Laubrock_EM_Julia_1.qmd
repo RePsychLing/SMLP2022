@@ -3,7 +3,7 @@ title: "Jochen Laubrock: Eye Movement Control during Reading"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-24"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,9 +12,10 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
 ---
 
 # Background [OSF-repo](https://osf.io/bmvrx/)
@@ -27,7 +28,7 @@ jupyter: julia-1.8
 
 Reference: Chandra, J., Krügel, A., & Engbert, R. (2020). Modulation of oculomotor control during reading of mirrored and inverted texts. _Scientific Reports_, _10 (1)_, 1-15. doi: 10.1038/s41598-020-60833-6
 
-# Readme 
+# Readme
 
 Grouping variables
 
@@ -41,7 +42,7 @@ Covariates
 + `rfl`: relative fixation location in word
 + `rwn`: relative word number
 + `f`, `f1`, `f2`: log frequencies of words n (fixated), n-1, and n+1
-+ `l`, `l1`, `l2`: reciprocal length  of words (log2) 
++ `l`, `l1`, `l2`: reciprocal length  of words (log2)
 + `p`, `p1`, `p2`: synthetic predictability of words (logits)
 
 Dependent variable
@@ -49,15 +50,6 @@ Dependent variable
 + `lfd`: log of firstpass single fixation duration
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 ## Packages
 
@@ -70,7 +62,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -90,7 +82,7 @@ ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
-+ The data are available as an arrow file. 
++ The data are available as an arrow file.
 + Most of preprocessing was done with R in RStudio.
 
 ```{julia}
@@ -110,7 +102,7 @@ contrasts = merge(
 #| lst-label: m_ovi
 f1_ovi = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                         f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
-                       (1 | Subj) + (1 | Sent) 
+                       (1 | Subj) + (1 | Sent)
                 );
 m1_ovi = fit(MixedModel, f1_ovi, dat; contrasts);
 ```
@@ -123,8 +115,8 @@ m1_ovi = fit(MixedModel, f1_ovi, dat; contrasts);
 #| lst-label: m_zcp
 f1_zcp = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                         f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
-               zerocorr(1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
-               zerocorr(0 + f + f1 + f2 + p + p2 + p2 | Sent) 
+               zerocorr(1 + f + f1 + f2 + p + p1 + p2 | Subj) +
+               zerocorr(0 + f + f1 + f2 + p + p2 + p2 | Sent)
                 );
 
 m1_zcp = fit(MixedModel, f1_zcp, dat; contrasts);
@@ -141,13 +133,13 @@ Expand LMM `m_zcp` with CPs.
 #| lst-label: m_cpx
 f1_cpx = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                        f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
-                      (1 + f + f1 + f2 + p + p1 + p2 | Subj) + 
-                      (0 + f + f1 + f2 + p + p1 + p2 | Sent) 
+                      (1 + f + f1 + f2 + p + p1 + p2 | Subj) +
+                      (0 + f + f1 + f2 + p + p1 + p2 | Sent)
                 );
 
 m1_cpx = fit(MixedModel, f1_cpx, dat; contrasts);
 show(issingular(m1_cpx))
-show(m1_cpx.PCA[:Subj]) 
+show(m1_cpx.PCA[:Subj])
 show(m1_cpx.PCA[:Sent])
 show(VarCorr(m1_cpx))
 MixedModels.likelihoodratiotest(m1_ovi, m1_zcp, m1_cpx)
@@ -162,24 +154,24 @@ Remove very high CPs (seen in `m1_cpx`) to achieve an model supported by data.
 f1_prsm = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
                          f + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                         (1 + f      + p      + p2 | Subj) +  zerocorr(0 + f1 + f2 + p1 | Subj) +
-                        (0 + f + f2 + p + p1 + p2 | Sent) +  zerocorr(0 + f1 | Sent) 
+                        (0 + f + f2 + p + p1 + p2 | Sent) +  zerocorr(0 + f1 | Sent)
                 );
 
 m1_prsm = fit(MixedModel, f1_prsm, dat; contrasts);
 show(issingular(m1_prsm))
-show(m1_prsm.PCA[:Subj]) 
+show(m1_prsm.PCA[:Subj])
 show(m1_prsm.PCA[:Sent])
 show(VarCorr(m1_prsm))
 MixedModels.likelihoodratiotest(m1_zcp, m1_prsm, m1_cpx)
 ```
- 
+
 # Summary
 
-+ `Subj`-related CPs 
++ `Subj`-related CPs
      +  `GM` correlates negatively with `f` and `p2`, positively with `p`; could depend lack of on centering
      +  `f`  correlates negatively with `p` and positively with `p2`
 + `Sent`-related CPs
-     + positive: `f` and `p2`, 
+     + positive: `f` and `p2`,
      + negative: `f` and `f2`,  `f2` and `p2`, `p1` and `p2`
 
 **Question:** Are these CPs significant?  Bootstrapping!
