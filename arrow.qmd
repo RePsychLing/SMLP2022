@@ -35,8 +35,7 @@ using DataFrameMacros
 using DataFrames
 using Downloads
 using KernelDensity
-using PythonCall  # show reading Arrow in Python
-using RCall   # show reading Arrow in R
+using RCall   # access R from within Julia
 using StatsBase
 
 CairoMakie.activate!(; type="svg")
