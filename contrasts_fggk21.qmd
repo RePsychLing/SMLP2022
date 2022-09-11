@@ -35,8 +35,6 @@ The script is structured in three main sections:
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using AlgebraOfGraphics: linear
 using Arrow

@@ -11,8 +11,6 @@ jupyter: julia-1.8
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using CairoMakie
 using DataFrames
 using LinearAlgebra

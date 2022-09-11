@@ -35,8 +35,6 @@ A _MixedModels.jl_-based analysis focusing on the complex experimental design an
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using Arrow
 using AlgebraOfGraphics
 using CairoMakie
