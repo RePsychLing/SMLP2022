@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-03">
+<meta name="dcterms.date" content="2022-09-11">
 
 <title>SMLP2022 - Useful packages</title>
 <style>
@@ -239,6 +239,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./shrinkageplot.html" class="sidebar-item-text sidebar-link">More on shrinkage plots</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contrasts_fggk21.html" class="sidebar-item-text sidebar-link">Mixed Models Tutorial: Contrast Coding</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./contrasts_kwdyz11.html" class="sidebar-item-text sidebar-link">Contrast Coding of Visual Attention Effects</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -270,7 +280,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#others" id="toc-others" class="nav-link" data-scroll-target="#others">Others</a></li>
   </ul></li>
   <li><a href="#connecting-to-other-languages" id="toc-connecting-to-other-languages" class="nav-link" data-scroll-target="#connecting-to-other-languages">Connecting to Other Languages</a></li>
-  <li><a href="#notebooks-and-webpages" id="toc-notebooks-and-webpages" class="nav-link" data-scroll-target="#notebooks-and-webpages">Notebooks and Webpages</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/RePsychLing/SMLP2022/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -296,7 +305,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-09-03</p>
+      <p class="date">2022-09-11</p>
     </div>
   </div>
     
@@ -376,7 +385,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Throughtout this course, we have used the Makie ecosystem for plotting, but there are several alternatives in Julia.</p>
 <section id="makie" class="level3">
 <h3 class="anchored" data-anchor-id="makie">Makie</h3>
-<p>The <a href="https://makie.juliaplots.org/stable/">Makie ecosystem</a> is a relatively new take on graphics that aims to be both powerful and easy to use. Makie.jl itself only provides abstract definitions for many components (and is used in e.g.&nbsp;MixedModelsMakie.jl to define plot types for MixedModels.jl). The actual plotting and rendering is handled by a backend package such as CairoMakie.jl (good for Pluto notebooks or rending static 2D images) and GLMakie.jl (good for dynamic, interactive visuals and 3D images). AlgebraOfGraphics.jl builds a grammar of graphics upon the Makie framework. It’s a great way to get good plots very quickly, but extensive customization is still best achieved by using Makie directly.</p>
+<p>The <a href="https://makie.juliaplots.org/stable/">Makie ecosystem</a> is a relatively new take on graphics that aims to be both powerful and easy to use. Makie.jl itself only provides abstract definitions for many components (and is used in e.g.&nbsp;MixedModelsMakie.jl to define plot types for MixedModels.jl). The actual plotting and rendering is handled by a backend package such as CairoMakie.jl (good for Quarto notebooks or rending static 2D images) and GLMakie.jl (good for dynamic, interactive visuals and 3D images). AlgebraOfGraphics.jl builds a grammar of graphics upon the Makie framework. It’s a great way to get good plots very quickly, but extensive customization is still best achieved by using Makie directly.</p>
 </section>
 <section id="plots.jl" class="level3">
 <h3 class="anchored" data-anchor-id="plots.jl">Plots.jl</h3>
@@ -400,15 +409,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For MATLAB users, there is also <a href="https://github.com/JuliaInterop/MATLAB.jl">MATLAB.jl</a></p>
 <p><a href="https://juliainterop.github.io/Cxx.jl/stable/">Cxx.jl</a> provides interoperability with C++. It also provides a C++ REPL mode, making it possible to treating C++ much more like a dynamic language than the traditional compiler toolchain would allow.</p>
 <p>Support for calling C and Fortran is <a href="https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/">part of the Julia standard library</a>.</p>
-</section>
-<section id="notebooks-and-webpages" class="level2">
-<h2 class="anchored" data-anchor-id="notebooks-and-webpages">Notebooks and Webpages</h2>
-<p>We haved <a href="https://github.com/fonsp/Pluto.jl/">Pluto.jl</a> throughout this course because it provides a nice, easy way to interact with Julia, including automatic package management. <a href="https://github.com/fonsp/PlutoUI.jl">PlutoUI.jl</a> provides some nice tools for interacting with Pluto notebooks and making them more dynamic (including the <code>TableOfContents()</code> in this one!). We also like that Pluto notebooks are essentially normal Julia code stored in plain text under the hood, which means that they play quite nice with version control systems such as Git. Sometimes, however, the reactive nature of Pluto (update any one cell and the changes propogate to all impacted cells) is not desireable.</p>
-<p>An alternative notebook interface is provide by <a href="https://jupyter.org/">Jupyter</a>, formerly IPython. Indeed, the “Ju” actually stands for Julia. Jupyter support is provided by the package <a href="https://julialang.github.io/IJulia.jl/stable/">IJulia.jl</a>.</p>
-<p>The <a href="https://weavejl.mpastell.com/stable/">Weave.jl</a> package provides “Julia markdown”, which is similar to knitr/RMarkdown or the the Sweave formats in R. Notably, Weave also provides support for converting between <code>jmd</code> files and Jupyter notebooks.</p>
-<p>Similarly, <a href="https://fredrikekre.github.io/Literate.jl/v2/">Literate.jl</a> is a simple package for literate programming (i.e.&nbsp;programming where documentation and code are “woven” together) and can generate Markdown, plain code and Jupyter notebook output. It is designed for simplicity and speed and is less extensive than Weave.jl and Documenter.jl.</p>
-<p><a href="https://juliadocs.github.io/Documenter.jl/stable/">Documenter.jl</a> is the standard tool for building webpages from Julia documentation</p>
-<p><a href="https://rikhuijzer.github.io/Books.jl/">Books.jl</a> is a package designed to offer somewhat similar functionality to the <code>bookdown</code> package in R.</p>
 
 
 </section>
