@@ -125,11 +125,9 @@ tbl2 <-
 # Check: 
 tbl2 |> group_by(Cond) |> summarize(N=sum(perc))
 
-# Use position = position_dodge() 
 ggplot(tbl2, aes(x = Rating, y = perc)) +
   geom_bar(
     aes(color = Cond, fill = Cond),
-#  stat = "identity", position = position_stack()) +
    stat = "identity", position = position_dodge(0.8), width = 0.7) +
   scale_color_manual("Treatment", values =cbPalette[c(5,1)]) +
   scale_fill_manual("Treatment", values = cbPalette[c(5,1)]) +
@@ -159,9 +157,18 @@ contrasts(dat$Cond) <- MASS::contr.sdif(5)
 
 # Linear model
 
+## Rating (continuous)
+
 ```{r}
 lm1 <- lm(rating ~ 1 + Cond, data=dat)
 summary(lm1)
+```
+
+## Time in review 
+
+```{r}
+lm2 <- lm(time ~ 1 + Cond, data=dat)
+summary(lm2)
 ```
 
 # Linear Mixed Model
