@@ -90,7 +90,7 @@ Throughtout this course, we have used the Makie ecosystem for plotting, but ther
 
 ### Makie
 
-The [Makie ecosystem](https://makie.juliaplots.org/stable/) is a relatively new take on graphics that aims to be both powerful and easy to use. Makie.jl itself only provides abstract definitions for many components (and is used in e.g. MixedModelsMakie.jl to define plot types for MixedModels.jl). The actual plotting and rendering is handled by a backend package such as CairoMakie.jl (good for Pluto notebooks or rending static 2D images) and GLMakie.jl (good for dynamic, interactive visuals and 3D images). AlgebraOfGraphics.jl builds a grammar of graphics upon the Makie framework. It's a great way to get good plots very quickly, but extensive customization is still best achieved by using Makie directly.
+The [Makie ecosystem](https://makie.juliaplots.org/stable/) is a relatively new take on graphics that aims to be both powerful and easy to use. Makie.jl itself only provides abstract definitions for many components (and is used in e.g. MixedModelsMakie.jl to define plot types for MixedModels.jl). The actual plotting and rendering is handled by a backend package such as CairoMakie.jl (good for Quarto notebooks or rending static 2D images) and GLMakie.jl (good for dynamic, interactive visuals and 3D images). AlgebraOfGraphics.jl builds a grammar of graphics upon the Makie framework. It's a great way to get good plots very quickly, but extensive customization is still best achieved by using Makie directly.
 
 ### Plots.jl
 
@@ -119,17 +119,3 @@ For MATLAB users, there is also [MATLAB.jl](https://github.com/JuliaInterop/MATL
 [Cxx.jl](https://juliainterop.github.io/Cxx.jl/stable/) provides interoperability with C++. It also provides a C++ REPL mode, making it possible to treating C++ much more like a dynamic language than the traditional compiler toolchain would allow.
 
 Support for calling C and Fortran is [part of the Julia standard library](https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/).
-
-## Notebooks and Webpages
-
-We haved [Pluto.jl](https://github.com/fonsp/Pluto.jl/) throughout this course because it provides a nice, easy way to interact with Julia, including automatic package management. [PlutoUI.jl](https://github.com/fonsp/PlutoUI.jl) provides some nice tools for interacting with Pluto notebooks and making them more dynamic (including the `TableOfContents()` in this one!). We also like that Pluto notebooks are essentially normal Julia code stored in plain text under the hood, which means that they play quite nice with version control systems such as Git. Sometimes, however, the reactive nature of Pluto (update any one cell and the changes propogate to all impacted cells) is not desireable.
-
-An alternative notebook interface is provide by [Jupyter](https://jupyter.org/), formerly IPython. Indeed, the "Ju" actually stands for Julia. Jupyter support is provided by the package [IJulia.jl](https://julialang.github.io/IJulia.jl/stable/).
-
-The [Weave.jl](https://weavejl.mpastell.com/stable/) package provides "Julia markdown", which is similar to knitr/RMarkdown or the the Sweave formats in R. Notably, Weave also provides support for converting between `jmd` files and Jupyter notebooks.
-
-Similarly, [Literate.jl](https://fredrikekre.github.io/Literate.jl/v2/) is a simple package for literate programming (i.e. programming where documentation and code are "woven" together) and can generate Markdown, plain code and Jupyter notebook output. It is designed for simplicity and speed and is less extensive than Weave.jl and Documenter.jl.
-
-[Documenter.jl](https://juliadocs.github.io/Documenter.jl/stable/) is the standard tool for building webpages from Julia documentation
-
-[Books.jl](https://rikhuijzer.github.io/Books.jl/) is a package designed to offer somewhat similar functionality to the `bookdown` package in R.
