@@ -19,6 +19,34 @@ project:
     - shrinkageplot.qmd
     - contrasts_fggk21.qmd
     - contrasts_kwdyz11.qmd
+    # - participants/bahmanian/Bahmanian_NumberAgreement_Julia.qmd
+    # - participants/bahmanian/Bahmanian_NumberAgreement_R.qmd
+    # - participants/bakay/Bakay_SMPL_Julia.qmd
+    # - participants/bakay/Bakay_SMPL_R.qmd
+    # - participants/cajar/2_Cajar_IAT_R.qmd
+    # - participants/cajar/3_Cajar_IAT_Julia.qmd
+    # - participants/cajar/4_Cajar_IAT_groups_R.qmd
+    # - participants/cajar/5_Cajar_IAT_arrowconvert.qmd
+    # - participants/cajar/6_Cajar_IAT_modelfitting.qmd
+    # - participants/hofmann1/Hofmann_Maulwurf_Julia_1.qmd
+    # - participants/hofmann1/Hofmann_Maulwurf_Julia_2.qmd
+    # - participants/hofmann1/Hofmann_Maulwurf_R.qmd
+    # - participants/kliegl/Huber_NobelNovice_R.qmd
+    # - participants/kliegl/Kliegl_contrasts_fggk21.qmd
+    # - participants/kliegl/Kliegl_contrasts_kwdyz11.qmd
+    # - participants/kliegl/Kliegl_LMMbasics_fggk21.qmd
+    # - participants/laubrock/Laubrock_EM_Julia_1.qmd
+    # - participants/laubrock/Laubrock_EM_Julia_2.qmd
+    # - participants/lindemann/Lindemann_NumMeaning_Julia.qmd
+    # - participants/lindemann/Lindemann_NumMeaning_R.qmd
+    # - participants/maquate/Maquate_LanguageEvaluation_Julia.qmd
+    # - participants/maquate/Maquate_LanguageEvaluation_R.qmd
+    # - participants/raveling/Raveling_ConversationGaps_Julia_v2.qmd
+    # - participants/raveling/Raveling_ConversationGaps_R_v2.qmd
+    # - participants/schoengrundner/Schoengrundner_Julia.qmd
+    # - participants/schoengrundner/Schoengrundner_R.qmd
+    # - participants/vanoncini/Vanoncini_CRQA_Julia.qmd
+    # - participants/vanoncini/Vanoncini_CRQA_R.qmd
 
 website:
   title: "SMLP2022"
@@ -56,7 +84,9 @@ website:
 
 date: today
 date-format: iso
-
+execute:
+  freeze: auto  # re-render only when source changes
+  cache: true
 format:
   html:
     theme: cosmo

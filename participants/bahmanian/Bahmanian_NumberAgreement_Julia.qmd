@@ -11,16 +11,20 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
 # Modeling issues
 
-In the majority of the models, we had to simplify due to convergence issues. But even in the simplified models, we are facing singularity issue. I know that we should not simply ignore singularity warnings, but we decided not to simplify our models further. So, in addition to how to resolve convergence issues without oversimplifying a model, I would like to discuss singularity during the summer school and better understand the consequences of ignoring it. 
+In the majority of the models, we had to simplify due to convergence issues. But even in the simplified models, we are facing singularity issue. I know that we should not simply ignore singularity warnings, but we decided not to simplify our models further. So, in addition to how to resolve convergence issues without oversimplifying a model, I would like to discuss singularity during the summer school and better understand the consequences of ignoring it.
 
-# Background 
+# Background
 
 The topic is number agreement errors made by Spanish native speakers in a web-based pronoun production experiment (Experiment 1: number agreement, created in May 2022 by Sol Lago and Nasimeh Bahmanian. In this experiment participants were asked to describe scenes of moving objects by producing sentences (in Spanish) like the English example below:
 
@@ -29,19 +33,10 @@ The topic is number agreement errors made by Spanish native speakers in a web-ba
     antecedent              attractor                    pronoun
 ```
 
-The antecedent and the attractor either matched or mismatched in number. We are interested to see if responses in mismatch conditions differs from match conditions (1) in terms of accuracy, i.e. whether participants made agreement errors in producing the pronoun. (2) in term of latency in planning/production of the pronoun in error-free responses. For the latter, we are looking at the duration  of critical regions as well as the likelihood of a non-zero pause 
+The antecedent and the attractor either matched or mismatched in number. We are interested to see if responses in mismatch conditions differs from match conditions (1) in terms of accuracy, i.e. whether participants made agreement errors in producing the pronoun. (2) in term of latency in planning/production of the pronoun in error-free responses. For the latter, we are looking at the duration  of critical regions as well as the likelihood of a non-zero pause
 immediately before the critical region.
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 ## Packages
 
@@ -54,7 +49,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -74,7 +69,7 @@ ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
-## Data 
+## Data
 
 ### Accuracy
 
@@ -88,9 +83,9 @@ dat_acc = DataFrame(Arrow.Table("./data/Bahmanian_acc.arrow"));
           :Subj = @bycol categorical(:Subj)
           :Item = @bycol categorical(:Item)
           :Match= @bycol categorical(:Match)
-          :ACN  = @bycol categorical(:ACN)      
+          :ACN  = @bycol categorical(:ACN)
           :Strct= @bycol categorical(:Strct)
-end; 
+end;
 @transform!(dat_acc, :Nerr = Int(:nerr));
 
 describe(dat_acc)
@@ -100,7 +95,7 @@ describe(dat_acc)
 
 ```{julia}
 #| label: dat_dur
-#| 
+#|
 dat = DataFrame(Arrow.Table("./data/Bahmanian_dur.arrow"));
 ok1 = collect(keys(skipmissing(dat.dur)));
 
@@ -120,9 +115,9 @@ dat_dur = dat[ok1, : ]; # keeping rows with valid dur's'
           :Subj = @bycol categorical(:Subj)
           :Item = @bycol categorical(:Item)
           :Match= @bycol categorical(:Match)
-          :ACN  = @bycol categorical(:ACN)      
+          :ACN  = @bycol categorical(:ACN)
           :Strct= @bycol categorical(:Strct)
-end;          
+end;
 @transform!(dat_dur, :ldur = log(:dur));
 
 describe(dat_dur)
@@ -148,7 +143,7 @@ contrasts = merge(
    );
 ```
 
-# LMMs for duration 
+# LMMs for duration
 
 ### Segment: Adverb + pronoun region
 
@@ -156,7 +151,7 @@ This data are in `gdur[7]`
 
 #### AntecedentNumber * Match
 
-We start with a fairly low complex LMM. 
+We start with a fairly low complex LMM.
 
 ```{julia}
 #| label: voi_dur
@@ -173,7 +168,7 @@ Very small VC for `Item.`
 #| label: smp1_dur
 
 smp1_dur = let
-  form= @formula(ldur ~ 1 + ACN * Match + 
+  form= @formula(ldur ~ 1 + ACN * Match +
                        (1 + ACN + Match | Subj) + zerocorr(0 + ACN&Match | Subj) +
                zerocorr(1 + ACN | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
@@ -192,7 +187,7 @@ lrtest(voi_dur, smp1_dur)
 #| label: smp2_dur
 
 smp2_dur = let
-  form= @formula(ldur ~ 1 + ACN * Match + 
+  form= @formula(ldur ~ 1 + ACN * Match +
                        (1 + ACN * Match | Subj) +
                zerocorr(1 + ACN | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
@@ -209,7 +204,7 @@ display(VarCorr(smp2_dur))
 #| label: smp3_dur
 
 smp3_dur = let
-  form= @formula(ldur ~ 1 + ACN * Match + 
+  form= @formula(ldur ~ 1 + ACN * Match +
                        (1 + ACN * Match | Subj) +
                        (1 + ACN | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
@@ -228,8 +223,8 @@ lrtest(smp1_dur, smp3_dur)
 #| label: max_dur
 
 max_dur = let
-  form= @formula(ldur ~ 1 + ACN * Match + 
-                       (1 + ACN * Match | Subj) + 
+  form= @formula(ldur ~ 1 + ACN * Match +
+                       (1 + ACN * Match | Subj) +
                        (1 + ACN * Match | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
 end
@@ -251,7 +246,7 @@ Overparameterized in `Item`.
 #| label: smp2_dur_n
 
 smp2_dur_n = let
-  form= @formula(ldur ~ 1 + ACN / Match + 
+  form= @formula(ldur ~ 1 + ACN / Match +
                        (1 + ACN / Match | Subj) +
                zerocorr(1 + ACN | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
@@ -268,7 +263,7 @@ display(VarCorr(smp2_dur_n))
 #| label: smp3_dur_n
 
 smp3_dur_n = let
-  form= @formula(ldur ~ 1 + ACN * Match + 
+  form= @formula(ldur ~ 1 + ACN * Match +
                        (1 + ACN * Match | Subj) +
                        (1 + ACN | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
@@ -287,7 +282,7 @@ display(VarCorr(smp3_dur_n))
 max_dur_n = let
   form= @formula(ldur ~ 1 + ACN / Match  +
                        (1 + ACN / Match | Subj) +
-                       (1 + ACN / Match | Item)); 
+                       (1 + ACN / Match | Item));
   fit(MixedModel, form, gdur[7]; contrasts)
 end
 
@@ -302,19 +297,19 @@ VarCorr(max_dur_n)
 
 ### Pronoun
 
-#### AntecedentNumber * Match 
+#### AntecedentNumber * Match
 
-#### AntecedentNumber / Match 
+#### AntecedentNumber / Match
 
 ### Onset
 
-#### AntecedentNumber * Match 
+#### AntecedentNumber * Match
 
-#### AntecedentNumber / Match 
+#### AntecedentNumber / Match
 
 # GLMMs for accuracy
 
-## AntecedentNumber * Match 
+## AntecedentNumber * Match
 
 We start with the maximal LMM given the design; it takes about 1 minute to fit.
 
@@ -322,8 +317,8 @@ We start with the maximal LMM given the design; it takes about 1 minute to fit.
 #| label: max_acc
 
 max_acc = let
-  form= @formula(Nerr ~ 1 + ACN * Match + 
-                       (1 + ACN * Match | Subj) + 
+  form= @formula(Nerr ~ 1 + ACN * Match +
+                       (1 + ACN * Match | Subj) +
                        (1 + ACN * Match | Item));
   fit(MixedModel, form, dat_acc, Bernoulli(); contrasts)
 end
@@ -337,14 +332,14 @@ VarCorr(max_acc)
 
 This model looks like it is supported by the data. We are really done.
 
-We  check whether correlation parameters (CPs) are significantly different from zero. 
+We  check whether correlation parameters (CPs) are significantly different from zero.
 
 ```{julia}
 #| label: zcp_acc
 
 zcp_acc = let
-  form= @formula(Nerr ~ 1 + ACN * Match + 
-               zerocorr(1 + ACN * Match | Subj) + 
+  form= @formula(Nerr ~ 1 + ACN * Match +
+               zerocorr(1 + ACN * Match | Subj) +
                zerocorr(1 + ACN * Match | Item));
   fit(MixedModel, form, dat_acc, Bernoulli(); contrasts)
 end
@@ -354,18 +349,18 @@ display(VarCorr(zcp_acc))
 coeftable(zcp_acc)
 ```
 
-No evidence for significant CPs. This looks like a very nice GLMM solution. There is a significant effect of `Match`, but not for `ACN` or the interaction. 
+No evidence for significant CPs. This looks like a very nice GLMM solution. There is a significant effect of `Match`, but not for `ACN` or the interaction.
 
-## AntecedentNumber / Match 
+## AntecedentNumber / Match
 
- A nested model may be a good _a priori_ alternative LMM, especially if the meaning of  `Match` depends on the `ACN`; in other words if the two factors are not _really_ crossed. 
+ A nested model may be a good _a priori_ alternative LMM, especially if the meaning of  `Match` depends on the `ACN`; in other words if the two factors are not _really_ crossed.
 
  ```{julia}
 #| label: max_acc_n
 
 max_acc_n = let
-  form= @formula(Nerr ~ 1 + ACN / Match + 
-                       (1 + ACN / Match | Subj) + 
+  form= @formula(Nerr ~ 1 + ACN / Match +
+                       (1 + ACN / Match | Subj) +
                        (1 + ACN / Match | Item));
   fit(MixedModel, form, dat_acc, Bernoulli(); contrasts)
 end
@@ -380,14 +375,14 @@ objective(max_acc)
 objective(max_acc_n)
 ```
 
-Again, the GLMM looks very good. The CPs are larger. 
+Again, the GLMM looks very good. The CPs are larger.
 
 ```{julia}
 #| label: zcp_acc_n
 
 zcp_acc_n = let
-  form= @formula(Nerr ~ 1 + ACN / Match + 
-               zerocorr(1 + ACN / Match | Subj) + 
+  form= @formula(Nerr ~ 1 + ACN / Match +
+               zerocorr(1 + ACN / Match | Subj) +
                zerocorr(1 + ACN / Match | Item));
   fit(MixedModel, form, dat_acc, Bernoulli(); contrasts)
 end
@@ -397,7 +392,7 @@ display(VarCorr(zcp_acc_n))
 coeftable(zcp_acc_n)
 ```
 
-The `Match` effect is significant in both levels of `ACN`, but very different random-effect structures ...  
+The `Match` effect is significant in both levels of `ACN`, but very different random-effect structures ...
 
 ```{julia}
 objective(zcp_acc)

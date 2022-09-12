@@ -3,7 +3,7 @@ title: "Özge Bakay: Missing Verb Illusion"
 subtitle: "RePsychLing SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-27 (last revised: `r format(Sys.time())`)"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,29 +12,24 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
 # Background
 
-The experiment investigates whether there is missing-verb illusion in Turkish center-embeddings and whether case similarity has an effect on the presence of illusion. The experiment has a 2x2 design where the factors are Grammaticality (Grammatical vs. Ungrammatical) and Case Similarity (High vs. Low). Both factors varied within-subject and within-item. The primary dependent variable is a 5-point rating. 
+The experiment investigates whether there is missing-verb illusion in Turkish center-embeddings and whether case similarity has an effect on the presence of illusion. The experiment has a 2x2 design where the factors are Grammaticality (Grammatical vs. Ungrammatical) and Case Similarity (High vs. Low). Both factors varied within-subject and within-item. The primary dependent variable is a 5-point rating.
 
-The analysis includes data from 56 subject (after exclusion of one subject with low accuracy) who rated 24 critical items (6 in each of the 2 x 2 conditions; nobs=1344. Subjects also rated 36 filler items that are excluded here, but might be used to assess rating bias. 
+The analysis includes data from 56 subject (after exclusion of one subject with low accuracy) who rated 24 critical items (6 in each of the 2 x 2 conditions; nobs=1344. Subjects also rated 36 filler items that are excluded here, but might be used to assess rating bias.
 
 With 56 (or 57) subjects and 24 items, assignment of items to conditions could not be counterbalanced across subjects. The assignment was not random because each item was seen by 20, 13, 13, and 11 subjects across the four conditions.
 
-The gaol of the analysis is to test effects with a cumulative link mixed model for ordinal rating data,  basically an integrated set of logistic regressions, taking into account clustering of ratings by subjects and by items. 
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
+The gaol of the analysis is to test effects with a cumulative link mixed model for ordinal rating data,  basically an integrated set of logistic regressions, taking into account clustering of ratings by subjects and by items.
 
 ## Packages
 
@@ -50,7 +45,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -70,7 +65,7 @@ ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
-+ The data are available as an arrow file. 
++ The data are available as an arrow file.
 + Most of preprocessing was done with R in RStudio.
 + Order of factor levels should be checked.
 
@@ -104,17 +99,17 @@ suppressWarnings(suppressMessages(library(tidyverse)))
 cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
                 "#F0E442", "#56B4E9", "#999999", "#E69F00")
 
-table1 <- 
-  df |> 
-  group_by(Subj, Case, Gram) |> 
-  summarise(N=n(), rating=mean(rating)) |> 
-  ungroup() |> 
-  group_by(Case, Gram) |> 
-  summarise(N=n(), rating_M=mean(rating), 
+table1 <-
+  df |>
+  group_by(Subj, Case, Gram) |>
+  summarise(N=n(), rating=mean(rating)) |>
+  ungroup() |>
+  group_by(Case, Gram) |>
+  summarise(N=n(), rating_M=mean(rating),
             rating_SD=sd(rating), rating_SE=rating_SD/sqrt(N))
- fig1 <-           
-  table1 |> 
-  mutate(Case=fct_rev(Case)) |> 
+ fig1 <-
+  table1 |>
+  mutate(Case=fct_rev(Case)) |>
   ggplot(aes(x=Case, y=rating_M, group=Gram, color=Gram)) +
   geom_point(position=position_dodge(width=.1)) +
   geom_line(position=position_dodge(width=.1)) +
@@ -137,12 +132,11 @@ print(fig1)
 #| message: false
 
 R"""
-
 fig2 <-
-  df |> 
+  df |>
   ggplot(aes(x=trial, y=rating)) +
-  geom_smooth() +
-  xlab("Trial") + 
+  geom_smooth(method="gam") +
+  xlab("Trial") +
   scale_y_continuous("Rating", limits=c(1,5)) +
   theme_bw() + theme(legend.position = "top")
 
@@ -152,6 +146,7 @@ print(fig2)
 
 ## Trial x Case x Gram
 
+<!-- this crashes -->
 ```{julia}
 #| label: fig3
 #| fig-cap: _Figure 3_. Trial effect for four conditions with default smooth() parameters.
@@ -159,10 +154,10 @@ print(fig2)
 
 R"""
 fig3 <-
-  df |> 
+  df |>
   ggplot(aes(x=trial, y=rating, group=Case, color=Case)) +
-  geom_smooth() +
-  xlab("Trial") + 
+  geom_smooth(method="gam") +
+  xlab("Trial") +
   scale_y_continuous("Rating", limits=c(1,5)) +
   scale_colour_manual("Condition", values=cbPalette) +
   theme_bw() + theme(legend.position = "top")
@@ -192,11 +187,11 @@ contrasts = merge(
 ```{julia}
 #| label: m0
 
- m0 = let 
+ m0 = let
     form = @formula(rating ~ 1 + tr_c + Case * Gram + (1|Subj) + (1|Item));
     fit(MixedModel, form, df; contrasts);
   end;
-  
+
 m0
 ```
 
@@ -205,7 +200,7 @@ Remove trial covariate
 ```{julia}
 #| label: m1
 
- m1 = let 
+ m1 = let
     form = @formula(rating ~ 1 + Case * Gram + (1|Subj) + (1|Item));
     fit(MixedModel, form, df; contrasts);
   end;
@@ -222,7 +217,7 @@ Relative to the factorial design this is not the maximal CLMM; we do not include
 ```{julia}
 #| label: m2
 
- m2 = let 
+ m2 = let
     form = @formula(rating ~ 1 + Case * Gram + (1 + Case + Gram |Subj) + (1 + Case + Gram |Item));
     fit(MixedModel, form, df; contrasts);
   end;
@@ -241,7 +236,7 @@ The random-effect structure is overparaemterized. Actually, the program crashed.
 ```{julia}
 #| label: m3
 
- m3 = let 
+ m3 = let
     form = @formula(rating ~ 1 + Case * Gram + zerocorr(1 + Case + Gram | Subj) + zerocorr(1 + Case + Gram | Item));
     fit(MixedModel, form, df; contrasts);
   end;
@@ -260,7 +255,7 @@ Some of the VCs are very close to zero. Program crashed, again.
 ```{julia}
 #| label: m4
 
- m4 = let 
+ m4 = let
     form = @formula(rating ~ 1 + Case * Gram + zerocorr(1 + Gram | Subj) + zerocorr(1 + Case | Item));
     fit(MixedModel, form, df; contrasts)
   end;
@@ -278,7 +273,7 @@ Looking good!
 #| label: m5
 #| eval: true
 
- m5 = let 
+ m5 = let
     form = @formula(rating ~ 1 + Case * Gram + (1 + Gram | Subj) + (1 + Case | Item)) ;
     fit(MixedModel, form, df; contrasts)
   end;
@@ -302,4 +297,3 @@ Looking also good, but the two CPs are not significant.
 ```{julia}
 versioninfo()
 ```
-

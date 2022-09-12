@@ -3,7 +3,7 @@ title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
 subtitle: "Arrow file creation"
 author: "Douglas Bates"
 date: "2022-09-05"
-output: 
+output:
   html:
     toc: yes
     toc_depth: 3
@@ -11,11 +11,15 @@ output:
     embed-resources: true
 callout-appearance: simple
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
-# Background 
+# Background
 
-## Overview 
+## Overview
 
 + Original analysis is by Anke Cajar.
 + Data are from André Krügel.
@@ -40,28 +44,21 @@ The IAT measures people's implicit associations between a target concept and an 
 
 + `Subj`: Participant ID  (stored as integer - should be a factor)
 + `Item`: Word ID (stored as integer - should be a factor)
-+ `Group` (between-Subj/within-Item): 
++ `Group` (between-Subj/within-Item):
     + No_Faking: control group, where people took the same normative IAT twice
     + Faking: experimental group, where people were instructed to fake the retest IAT by slowing down response times in the compatible block
-+ `Time` (within-Subj/within-Item): 
++ `Time` (within-Subj/within-Item):
     + Baseline: first IAT (normative IAT)
     + Retest: second IAT (normative or faked, depending on Group)
-+ `Block` (within-Subj/within-Item): 
++ `Block` (within-Subj/within-Item):
     + Compatible: IAT combined block with shorter response times
     + Incompatible: IAT combined block with longer response times
-+ `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item): 
-    + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next 
-    + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next 
++ `Switch` (renamed from `TaskSwitch`; within-Subj/within-Item):
+    + Yes: Switch from target concept to attribute dimension (or the other way around) from one trial to the next
+    + No: No switch from target concept to attribute dimension (or the other way around) from one trial to the next
 + `rt`: trial response time (renamed from `RT`)
 
 # Setup
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 We will follow the steps in the description of the R analysis by Anke Cajar
 
@@ -93,7 +90,7 @@ In this case it doesn't make any difference but when we are fitting models with 
 ::: {.callout-note collapse="true"}
 ## RK: Why renaming the variables?
 
-`ID` is really a superordinate concept. I also prefer short names, to capitalize factor names and to have continuous variable names start with a lower-case letter.  Last not least, such a naming convention facilitates adopting scripts across different project contexts. 
+`ID` is really a superordinate concept. I also prefer short names, to capitalize factor names and to have continuous variable names start with a lower-case letter.  Last not least, such a naming convention facilitates adopting scripts across different project contexts.
 :::
 
 ## Converting `Subj` and `Item` columns to factors
@@ -142,7 +139,7 @@ We can examine the structure of this file in Python
 
 ```python
 $ python
-Python 3.9.13 | packaged by conda-forge | (main, May 27 2022, 16:56:21) 
+Python 3.9.13 | packaged by conda-forge | (main, May 27 2022, 16:56:21)
 [GCC 10.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import pyarrow.feather as fea
@@ -212,5 +209,3 @@ describe(iat)
 ```{julia}
 versioninfo()
 ```
-
-

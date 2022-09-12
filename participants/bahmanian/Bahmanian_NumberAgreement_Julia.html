@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.147">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -2608,9 +2608,8 @@ vertical-align: -.125em;
   <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background"><span class="toc-section-number">2</span>  Background</a></li>
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="toc-section-number">3</span>  Setup</a>
   <ul class="collapse">
-  <li><a href="#environment" id="toc-environment" class="nav-link" data-scroll-target="#environment"><span class="toc-section-number">3.1</span>  Environment</a></li>
-  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">3.2</span>  Packages</a></li>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">3.3</span>  Data</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">3.1</span>  Packages</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">3.2</span>  Data</a></li>
   </ul></li>
   <li><a href="#contrasts" id="toc-contrasts" class="nav-link" data-scroll-target="#contrasts"><span class="toc-section-number">4</span>  Contrasts</a></li>
   <li><a href="#lmms-for-duration" id="toc-lmms-for-duration" class="nav-link" data-scroll-target="#lmms-for-duration"><span class="toc-section-number">5</span>  LMMs for duration</a></li>
@@ -2667,19 +2666,16 @@ vertical-align: -.125em;
 </section>
 <section id="setup" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Setup</h1>
-<section id="environment" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="environment"><span class="header-section-number">3.1</span> Environment</h2>
-</section>
-<section id="packages" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="packages"><span class="header-section-number">3.2</span> Packages</h2>
-<div id="packages" class="cell" data-execution_count="2">
+<section id="packages" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">3.1</span> Packages</h2>
+<div id="packages" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie       </span><span class="co"># graphics back-end</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CategoricalArrays</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros  </span><span class="co"># simplified dplyr-like data wrangling </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros  </span><span class="co"># simplified dplyr-like data wrangling</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie </span><span class="co"># diagnostic plots</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
@@ -2699,11 +2695,11 @@ vertical-align: -.125em;
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>CairoMakie.<span class="fu">activate!</span>(; <span class="kw">type</span><span class="op">=</span><span class="st">&quot;svg&quot;</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="data"><span class="header-section-number">3.3</span> Data</h2>
-<section id="accuracy" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">3.3.1</span> Accuracy</h3>
-<div class="cell" data-execution_count="3">
+<section id="data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="data"><span class="header-section-number">3.2</span> Data</h2>
+<section id="accuracy" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">3.2.1</span> Accuracy</h3>
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dat_acc <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="st">&quot;./data/Bahmanian_acc.arrow&quot;</span>));</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># transfromations using DataFrameMacros</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(dat_acc, <span class="op">:</span>Strct <span class="op">=</span> <span class="op">:</span>Strct <span class="op">==</span> <span class="st">&quot;no_preposition&quot;</span> ? <span class="st">&quot;without&quot;</span> <span class="op">:</span> <span class="st">&quot;with&quot;</span>);</span>
@@ -2711,21 +2707,21 @@ vertical-align: -.125em;
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Subj <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Subj)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Item <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Item)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Match<span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Match)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>ACN  <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>ACN)      </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>ACN  <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>ACN)</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Strct<span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Strct)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>; </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(dat_acc, <span class="op">:</span>Nerr <span class="op">=</span> <span class="fu">Int</span>(<span class="op">:</span>nerr));</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat_acc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="dat_acc" class="cell-output cell-output-display" data-execution_count="4">
+<div id="dat_acc" class="cell-output cell-output-display" data-execution_count="3">
 
 <div class="data-frame"><p>8 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="Type">Type</th></tr></thead><tbody><tr><th>1</th><td>Subj</td><td></td><td>S01</td><td></td><td>S56</td><td>0</td><td>Union{Missing, String}</td></tr><tr><th>2</th><td>Item</td><td></td><td>I001</td><td></td><td>I112</td><td>0</td><td>Union{Missing, String}</td></tr><tr><th>3</th><td>Condition</td><td></td><td>pp</td><td></td><td>ss</td><td>0</td><td>Union{Missing, String}</td></tr><tr><th>4</th><td>Strct</td><td></td><td>with</td><td></td><td>without</td><td>0</td><td>String</td></tr><tr><th>5</th><td>Match</td><td></td><td>match</td><td></td><td>mismatch</td><td>0</td><td>Union{Missing, String}</td></tr><tr><th>6</th><td>ACN</td><td></td><td>plural</td><td></td><td>singular</td><td>0</td><td>Union{Missing, String}</td></tr><tr><th>7</th><td>nerr</td><td>0.0259203</td><td>0.0</td><td>0.0</td><td>1.0</td><td>0</td><td>Union{Missing, Float64}</td></tr><tr><th>8</th><td>Nerr</td><td>0.0259203</td><td>0</td><td>0.0</td><td>1</td><td>0</td><td>Int64</td></tr></tbody></table></div>
 </div>
 </div>
 </section>
-<section id="duration" class="level3" data-number="3.3.2">
-<h3 data-number="3.3.2" class="anchored" data-anchor-id="duration"><span class="header-section-number">3.3.2</span> Duration</h3>
-<div class="cell" data-execution_count="4">
+<section id="duration" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="duration"><span class="header-section-number">3.2.2</span> Duration</h3>
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="st">&quot;./data/Bahmanian_dur.arrow&quot;</span>));</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ok1 <span class="op">=</span> <span class="fu">collect</span>(<span class="fu">keys</span>(<span class="fu">skipmissing</span>(dat.dur)));</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2745,9 +2741,9 @@ vertical-align: -.125em;
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Subj <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Subj)</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Item <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Item)</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Match<span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Match)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>ACN  <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>ACN)      </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>ACN  <span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>ACN)</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>          <span class="op">:</span>Strct<span class="op">=</span> <span class="pp">@bycol</span> <span class="fu">categorical</span>(<span class="op">:</span>Strct)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;          </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="pp">@transform</span>!(dat_dur, <span class="op">:</span>ldur <span class="op">=</span> <span class="fu">log</span>(<span class="op">:</span>dur));</span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat_dur)</span>
@@ -2767,7 +2763,7 @@ vertical-align: -.125em;
 <li>Match: effect coded (-1 match, +1 mismatch)</li>
 <li>Strct: effect coded (-1 without, +1 with)</li>
 </ul>
-<div id="contrasts" class="cell" data-execution_count="5">
+<div id="contrasts" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">merge</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Dict</span>(<span class="op">:</span>Match <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(base<span class="op">=</span> <span class="st">&quot;match&quot;</span>; levels<span class="op">=</span>[<span class="st">&quot;match&quot;</span>, <span class="st">&quot;mismatch&quot;</span>])),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Dict</span>(<span class="op">:</span>ACN   <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(base<span class="op">=</span> <span class="st">&quot;singular&quot;</span>; levels<span class="op">=</span>[<span class="st">&quot;singular&quot;</span>, <span class="st">&quot;plural&quot;</span>])),</span>
@@ -2785,15 +2781,15 @@ vertical-align: -.125em;
 <section id="antecedentnumber-match" class="level4" data-number="5.0.1.1">
 <h4 data-number="5.0.1.1" class="anchored" data-anchor-id="antecedentnumber-match"><span class="header-section-number">5.0.1.1</span> AntecedentNumber * Match</h4>
 <p>We start with a fairly low complex LMM.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>voi_dur <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span>  (<span class="fl">1</span> <span class="op">|</span> Subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Item))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 41    Time: 0:00:00 (21.11 ms/it)</code></pre>
+<pre><code>Minimizing 52    Time: 0:00:01 (22.48 ms/it)</code></pre>
 </div>
-<div id="voi_dur" class="cell-output cell-output-display" data-execution_count="7">
+<div id="voi_dur" class="cell-output cell-output-display" data-execution_count="6">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 41%">
@@ -2866,9 +2862,9 @@ vertical-align: -.125em;
 </div>
 </div>
 <p>Very small VC for <code>Item.</code></p>
-<div id="smp1_dur" class="cell" data-execution_count="7">
+<div id="smp1_dur" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>smp1_dur <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">+</span> Match <span class="op">|</span> Subj) <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">0</span> <span class="op">+</span> ACN<span class="op">&amp;</span>Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">|</span> Item));</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
@@ -2882,7 +2878,7 @@ vertical-align: -.125em;
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(voi_dur, smp1_dur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 282   Time: 0:00:00 ( 1.72 ms/it)</code></pre>
+<pre><code>Minimizing 224   Time: 0:00:00 ( 1.81 ms/it)</code></pre>
 </div>
 <div id="smp1_dur-1" class="cell-output cell-output-display">
 <pre><code>false</code></pre>
@@ -2945,8 +2941,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.00151300</td>
-<td style="text-align: right;">0.03889733</td>
+<td style="text-align: right;">0.00151304</td>
+<td style="text-align: right;">0.03889782</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -2954,8 +2950,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00089811</td>
-<td style="text-align: right;">0.02996856</td>
+<td style="text-align: right;">0.00089814</td>
+<td style="text-align: right;">0.02996891</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -2963,8 +2959,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.01041236</td>
-<td style="text-align: right;">0.10204098</td>
+<td style="text-align: right;">0.01041202</td>
+<td style="text-align: right;">0.10203931</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -2972,8 +2968,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00079358</td>
-<td style="text-align: right;">0.02817052</td>
+<td style="text-align: right;">0.00079356</td>
+<td style="text-align: right;">0.02817026</td>
 <td style="text-align: right;">-0.16</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -2982,7 +2978,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Match: mismatch</td>
 <td style="text-align: right;">0.00006247</td>
-<td style="text-align: right;">0.00790405</td>
+<td style="text-align: right;">0.00790409</td>
 <td style="text-align: right;">-0.32</td>
 <td style="text-align: right;">-0.46</td>
 <td style="text-align: right;"></td>
@@ -2991,7 +2987,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
 <td style="text-align: right;">0.00054612</td>
-<td style="text-align: right;">0.02336913</td>
+<td style="text-align: right;">0.02336921</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;">.</td>
@@ -3000,7 +2996,7 @@ Component loadings
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
 <td style="text-align: right;">0.00902695</td>
-<td style="text-align: right;">0.09501028</td>
+<td style="text-align: right;">0.09501024</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3008,7 +3004,7 @@ Component loadings
 </tbody>
 </table>
 </div>
-<div id="smp1_dur-5" class="cell-output cell-output-display" data-execution_count="8">
+<div id="smp1_dur-5" class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>Likelihood-ratio test: 2 models fitted on 4041 observations
 ──────────────────────────────────────────────────────────
      DOF  ΔDOF     LogLik    Deviance     Chisq  p(&gt;Chisq)
@@ -3018,9 +3014,9 @@ Component loadings
 ──────────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
-<div id="smp2_dur" class="cell" data-execution_count="8">
+<div id="smp2_dur" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>smp2_dur <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">|</span> Item));</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
@@ -3032,7 +3028,7 @@ Component loadings
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">VarCorr</span>(smp2_dur))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 429   Time: 0:00:00 ( 0.52 ms/it)</code></pre>
+<pre><code>Minimizing 385   Time: 0:00:00 ( 0.46 ms/it)</code></pre>
 </div>
 <div id="smp2_dur-1" class="cell-output cell-output-display">
 <pre><code>false</code></pre>
@@ -3046,7 +3042,7 @@ Principal components based on correlation matrix
  ACN: plural &amp; Match: mismatch   0.18   0.48  -0.82   1.0
 
 Normalized cumulative variances:
-[0.558, 0.8452, 0.9581, 1.0]
+[0.5581, 0.8452, 0.9581, 1.0]
 
 Component loadings
                                   PC1    PC2    PC3   PC4
@@ -3066,8 +3062,8 @@ Normalized cumulative variances:
 
 Component loadings
                PC1   PC2
- (Intercept)  0.0   1.0
- ACN: plural  1.0   0.0</code></pre>
+ (Intercept)  1.0   0.0
+ ACN: plural  0.0   1.0</code></pre>
 </div>
 <div id="smp2_dur-4" class="cell-output cell-output-display">
 <table class="table table-sm table-striped">
@@ -3095,8 +3091,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.00149847</td>
-<td style="text-align: right;">0.03871004</td>
+<td style="text-align: right;">0.00149849</td>
+<td style="text-align: right;">0.03871039</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3104,8 +3100,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00089430</td>
-<td style="text-align: right;">0.02990478</td>
+<td style="text-align: right;">0.00089428</td>
+<td style="text-align: right;">0.02990449</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3113,8 +3109,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.01043052</td>
-<td style="text-align: right;">0.10212993</td>
+<td style="text-align: right;">0.01043116</td>
+<td style="text-align: right;">0.10213305</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3122,8 +3118,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00079880</td>
-<td style="text-align: right;">0.02826299</td>
+<td style="text-align: right;">0.00079870</td>
+<td style="text-align: right;">0.02826126</td>
 <td style="text-align: right;">-0.16</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3131,8 +3127,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Match: mismatch</td>
-<td style="text-align: right;">0.00006247</td>
-<td style="text-align: right;">0.00790383</td>
+<td style="text-align: right;">0.00006246</td>
+<td style="text-align: right;">0.00790328</td>
 <td style="text-align: right;">-0.33</td>
 <td style="text-align: right;">-0.45</td>
 <td style="text-align: right;"></td>
@@ -3140,8 +3136,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.00054999</td>
-<td style="text-align: right;">0.02345180</td>
+<td style="text-align: right;">0.00054996</td>
+<td style="text-align: right;">0.02345127</td>
 <td style="text-align: right;">+0.18</td>
 <td style="text-align: right;">+0.48</td>
 <td style="text-align: right;">-0.82</td>
@@ -3149,8 +3145,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.00902688</td>
-<td style="text-align: right;">0.09500989</td>
+<td style="text-align: right;">0.00902689</td>
+<td style="text-align: right;">0.09500994</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3159,9 +3155,9 @@ Component loadings
 </table>
 </div>
 </div>
-<div id="smp3_dur" class="cell" data-execution_count="9">
+<div id="smp3_dur" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>smp3_dur <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">|</span> Item));</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
@@ -3175,8 +3171,7 @@ Component loadings
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(smp1_dur, smp3_dur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 613   Time: 0:00:00 ( 0.62 ms/it)
-  objective:  -6921.888229263055</code></pre>
+<pre><code>Minimizing 488   Time: 0:00:00 ( 0.48 ms/it)</code></pre>
 </div>
 <div id="smp3_dur-1" class="cell-output cell-output-display">
 <pre><code>true</code></pre>
@@ -3239,8 +3234,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.00149847</td>
-<td style="text-align: right;">0.03871004</td>
+<td style="text-align: right;">0.00149849</td>
+<td style="text-align: right;">0.03871039</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3248,8 +3243,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00089430</td>
-<td style="text-align: right;">0.02990478</td>
+<td style="text-align: right;">0.00089428</td>
+<td style="text-align: right;">0.02990449</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3257,8 +3252,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.01043052</td>
-<td style="text-align: right;">0.10212993</td>
+<td style="text-align: right;">0.01043116</td>
+<td style="text-align: right;">0.10213305</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3266,8 +3261,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00079880</td>
-<td style="text-align: right;">0.02826299</td>
+<td style="text-align: right;">0.00079870</td>
+<td style="text-align: right;">0.02826126</td>
 <td style="text-align: right;">-0.16</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3275,8 +3270,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Match: mismatch</td>
-<td style="text-align: right;">0.00006247</td>
-<td style="text-align: right;">0.00790383</td>
+<td style="text-align: right;">0.00006246</td>
+<td style="text-align: right;">0.00790328</td>
 <td style="text-align: right;">-0.33</td>
 <td style="text-align: right;">-0.45</td>
 <td style="text-align: right;"></td>
@@ -3284,8 +3279,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.00054999</td>
-<td style="text-align: right;">0.02345180</td>
+<td style="text-align: right;">0.00054996</td>
+<td style="text-align: right;">0.02345127</td>
 <td style="text-align: right;">+0.18</td>
 <td style="text-align: right;">+0.48</td>
 <td style="text-align: right;">-0.82</td>
@@ -3293,8 +3288,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.00902688</td>
-<td style="text-align: right;">0.09500989</td>
+<td style="text-align: right;">0.00902689</td>
+<td style="text-align: right;">0.09500994</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3302,7 +3297,7 @@ Component loadings
 </tbody>
 </table>
 </div>
-<div id="smp3_dur-5" class="cell-output cell-output-display" data-execution_count="10">
+<div id="smp3_dur-5" class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>Likelihood-ratio test: 2 models fitted on 4041 observations
 ──────────────────────────────────────────────────────────
      DOF  ΔDOF     LogLik    Deviance     Chisq  p(&gt;Chisq)
@@ -3312,10 +3307,10 @@ Component loadings
 ──────────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
-<div id="max_dur" class="cell" data-execution_count="10">
+<div id="max_dur" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>max_dur <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Item));</span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
@@ -3328,8 +3323,8 @@ Component loadings
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>( smp3_dur, max_dur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 820   Time: 0:00:00 ( 1.02 ms/it)
-  objective:  -6931.914089653363</code></pre>
+<pre><code>Minimizing 930   Time: 0:00:00 ( 0.73 ms/it)
+  objective:  -6931.9140887208205</code></pre>
 </div>
 <div id="max_dur-1" class="cell-output cell-output-display">
 <pre><code>true</code></pre>
@@ -3343,7 +3338,7 @@ Principal components based on correlation matrix
  ACN: plural &amp; Match: mismatch   0.19   0.49  -0.84   1.0
 
 Normalized cumulative variances:
-[0.5599, 0.8451, 0.9626, 1.0]
+[0.5599, 0.8451, 0.9625, 1.0]
 
 Component loadings
                                   PC1    PC2    PC3    PC4
@@ -3370,7 +3365,7 @@ Component loadings
  Match: mismatch                -0.53  -0.45  -0.72   0.03
  ACN: plural &amp; Match: mismatch   0.39   0.62  -0.68  -0.0</code></pre>
 </div>
-<div id="max_dur-4" class="cell-output cell-output-display" data-execution_count="11">
+<div id="max_dur-4" class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>Likelihood-ratio test: 2 models fitted on 4041 observations
 ─────────────────────────────────────────────────────────
      DOF  ΔDOF     LogLik    Deviance    Chisq  p(&gt;Chisq)
@@ -3384,9 +3379,9 @@ Component loadings
 </section>
 <section id="antecedentnumber-match-1" class="level4" data-number="5.0.1.2">
 <h4 data-number="5.0.1.2" class="anchored" data-anchor-id="antecedentnumber-match-1"><span class="header-section-number">5.0.1.2</span> AntecedentNumber / Match</h4>
-<div id="smp2_dur_n" class="cell" data-execution_count="11">
+<div id="smp2_dur_n" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>smp2_dur_n <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match <span class="op">+</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match <span class="op">+</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">|</span> Item));</span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
@@ -3398,7 +3393,7 @@ Component loadings
 <span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">VarCorr</span>(smp2_dur_n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 263   Time: 0:00:00 ( 0.46 ms/it)</code></pre>
+<pre><code>Minimizing 306   Time: 0:00:00 ( 0.37 ms/it)</code></pre>
 </div>
 <div id="smp2_dur_n-1" class="cell-output cell-output-display">
 <pre><code>false</code></pre>
@@ -3462,7 +3457,7 @@ Component loadings
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">0.0014985</td>
-<td style="text-align: right;">0.0387102</td>
+<td style="text-align: right;">0.0387100</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3471,7 +3466,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
 <td style="text-align: right;">0.0008943</td>
-<td style="text-align: right;">0.0299047</td>
+<td style="text-align: right;">0.0299044</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3479,8 +3474,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.0104309</td>
-<td style="text-align: right;">0.1021318</td>
+<td style="text-align: right;">0.0104304</td>
+<td style="text-align: right;">0.1021291</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3489,7 +3484,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
 <td style="text-align: right;">0.0007988</td>
-<td style="text-align: right;">0.0282625</td>
+<td style="text-align: right;">0.0282623</td>
 <td style="text-align: right;">-0.16</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3498,7 +3493,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: singular &amp; Match: mismatch</td>
 <td style="text-align: right;">0.0009148</td>
-<td style="text-align: right;">0.0302457</td>
+<td style="text-align: right;">0.0302462</td>
 <td style="text-align: right;">-0.23</td>
 <td style="text-align: right;">-0.49</td>
 <td style="text-align: right;"></td>
@@ -3507,7 +3502,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
 <td style="text-align: right;">0.0003101</td>
-<td style="text-align: right;">0.0176086</td>
+<td style="text-align: right;">0.0176091</td>
 <td style="text-align: right;">+0.09</td>
 <td style="text-align: right;">+0.43</td>
 <td style="text-align: right;">-0.92</td>
@@ -3525,9 +3520,9 @@ Component loadings
 </table>
 </div>
 </div>
-<div id="smp3_dur_n" class="cell" data-execution_count="12">
+<div id="smp3_dur_n" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>smp3_dur_n <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">|</span> Item));</span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
@@ -3539,8 +3534,7 @@ Component loadings
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">VarCorr</span>(smp3_dur_n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 613   Time: 0:00:00 ( 0.57 ms/it)
-  objective:  -6921.888229263055</code></pre>
+<pre><code>Minimizing 488   Time: 0:00:00 ( 0.45 ms/it)</code></pre>
 </div>
 <div id="smp3_dur_n-1" class="cell-output cell-output-display">
 <pre><code>true</code></pre>
@@ -3603,8 +3597,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.00149624</td>
-<td style="text-align: right;">0.03868121</td>
+<td style="text-align: right;">0.00149613</td>
+<td style="text-align: right;">0.03867983</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3612,8 +3606,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00092340</td>
-<td style="text-align: right;">0.03038747</td>
+<td style="text-align: right;">0.00092338</td>
+<td style="text-align: right;">0.03038712</td>
 <td style="text-align: right;">-1.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3621,8 +3615,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.01050231</td>
-<td style="text-align: right;">0.10248080</td>
+<td style="text-align: right;">0.01050106</td>
+<td style="text-align: right;">0.10247468</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3630,8 +3624,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00080734</td>
-<td style="text-align: right;">0.02841365</td>
+<td style="text-align: right;">0.00080740</td>
+<td style="text-align: right;">0.02841479</td>
 <td style="text-align: right;">-0.15</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3639,8 +3633,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Match: mismatch</td>
-<td style="text-align: right;">0.00006163</td>
-<td style="text-align: right;">0.00785068</td>
+<td style="text-align: right;">0.00006162</td>
+<td style="text-align: right;">0.00784966</td>
 <td style="text-align: right;">-0.29</td>
 <td style="text-align: right;">-0.44</td>
 <td style="text-align: right;"></td>
@@ -3649,7 +3643,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
 <td style="text-align: right;">0.00054471</td>
-<td style="text-align: right;">0.02333913</td>
+<td style="text-align: right;">0.02333896</td>
 <td style="text-align: right;">+0.19</td>
 <td style="text-align: right;">+0.49</td>
 <td style="text-align: right;">-0.85</td>
@@ -3657,8 +3651,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.00896764</td>
-<td style="text-align: right;">0.09469765</td>
+<td style="text-align: right;">0.00896767</td>
+<td style="text-align: right;">0.09469780</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3667,11 +3661,11 @@ Component loadings
 </table>
 </div>
 </div>
-<div id="max_dur_n" class="cell" data-execution_count="13">
+<div id="max_dur_n" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>max_dur_n <span class="op">=</span> <span class="kw">let</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(ldur <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match  <span class="op">+</span></span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match <span class="op">|</span> Item)); </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">/</span> Match <span class="op">|</span> Item));</span>
 <span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, gdur[<span class="fl">7</span>]; contrasts)</span>
 <span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -3679,13 +3673,13 @@ Component loadings
 <span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(max_dur_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 957   Time: 0:00:00 ( 0.89 ms/it)
-  objective:  -6931.9140904572905</code></pre>
+<pre><code>Minimizing 753   Time: 0:00:00 ( 0.68 ms/it)
+  objective:  -6931.914081119339</code></pre>
 </div>
 <div id="max_dur_n-1" class="cell-output cell-output-display">
 <pre><code>true</code></pre>
 </div>
-<div id="max_dur_n-2" class="cell-output cell-output-display" data-execution_count="14">
+<div id="max_dur_n-2" class="cell-output cell-output-display" data-execution_count="13">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 11%">
@@ -3711,8 +3705,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.00150206</td>
-<td style="text-align: right;">0.03875647</td>
+<td style="text-align: right;">0.00150186</td>
+<td style="text-align: right;">0.03875379</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3720,8 +3714,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00092443</td>
-<td style="text-align: right;">0.03040437</td>
+<td style="text-align: right;">0.00092440</td>
+<td style="text-align: right;">0.03040402</td>
 <td style="text-align: right;">-1.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3729,8 +3723,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: singular &amp; Match: mismatch</td>
-<td style="text-align: right;">0.00020953</td>
-<td style="text-align: right;">0.01447503</td>
+<td style="text-align: right;">0.00020962</td>
+<td style="text-align: right;">0.01447837</td>
 <td style="text-align: right;">+0.16</td>
 <td style="text-align: right;">-0.19</td>
 <td style="text-align: right;"></td>
@@ -3739,7 +3733,7 @@ Component loadings
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
 <td style="text-align: right;">0.00000688</td>
-<td style="text-align: right;">0.00262229</td>
+<td style="text-align: right;">0.00262289</td>
 <td style="text-align: right;">+0.94</td>
 <td style="text-align: right;">-0.96</td>
 <td style="text-align: right;">+0.47</td>
@@ -3747,8 +3741,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.01049487</td>
-<td style="text-align: right;">0.10244445</td>
+<td style="text-align: right;">0.01049293</td>
+<td style="text-align: right;">0.10243500</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3756,8 +3750,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.00080848</td>
-<td style="text-align: right;">0.02843382</td>
+<td style="text-align: right;">0.00080861</td>
+<td style="text-align: right;">0.02843599</td>
 <td style="text-align: right;">-0.15</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3765,8 +3759,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: singular &amp; Match: mismatch</td>
-<td style="text-align: right;">0.00091902</td>
-<td style="text-align: right;">0.03031536</td>
+<td style="text-align: right;">0.00091898</td>
+<td style="text-align: right;">0.03031463</td>
 <td style="text-align: right;">-0.22</td>
 <td style="text-align: right;">-0.49</td>
 <td style="text-align: right;"></td>
@@ -3774,8 +3768,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.00029561</td>
-<td style="text-align: right;">0.01719341</td>
+<td style="text-align: right;">0.00029557</td>
+<td style="text-align: right;">0.01719224</td>
 <td style="text-align: right;">+0.12</td>
 <td style="text-align: right;">+0.47</td>
 <td style="text-align: right;">-0.92</td>
@@ -3783,8 +3777,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.00885323</td>
-<td style="text-align: right;">0.09409162</td>
+<td style="text-align: right;">0.00885324</td>
+<td style="text-align: right;">0.09409163</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3825,10 +3819,10 @@ Component loadings
 <section id="antecedentnumber-match-6" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="antecedentnumber-match-6"><span class="header-section-number">6.1</span> AntecedentNumber * Match</h2>
 <p>We start with the maximal LMM given the design; it takes about 1 minute to fit.</p>
-<div id="max_acc" class="cell" data-execution_count="14">
+<div id="max_acc" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>max_acc <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(Nerr <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(Nerr <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Item));</span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat_acc, <span class="fu">Bernoulli</span>(); contrasts)</span>
 <span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
@@ -3839,7 +3833,7 @@ Component loadings
 <span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(max_acc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 680   Time: 0:01:13 ( 0.11  s/it)</code></pre>
+<pre><code>Minimizing 722   Time: 0:01:05 (90.84 ms/it)</code></pre>
 </div>
 <div id="max_acc-1" class="cell-output cell-output-display">
 <pre><code>false</code></pre>
@@ -3871,7 +3865,7 @@ Principal components based on correlation matrix
  ACN: plural &amp; Match: mismatch   0.01  -0.16   0.01   1.0
 
 Normalized cumulative variances:
-[0.3119, 0.5757, 0.7993, 1.0]
+[0.3119, 0.5756, 0.7993, 1.0]
 
 Component loadings
                                   PC1    PC2    PC3    PC4
@@ -3880,7 +3874,7 @@ Component loadings
  Match: mismatch                 0.41  -0.55  -0.72   0.12
  ACN: plural &amp; Match: mismatch  -0.41  -0.68   0.19  -0.57</code></pre>
 </div>
-<div id="max_acc-4" class="cell-output cell-output-display" data-execution_count="15">
+<div id="max_acc-4" class="cell-output cell-output-display" data-execution_count="14">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 6%">
@@ -3906,8 +3900,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.328690</td>
-<td style="text-align: right;">0.573315</td>
+<td style="text-align: right;">0.328819</td>
+<td style="text-align: right;">0.573427</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3915,8 +3909,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.729860</td>
-<td style="text-align: right;">0.854319</td>
+<td style="text-align: right;">0.729823</td>
+<td style="text-align: right;">0.854297</td>
 <td style="text-align: right;">-0.12</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3924,8 +3918,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Match: mismatch</td>
-<td style="text-align: right;">0.637066</td>
-<td style="text-align: right;">0.798164</td>
+<td style="text-align: right;">0.637140</td>
+<td style="text-align: right;">0.798210</td>
 <td style="text-align: right;">-0.10</td>
 <td style="text-align: right;">+0.08</td>
 <td style="text-align: right;"></td>
@@ -3933,8 +3927,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.692189</td>
-<td style="text-align: right;">0.831979</td>
+<td style="text-align: right;">0.692196</td>
+<td style="text-align: right;">0.831983</td>
 <td style="text-align: right;">+0.01</td>
 <td style="text-align: right;">-0.16</td>
 <td style="text-align: right;">+0.01</td>
@@ -3942,8 +3936,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">1.341716</td>
-<td style="text-align: right;">1.158325</td>
+<td style="text-align: right;">1.341646</td>
+<td style="text-align: right;">1.158295</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3951,8 +3945,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.639505</td>
-<td style="text-align: right;">0.799690</td>
+<td style="text-align: right;">0.639462</td>
+<td style="text-align: right;">0.799664</td>
 <td style="text-align: right;">-0.04</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -3960,8 +3954,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Match: mismatch</td>
-<td style="text-align: right;">0.535871</td>
-<td style="text-align: right;">0.732032</td>
+<td style="text-align: right;">0.536049</td>
+<td style="text-align: right;">0.732154</td>
 <td style="text-align: right;">-0.01</td>
 <td style="text-align: right;">+0.05</td>
 <td style="text-align: right;"></td>
@@ -3969,8 +3963,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.636193</td>
-<td style="text-align: right;">0.797617</td>
+<td style="text-align: right;">0.636218</td>
+<td style="text-align: right;">0.797633</td>
 <td style="text-align: right;">+0.05</td>
 <td style="text-align: right;">-0.07</td>
 <td style="text-align: right;">-0.02</td>
@@ -3981,10 +3975,10 @@ Component loadings
 </div>
 <p>This model looks like it is supported by the data. We are really done.</p>
 <p>We check whether correlation parameters (CPs) are significantly different from zero.</p>
-<div id="zcp_acc" class="cell" data-execution_count="15">
+<div id="zcp_acc" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>zcp_acc <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(Nerr <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span> </span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  form<span class="op">=</span> <span class="pp">@formula</span>(Nerr <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">+</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Subj) <span class="op">+</span></span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> ACN <span class="op">*</span> Match <span class="op">|</span> Item));</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat_acc, <span class="fu">Bernoulli</span>(); contrasts)</span>
 <span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
@@ -3993,7 +3987,7 @@ Component loadings
 <span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftable</span>(zcp_acc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 318   Time: 0:00:31 (98.91 ms/it)</code></pre>
+<pre><code>Minimizing 335   Time: 0:00:28 (85.42 ms/it)</code></pre>
 </div>
 <div id="zcp_acc-1" class="cell-output cell-output-display">
 <table class="table table-sm table-striped">
@@ -4093,7 +4087,7 @@ Component loadings
 </tbody>
 </table>
 </div>
-<div id="zcp_acc-2" class="cell-output cell-output-display" data-execution_count="16">
+<div id="zcp_acc-2" class="cell-output cell-output-display" data-execution_count="15">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 43%">
@@ -4155,13 +4149,13 @@ Component loadings
 <p>objective(max_acc) objective(max_acc_n)</p>
 <pre><code>
 
-Again, the GLMM looks very good. The CPs are larger. 
+Again, the GLMM looks very good. The CPs are larger.
 
-::: {#zcp_acc_n .cell execution_count=16}
+::: {#zcp_acc_n .cell execution_count=15}
 ``` {.julia .cell-code}
 zcp_acc_n = let
-  form= @formula(Nerr ~ 1 + ACN / Match + 
-               zerocorr(1 + ACN / Match | Subj) + 
+  form= @formula(Nerr ~ 1 + ACN / Match +
+               zerocorr(1 + ACN / Match | Subj) +
                zerocorr(1 + ACN / Match | Item));
   fit(MixedModel, form, dat_acc, Bernoulli(); contrasts)
 end
@@ -4170,8 +4164,8 @@ display(VarCorr(zcp_acc_n))
 
 coeftable(zcp_acc_n)</code></pre>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 543   Time: 0:00:05 (10.43 ms/it)
-  objective:  994.8484767562778</code></pre>
+<pre><code>Minimizing 557   Time: 0:00:05 ( 9.27 ms/it)
+  objective:  994.8484759442883</code></pre>
 </div>
 <div id="zcp_acc_n-1" class="cell-output cell-output-display">
 <table class="table">
@@ -4199,8 +4193,8 @@ coeftable(zcp_acc_n)</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.071198</td>
-<td style="text-align: right;">0.266830</td>
+<td style="text-align: right;">0.071128</td>
+<td style="text-align: right;">0.266699</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -4226,8 +4220,8 @@ coeftable(zcp_acc_n)</code></pre>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.390717</td>
-<td style="text-align: right;">0.625074</td>
+<td style="text-align: right;">0.390619</td>
+<td style="text-align: right;">0.624995</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;">.</td>
@@ -4235,8 +4229,8 @@ coeftable(zcp_acc_n)</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.782723</td>
-<td style="text-align: right;">0.884717</td>
+<td style="text-align: right;">0.782833</td>
+<td style="text-align: right;">0.884779</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -4244,8 +4238,8 @@ coeftable(zcp_acc_n)</code></pre>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.225189</td>
-<td style="text-align: right;">0.474541</td>
+<td style="text-align: right;">0.225167</td>
+<td style="text-align: right;">0.474517</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -4253,8 +4247,8 @@ coeftable(zcp_acc_n)</code></pre>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">ACN: singular &amp; Match: mismatch</td>
-<td style="text-align: right;">0.017009</td>
-<td style="text-align: right;">0.130418</td>
+<td style="text-align: right;">0.017161</td>
+<td style="text-align: right;">0.131000</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;">.</td>
 <td style="text-align: right;"></td>
@@ -4271,7 +4265,7 @@ coeftable(zcp_acc_n)</code></pre>
 </tbody>
 </table>
 </div>
-<div id="zcp_acc_n-2" class="cell-output cell-output-display" data-execution_count="17">
+<div id="zcp_acc_n-2" class="cell-output cell-output-display" data-execution_count="16">
 <table class="table">
 <colgroup>
 <col style="width: 44%">
@@ -4292,29 +4286,29 @@ coeftable(zcp_acc_n)</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">-4.50173</td>
-<td style="text-align: right;">0.196645</td>
+<td style="text-align: right;">-4.5018</td>
+<td style="text-align: right;">0.196659</td>
 <td style="text-align: right;">-22.89</td>
 <td style="text-align: left;">&lt;1e-99</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ACN: plural</td>
-<td style="text-align: right;">0.160936</td>
-<td style="text-align: right;">0.158412</td>
+<td style="text-align: right;">0.161076</td>
+<td style="text-align: right;">0.158421</td>
 <td style="text-align: right;">1.02</td>
-<td style="text-align: left;">0.3097</td>
+<td style="text-align: left;">0.3093</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">ACN: singular &amp; Match: mismatch</td>
-<td style="text-align: right;">1.11032</td>
-<td style="text-align: right;">0.216085</td>
+<td style="text-align: right;">1.11046</td>
+<td style="text-align: right;">0.216132</td>
 <td style="text-align: right;">5.14</td>
 <td style="text-align: left;">&lt;1e-06</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ACN: plural &amp; Match: mismatch</td>
-<td style="text-align: right;">0.539262</td>
-<td style="text-align: right;">0.172141</td>
+<td style="text-align: right;">0.539258</td>
+<td style="text-align: right;">0.172134</td>
 <td style="text-align: right;">3.13</td>
 <td style="text-align: left;">0.0017</td>
 </tr>
@@ -4323,11 +4317,11 @@ coeftable(zcp_acc_n)</code></pre>
 </div>
 <p>:::</p>
 <p>The <code>Match</code> effect is significant in both levels of <code>ACN</code>, but very different random-effect structures …</p>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">objective</span>(zcp_acc)</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">objective</span>(zcp_acc_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>994.8484767562778</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>994.8484759442883</code></pre>
 </div>
 </div>
 <p>… and different deviances as well.</p>

@@ -15,6 +15,10 @@ format:
 editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
 # Background
@@ -33,13 +37,6 @@ The script is structured in four main sections:
 
 # Setup
 
-## Environment
-
-```{julia}
-#| label: environment
-#| code-fold: true
-```
-
 ## Packages
 
 ```{julia}
@@ -47,7 +44,6 @@ The script is structured in four main sections:
 #| code-fold: true
 # use the project in the current working directory
 
-using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using Arrow
 using CairoMakie

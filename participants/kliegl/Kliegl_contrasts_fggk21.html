@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.147">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -2705,43 +2705,29 @@ vertical-align: -.125em;
 <h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
 <section id="environment" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="environment"><span class="header-section-number">2.1</span> Environment</h2>
-<div id="enviroment" class="cell" data-execution_count="1">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the project in the current working directory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">activate</span>(<span class="st">&quot;.&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>  Activating project at `~/Google Drive/JuliaMixedModels/SMLP2022/participants/kliegl`</code></pre>
-</div>
-</div>
 </section>
 <section id="packages-and-functions" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="packages-and-functions"><span class="header-section-number">2.2</span> Packages and functions</h2>
 <div id="packages" class="cell" data-execution_count="2">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">activate</span>(<span class="st">&quot;.&quot;</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span>: linear</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CategoricalArrays</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span>: linear</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CategoricalArrays</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>  Activating project at `~/Google Drive/JuliaMixedModels/SMLP2022/participants/kliegl`</code></pre>
-</div>
 </div>
 </section>
 <section id="readme-for-.datafggk21.rds" class="level2" data-number="2.3">
@@ -2771,32 +2757,32 @@ vertical-align: -.125em;
 <h2 data-number="3.1" class="anchored" data-anchor-id="read-data"><span class="header-section-number">3.1</span> Read data</h2>
 <p>We add zscores and age centered at 8.5 (a1)</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> <span class="pp">@chain</span> <span class="st">&quot;./data/fggk21.arrow&quot;</span> <span class="cf">begin</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Arrow.Table</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>age <span class="op">=&gt;</span> (x <span class="op">-&gt;</span> x <span class="op">.-</span> <span class="fl">8.5</span>) <span class="op">=&gt;</span> <span class="op">:</span>a1,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>Sex <span class="op">=&gt;</span> categorical <span class="op">=&gt;</span> <span class="op">:</span>Sex,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> categorical <span class="op">=&gt;</span> <span class="op">:</span><span class="bu">Test</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">levels!</span>(df.Sex, [<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>])</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">levels!</span>(df.<span class="bu">Test</span>, [<span class="st">&quot;Run&quot;</span>, <span class="st">&quot;Star_r&quot;</span>, <span class="st">&quot;S20_r&quot;</span>, <span class="st">&quot;SLJ&quot;</span>, <span class="st">&quot;BPT&quot;</span>])</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">recode!</span>(</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  df.<span class="bu">Test</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Run&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Endurance&quot;</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Star_r&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Coordination&quot;</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;S20_r&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Speed&quot;</span>,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;SLJ&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;PowerLOW&quot;</span>,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BPT&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;PowerUP&quot;</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">recode!</span>(df.Sex, <span class="st">&quot;male&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Boys&quot;</span>, <span class="st">&quot;female&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Girls&quot;</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> <span class="pp">@chain</span> <span class="st">&quot;./data/fggk21.arrow&quot;</span> <span class="cf">begin</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  Arrow.Table</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transform</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>age <span class="op">=&gt;</span> (x <span class="op">-&gt;</span> x <span class="op">.-</span> <span class="fl">8.5</span>) <span class="op">=&gt;</span> <span class="op">:</span>a1,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>Sex <span class="op">=&gt;</span> categorical <span class="op">=&gt;</span> <span class="op">:</span>Sex,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> categorical <span class="op">=&gt;</span> <span class="op">:</span><span class="bu">Test</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">levels!</span>(df.Sex, [<span class="st">&quot;male&quot;</span>, <span class="st">&quot;female&quot;</span>])</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">levels!</span>(df.<span class="bu">Test</span>, [<span class="st">&quot;Run&quot;</span>, <span class="st">&quot;Star_r&quot;</span>, <span class="st">&quot;S20_r&quot;</span>, <span class="st">&quot;SLJ&quot;</span>, <span class="st">&quot;BPT&quot;</span>])</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">recode!</span>(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  df.<span class="bu">Test</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Run&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Endurance&quot;</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Star_r&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Coordination&quot;</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;S20_r&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Speed&quot;</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;SLJ&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;PowerLOW&quot;</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;BPT&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;PowerUP&quot;</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">recode!</span>(df.Sex, <span class="st">&quot;male&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Boys&quot;</span>, <span class="st">&quot;female&quot;</span> <span class="op">=&gt;</span> <span class="st">&quot;Girls&quot;</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
 
 <div class="data-frame"><p>8 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>variable</th><th>mean</th><th>min</th><th>median</th><th>max</th><th>nmissing</th><th>eltype</th></tr><tr><th></th><th title="Symbol">Symbol</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Union{Nothing, Float64}">Union…</th><th title="Any">Any</th><th title="Int64">Int64</th><th title="DataType">DataType</th></tr></thead><tbody><tr><th>1</th><td>Cohort</td><td></td><td>2011</td><td></td><td>2019</td><td>0</td><td>String</td></tr><tr><th>2</th><td>School</td><td></td><td>S100043</td><td></td><td>S800200</td><td>0</td><td>String</td></tr><tr><th>3</th><td>Child</td><td></td><td>C002352</td><td></td><td>C117966</td><td>0</td><td>String</td></tr><tr><th>4</th><td>Sex</td><td></td><td>Boys</td><td></td><td>Girls</td><td>0</td><td>CategoricalValue{String, UInt32}</td></tr><tr><th>5</th><td>age</td><td>8.56073</td><td>7.99452</td><td>8.55852</td><td>9.10609</td><td>0</td><td>Float64</td></tr><tr><th>6</th><td>Test</td><td></td><td>Endurance</td><td></td><td>PowerUP</td><td>0</td><td>CategoricalValue{String, UInt32}</td></tr><tr><th>7</th><td>score</td><td>226.141</td><td>1.14152</td><td>4.65116</td><td>1530.0</td><td>0</td><td>Float64</td></tr><tr><th>8</th><td>a1</td><td>0.0607297</td><td>-0.505476</td><td>0.0585216</td><td>0.606092</td><td>0</td><td>Float64</td></tr></tbody></table></div>
 </div>
@@ -2806,9 +2792,9 @@ vertical-align: -.125em;
 <h2 data-number="3.2" class="anchored" data-anchor-id="transformations"><span class="header-section-number">3.2</span> Transformations</h2>
 <p>We center <code>age</code> at 8.5 years and compute z-scores for each <code>Test</code>. With these variables the data frame <code>df</code> contains all variables used for the final model in the original publication.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select!</span>(<span class="fu">groupby</span>(df, <span class="op">:</span><span class="bu">Test</span>), <span class="op">:</span>, <span class="op">:</span>score <span class="op">=&gt;</span> zscore <span class="op">=&gt;</span> <span class="op">:</span>zScore)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[!, <span class="fu">Not</span>(<span class="op">:</span>score)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select!</span>(<span class="fu">groupby</span>(df, <span class="op">:</span><span class="bu">Test</span>), <span class="op">:</span>, <span class="op">:</span>score <span class="op">=&gt;</span> zscore <span class="op">=&gt;</span> <span class="op">:</span>zScore)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df[!, <span class="fu">Not</span>(<span class="op">:</span>score)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
 
 <div class="data-frame"><p>525,126 rows × 8 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Test</th><th>Cohort</th><th>School</th><th>Child</th><th>Sex</th><th>age</th><th>a1</th><th>zScore</th></tr><tr><th></th><th title="CategoricalValue{String, UInt32}">Cat…</th><th title="String">String</th><th title="String">String</th><th title="String">String</th><th title="CategoricalValue{String, UInt32}">Cat…</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>Speed</td><td>2013</td><td>S100067</td><td>C002352</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>1.7913</td></tr><tr><th>2</th><td>PowerUP</td><td>2013</td><td>S100067</td><td>C002352</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.0622317</td></tr><tr><th>3</th><td>PowerLOW</td><td>2013</td><td>S100067</td><td>C002352</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.0336567</td></tr><tr><th>4</th><td>Coordination</td><td>2013</td><td>S100067</td><td>C002352</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>1.46874</td></tr><tr><th>5</th><td>Endurance</td><td>2013</td><td>S100067</td><td>C002352</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.331058</td></tr><tr><th>6</th><td>Speed</td><td>2013</td><td>S100067</td><td>C002353</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>1.15471</td></tr><tr><th>7</th><td>PowerUP</td><td>2013</td><td>S100067</td><td>C002353</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.498354</td></tr><tr><th>8</th><td>PowerLOW</td><td>2013</td><td>S100067</td><td>C002353</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.498822</td></tr><tr><th>9</th><td>Coordination</td><td>2013</td><td>S100067</td><td>C002353</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.9773</td></tr><tr><th>10</th><td>Endurance</td><td>2013</td><td>S100067</td><td>C002353</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.574056</td></tr><tr><th>11</th><td>Speed</td><td>2013</td><td>S100067</td><td>C002354</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.0551481</td></tr><tr><th>12</th><td>PowerUP</td><td>2013</td><td>S100067</td><td>C002354</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.218061</td></tr><tr><th>13</th><td>PowerLOW</td><td>2013</td><td>S100067</td><td>C002354</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.757248</td></tr><tr><th>14</th><td>Coordination</td><td>2013</td><td>S100067</td><td>C002354</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.209186</td></tr><tr><th>15</th><td>Endurance</td><td>2013</td><td>S100067</td><td>C002354</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.944681</td></tr><tr><th>16</th><td>Speed</td><td>2013</td><td>S100122</td><td>C002355</td><td>Girls</td><td>7.99452</td><td>-0.505476</td><td>0.0551481</td></tr><tr><th>17</th><td>PowerUP</td><td>2013</td><td>S100122</td><td>C002355</td><td>Girls</td><td>7.99452</td><td>-0.505476</td><td>-1.04326</td></tr><tr><th>18</th><td>PowerLOW</td><td>2013</td><td>S100122</td><td>C002355</td><td>Girls</td><td>7.99452</td><td>-0.505476</td><td>-0.602193</td></tr><tr><th>19</th><td>Coordination</td><td>2013</td><td>S100122</td><td>C002355</td><td>Girls</td><td>7.99452</td><td>-0.505476</td><td>-0.71013</td></tr><tr><th>20</th><td>Endurance</td><td>2013</td><td>S100122</td><td>C002355</td><td>Girls</td><td>7.99452</td><td>-0.505476</td><td>-1.14043</td></tr><tr><th>21</th><td>Speed</td><td>2013</td><td>S100146</td><td>C002356</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.422921</td></tr><tr><th>22</th><td>PowerUP</td><td>2013</td><td>S100146</td><td>C002356</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.622817</td></tr><tr><th>23</th><td>PowerLOW</td><td>2013</td><td>S100146</td><td>C002356</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.395452</td></tr><tr><th>24</th><td>Coordination</td><td>2013</td><td>S100146</td><td>C002356</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.493992</td></tr><tr><th>25</th><td>Endurance</td><td>2013</td><td>S100146</td><td>C002356</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.97168</td></tr><tr><th>26</th><td>Speed</td><td>2013</td><td>S100146</td><td>C002357</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.422921</td></tr><tr><th>27</th><td>PowerUP</td><td>2013</td><td>S100146</td><td>C002357</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.778646</td></tr><tr><th>28</th><td>PowerLOW</td><td>2013</td><td>S100146</td><td>C002357</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>0.224769</td></tr><tr><th>29</th><td>Coordination</td><td>2013</td><td>S100146</td><td>C002357</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.182076</td></tr><tr><th>30</th><td>Endurance</td><td>2013</td><td>S100146</td><td>C002357</td><td>Boys</td><td>7.99452</td><td>-0.505476</td><td>-0.296686</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
 </div>
@@ -2818,13 +2804,13 @@ vertical-align: -.125em;
 <h2 data-number="3.3" class="anchored" data-anchor-id="extract-a-stratified-subsample"><span class="header-section-number">3.3</span> Extract a stratified subsample</h2>
 <p>Dataframe <code>df</code> contains all the data uses in the original publications (525,126 measures). We extract a random sample of 1000 girls and boys; cohort and school are also random.</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>children <span class="op">=</span> <span class="fu">unique</span>(<span class="fu">select</span>(df, <span class="op">:</span>Cohort, <span class="op">:</span>School, <span class="op">:</span>Child, <span class="op">:</span>Sex, <span class="op">:</span>age, <span class="op">:</span>a1))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samp <span class="op">=</span> <span class="kw">let</span> rng <span class="op">=</span> <span class="fu">MersenneTwister</span>(<span class="fl">42</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">combine</span>(<span class="fu">groupby</span>(children, <span class="op">:</span>Sex), x <span class="op">-&gt;</span> x[<span class="fu">rand</span>(rng, <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(x), <span class="fl">1000</span>), <span class="op">:</span>])</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">insamp</span>(x) <span class="op">=</span> x <span class="op">∈</span> samp.Child</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="pp">@subset</span>(df, <span class="fu">insamp</span>(<span class="op">:</span>Child))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>children <span class="op">=</span> <span class="fu">unique</span>(<span class="fu">select</span>(df, <span class="op">:</span>Cohort, <span class="op">:</span>School, <span class="op">:</span>Child, <span class="op">:</span>Sex, <span class="op">:</span>age, <span class="op">:</span>a1))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>samp <span class="op">=</span> <span class="kw">let</span> rng <span class="op">=</span> <span class="fu">MersenneTwister</span>(<span class="fl">42</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">combine</span>(<span class="fu">groupby</span>(children, <span class="op">:</span>Sex), x <span class="op">-&gt;</span> x[<span class="fu">rand</span>(rng, <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(x), <span class="fl">1000</span>), <span class="op">:</span>])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">insamp</span>(x) <span class="op">=</span> x <span class="op">∈</span> samp.Child</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="pp">@subset</span>(df, <span class="fu">insamp</span>(<span class="op">:</span>Child))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
 
 <div class="data-frame"><p>9,663 rows × 9 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Test</th><th>Cohort</th><th>School</th><th>Child</th><th>Sex</th><th>age</th><th>score</th><th>a1</th><th>zScore</th></tr><tr><th></th><th title="CategoricalValue{String, UInt32}">Cat…</th><th title="String">String</th><th title="String">String</th><th title="String">String</th><th title="CategoricalValue{String, UInt32}">Cat…</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>Speed</td><td>2013</td><td>S101540</td><td>C002482</td><td>Girls</td><td>7.99452</td><td>4.54545</td><td>-0.505476</td><td>0.0551481</td></tr><tr><th>2</th><td>PowerUP</td><td>2013</td><td>S101540</td><td>C002482</td><td>Girls</td><td>7.99452</td><td>3.5</td><td>-0.505476</td><td>-0.342524</td></tr><tr><th>3</th><td>PowerLOW</td><td>2013</td><td>S101540</td><td>C002482</td><td>Girls</td><td>7.99452</td><td>140.0</td><td>-0.505476</td><td>0.74162</td></tr><tr><th>4</th><td>Coordination</td><td>2013</td><td>S101540</td><td>C002482</td><td>Girls</td><td>7.99452</td><td>1.98875</td><td>-0.505476</td><td>-0.209186</td></tr><tr><th>5</th><td>Endurance</td><td>2013</td><td>S101540</td><td>C002482</td><td>Girls</td><td>7.99452</td><td>985.0</td><td>-0.505476</td><td>-0.127938</td></tr><tr><th>6</th><td>Speed</td><td>2013</td><td>S102090</td><td>C002513</td><td>Girls</td><td>7.99452</td><td>4.34783</td><td>-0.505476</td><td>-0.422921</td></tr><tr><th>7</th><td>PowerUP</td><td>2013</td><td>S102090</td><td>C002513</td><td>Girls</td><td>7.99452</td><td>3.2</td><td>-0.505476</td><td>-0.762963</td></tr><tr><th>8</th><td>PowerLOW</td><td>2013</td><td>S102090</td><td>C002513</td><td>Girls</td><td>7.99452</td><td>122.0</td><td>-0.505476</td><td>-0.188712</td></tr><tr><th>9</th><td>Coordination</td><td>2013</td><td>S102090</td><td>C002513</td><td>Girls</td><td>7.99452</td><td>2.28305</td><td>-0.505476</td><td>0.81382</td></tr><tr><th>10</th><td>Endurance</td><td>2013</td><td>S102090</td><td>C002513</td><td>Girls</td><td>7.99452</td><td>1071.0</td><td>-0.505476</td><td>0.452557</td></tr><tr><th>11</th><td>Speed</td><td>2013</td><td>S103299</td><td>C002621</td><td>Girls</td><td>7.99452</td><td>4.87805</td><td>-0.505476</td><td>0.859704</td></tr><tr><th>12</th><td>PowerUP</td><td>2013</td><td>S103299</td><td>C002621</td><td>Girls</td><td>7.99452</td><td>3.9</td><td>-0.505476</td><td>0.218061</td></tr><tr><th>13</th><td>PowerLOW</td><td>2013</td><td>S103299</td><td>C002621</td><td>Girls</td><td>7.99452</td><td>140.0</td><td>-0.505476</td><td>0.74162</td></tr><tr><th>14</th><td>Coordination</td><td>2013</td><td>S103299</td><td>C002621</td><td>Girls</td><td>7.99452</td><td>2.16647</td><td>-0.505476</td><td>0.408575</td></tr><tr><th>15</th><td>Endurance</td><td>2013</td><td>S103299</td><td>C002621</td><td>Girls</td><td>7.99452</td><td>1019.0</td><td>-0.505476</td><td>0.10156</td></tr><tr><th>16</th><td>Speed</td><td>2013</td><td>S103639</td><td>C002673</td><td>Girls</td><td>7.99452</td><td>4.44444</td><td>-0.505476</td><td>-0.189199</td></tr><tr><th>17</th><td>PowerUP</td><td>2013</td><td>S103639</td><td>C002673</td><td>Girls</td><td>7.99452</td><td>3.0</td><td>-0.505476</td><td>-1.04326</td></tr><tr><th>18</th><td>PowerLOW</td><td>2013</td><td>S103639</td><td>C002673</td><td>Girls</td><td>7.99452</td><td>110.0</td><td>-0.505476</td><td>-0.808933</td></tr><tr><th>19</th><td>Coordination</td><td>2013</td><td>S103639</td><td>C002673</td><td>Girls</td><td>7.99452</td><td>1.99655</td><td>-0.505476</td><td>-0.182076</td></tr><tr><th>20</th><td>Endurance</td><td>2013</td><td>S103639</td><td>C002673</td><td>Girls</td><td>7.99452</td><td>891.0</td><td>-0.505476</td><td>-0.762432</td></tr><tr><th>21</th><td>Speed</td><td>2013</td><td>S103664</td><td>C002678</td><td>Girls</td><td>7.99452</td><td>4.34783</td><td>-0.505476</td><td>-0.422921</td></tr><tr><th>22</th><td>PowerUP</td><td>2013</td><td>S103664</td><td>C002678</td><td>Girls</td><td>7.99452</td><td>3.3</td><td>-0.505476</td><td>-0.622817</td></tr><tr><th>23</th><td>PowerLOW</td><td>2013</td><td>S103664</td><td>C002678</td><td>Girls</td><td>7.99452</td><td>122.0</td><td>-0.505476</td><td>-0.188712</td></tr><tr><th>24</th><td>Coordination</td><td>2013</td><td>S103664</td><td>C002678</td><td>Girls</td><td>7.99452</td><td>1.81829</td><td>-0.505476</td><td>-0.801731</td></tr><tr><th>25</th><td>Endurance</td><td>2013</td><td>S103664</td><td>C002678</td><td>Girls</td><td>7.99452</td><td>985.0</td><td>-0.505476</td><td>-0.127938</td></tr><tr><th>26</th><td>Speed</td><td>2013</td><td>S103779</td><td>C002695</td><td>Girls</td><td>7.99452</td><td>4.54545</td><td>-0.505476</td><td>0.0551481</td></tr><tr><th>27</th><td>PowerUP</td><td>2013</td><td>S103779</td><td>C002695</td><td>Girls</td><td>7.99452</td><td>3.8</td><td>-0.505476</td><td>0.0779146</td></tr><tr><th>28</th><td>PowerLOW</td><td>2013</td><td>S103779</td><td>C002695</td><td>Girls</td><td>7.99452</td><td>130.0</td><td>-0.505476</td><td>0.224769</td></tr><tr><th>29</th><td>Coordination</td><td>2013</td><td>S103779</td><td>C002695</td><td>Girls</td><td>7.99452</td><td>2.32475</td><td>-0.505476</td><td>0.95877</td></tr><tr><th>30</th><td>Endurance</td><td>2013</td><td>S103779</td><td>C002695</td><td>Girls</td><td>7.99452</td><td>874.0</td><td>-0.505476</td><td>-0.877181</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
 </div>
@@ -2847,13 +2833,13 @@ Note
 </div>
 <p>We have somewhat fewer than 10,000 observations because of missing test scores. Let’s compare <code>zScore</code> to the full sample.</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  dat2 <span class="op">=</span> <span class="fu">combine</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">groupby</span>(dat, [<span class="op">:</span><span class="bu">Test</span>]), </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>zScore <span class="op">=&gt;</span> length, </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>zScore <span class="op">=&gt;</span> mean, </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>zScore <span class="op">=&gt;</span> std</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  dat2 <span class="op">=</span> <span class="fu">combine</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">groupby</span>(dat, [<span class="op">:</span><span class="bu">Test</span>]),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>zScore <span class="op">=&gt;</span> length,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>zScore <span class="op">=&gt;</span> mean,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span>zScore <span class="op">=&gt;</span> std</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 
 <div class="data-frame"><p>5 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Test</th><th>zScore_length</th><th>zScore_mean</th><th>zScore_std</th></tr><tr><th></th><th title="CategoricalValue{String, UInt32}">Cat…</th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>Endurance</td><td>1910</td><td>-0.00034291</td><td>1.02484</td></tr><tr><th>2</th><td>Coordination</td><td>1908</td><td>0.0134088</td><td>1.01149</td></tr><tr><th>3</th><td>Speed</td><td>1930</td><td>0.0198383</td><td>0.99948</td></tr><tr><th>4</th><td>PowerLOW</td><td>1956</td><td>0.0188475</td><td>0.993755</td></tr><tr><th>5</th><td>PowerUP</td><td>1959</td><td>-0.0061446</td><td>0.972078</td></tr></tbody></table></div>
 </div>
@@ -2901,14 +2887,14 @@ Note
 <p>The statistical disadvantage of <em>SeqDiffCoding</em> is that the contrasts are not orthogonal, that is the contrasts are correlated. This is obvious from the fact that levels 2, 3, and 4 are all used in two contrasts. One consequence of this is that correlation parameters estimated between neighboring contrasts (e.g., 2-1 and 3-2) are difficult to interpret. Usually, they will be negative because assuming some practical limitation on the overall range (e.g., between levels 1 and 3), a small “2-1” effect “correlates” negatively with a larger “3-2” effect for mathematical reasons.</p>
 <p>Obviously, the tradeoff between theoretical motivation and statistical purity is something that must be considered carefully when planning the analysis.</p>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>contr1 <span class="op">=</span>  </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">merge</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">Dict</span>(i <span class="op">=&gt;</span> <span class="fu">Grouping</span>() <span class="cf">for</span> i <span class="kw">in</span> (<span class="op">:</span>School, <span class="op">:</span>Child, <span class="op">:</span>Cohort)),</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">Dict</span>(<span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>()</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>       )</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>contr1 <span class="op">=</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">merge</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">Dict</span>(i <span class="op">=&gt;</span> <span class="fu">Grouping</span>() <span class="cf">for</span> i <span class="kw">in</span> (<span class="op">:</span>School, <span class="op">:</span>Child, <span class="op">:</span>Cohort)),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">Dict</span>(<span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Dict{Symbol, AbstractContrasts} with 5 entries:
   :Child  =&gt; Grouping()
   :School =&gt; Grouping()
@@ -2919,11 +2905,14 @@ Note
 </div>
 <p>We estimate the five test means by replacing the default 1 with 0 in the formula. They should all be very close to zero.</p>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_ovi_0 <span class="op">=</span> <span class="kw">let</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>   form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child);</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m_ovi_0 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">0</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child);</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Minimizing 20    Time: 0:00:00 (37.00 ms/it)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
@@ -2998,11 +2987,11 @@ Note
 </div>
 <p>We estimate the GM and the sequential differences between test means. Obviously, they should also be very close to zero.</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m_ovi_1 <span class="op">=</span> <span class="kw">let</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>   form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child);</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m_ovi_1 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child);</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
@@ -3070,11 +3059,11 @@ Note
 <p>In this case, any differences between tests identified by the contrasts would be spurious because each test was standardized (i.e., <span class="math inline">\(M\)</span>=0, <span class="math inline">\(SD\)</span>=1). The differences could also be due to an imbalance in the number of missing observations for each test.</p>
 <p>The primary interest in this study related to interactions of the test contrasts with and <code>age</code> and <code>Sex</code>. We start with age (linear) and its interaction with the four test contrasts.</p>
 <div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m_ovi_2 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m_ovi_2 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 40%">
@@ -3206,11 +3195,11 @@ Note
 </div>
 <p>Next we add the main effect of <code>Sex</code> and its interaction with the four test contrasts.</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m_ovi_3 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> (a1 <span class="op">+</span> Sex) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m_ovi_3 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> (a1 <span class="op">+</span> Sex) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 46%">
@@ -3366,9 +3355,9 @@ Note
 <p>The significant interactions with <code>Sex</code> reflect mostly differences related to muscle power, where the physiological constitution gives boys an advantage. The sex difference is smaller when coordination and cognition play a role – as in the <code>Star_r</code> test. (Caveat: SEs are estimated with an underspecified RES.)</p>
 <p>The final step in this first series is to add the interactions between the three covariates. A significant interaction between any of the four <code>Test</code> contrasts and age (linear) x <code>Sex</code> was hypothesized to reflect a prepubertal signal (i.e., hormones start to rise in girls’ ninth year of life). However, this hypothesis is linked to a specific shape of the interaction: Girls would need to gain more than boys in tests of muscular power.</p>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>f_ovi <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>m_ovi_SeqDiff <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_ovi, dat; contrasts<span class="op">=</span>contr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>f_ovi <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m_ovi_SeqDiff <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_ovi, dat; contrasts<span class="op">=</span>contr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 50%">
@@ -3580,17 +3569,17 @@ Note
 <p>Finally, HeC1 contrasts the fitness components Endurance, indicated best by Run (1), and Coordination, indicated by <code>Star_r</code> (2). Endurance (i.e., running for 6 minutes) is considered to be the best indicator of health-related status among the five tests because it is a rather pure measure of cardiorespiratory fitness. The <code>Star_r</code> test requires execution of a pre-instructed sequence of forward, sideways, and backward runs. This coordination of body movements implies a demand on working memory (i.e., remembering the order of these subruns) and executive control processes, but performats also depends on endurance. HeC1 yields a measure of Coordination “corrected” for the contribution of Endurance.</p>
 <p>The statistical advantage of <em>HelmertCoding</em> is that the resulting contrasts are orthogonal (uncorrelated). This allows for optimal partitioning of variance and statistical power. It is also more efficient to estimate “orthogonal” than “non-orthogonal” random-effect structures.</p>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>contr2 <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>()</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>contr2 <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m_ovi_Helmert <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_ovi, dat; contrasts<span class="op">=</span>contr2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m_ovi_Helmert <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_ovi, dat; contrasts<span class="op">=</span>contr2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 50%">
@@ -3798,25 +3787,25 @@ Note
 <li>HyC4: <code>S20_r</code> - <code>SLJ</code></li>
 </ul>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>contr3 <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">4</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    ];</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">&quot;BPT-other&quot;</span>, <span class="st">&quot;Star-End&quot;</span>, <span class="st">&quot;S20-Star&quot;</span>, <span class="st">&quot;SLJ-S20&quot;</span>],</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>contr3 <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">4</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    ];</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">&quot;BPT-other&quot;</span>, <span class="st">&quot;Star-End&quot;</span>, <span class="st">&quot;S20-Star&quot;</span>, <span class="st">&quot;SLJ-S20&quot;</span>],</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>m_ovi_HC <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_ovi, dat; contrasts<span class="op">=</span>contr3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m_ovi_HC <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_ovi, dat; contrasts<span class="op">=</span>contr3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 47%">
@@ -4016,31 +4005,31 @@ Note
 <h1 data-number="5"><span class="header-section-number">5</span> Individual differences in test effects</h1>
 <p>With <em>HypothesisCoding</em> we must generate our own labels for the contrasts. The default labeling of contrasts is usually not interpretable. Therefore, we provide our own.</p>
 <div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>contr1b <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    ];</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="st">&quot;Endurance&quot;</span>, <span class="st">&quot;Coordination&quot;</span>, <span class="st">&quot;Speed&quot;</span>, <span class="st">&quot;PowerLOW&quot;</span>, <span class="st">&quot;PowerUP&quot;</span>],</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">&quot;Star-Run&quot;</span>, <span class="st">&quot;S20-Star&quot;</span>, <span class="st">&quot;SLJ-S20&quot;</span>, <span class="st">&quot;BPT-SLJ&quot;</span>],</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>contr1b <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>School <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Child <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Cohort <span class="op">=&gt;</span> <span class="fu">Grouping</span>(),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>Sex <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; levels<span class="op">=</span>[<span class="st">&quot;Girls&quot;</span>, <span class="st">&quot;Boys&quot;</span>]),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span><span class="bu">Test</span> <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    ];</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="st">&quot;Endurance&quot;</span>, <span class="st">&quot;Coordination&quot;</span>, <span class="st">&quot;Speed&quot;</span>, <span class="st">&quot;PowerLOW&quot;</span>, <span class="st">&quot;PowerUP&quot;</span>],</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">&quot;Star-Run&quot;</span>, <span class="st">&quot;S20-Star&quot;</span>, <span class="st">&quot;SLJ-S20&quot;</span>, <span class="st">&quot;BPT-SLJ&quot;</span>],</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>m_ovi_HC <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>m_ovi_HC <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Child)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 47%">
@@ -4235,16 +4224,16 @@ Note
 </div>
 <p>Next we add variance components (VCs) for the test effects. They represent individual differences between children.</p>
 <div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>m_zcp_HC <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>m_zcp_HC <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 110   Time: 0:00:00 ( 2.09 ms/it)</code></pre>
+<pre><code>Minimizing 115   Time: 0:00:00 ( 3.14 ms/it)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="46">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 47%">
@@ -4295,7 +4284,7 @@ Note
 <td style="text-align: right;">0.0235</td>
 <td style="text-align: right;">0.20</td>
 <td style="text-align: right;">0.8386</td>
-<td style="text-align: right;">0.1385</td>
+<td style="text-align: right;">0.1386</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Test: BPT-SLJ</td>
@@ -4439,16 +4428,16 @@ Note
 </div>
 <p>Next we add correlation parameters (CPs) for the test effects (as specified with the sequential difference contrasts). These are <strong>not</strong> correlations between test scores!</p>
 <div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>m_cpx_HC <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>m_cpx_HC <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 262   Time: 0:00:00 ( 2.79 ms/it)</code></pre>
+<pre><code>Minimizing 222   Time: 0:00:00 ( 2.84 ms/it)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="47">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 47%">
@@ -4475,7 +4464,7 @@ Note
 <td style="text-align: right;">0.0157</td>
 <td style="text-align: right;">-0.36</td>
 <td style="text-align: right;">0.7195</td>
-<td style="text-align: right;">0.6180</td>
+<td style="text-align: right;">0.6179</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Test: Star-Run</td>
@@ -4483,7 +4472,7 @@ Note
 <td style="text-align: right;">0.0260</td>
 <td style="text-align: right;">-0.04</td>
 <td style="text-align: right;">0.9653</td>
-<td style="text-align: right;">0.6523</td>
+<td style="text-align: right;">0.6518</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Test: S20-Star</td>
@@ -4491,7 +4480,7 @@ Note
 <td style="text-align: right;">0.0243</td>
 <td style="text-align: right;">0.38</td>
 <td style="text-align: right;">0.7023</td>
-<td style="text-align: right;">0.5262</td>
+<td style="text-align: right;">0.5257</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Test: SLJ-S20</td>
@@ -4499,7 +4488,7 @@ Note
 <td style="text-align: right;">0.0229</td>
 <td style="text-align: right;">0.22</td>
 <td style="text-align: right;">0.8221</td>
-<td style="text-align: right;">0.4076</td>
+<td style="text-align: right;">0.4069</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Test: BPT-SLJ</td>
@@ -4507,7 +4496,7 @@ Note
 <td style="text-align: right;">0.0252</td>
 <td style="text-align: right;">-2.13</td>
 <td style="text-align: right;">0.0333</td>
-<td style="text-align: right;">0.6199</td>
+<td style="text-align: right;">0.6194</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">a1</td>
@@ -4631,7 +4620,7 @@ Note
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">0.6338</td>
+<td style="text-align: right;">0.6340</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -4643,8 +4632,8 @@ Note
 </div>
 <p>Does model complexification improve the goodness of fit?</p>
 <div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_ovi_HC, m_zcp_HC, m_cpx_HC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_ovi_HC, m_zcp_HC, m_cpx_HC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 77%">
@@ -4699,13 +4688,13 @@ Note
 <h1 data-number="6"><span class="header-section-number">6</span> Individual differences in test scores (levels)</h1>
 <p>We can also look at the variance components (VCs) for scores/levels rather than effects of <code>Test</code>.</p>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>m_zcp_HC_L <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">0</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>m_zcp_HC_L <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">0</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 47%">
@@ -4941,16 +4930,16 @@ Note
 <p>As expected, VCs (i.e., differences between children) are a bit larger for the physically (i.e., endurance) and cognitively (i.e., coordination) challenging tests.</p>
 <p>We can also look at the correlation parameters (CPs) for levels rather than effects of <code>Test</code>.</p>
 <div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>m_cpx_HC_L <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a> form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">0</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>m_cpx_HC_L <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    zScore <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">0</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts<span class="op">=</span>contr1b)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 264   Time: 0:00:00 ( 2.71 ms/it)</code></pre>
+<pre><code>Minimizing 220   Time: 0:00:00 ( 2.51 ms/it)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="50">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 47%">
@@ -5137,7 +5126,7 @@ Note
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">0.6800</td>
+<td style="text-align: right;">0.6797</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Test: Endurance</td>
@@ -5145,7 +5134,7 @@ Note
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">0.8001</td>
+<td style="text-align: right;">0.7998</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Test: Speed</td>
@@ -5153,7 +5142,7 @@ Note
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">0.7926</td>
+<td style="text-align: right;">0.7923</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Test: PowerLOW</td>
@@ -5161,7 +5150,7 @@ Note
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">0.7783</td>
+<td style="text-align: right;">0.7779</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Test: Coordination</td>
@@ -5169,11 +5158,11 @@ Note
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">0.8173</td>
+<td style="text-align: right;">0.8170</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">0.5842</td>
+<td style="text-align: right;">0.5847</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5185,8 +5174,8 @@ Note
 </div>
 <p>Does model complexification improve the goodness of fit?</p>
 <div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_zcp_HC_L, m_cpx_HC_L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_zcp_HC_L, m_cpx_HC_L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 76%">
@@ -5235,16 +5224,16 @@ Note
 <h2 data-number="7.1" class="anchored" data-anchor-id="contrasts-are-re-parameterizations-of-the-same-model"><span class="header-section-number">7.1</span> Contrasts are re-parameterizations of the same model</h2>
 <p>The choice of contrast does not affect the model objective, in other words, they all yield the same goodness of fit. It does not matter whether a contrast is orthogonal or not.</p>
 <div class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>[</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">objective</span>(m_ovi_SeqDiff),</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">objective</span>(m_ovi_Helmert),</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">objective</span>(m_ovi_HC)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">objective</span>(m_ovi_SeqDiff),</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">objective</span>(m_ovi_Helmert),</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">objective</span>(m_ovi_HC)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>3-element Vector{Float64}:
- 25111.92194451433
- 25111.921944514357
- 25111.92194451432</code></pre>
+ 25111.921944514364
+ 25111.92194451436
+ 25111.921944514364</code></pre>
 </div>
 </div>
 </section>
@@ -5252,14 +5241,14 @@ Note
 <h2 data-number="7.2" class="anchored" data-anchor-id="vcs-and-cps-depend-on-contrast-coding"><span class="header-section-number">7.2</span> VCs and CPs depend on contrast coding</h2>
 <p>Trivially, the meaning of a contrast depends on its definition. Consequently, the contrast specification has a big effect on the random-effect structure. As an illustration, we refit the LMMs with variance components (VCs) and correlation parameters (CPs) for <code>Child</code>-related contrasts of <code>Test</code>. Unfortunately, it is not easy, actually rather quite difficult, to grasp the meaning of correlations of contrast-based effects; they represent two-way interactions.</p>
 <div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>  f_Child <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>m_Child_SD <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child, dat; contrasts<span class="op">=</span>contr1)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_Child_SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>  f_Child <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>m_Child_SD <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child, dat; contrasts<span class="op">=</span>contr1)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_Child_SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 261   Time: 0:00:00 ( 2.84 ms/it)</code></pre>
+<pre><code>Minimizing 277   Time: 0:00:00 ( 2.69 ms/it)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="53">
+<div class="cell-output cell-output-display" data-execution_count="27">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 12%">
@@ -5287,8 +5276,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;">Child</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.381867</td>
-<td style="text-align: right;">0.617954</td>
+<td style="text-align: right;">0.381878</td>
+<td style="text-align: right;">0.617963</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5297,8 +5286,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: Coordination</td>
-<td style="text-align: right;">0.424975</td>
-<td style="text-align: right;">0.651901</td>
+<td style="text-align: right;">0.425200</td>
+<td style="text-align: right;">0.652073</td>
 <td style="text-align: right;">+0.14</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5307,8 +5296,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: Speed</td>
-<td style="text-align: right;">0.276484</td>
-<td style="text-align: right;">0.525818</td>
+<td style="text-align: right;">0.276702</td>
+<td style="text-align: right;">0.526024</td>
 <td style="text-align: right;">-0.03</td>
 <td style="text-align: right;">-0.48</td>
 <td style="text-align: right;"></td>
@@ -5317,8 +5306,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: PowerLOW</td>
-<td style="text-align: right;">0.165683</td>
-<td style="text-align: right;">0.407042</td>
+<td style="text-align: right;">0.165930</td>
+<td style="text-align: right;">0.407345</td>
 <td style="text-align: right;">+0.03</td>
 <td style="text-align: right;">-0.02</td>
 <td style="text-align: right;">-0.42</td>
@@ -5327,8 +5316,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: PowerUP</td>
-<td style="text-align: right;">0.383796</td>
-<td style="text-align: right;">0.619513</td>
+<td style="text-align: right;">0.384013</td>
+<td style="text-align: right;">0.619687</td>
 <td style="text-align: right;">-0.44</td>
 <td style="text-align: right;">+0.18</td>
 <td style="text-align: right;">-0.22</td>
@@ -5337,8 +5326,8 @@ Note
 <tr class="even">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.401941</td>
-<td style="text-align: right;">0.633988</td>
+<td style="text-align: right;">0.401834</td>
+<td style="text-align: right;">0.633904</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5349,12 +5338,12 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>m_Child_He <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child, dat; contrasts<span class="op">=</span>contr2)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_Child_He)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>m_Child_He <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child, dat; contrasts<span class="op">=</span>contr2)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_Child_He)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 252   Time: 0:00:00 ( 3.22 ms/it)</code></pre>
+<pre><code>Minimizing 277   Time: 0:00:00 ( 2.54 ms/it)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="54">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 12%">
@@ -5382,8 +5371,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;">Child</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.437719</td>
-<td style="text-align: right;">0.661603</td>
+<td style="text-align: right;">0.437740</td>
+<td style="text-align: right;">0.661619</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5392,8 +5381,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: Coordination</td>
-<td style="text-align: right;">0.245908</td>
-<td style="text-align: right;">0.495892</td>
+<td style="text-align: right;">0.245957</td>
+<td style="text-align: right;">0.495941</td>
 <td style="text-align: right;">+0.08</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5402,8 +5391,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: Speed</td>
-<td style="text-align: right;">0.070733</td>
-<td style="text-align: right;">0.265957</td>
+<td style="text-align: right;">0.070749</td>
+<td style="text-align: right;">0.265987</td>
 <td style="text-align: right;">+0.04</td>
 <td style="text-align: right;">+0.06</td>
 <td style="text-align: right;"></td>
@@ -5412,8 +5401,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: PowerLOW</td>
-<td style="text-align: right;">0.031994</td>
-<td style="text-align: right;">0.178869</td>
+<td style="text-align: right;">0.032002</td>
+<td style="text-align: right;">0.178891</td>
 <td style="text-align: right;">+0.04</td>
 <td style="text-align: right;">+0.04</td>
 <td style="text-align: right;">+0.09</td>
@@ -5422,8 +5411,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: PowerUP</td>
-<td style="text-align: right;">0.030458</td>
-<td style="text-align: right;">0.174522</td>
+<td style="text-align: right;">0.030463</td>
+<td style="text-align: right;">0.174535</td>
 <td style="text-align: right;">-0.26</td>
 <td style="text-align: right;">+0.11</td>
 <td style="text-align: right;">+0.01</td>
@@ -5432,8 +5421,8 @@ Note
 <tr class="even">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.122617</td>
-<td style="text-align: right;">0.350166</td>
+<td style="text-align: right;">0.122520</td>
+<td style="text-align: right;">0.350029</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5444,12 +5433,12 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>m_Child_Hy <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child, dat; contrasts<span class="op">=</span>contr3)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_Child_Hy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>m_Child_Hy <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child, dat; contrasts<span class="op">=</span>contr3)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m_Child_Hy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 234   Time: 0:00:00 ( 3.51 ms/it)</code></pre>
+<pre><code>Minimizing 288   Time: 0:00:00 ( 2.56 ms/it)</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="55">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 13%">
@@ -5477,8 +5466,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;">Child</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.392552</td>
-<td style="text-align: right;">0.626539</td>
+<td style="text-align: right;">0.392502</td>
+<td style="text-align: right;">0.626500</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5487,8 +5476,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: BPT-other</td>
-<td style="text-align: right;">7.670832</td>
-<td style="text-align: right;">2.769627</td>
+<td style="text-align: right;">7.660828</td>
+<td style="text-align: right;">2.767820</td>
 <td style="text-align: right;">-0.35</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5497,8 +5486,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: Star-End</td>
-<td style="text-align: right;">0.532394</td>
-<td style="text-align: right;">0.729653</td>
+<td style="text-align: right;">0.531402</td>
+<td style="text-align: right;">0.728973</td>
 <td style="text-align: right;">+0.12</td>
 <td style="text-align: right;">+0.19</td>
 <td style="text-align: right;"></td>
@@ -5507,8 +5496,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: S20-Star</td>
-<td style="text-align: right;">0.383863</td>
-<td style="text-align: right;">0.619567</td>
+<td style="text-align: right;">0.382908</td>
+<td style="text-align: right;">0.618796</td>
 <td style="text-align: right;">-0.02</td>
 <td style="text-align: right;">-0.09</td>
 <td style="text-align: right;">-0.48</td>
@@ -5517,8 +5506,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">Test: SLJ-S20</td>
-<td style="text-align: right;">0.273108</td>
-<td style="text-align: right;">0.522598</td>
+<td style="text-align: right;">0.272167</td>
+<td style="text-align: right;">0.521697</td>
 <td style="text-align: right;">+0.02</td>
 <td style="text-align: right;">+0.18</td>
 <td style="text-align: right;">-0.01</td>
@@ -5527,8 +5516,8 @@ Note
 <tr class="even">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">0.348251</td>
-<td style="text-align: right;">0.590128</td>
+<td style="text-align: right;">0.348721</td>
+<td style="text-align: right;">0.590526</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -5541,20 +5530,21 @@ Note
 <p>The CPs for the various contrasts are in line with expectations. For the SDC we observe substantial negative CPs between neighboring contrasts. For the orthogonal HeC, all CPs are small; they are uncorrelated. HyC contains some of the SDC contrasts and we observe again the negative CPs. The (roughly) PCA-based contrasts are small with one exception; there is a sizeable CP of +.41 between GM and the core of adjusted physical fitness (c234.15).</p>
 <p>Do these differences in CPs imply that we can move to zcpLMMs when we have orthogonal contrasts? We pursue this question with by refitting the three LMMs with <code>zerocorr()</code> and compare the goodness of fit.</p>
 <div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cf">begin</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  f_Child0 <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  m_Child_SD0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child0, dat; contrasts<span class="op">=</span>contr1)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  m_Child_He0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child0, dat; contrasts<span class="op">=</span>contr2)</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  m_Child_Hy0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child0, dat; contrasts<span class="op">=</span>contr3)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">begin</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  f_Child0 <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">|</span> Child)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  m_Child_SD0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child0, dat; contrasts<span class="op">=</span>contr1)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  m_Child_He0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child0, dat; contrasts<span class="op">=</span>contr2)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  m_Child_Hy0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_Child0, dat; contrasts<span class="op">=</span>contr3)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 143   Time: 0:00:00 ( 2.47 ms/it)</code></pre>
+<pre><code>Minimizing 139   Time: 0:00:00 ( 1.50 ms/it)
+  objective:  25032.97185665604</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_Child_SD0, m_Child_SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_Child_SD0, m_Child_SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 77%">
@@ -5596,8 +5586,8 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_Child_He0, m_Child_He)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="58">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_Child_He0, m_Child_He)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 77%">
@@ -5639,8 +5629,8 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_Child_Hy0, m_Child_Hy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_Child_Hy0, m_Child_Hy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 77%">
@@ -5688,30 +5678,27 @@ Note
 <p>VCs and CPs resulting from a set of test contrasts can also be estimated for the random factor <code>School</code>. Of course, these VCs and CPs may look different from the ones we just estimated for <code>Child</code>.</p>
 <p>The effect of <code>age</code> (i.e., developmental gain) varies within <code>School</code>. Therefore, we also include its VCs and CPs in this model; the school-related VC for <code>Sex</code> was not significant.</p>
 <div class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>f_School <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> a1 <span class="op">|</span> School);</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>m_School_SD0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr1);</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>m_School_He0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr2);</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>m_School_Hy0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr3);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 145   Time: 0:00:00 ( 0.91 ms/it)
-  objective:  26076.938590850463</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>f_School <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> a1 <span class="op">|</span> School);</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>m_School_SD0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr1);</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>m_School_He0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr2);</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>m_School_Hy0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr3);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>f_School <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> a1 <span class="op">|</span> School);</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>m_School_SD <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr1);</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>m_School_He <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr2);</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>m_School_Hy <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr3);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>f_School <span class="op">=</span> <span class="pp">@formula</span> zScore <span class="op">~</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">*</span> a1 <span class="op">*</span> Sex <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="bu">Test</span> <span class="op">+</span> a1 <span class="op">|</span> School);</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>m_School_SD <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr1);</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>m_School_He <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr2);</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>m_School_Hy <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f_School, dat; contrasts<span class="op">=</span>contr3);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 1191      Time: 0:00:00 ( 0.83 ms/it)</code></pre>
+<pre><code>Minimizing 1496      Time: 0:00:00 ( 0.67 ms/it)
+  objective:  26025.47889032896</code></pre>
 </div>
 </div>
 <p>We compare again how much of the fit resides in the CPs.</p>
 <div class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_School_SD0, m_School_SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_School_SD0, m_School_SD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 78%">
@@ -5753,8 +5740,8 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_School_He0, m_School_He)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="63">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_School_He0, m_School_He)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 78%">
@@ -5796,8 +5783,8 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_School_Hy0, m_School_Hy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m_School_Hy0, m_School_Hy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 78%">
@@ -5848,8 +5835,8 @@ Note
 <section id="version-information" class="level1" data-number="9">
 <h1 data-number="9"><span class="header-section-number">9</span> Version information</h1>
 <div class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>versioninfo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>versioninfo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="39">
 <pre><code>versioninfo (generic function with 2 methods)</code></pre>
 </div>
 </div>

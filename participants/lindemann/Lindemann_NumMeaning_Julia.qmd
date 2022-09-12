@@ -3,7 +3,7 @@ title: "Oliver Lindemann: Two attributes of numerical meaning"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-31"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,9 +12,13 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
 # Description
@@ -30,15 +34,6 @@ Congruity was defined as $$C =  \frac{V}{3}  \cdot \frac{N-5}{4} = \frac{V(N-5)}
 
 # Setup
 
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
-
 ## Packages
 
 ```{julia}
@@ -50,7 +45,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -63,7 +58,7 @@ ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
-## Code book 
+## Code book
 
 For preprocessing see earlier script. Here we have only the relevant variables for the following analyses.
 
@@ -71,7 +66,7 @@ For preprocessing see earlier script. Here we have only the relevant variables f
 -   **`digit`**: Presented digit (1 to 9, except 5)
 -   **`size`**: Stimulus size
 -   **`size_rc`**: Stimulus size (-3 to +3) (recalculated)
--   **`pos`**: Stimulus position 
+-   **`pos`**: Stimulus position
 -   **`pos_rc`**: Stimulus position (-3 to +3) (recalculated)
 -   **`numerical_distance`**: Distance to 5 (abs(5-digit))
 -   **`SiC`**: Size congruity parameter (-1 to +1)
@@ -160,7 +155,7 @@ let mods = [m_voi, m_zcp, m_cpx];
 end
 ```
 
-We do no loose goodness of fit with LMM `m_zcp` relative to LMM `m_cpx`; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM `m_voi`. 
+We do no loose goodness of fit with LMM `m_zcp` relative to LMM `m_cpx`; both AIC and BIC increase with model complexity. However, there are reliable individual differences in some of the VCs if we go by AIC relative to LMM `m_voi`.
 
 LMM `m_zcp` is still overparameterized. There are quite a few very small VCs.
 
@@ -185,26 +180,26 @@ lrtest(m_voi, m_prsm,  m_zcp)
 
 # Figures
 
-## Caterpillar plot 
+## Caterpillar plot
 
 ```{julia}
 #| fig-cap1: Prediction intervals on subject random effects for model prsm
 #| label: fig-cm_prsm1
-#| 
+#|
 cm_prsm = first(ranefinfo(m_prsm))
 caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=2)
 ```
 
-Some individual differences in the numerical-distance effect. 
+Some individual differences in the numerical-distance effect.
 
 ```{julia}
 #| label: fig-cm_prsm2
-#| 
+#|
 cm_prsm = first(ranefinfo(m_prsm))
 caterpillar!(Figure(; resolution=(800, 1200)), cm_prsm; orderby=3)
 ```
 
-Some individual differences in the size effect. 
+Some individual differences in the size effect.
 
 No evidence for individual differences in the other two VCs. Do we need them in the LMM?
 
@@ -223,14 +218,14 @@ VarCorr(m_prsm2)
 lrtest(m_voi, m_prsm2,  m_prsm)
 ```
 
-No, not really. 
+No, not really.
 
 ## Shrinkage plots
 
 ```{julia}
 #| code-fold: true
 #| label: fig-shrinkage
-#| 
+#|
 #| fig-cap: Shrinkage plots of the subject random effects in model m_prsm2
 shrinkageplot!(Figure(; resolution=(1000, 1200)), m_prsm2)
 ```
@@ -239,4 +234,3 @@ shrinkageplot!(Figure(; resolution=(1000, 1200)), m_prsm2)
 ```{julia}
 versioninfo()
 ```
-

@@ -25,6 +25,7 @@ Manifest.toml
 
 /.quarto/
 .CondaPkg/
+.jupyter_cache/
 _freeze/
 
 *.*~

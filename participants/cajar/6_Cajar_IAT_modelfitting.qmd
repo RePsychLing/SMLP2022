@@ -3,7 +3,7 @@ title: "Anke Cajar: Detecting Faked IATs via Task-Switch Costs"
 subtitle: "Model fitting"
 author: "Douglas Bates"
 date: "2022-09-05"
-output: 
+output:
   html:
     toc: yes
     toc_depth: 3
@@ -11,16 +11,11 @@ output:
     embed-resources: true
 callout-appearance: simple
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
-
-# Setup
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 # Fitting and examining models for the IAT data
 
@@ -69,7 +64,7 @@ For models with many levels in one or more grouping factors (the name or express
 It is not as important for grouping factors with fewer levels but always defining the grouping contrasts is a good habit to form.
 
 We assign each of the two-level experimental factors the `EffectsCoding` contrast which results in a $\pm 1$ coding.
-If it is important which of the levels corresponds to -1 and which to +1, use the optional argument `base` to declare the level that will be -1. 
+If it is important which of the levels corresponds to -1 and which to +1, use the optional argument `base` to declare the level that will be -1.
 
 :::{.callout-note collapse="true"}
 ### RK: Why it is almost always important to think about this ...
@@ -77,7 +72,7 @@ If it is important which of the levels corresponds to -1 and which to +1, use th
 In (psychology) experiment the order of factor levels and the specification of `base` is usually important for the interpretation of results. There are two rules of thumb I recommend to consider:
 
 1. Order levels according to inherent order (e.g., date, time, magnitude); this is needed for tables and figures.
-2. Select base such that expected estimates of fixed effects are returned as positive values. This facilitates interpreation of interaction terms and correlation parameters. 
+2. Select base such that expected estimates of fixed effects are returned as positive values. This facilitates interpreation of interaction terms and correlation parameters.
 :::
 
 The contrasts are special "types" in Julia - often what is called "a singleton type" meaning that there is only one object of that type and that single object is just a label.
@@ -98,13 +93,13 @@ contrasts = merge(
 :::{.callout-note collapse="true"}
 ### RK: Difference between `EffectsCoding()` and R's `contr.sum()`
 
-The default `base` in `EffectsCoding`() is the first level whereas for `contr.sum()` it is the last level. This must be taken into account for a compatible reproduction of the sign of effects across Julia and R. 
+The default `base` in `EffectsCoding`() is the first level whereas for `contr.sum()` it is the last level. This must be taken into account for a compatible reproduction of the sign of effects across Julia and R.
 :::
 
 
 ## Model with scalar random effects
 
-For comparison with the results from R, the models are fit to the response speed (`1/rt`), but 
+For comparison with the results from R, the models are fit to the response speed (`1/rt`), but
 I think a better scale would be the rate in Hz, evaluated as `1000 / rt`)
 
 ::: {.callout-note collapse="true"}

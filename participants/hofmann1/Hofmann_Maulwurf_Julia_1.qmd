@@ -3,7 +3,7 @@ title: "Antje Hofmann: Learning Syntactic Relations with the Mole Task"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-24"
-format: 
+format:
   html:
     embed-resources: true
     standalone: true
@@ -13,34 +13,38 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
+execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
-# Background 
+# Background
 
-Children's (age: 4-8 years)reaction times in a task teaching them syntactic relations. 
+Children's (age: 4-8 years)reaction times in a task teaching them syntactic relations.
 
-## Overview 
+## Overview
 
 + Original analysis is by Antje Hofmann.
 + MixedModels.jl version
 + Addition of new chunks illustrate
-    + selection of parsimonious LMM using random-effects PCA 
-    + plotting conditional means 
-    + illustration of borrowing strength 
-    
-# Readme 
+    + selection of parsimonious LMM using random-effects PCA
+    + plotting conditional means
+    + illustration of borrowing strength
 
-## Design 
+# Readme
+
+## Design
 
 ## Variables
 
 + `Subj`: Participant ID (renamed from `ID`; random factor)
 + `Item`: Word ID (random factor)
-+ `age`:  4 - 8 years 
-+ `Block` (within-Subj/within-Item): 
++ `age`:  4 - 8 years
++ `Block` (within-Subj/within-Item):
      + 1st Learning
      + 2nd Learning
      + Disruption
@@ -48,18 +52,9 @@ Children's (age: 4-8 years)reaction times in a task teaching them syntactic rela
 + `Target`(renamend fom targetness)
      + non-syllable target
      + syllable target
-+ `rt`:  response time 
++ `rt`:  response time
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
 
 ## Packages
 
@@ -75,7 +70,7 @@ using CairoMakie       # graphics back-end
 using CategoricalArrays
 using Chain
 using DataFrames
-using DataFrameMacros  # simplified dplyr-like data wrangling 
+using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
@@ -95,13 +90,13 @@ ProgressMeter.ijulia_behavior(:clear);
 CairoMakie.activate!(; type="svg");
 ```
 
-+ The data are available as an arrow file. 
++ The data are available as an arrow file.
 + Most of preprocessing was done with R in RStudio (see Hofmann_Maulwurf.Rmd).
 + Order of factor levels should be checked.
 
 ```{julia}
 dat = DataFrame(Arrow.Table("./data/Hofmann_Maulwurf_rt.arrow"))
-transform!(dat, 
+transform!(dat,
     :Target => categorical => :Target,
     :Block  => categorical => :Block,
     :age => (x -> x .- 6) => :a1, # center age (linear) at 6 years
@@ -109,10 +104,10 @@ transform!(dat,
 describe(dat)
 ```
 
-+ Centering age at six years yields an interpretable `GM`  
++ Centering age at six years yields an interpretable `GM`
 + Factor levels can also be set when contrasts are defined (see below).
 + BoxCox check showed that reaction time `rt` [ms] should be transformed to `speed` [1/s] = [Hz]
-+ Indicator variables for `Target` and `Block` generated in R. 
++ Indicator variables for `Target` and `Block` generated in R.
 
 # LMM analysis
 
@@ -147,7 +142,7 @@ dat.trgt = X[:,5];
 describe(dat)
 ```
 
-Switch to indicator variables and refit the model. 
+Switch to indicator variables and refit the model.
 
 ```{julia}
 #| lst-label: m_voi2
@@ -172,7 +167,7 @@ Again, check the equivalence.
 
 ```{julia}
 #| lst-label: m_zcp2
-f_zcp2 = @formula(lrt ~  1 + (trng+drpt+rcvr) * trgt * a1  + 
+f_zcp2 = @formula(lrt ~  1 + (trng+drpt+rcvr) * trgt * a1  +
                 zerocorr(1 + (trng+drpt+rcvr) * trgt | Subj) + (1 + a1 | Item));
 m_zcp2 = fit(MixedModel, f_zcp2, dat; contrasts);
 
@@ -185,14 +180,14 @@ VarCorr(m_zcp2)
 ```{julia}
 #| lst-label: m_cpx
 m_cpx = let
-    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  +
                           (1 + trgt * (trng+drpt+rcvr) | Subj) + (1 + a1 | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_cpx))    # not ok
 show(m_cpx.PCA[:Subj])     # not ok
-show(MixedModels.likelihoodratiotest(m_zcp2, m_cpx)) 
+show(MixedModels.likelihoodratiotest(m_zcp2, m_cpx))
 VarCorr(m_cpx)
 ```
 
@@ -205,15 +200,15 @@ We remove one of the VC for `trgt`  * `trng` contrast interaction, that is one o
 ```{julia}
 #| lst-label: m_prm1
 m_prm1 = let
-    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
-                          (1 + trgt *(drpt + rcvr) + trng  | Subj) + 
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  +
+                          (1 + trgt *(drpt + rcvr) + trng  | Subj) +
                           (1 + a1 | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 
 show(issingular(m_prm1))  # not ok
 show(m_prm1.PCA[:Subj])   # not ok
-show(MixedModels.likelihoodratiotest(m_zcp2, m_prm1, m_cpx)) 
+show(MixedModels.likelihoodratiotest(m_zcp2, m_prm1, m_cpx))
 VarCorr(m_prm1)
 ```
 
@@ -222,8 +217,8 @@ We don't lose goodness of fit, but are still overparameterized. We remove CPs fo
 ```{julia}
 #| lst-label: m_prm2
 m_prm2 = let
-    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
-                          (1 + drpt + rcvr + trng + drpt&trgt + rcvr&trgt  | Subj) + 
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  +
+                          (1 + drpt + rcvr + trng + drpt&trgt + rcvr&trgt  | Subj) +
                   zerocorr(0 + trgt  | Subj) +
                           (1 + a1 | Item));
     fit(MixedModel, form, dat; contrasts);
@@ -231,7 +226,7 @@ m_prm2 = let
 
 show(issingular(m_prm2))  #  ok
 show(m_prm2.PCA[:Subj])   #  ok
-show(MixedModels.likelihoodratiotest(m_zcp2, m_prm2,  m_cpx)) 
+show(MixedModels.likelihoodratiotest(m_zcp2, m_prm2,  m_cpx))
 VarCorr(m_prm2)
 ```
 
@@ -240,8 +235,8 @@ Check the `Item`-related CP. It is very large, might be spurious.
 ```{julia}
 #| lst-label: m_prm3
 m_prm3 = let
-    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  + 
-                          (1 + drpt + rcvr + trng + drpt&trgt + rcvr&trgt  | Subj) + 
+    form = @formula(lrt ~  1 + trgt * (trng+drpt+rcvr) * a1  +
+                          (1 + drpt + rcvr + trng + drpt&trgt + rcvr&trgt  | Subj) +
                   zerocorr(0 + trgt  | Subj) +
                   zerocorr(1 + a1 | Item));
     fit(MixedModel, form, dat; contrasts);
@@ -249,7 +244,7 @@ m_prm3 = let
 
 show(issingular(m_prm3))  # ok
 show(m_prm3.PCA[:Subj])   # ok
-show(MixedModels.likelihoodratiotest(m_zcp2, m_prm3, m_prm2, m_cpx)) 
+show(MixedModels.likelihoodratiotest(m_zcp2, m_prm3, m_prm2, m_cpx))
 VarCorr(m_prm3)
 ```
 
@@ -276,13 +271,13 @@ LMM `m_prm2` is a defensible solution according to  $\Delta$ AIC,  $\Delta$ BIC 
 coeftable(m_prm2)
 ```
 
-## Pruning fixed-effects 
+## Pruning fixed-effects
 
-There is an option of pruning some higher-order interactions. 
+There is an option of pruning some higher-order interactions.
 
 ## Diagnostic plots
 
-Various visualizations are used to check whether or not data are _defensibly_ modeled with an LMM. They may lead to removal of outliers, transformations of the dependent variable, and deliver valuable heuristic information to be followed up with exploratory post-hoc analyses or ideally replication of new insights gained this way. In practice, it appears that only severe violations will stop people from reporting a model. 
+Various visualizations are used to check whether or not data are _defensibly_ modeled with an LMM. They may lead to removal of outliers, transformations of the dependent variable, and deliver valuable heuristic information to be followed up with exploratory post-hoc analyses or ideally replication of new insights gained this way. In practice, it appears that only severe violations will stop people from reporting a model.
 
 ### Residuals over fitted
 
@@ -290,7 +285,7 @@ Various visualizations are used to check whether or not data are _defensibly_ mo
 scatter(fitted(m_prm2), residuals(m_prm2))
 ```
 
-Looks like we missed some fast response times. 
+Looks like we missed some fast response times.
 
 ### Q-Q plot
 
@@ -302,7 +297,7 @@ Hm?
 
 ### Residual distributions: observed vs. theoretical
 
-Curves for residulas based on observed and theoretical values should correspond. 
+Curves for residulas based on observed and theoretical values should correspond.
 
 ```{julia}
 #| code-fold: true
@@ -322,7 +317,7 @@ let
 end
 ```
 
-They are a bit too narrow. 
+They are a bit too narrow.
 
 ## Conditional means of random effects
 
@@ -339,9 +334,9 @@ caterpillar!(Figure(; resolution=(800, 1200)), cm_Subj; orderby=1)
 
 Shrinkage refers to the adjustment of subject-level or item-level predictions by taking population estimates into account. The further a subject's/item's estimate is from the fixed effect or the more variable or less reliable the subject's/item's estimate, the more the prediction will be shrunk towards the population estimate. Alternative terms for shrinkage are "borrowing strength" (Tukey) and regularization. My favorite is actually Tukey's because indeed we borrow strength from the population estimates to make predictions for individual subjects' effects. The goal of this section to illustrate the results of borrowing strength.
 
-Subject-related conditional means of random effects revealed information about individual differences beyond fixed effects. Would these results also be visible in _unconditional_ means, that is when we compute GM and experimental effects _within_ subjects (i.e., as fixed effects) without borrowing strength from the population estimates? 
+Subject-related conditional means of random effects revealed information about individual differences beyond fixed effects. Would these results also be visible in _unconditional_ means, that is when we compute GM and experimental effects _within_ subjects (i.e., as fixed effects) without borrowing strength from the population estimates?
 
-In the following plots, effect estimates based on alone on each subject's data (i.e., no pooling of data, no borrowing of strength) are plotted in pink and the subjects' conditional means shown in the caterpillar plots are plotted in blue. The arrows indicate how much a subject's prediction is changed by borrowing strength from knowledge of the population estimates.  
+In the following plots, effect estimates based on alone on each subject's data (i.e., no pooling of data, no borrowing of strength) are plotted in pink and the subjects' conditional means shown in the caterpillar plots are plotted in blue. The arrows indicate how much a subject's prediction is changed by borrowing strength from knowledge of the population estimates.
 
 ```{julia}
 #| code-fold: true
@@ -352,7 +347,7 @@ shrinkageplot!(Figure(; resolution=(1000, 1200)), m_prm2)
 
 There is an outlier subject
 ```{julia}
-cm = raneftables(m_prm2);   
+cm = raneftables(m_prm2);
 sort(DataFrame(cm.Subj), ["(Intercept)", :trng, "drpt & trgt"])
 sort(DataFrame(cm.Subj), :trng)
 ```

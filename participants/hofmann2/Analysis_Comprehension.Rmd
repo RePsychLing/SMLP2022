@@ -11,10 +11,10 @@ output:
     number_sections: true  ## if you want number sections at each table header
     theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
-# Setup  
+# Setup
 ```{r setup, include=FALSE}
 rm(list=ls())
 library(lmerTest)
@@ -24,14 +24,14 @@ library(MASS)
 library(broom)
 library(ggpubr)
 ```
-  
-# *Import*  
+
+# *Import*
 ```{r import and wrangle data, echo=TRUE, message=FALSE, warning=FALSE}
 # note compact declaration of variable types
 comp <-  vroom("data/comp.csv", col_types="cffnncfffn")
 ```
-  
-# Raw data plot  
+
+# Raw data plot
 ```{r plot raw, echo=TRUE, message=FALSE, warning=FALSE}
 require(gridExtra)
 require(grid)
@@ -40,7 +40,7 @@ require(gridtext)
 ## subsets
 grouped <- subset(comp, comp$condition == "grouped")
 ungrouped <- subset(comp, comp$condition == "ungrouped")
-## function that saves values "percent" scale 
+## function that saves values "percent" scale
 perc <- function(x, na.rm = FALSE) formatC((x *100))
 numer <- function(x, na.rm = FALSE) as.numeric(x)
 ### create data frame that will be used to draw different chance areas later in the plot
@@ -80,7 +80,7 @@ grpd.Plot <- mean_perc_grpd %>%
     y = "mean % correct identification target condition") +
   theme_bw()+
   theme(plot.title = element_text(hjust = c(0.5,0.5), size=22),
-        axis.text=element_text(size=20, color="black"), 
+        axis.text=element_text(size=20, color="black"),
         axis.title=element_text(size=22, color="black"),
         #axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
         legend.title = element_blank(),
@@ -100,14 +100,14 @@ ungrouped.Plot <- mean_perc_ungrouped %>%
   geom_rect(data = data.frame(condition = ungr), aes(xmin = 0, xmax = Inf, ymin = 26.67, ymax = 73.33), alpha = 0.2, fill="grey", color="black", inherit.aes = FALSE) +
   theme_bw()+
   theme(plot.title = element_text(hjust = c(0.5,0.5), size=22),
-        axis.text=element_text(size=20, color="black"), 
+        axis.text=element_text(size=20, color="black"),
         axis.title=element_text(size=22, color="black"),
         legend.title=element_blank())
 ungrouped.Plot
 # Remove axis titles from all plots
 p = list(grpd.Plot, ungrouped.Plot) %>% map(~.x + labs(x=NULL, y=NULL)+theme(legend.position="none"))
 # plotmath expressions
-yleft <- textGrob(expression(paste("mean % correct identification target condition")), 
+yleft <- textGrob(expression(paste("mean % correct identification target condition")),
                   rot = 90, gp = gpar(fontsize = 22))
 
 bottom <- textGrob("levels of manipulation", gp = gpar(fontsize = 22))
@@ -126,43 +126,43 @@ ls()
 rm(bottom, grpd, grpd.Plot, grouped, g_legend, mean_perc_grpd, mean_perc_ungrouped, ungr, ungrouped.Plot, ungrouped, numer, p, perc, uni, yleft)
 ```
 
-  
-# Data and analysis description  
-*participant groups*  
-  - RHDP, LHDP, CP  
 
-*conditions*  
-  - grouped (with prosodic boundary), ungrouped (without prosodic boundary)  
+# Data and analysis description
+*participant groups*
+  - RHDP, LHDP, CP
 
-*manipulations*  
+*conditions*
+  - grouped (with prosodic boundary), ungrouped (without prosodic boundary)
 
-  - grouped  
-    max3 | maxLR | maxL | maxR | min3  
+*manipulations*
 
-  - ungrouped  
-    maxLR | min3  
-  
-1. *ungrouped model*  
-  - comparisons  
-    **group**  
-      RHDP vs CP | LHDP vs CP  
-    **manipulation**  
-      ungrouped-min3 vs. ungrouped-maxLR  
-  - interactions  
-      group * manipulation  
+  - grouped
+    max3 | maxLR | maxL | maxR | min3
 
-2. *grouped model*  
-  **comparisons**  
-      group  
-        RHDP vs CP | LHDP vs CP  
-      manipulation  
-        max3 vs. maxLR | maxLR vs. maxR | maxL vs. maxR | maxL vs. min3  
-  **interactions**  
-        group * manipulation  
-  
-# Analysis  
-## ungrouped data  
-### *Contrast coding*    
+  - ungrouped
+    maxLR | min3
+
+1. *ungrouped model*
+  - comparisons
+    **group**
+      RHDP vs CP | LHDP vs CP
+    **manipulation**
+      ungrouped-min3 vs. ungrouped-maxLR
+  - interactions
+      group * manipulation
+
+2. *grouped model*
+  **comparisons**
+      group
+        RHDP vs CP | LHDP vs CP
+      manipulation
+        max3 vs. maxLR | maxLR vs. maxR | maxL vs. maxR | maxL vs. min3
+  **interactions**
+        group * manipulation
+
+# Analysis
+## ungrouped data
+### *Contrast coding*
 ```{r ungr contrasts, echo=TRUE, message=FALSE, warning=FALSE}
 # subset data - only ungrouped ---------------------------------
 data_ungr <- filter(comp, condition %in% c ("ungrouped"))
@@ -170,9 +170,9 @@ data_ungr <- filter(comp, condition %in% c ("ungrouped"))
 # summary(data_ungr)
 # Factorize predictors variables ---------------------------------
 ################## group
-class(data_ungr$group) # factor 
+class(data_ungr$group) # factor
 # data_ungr$group <- as.factor(data_ungr$group)
-## check level order 
+## check level order
 levels(data_ungr$group) # "CP" "LHDP" "RHDP"
 data_ungr$group <- factor(data_ungr$group, levels = c("LHDP", "CP", "RHDP"))
 ################## exp
@@ -216,8 +216,8 @@ ungr_mm$max.min_rhd.cp   <-mm[,6]
 rm(mm)
 ```
 
-### rePCA  
-*ungrouped data model reduction*  
+### rePCA
+*ungrouped data model reduction*
 ```{r ungr model reduction, echo=TRUE, message=FALSE, warning=FALSE}
 # INITIAL model ---------------------------------
 summary(ungr_i <- glmer(accuracy ~ manip*group+
@@ -237,7 +237,7 @@ summary(m0_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.m
 # isSingular
 # correlations seem okay for item
 # but not perfect for Subj
-    'Subj   (Intercept) 3.3041   1.8177              
+    'Subj   (Intercept) 3.3041   1.8177
             max.min     0.2696   0.5192   -1.00 # not optimal'
 ## check rePCA output =================================
 summary(rePCA(m0_ungr))
@@ -252,7 +252,7 @@ summary(zcp_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max.
                  ungr_mm))
 # isSingular
     'Random effects:
-     Groups Name        Variance  Std.Dev. 
+     Groups Name        Variance  Std.Dev.
      Subj   (Intercept) 3.079e+00 1.755e+00
      Subj.1 max.min     1.127e-14 1.062e-07 # no variance
      item   (Intercept) 1.737e-01 4.167e-01
@@ -274,10 +274,10 @@ summary(zcp1_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max
 # isSingular
     'Random effects:
      Groups Name        Variance Std.Dev.
-     Subj   (Intercept) 3.07862  1.7546  
-     item   (Intercept) 0.17368  0.4167  
-     item.1 cp.lhd      0.00000  0.0000 # no variance  
-     item.2 rhd.cp      0.04943  0.2223  
+     Subj   (Intercept) 3.07862  1.7546
+     item   (Intercept) 0.17368  0.4167
+     item.1 cp.lhd      0.00000  0.0000 # no variance
+     item.2 rhd.cp      0.04943  0.2223
     Number of obs: 1620, groups:  Subj, 54; item, 30'
 ## check rePCA output =================================
 summary(rePCA(zcp1_ungr))
@@ -295,9 +295,9 @@ summary(zcp2_ungr <- glmer(accuracy ~ 1+max.min+cp.lhd+rhd.cp+max.min_cp.lhd+max
                           ungr_mm))
 'Random effects:
  Groups Name        Variance Std.Dev.
- Subj   (Intercept) 3.07862  1.7546  
- item   (Intercept) 0.17368  0.4167  
- item.1 rhd.cp      0.04943  0.2223  
+ Subj   (Intercept) 3.07862  1.7546
+ item   (Intercept) 0.17368  0.4167
+ item.1 rhd.cp      0.04943  0.2223
 Number of obs: 1620, groups:  Subj, 54; item, 30'
 ## check rePCA output =================================
 summary(rePCA(zcp2_ungr))
@@ -324,7 +324,7 @@ summary(ungr <- glmer(accuracy ~ manip*group+
                     family="binomial",
                     control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
                     ungr_mm))
-save(ungr, file = "ungr.Rdata")
+save(ungr, file = "ungr.RData")
 #*Nice table output*---------------------------------
 # sjPlot::tab_model(ungr, file="ungr.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE, transform = NULL)
 # sjPlot::tab_model(ungr, file="ungr_odds.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE)
@@ -332,15 +332,15 @@ save(ungr, file = "ungr.Rdata")
 ls()
 rm(corr2_ungr, m0_ungr, ungr_i, zcp_ungr, zcp1_ungr, zcp2_ungr, ungr_mm)
 ```
-  
-### Visualizations and Post-Hoc-Tests    
+
+### Visualizations and Post-Hoc-Tests
 ```{r interaction and comparisons ungr, echo=TRUE, message=FALSE, warning=FALSE}
 # interaction visualization ---------------------------------
 # manip1:group2-1 =================================
 ### manip ~ group #############################
-load("ungr.Rdata")
-emmeans::emmip(ungr, group ~ manip, CIs = TRUE, 
-               CIarg = list(lwd = 1, alpha=0.7), 
+load("ungr.RData")
+emmeans::emmip(ungr, group ~ manip, CIs = TRUE,
+               CIarg = list(lwd = 1, alpha=0.7),
                linearg = list(linetype = "dashed", alpha=0)) +
   labs(
     y = "Model predictions - accuracy",
@@ -350,13 +350,13 @@ emmeans::emmip(ungr, group ~ manip, CIs = TRUE,
         axis.title.x=element_text(size=11),
         axis.title.y=element_text(size=11),
         legend.justification = c("right", "top"),
-        legend.title = element_text(size=11, face="bold"), 
+        legend.title = element_text(size=11, face="bold"),
         legend.text=element_text(size=11, face="bold")
   )
 # ggsave("intGM.jpg",width = 18, height = 18, dpi=300, units = "cm")
 ### group ~ manip #############################
-emmeans::emmip(ungr, manip~group, CIs = TRUE, 
-               CIarg = list(lwd = 1, alpha=0.7), 
+emmeans::emmip(ungr, manip~group, CIs = TRUE,
+               CIarg = list(lwd = 1, alpha=0.7),
                linearg = list(linetype = "dashed", alpha=0)) +
   labs(
     y = "Model predictions - accuracy",
@@ -366,13 +366,13 @@ emmeans::emmip(ungr, manip~group, CIs = TRUE,
         axis.title.x=element_text(size=11),
         axis.title.y=element_text(size=11),
         legend.justification = c("right", "top"),
-        legend.title = element_text(size=11, face="bold"), 
+        legend.title = element_text(size=11, face="bold"),
         legend.text=element_text(size=11, face="bold")
   )
 # ggsave("intMG.jpg",width = 18, height = 18, dpi=300, units = "cm")
 # POST-HOC testing ---------------------------------
 # what are the significant differences
-emmeans::emmeans(ungr, pairwise ~ group*manip) %>% 
+emmeans::emmeans(ungr, pairwise ~ group*manip) %>%
   summary(by = NULL, adjust = "bonferroni")
 # nested effects - interaction of interactions
 emm_ungr_gm <- emmeans::emmeans(ungr, pairwise ~ group*manip, adjust = "bonferroni")
@@ -380,8 +380,8 @@ emmeans::contrast(emm_ungr_gm[[1]], "poly","consec")
 # clean workspace
 rm(emm_ungr_gm, data_ungr, ungr)
 ```
-  
-*Probabilities*  
+
+*Probabilities*
 ```{r probabilities, echo=TRUE, message=FALSE, warning=FALSE}
 ## Log-odds (= model estimate)
 ## odds = exp(log-odds) or odds=P/(1-P)
@@ -400,10 +400,10 @@ paste("Probability intercept 95% CI low = ",Prob_intercept_CIL,"%",sep="")
 paste("Probability intercept 95% CI high = ",Prob_intercept_CIH,"%",sep="")
 # clean workspace
 rm(Prob_intercept, Prob_intercept_CIH, Prob_intercept_CIL, Probability)
-```  
-  
-## grouped data  
-### *Contrast coding*    
+```
+
+## grouped data
+### *Contrast coding*
 ```{r grpd contrasts, echo=TRUE, message=FALSE, warning=FALSE}
 # subset data - only grouped ---------------------------------
 data_grpd <- filter(comp, condition %in% c ("grouped"))
@@ -411,9 +411,9 @@ data_grpd <- filter(comp, condition %in% c ("grouped"))
 # summary(data_grpd)
 # Factorize predictors variables ---------------------------------
 ################## group
-class(data_grpd$group) # factor 
+class(data_grpd$group) # factor
 # data_grpd$group <- as.factor(data_grpd$group)
-## check level order 
+## check level order
 levels(data_grpd$group) # "CP" "LHDP" "RHDP"
 data_grpd$group <- factor(data_grpd$group, levels = c("LHDP", "CP", "RHDP"))
 ################## exp
@@ -478,9 +478,9 @@ grpd_mm$min3.maxL_rhd.cp     <-mm[,15]
 # clean workspace ---------------------------------
 rm(mm)
 ```
-  
-### rePCA  
-*grouped data model reduction*  
+
+### rePCA
+*grouped data model reduction*
 ```{r grpd model reduction, echo=TRUE, message=FALSE, warning=FALSE}
 # INITIAL model ---------------------------------
 summary(grpd_i <- glmer(accuracy ~ manip*group+
@@ -516,7 +516,7 @@ summary(zcp_grpd <- glmer(accuracy ~ 1+maxLR.max3+maxR.maxLR+maxL.maxR+min3.maxL
                          grpd_mm))
 # isSingular
 'Random effects:
- Groups Name        Variance  Std.Dev. 
+ Groups Name        Variance  Std.Dev.
  item   rhd.cp      2.696e-02 1.642e-01 # mean var. smaller then sd
  item.1 cp.lhd      4.011e-10 2.003e-05 # no variance
  item.2 (Intercept) 5.105e-01 7.145e-01
@@ -630,7 +630,7 @@ summary(grpd <- glmer(accuracy ~ manip*group+
                      family="binomial",
                      control=glmerControl(optCtrl=list(maxfun=1e5),optimizer="bobyqa"),
                      grpd_mm))
-save(grpd, file = "grpd.Rdata")
+save(grpd, file = "grpd.RData")
 #*Nice table output*---------------------------------
 # sjPlot::tab_model(grpd, file="grpd.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE, transform = NULL)
 # sjPlot::tab_model(grpd, file="grpd_odds.doc", show.stat = TRUE, show.se = TRUE, collapse.ci=TRUE)
@@ -638,15 +638,15 @@ save(grpd, file = "grpd.Rdata")
 ls()
 rm(grpd_i, m0_grpd, m1_grpd, m2_grpd, m3_grpd, m4_grpd, m5_grpd, zcp_grpd)
 ```
-  
-### Visualizations and Post-Hoc-Tests    
+
+### Visualizations and Post-Hoc-Tests
 ```{r interaction and comparisons grpd, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # interaction visualization ---------------------------------
 # manip1:group2-1 =================================
 ### manip ~ group #############################
-load("grpd.Rdata")
-emmeans::emmip(grpd, group ~ manip, CIs = TRUE, 
-               CIarg = list(lwd = 1, alpha=0.7), 
+load("grpd.RData")
+emmeans::emmip(grpd, group ~ manip, CIs = TRUE,
+               CIarg = list(lwd = 1, alpha=0.7),
                linearg = list(linetype = "dashed", alpha=0)) +
   labs(
     y = "Model predictions - accuracy",
@@ -656,13 +656,13 @@ emmeans::emmip(grpd, group ~ manip, CIs = TRUE,
         axis.title.x=element_text(size=11),
         axis.title.y=element_text(size=11),
         legend.justification = c("right", "top"),
-        legend.title = element_text(size=11, face="bold"), 
+        legend.title = element_text(size=11, face="bold"),
         legend.text=element_text(size=11, face="bold")
   )
 # ggsave("intMG_grpd.jpg", width = 18, height = 18, dpi=300, units = "cm")
 ### group ~ manip #############################
-emmeans::emmip(grpd, manip ~ group, CIs = TRUE, 
-               CIarg = list(lwd = 1, alpha=0.7), 
+emmeans::emmip(grpd, manip ~ group, CIs = TRUE,
+               CIarg = list(lwd = 1, alpha=0.7),
                linearg = list(linetype = "dashed", alpha=0)) +
   labs(
     y = "Model predictions - accuracy",
@@ -672,13 +672,13 @@ emmeans::emmip(grpd, manip ~ group, CIs = TRUE,
         axis.title.x=element_text(size=11),
         axis.title.y=element_text(size=11),
         legend.justification = c("right", "top"),
-        legend.title = element_text(size=11, face="bold"), 
+        legend.title = element_text(size=11, face="bold"),
         legend.text=element_text(size=11, face="bold")
   )
 #ggsave("intGM_grpd.jpg", width = 18, height = 18, dpi=300, units = "cm")
 # POST-HOC testing ---------------------------------
 # what are the significant differences
-emmeans::emmeans(grpd, pairwise ~ group * manip) %>% 
+emmeans::emmeans(grpd, pairwise ~ group * manip) %>%
   summary(by = NULL, adjust = "bonferroni")
 # nested effects - interaction of interactions
 emm_grpd_gm <- emmeans::emmeans(grpd, pairwise ~ group*manip, adjust = "bonferroni")
@@ -686,8 +686,8 @@ emmeans::contrast(emm_grpd_gm[[1]], "poly","consec")
 # clean workspace ---------------------------------
 rm(data_grpd, grpd_mm, grpd, emm_grpd_gm)
 ```
-  
-*Probabilities*  
+
+*Probabilities*
 ```{r probabilities grpd, echo=TRUE, message=FALSE, warning=FALSE}
 ## Log-odds (= model estimate)
 ## odds = exp(log-odds) or odds=P/(1-P)
@@ -706,9 +706,9 @@ paste("Probability intercept 95% CI low = ",Prob_intercept_CILB,"%",sep="")
 paste("Probability intercept 95% CI high = ",Prob_intercept_CIHB,"%",sep="")
 # clean workspace ---------------------------------
 rm(Prob_interceptB, Prob_intercept_CILB, Prob_intercept_CIHB)
-```    
-  
-# Correlations - working memory measures / accuracy  
+```
+
+# Correlations - working memory measures / accuracy
 ```{r work mem, echo=TRUE, message=FALSE, warning=FALSE}
 # import working memory data ---------------------------------
 workMem <- read.csv2("data/workMem.csv", header = TRUE)
@@ -728,8 +728,8 @@ allMeansAcc1 <- merge(mean_acc_Subj1, workMem[, c("Subj", "compDigit")], by=c("S
 # plots ---------------------------------
 ### compDigit #############################
 ### OVERALL conditions and manipulations
-corrAll <- facet(ggscatter(allMeansAcc1, x="mean", y="compDigit", 
-          add = "reg.line", conf.int = TRUE, 
+corrAll <- facet(ggscatter(allMeansAcc1, x="mean", y="compDigit",
+          add = "reg.line", conf.int = TRUE,
           cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 80, label.sep = "\n"), cor.method = "spearman",
           xlab = "mean accuracy overall", ylab = "composite score digit span")+
         theme_bw(),
@@ -740,8 +740,8 @@ corrAll <- facet(ggscatter(allMeansAcc1, x="mean", y="compDigit",
 corrAll
 # ggsave("correlations_comp_overall.jpg", plot = corr1, width = 18, height = 14, dpi = 300)
 ### grouped condition - for all groups and manipulations
-corrgrpd <- facet(ggscatter(subset(allMeansAcc, allMeansAcc$condition=="grouped"), x="mean", y="compDigit", 
-                           add = "reg.line", conf.int = TRUE, 
+corrgrpd <- facet(ggscatter(subset(allMeansAcc, allMeansAcc$condition=="grouped"), x="mean", y="compDigit",
+                           add = "reg.line", conf.int = TRUE,
                            cor.coef = TRUE, cor.coeff.args = list(size=3, label.x = 2, label.y = 75, label.sep = "\n"), cor.method = "spearman",
                            xlab = "mean accuracy grouped manipulations", ylab = "composite score digit span")+
                    theme_bw(),
@@ -761,8 +761,8 @@ corrgrpd1 <- facet(corrgrpd+
 corrgrpd1
 # ggsave("correlations_grpd_mani1.jpg", plot = corrgrpd1, width = 22, height = 14, dpi = 300)
 ### ungrouped condition - for all groups and manipulations
-corrungr <- facet(ggscatter(subset(allMeansAcc, allMeansAcc$condition=="ungrouped"), x="mean", y="compDigit", 
-                           add = "reg.line", conf.int = TRUE, 
+corrungr <- facet(ggscatter(subset(allMeansAcc, allMeansAcc$condition=="ungrouped"), x="mean", y="compDigit",
+                           add = "reg.line", conf.int = TRUE,
                            cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 50, label.sep = "\n"), cor.method = "spearman",
                            xlab = "mean accuracy ungrouped manipulations", ylab = "composite score digit span")+
                              theme_bw(),
@@ -782,8 +782,8 @@ corrungr1 <- facet(corrungr+
 corrungr1
 # ggsave("correlations_ungrra_mani1.jpg", plot = corrungr1, width = 22, height = 14, dpi = 300)
 ```
-  
-# Descriptive Look at Individual Variability  
+
+# Descriptive Look at Individual Variability
 ```{r data}
 # import data sets
 # note compact declaration of variable types
@@ -795,10 +795,10 @@ data <- read.csv2("data/d.csv", header = TRUE)
 pDat <- subset(data, data$group!="model_stimuli")
 rm(data)
 ```
-    
-## Production Accuracy / Comprehension Accuracy Score  
+
+## Production Accuracy / Comprehension Accuracy Score
 ```{r prod and comp acc}
-# Relevant summaries and subsets  
+# Relevant summaries and subsets
 # means for production accuracy  ---------------------------------------------
 # 1 = correct, 0 = incorrect - based on ratings of patient productions
 # aggregated over Subj and condition - within respective exp
@@ -821,26 +821,26 @@ dplyr::summarise(m_comp_acc = round(mean(accuracy)*100, digits=2))
 means_acc_cond <- merge(mean_acc_read_cond, mean_acc_rep_cond, by=c("Subj", "group", "condition"), all=TRUE)  %>%
   merge(mean_comp_acc_cond, by=c("Subj", "group", "condition"), all=TRUE)
 ## subset - patients that participated in both exp =================================
-means_acc_cond <- subset(means_acc_cond, 
+means_acc_cond <- subset(means_acc_cond,
 means_acc_cond$Subj=="LHDP03" | means_acc_cond$Subj=="LHDP04" | means_acc_cond$Subj=="LHDP07" |
-means_acc_cond$Subj=="LHDP09" | means_acc_cond$Subj=="LHDP10" | means_acc_cond$Subj=="LHDP11" | 
-means_acc_cond$Subj=="LHDP13" | means_acc_cond$Subj=="LHDP14" | means_acc_cond$Subj=="LHDP15" | 
-means_acc_cond$Subj=="LHDP16" | means_acc_cond$Subj=="RHDP01" | means_acc_cond$Subj=="RHDP02" | 
-means_acc_cond$Subj=="RHDP03" | means_acc_cond$Subj=="RHDP04" | means_acc_cond$Subj=="RHDP05" | 
-means_acc_cond$Subj=="RHDP08" | means_acc_cond$Subj=="RHDP09" | means_acc_cond$Subj=="RHDP12" | 
-means_acc_cond$Subj=="RHDP13" | means_acc_cond$Subj=="RHDP14" | means_acc_cond$Subj=="RHDP15" | 
+means_acc_cond$Subj=="LHDP09" | means_acc_cond$Subj=="LHDP10" | means_acc_cond$Subj=="LHDP11" |
+means_acc_cond$Subj=="LHDP13" | means_acc_cond$Subj=="LHDP14" | means_acc_cond$Subj=="LHDP15" |
+means_acc_cond$Subj=="LHDP16" | means_acc_cond$Subj=="RHDP01" | means_acc_cond$Subj=="RHDP02" |
+means_acc_cond$Subj=="RHDP03" | means_acc_cond$Subj=="RHDP04" | means_acc_cond$Subj=="RHDP05" |
+means_acc_cond$Subj=="RHDP08" | means_acc_cond$Subj=="RHDP09" | means_acc_cond$Subj=="RHDP12" |
+means_acc_cond$Subj=="RHDP13" | means_acc_cond$Subj=="RHDP14" | means_acc_cond$Subj=="RHDP15" |
 means_acc_cond$Subj=="RHDP16" | means_acc_cond$Subj=="RHDP17" | means_acc_cond$Subj=="RHDP18" | means_acc_cond$Subj=="RHDP22")
 ### clean environment #############################
 rm(mean_acc_read_cond, mean_acc_rep_cond, mean_comp_acc_cond)
 ```
 
-## Correlation Plots - Accuracy Scores  
+## Correlation Plots - Accuracy Scores
 ```{r corr plot acc}
 # exp - group - condition
 # reading
-read_comp_cond <- 
-  facet(ggscatter(means_acc_cond, x="m_comp_acc", y="mean_acc_read", 
-          add = "reg.line", conf.int = TRUE, 
+read_comp_cond <-
+  facet(ggscatter(means_acc_cond, x="m_comp_acc", y="mean_acc_read",
+          add = "reg.line", conf.int = TRUE,
           cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 120, label.sep = "\n"), cor.method = "spearman",
           xlab = "mean comprehension accuracy", ylab = "mean production accuracy for reading")+
         theme_bw(),
@@ -851,9 +851,9 @@ read_comp_cond <-
 read_comp_cond
 ggsave("corr_read_comp_cond.jpg", plot = read_comp_cond, width = 12, height = 12, dpi = 300)
 # repetition
-rep_comp_cond <- 
-  facet(ggscatter(means_acc_cond, x="m_comp_acc", y="mean_acc_rep", 
-          add = "reg.line", conf.int = TRUE, 
+rep_comp_cond <-
+  facet(ggscatter(means_acc_cond, x="m_comp_acc", y="mean_acc_rep",
+          add = "reg.line", conf.int = TRUE,
           cor.coef = TRUE, cor.coeff.args = list(size=5, label.x = 2, label.y = 80, label.sep = "\n"), cor.method = "spearman",
           xlab = "mean comprehension accuracy", ylab = "mean production accuracy for repetition")+
         theme_bw(),
@@ -865,7 +865,7 @@ rep_comp_cond
 ggsave("corr_rep_comp_cond.jpg", plot = rep_comp_cond, width = 12, height = 12, dpi = 300)
 ```
 
-# Session information    
+# Session information
 ```{r print session info}
 sessionInfo(package = NULL)
 rm(list=ls())
