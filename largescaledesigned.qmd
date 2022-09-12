@@ -580,7 +580,7 @@ The amount of time to fit more complex models will be much greater so we may wan
 We can split the tasks of fitting and analyzing a model between computers by saving the optimization summary after the model fit and later creating the `MixedModel` object followed by restoring the `optsum` object.
 
 ```{julia}
-saveoptsum("./optsums/elm01.json", elm01);
+saveoptsum("./fits/elm01.json", elm01);
 ```
 
 ```{julia}
@@ -591,7 +591,7 @@ elm01a = restoreoptsum!(
     )
     MixedModel(form, pruned; contrasts)
   end,
-  "./optsums/elm01.json",
+  "./fits/elm01.json",
 )
 ```
 
@@ -667,7 +667,7 @@ As shown in @fig-fig-elm01vocabage, there does not seem to be a strong relations
 #| fig-cap: "Random effect for subject in model elm01 versus vocabulary age"
 #| code-fold: true
 draw(
-  data(dropmissing(select(subjextended, :elm01, :vocabAge, :sex))) * 
+  data(dropmissing(select(subjextended, :elm01, :vocabAge, :sex))) *
   mapping(
     :vocabAge => "Vocabulary age (yr) of subject",
     :elm01 => "Random effect in model elm01";
@@ -681,7 +681,7 @@ draw(
 #| label: fig-elm01univ
 #| fig-cap: "Estimated density of random effects for subject in model elm01 by university"
 draw(
-  data(dropmissing(select(subjextended, :elm01, :univ))) * 
+  data(dropmissing(select(subjextended, :elm01, :univ))) *
   mapping(
     :elm01 => "Random effect in model elm01";
     color=:univ => "University",
@@ -694,7 +694,7 @@ draw(
 #| label: fig-elm02univ
 #| fig-cap: "Estimated density of random effects for subject in model elm02, fit to accurate responders only, by university"
 draw(
-  data(dropmissing(select(subjextended, :elm02, :univ))) * 
+  data(dropmissing(select(subjextended, :elm02, :univ))) *
   mapping(
     :elm02 => "Random effect in model elm02 (accurate responders only)";
     color=:univ => "University",
