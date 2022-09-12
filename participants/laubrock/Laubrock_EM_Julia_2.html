@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.147">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -2603,8 +2603,7 @@ vertical-align: -.125em;
   <li><a href="#readme" id="toc-readme" class="nav-link" data-scroll-target="#readme"><span class="toc-section-number">2</span>  Readme</a></li>
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="toc-section-number">3</span>  Setup</a>
   <ul class="collapse">
-  <li><a href="#environment" id="toc-environment" class="nav-link" data-scroll-target="#environment"><span class="toc-section-number">3.1</span>  Environment</a></li>
-  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">3.2</span>  Packages</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">3.1</span>  Packages</a></li>
   </ul></li>
   <li><a href="#lmm-analysis" id="toc-lmm-analysis" class="nav-link" data-scroll-target="#lmm-analysis"><span class="toc-section-number">4</span>  LMM analysis</a>
   <ul class="collapse">
@@ -2685,12 +2684,9 @@ vertical-align: -.125em;
 </section>
 <section id="setup" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Setup</h1>
-<section id="environment" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="environment"><span class="header-section-number">3.1</span> Environment</h2>
-</section>
-<section id="packages" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="packages"><span class="header-section-number">3.2</span> Packages</h2>
-<div id="packages" class="cell" data-execution_count="2">
+<section id="packages" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">3.1</span> Packages</h2>
+<div id="packages" class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">AlgebraOfGraphics</span></span>
@@ -2699,7 +2695,7 @@ vertical-align: -.125em;
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CategoricalArrays</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros  </span><span class="co"># simplified dplyr-like data wrangling </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros  </span><span class="co"># simplified dplyr-like data wrangling</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie </span><span class="co"># diagnostic plots</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
@@ -2723,7 +2719,7 @@ vertical-align: -.125em;
 <li>The data are available as an arrow file.</li>
 <li>Most of preprocessing was done with R in RStudio.</li>
 </ul>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="2">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="fu">DataFrame</span>(Arrow.<span class="fu">Table</span>(<span class="st">&quot;./data/Laubrock_EM.arrow&quot;</span>))</span>
@@ -2768,29 +2764,32 @@ vertical-align: -.125em;
 <p>We use centered covariates and model frequency <code>f</code> of the fixated word with a cubic trend.</p>
 <section id="fit-lmm-m_ovi" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="fit-lmm-m_ovi"><span class="header-section-number">4.1</span> Fit LMM <code>m_ovi</code></h2>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="3">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="m_ovi"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m_ovi-1"><a href="#m_ovi-1" aria-hidden="true" tabindex="-1"></a>f2_ovi <span class="op">=</span> <span class="pp">@formula</span>(lfd <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> lls <span class="op">+</span> rfl<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> rwn<span class="op">^</span><span class="fl">3</span> <span class="op">+</span></span>
 <span id="m_ovi-2"><a href="#m_ovi-2" aria-hidden="true" tabindex="-1"></a>                        f <span class="op">+</span> f<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> f<span class="op">^</span><span class="fl">3</span> <span class="op">+</span> l <span class="op">+</span> f1 <span class="op">+</span> l1 <span class="op">+</span> f2 <span class="op">+</span> l2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">+</span></span>
-<span id="m_ovi-3"><a href="#m_ovi-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">|</span> Subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Sent) </span>
+<span id="m_ovi-3"><a href="#m_ovi-3" aria-hidden="true" tabindex="-1"></a>                       (<span class="fl">1</span> <span class="op">|</span> Subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> Sent)</span>
 <span id="m_ovi-4"><a href="#m_ovi-4" aria-hidden="true" tabindex="-1"></a>                );</span>
 <span id="m_ovi-5"><a href="#m_ovi-5" aria-hidden="true" tabindex="-1"></a>m2_ovi <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f2_ovi, dat; contrasts);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 30    Time: 0:00:00 (26.95 ms/it)</code></pre>
+<pre><code>Minimizing 30    Time: 0:00:01 (42.25 ms/it)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
 </div>
 </div>
 </section>
 <section id="fit-lmm-m_zcp" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="fit-lmm-m_zcp"><span class="header-section-number">4.2</span> Fit LMM <code>m_zcp</code></h2>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="4">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="m_zcp"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m_zcp-1"><a href="#m_zcp-1" aria-hidden="true" tabindex="-1"></a>f2_zcp <span class="op">=</span> <span class="pp">@formula</span>(lfd <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> lls <span class="op">+</span> rfl <span class="op">+</span> rfl<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> rwn <span class="op">+</span> rwn<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> rwn<span class="op">^</span><span class="fl">3</span> <span class="op">+</span></span>
 <span id="m_zcp-2"><a href="#m_zcp-2" aria-hidden="true" tabindex="-1"></a>                        f <span class="op">+</span> f<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> f<span class="op">^</span><span class="fl">3</span> <span class="op">+</span> l <span class="op">+</span> f1 <span class="op">+</span> l1 <span class="op">+</span> f2 <span class="op">+</span> l2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">+</span></span>
-<span id="m_zcp-3"><a href="#m_zcp-3" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Subj) <span class="op">+</span> </span>
-<span id="m_zcp-4"><a href="#m_zcp-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p2 <span class="op">+</span> p2 <span class="op">|</span> Sent) </span>
+<span id="m_zcp-3"><a href="#m_zcp-3" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Subj) <span class="op">+</span></span>
+<span id="m_zcp-4"><a href="#m_zcp-4" aria-hidden="true" tabindex="-1"></a>               <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p2 <span class="op">+</span> p2 <span class="op">|</span> Sent)</span>
 <span id="m_zcp-5"><a href="#m_zcp-5" aria-hidden="true" tabindex="-1"></a>                );</span>
 <span id="m_zcp-6"><a href="#m_zcp-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="m_zcp-7"><a href="#m_zcp-7" aria-hidden="true" tabindex="-1"></a>m2_zcp <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f2_zcp, dat; contrasts);</span>
@@ -2799,7 +2798,7 @@ vertical-align: -.125em;
 <span id="m_zcp-10"><a href="#m_zcp-10" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m2_ovi, m2_zcp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 865   Time: 0:00:03 ( 4.60 ms/it)</code></pre>
+<pre><code>Minimizing 744   Time: 0:00:03 ( 4.05 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>falseVariance components:</code></pre>
@@ -2807,22 +2806,22 @@ vertical-align: -.125em;
 <div class="cell-output cell-output-stdout">
 <pre><code>
             Column    Variance   Std.Dev.    Corr.
-Sent     (Intercept)  0.00090853 0.03014187
-         f            0.00111417 0.03337911   .  
-         f1           0.00055667 0.02359387   .     .  
-         f2           0.00029007 0.01703158   .     .     .  
-         p            0.00008980 0.00947624   .     .     .     .  
-         p2           0.00008830 0.00939658   .     .     .     .     .  
-Subj     (Intercept)  0.01204935 0.10976951
-         f            0.00020276 0.01423943   .  
-         f1           0.00010182 0.01009053   .     .  
-         f2           0.00001096 0.00331008   .     .     .  
-         p            0.00002155 0.00464213   .     .     .     .  
-         p1           0.00000567 0.00238050   .     .     .     .     .  
-         p2           0.00000557 0.00236044   .     .     .     .     .     .  
-Residual              0.09091039 0.30151350</code></pre>
+Sent     (Intercept)  0.00090853 0.03014190
+         f            0.00111402 0.03337692   .  
+         f1           0.00055668 0.02359415   .     .  
+         f2           0.00029014 0.01703343   .     .     .  
+         p            0.00008980 0.00947621   .     .     .     .  
+         p2           0.00008830 0.00939662   .     .     .     .     .  
+Subj     (Intercept)  0.01205078 0.10977603
+         f            0.00020279 0.01424041   .  
+         f1           0.00010180 0.01008943   .     .  
+         f2           0.00001096 0.00331081   .     .     .  
+         p            0.00002155 0.00464195   .     .     .     .  
+         p1           0.00000567 0.00238029   .     .     .     .     .  
+         p2           0.00000557 0.00236050   .     .     .     .     .     .  
+Residual              0.09091037 0.30151346</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 87%">
@@ -2867,26 +2866,27 @@ Residual              0.09091039 0.30151350</code></pre>
 <section id="fit-lmm-m_cpx" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="fit-lmm-m_cpx"><span class="header-section-number">4.3</span> Fit LMM <code>m_cpx</code></h2>
 <p>Expand LMM <code>m_zcp</code> with CPs.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="5">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="m_cpx"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m_cpx-1"><a href="#m_cpx-1" aria-hidden="true" tabindex="-1"></a>f2_cpx <span class="op">=</span> <span class="pp">@formula</span>(lfd <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> lls <span class="op">+</span> rfl<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> rwn<span class="op">^</span><span class="fl">3</span> <span class="op">+</span></span>
 <span id="m_cpx-2"><a href="#m_cpx-2" aria-hidden="true" tabindex="-1"></a>                       f <span class="op">+</span> f<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> f<span class="op">^</span><span class="fl">3</span> <span class="op">+</span> l <span class="op">+</span> f1 <span class="op">+</span> l1 <span class="op">+</span> f2 <span class="op">+</span> l2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">+</span></span>
-<span id="m_cpx-3"><a href="#m_cpx-3" aria-hidden="true" tabindex="-1"></a>                      (<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Subj) <span class="op">+</span> </span>
-<span id="m_cpx-4"><a href="#m_cpx-4" aria-hidden="true" tabindex="-1"></a>                      (<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Sent) </span>
+<span id="m_cpx-3"><a href="#m_cpx-3" aria-hidden="true" tabindex="-1"></a>                      (<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Subj) <span class="op">+</span></span>
+<span id="m_cpx-4"><a href="#m_cpx-4" aria-hidden="true" tabindex="-1"></a>                      (<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Sent)</span>
 <span id="m_cpx-5"><a href="#m_cpx-5" aria-hidden="true" tabindex="-1"></a>                );</span>
 <span id="m_cpx-6"><a href="#m_cpx-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="m_cpx-7"><a href="#m_cpx-7" aria-hidden="true" tabindex="-1"></a>m2_cpx <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f2_cpx, dat; contrasts);</span>
 <span id="m_cpx-8"><a href="#m_cpx-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="m_cpx-9"><a href="#m_cpx-9" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(<span class="fu">issingular</span>(m2_cpx))</span>
-<span id="m_cpx-10"><a href="#m_cpx-10" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(m2_cpx.PCA[<span class="op">:</span>Subj]) </span>
+<span id="m_cpx-10"><a href="#m_cpx-10" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(m2_cpx.PCA[<span class="op">:</span>Subj])</span>
 <span id="m_cpx-11"><a href="#m_cpx-11" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(m2_cpx.PCA[<span class="op">:</span>Sent])</span>
 <span id="m_cpx-12"><a href="#m_cpx-12" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(<span class="fu">VarCorr</span>(m2_cpx))</span>
 <span id="m_cpx-13"><a href="#m_cpx-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="m_cpx-14"><a href="#m_cpx-14" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m2_ovi, m2_zcp, m2_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 4535      Time: 0:00:27 ( 6.12 ms/it)</code></pre>
+<pre><code>Minimizing 5166      Time: 0:00:23 ( 4.45 ms/it)
+  objective:  14911.755310904271</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>true</code></pre>
@@ -2906,7 +2906,7 @@ Residual              0.09091039 0.30151350</code></pre>
 Normalized cumulative variances:</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[0.5064, 0.7293, 0.8724, 0.9529, 0.9877, 1.0, 1.0]
+<pre><code>[0.5066, 0.7295, 0.8725, 0.9529, 0.9878, 1.0, 1.0]
 
 Component loadings</code></pre>
 </div>
@@ -2921,46 +2921,46 @@ Component loadings</code></pre>
  p2           -0.49  -0.2    0.26   0.12  -0.11   0.48   0.63
 Principal components based on correlation matrix
  (Intercept)   1.0     .      .      .      .      .      .
- f            -0.16   1.0     .      .      .      .      .
+ f            -0.17   1.0     .      .      .      .      .
  f1           -0.3    0.13   1.0     .      .      .      .
  f2            0.02  -0.28   0.05   1.0     .      .      .
- p             0.33  -0.45   0.01   0.01   1.0     .      .
+ p             0.34  -0.45   0.01   0.01   1.0     .      .
  p1            0.35  -0.07  -0.43   0.46  -0.1    1.0     .
  p2            0.16  -0.1   -0.27  -0.72   0.21  -0.21   1.0
 
 Normalized cumulative variances:
-[0.2883, 0.5628, 0.7584, 0.8681, 0.9276, 0.9781, 1.0]
+[0.2882, 0.5632, 0.7585, 0.8681, 0.9276, 0.9781, 1.0]
 
 Component loadings
                 PC1    PC2    PC3    PC4    PC5    PC6    PC7
- (Intercept)  -0.28  -0.45   0.1   -0.66   0.35   0.38   0.05
- f             0.27   0.32   0.49  -0.54  -0.45  -0.12   0.27
- f1            0.22   0.39  -0.49  -0.41   0.47  -0.41  -0.01
- f2           -0.59   0.29  -0.2    0.08  -0.05   0.04   0.72
- p            -0.08  -0.42  -0.55  -0.24  -0.62  -0.26  -0.06
- p1           -0.55  -0.07   0.39  -0.02   0.1   -0.68  -0.26
+ (Intercept)  -0.29  -0.45   0.1   -0.66   0.35   0.38   0.05
+ f             0.28   0.31   0.49  -0.54  -0.45  -0.12   0.27
+ f1            0.23   0.39  -0.49  -0.41   0.47  -0.41  -0.01
+ f2           -0.58   0.3   -0.2    0.08  -0.05   0.04   0.72
+ p            -0.09  -0.42  -0.55  -0.24  -0.62  -0.26  -0.06
+ p1           -0.55  -0.06   0.39  -0.02   0.1   -0.68  -0.26
  p2            0.38  -0.53   0.13   0.17   0.23  -0.37   0.58</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Variance components:
             Column    Variance   Std.Dev.    Corr.
-Sent     (Intercept)  0.00118695 0.03445208
-         f            0.00122259 0.03496554 -0.16
-         f1           0.00064860 0.02546759 -0.30 +0.13
-         f2           0.00038895 0.01972174 +0.02 -0.28 +0.05
-         p            0.00011126 0.01054806 +0.33 -0.45 +0.01 +0.01
-         p1           0.00009276 0.00963100 +0.35 -0.07 -0.43 +0.46 -0.10
-         p2           0.00010062 0.01003082 +0.16 -0.10 -0.27 -0.72 +0.21 -0.21
-Subj     (Intercept)  0.01193977 0.10926928
-         f            0.00027695 0.01664189 +0.17
-         f1           0.00012528 0.01119267 +0.20 +0.16
-         f2           0.00002873 0.00536016 -0.23 -0.48 -0.29
-         p            0.00003207 0.00566321 -0.25 -0.74 +0.23 +0.42
-         p1           0.00000971 0.00311535 -0.20 -0.36 -0.63 +0.76 +0.30
-         p2           0.00001086 0.00329477 +0.01 +0.49 +0.53 -0.85 -0.26 -0.92
-Residual              0.09039788 0.30066240</code></pre>
+Sent     (Intercept)  0.00118982 0.03449381
+         f            0.00122202 0.03495734 -0.17
+         f1           0.00064928 0.02548096 -0.30 +0.13
+         f2           0.00038973 0.01974150 +0.02 -0.28 +0.05
+         p            0.00011134 0.01055177 +0.34 -0.45 +0.01 +0.01
+         p1           0.00009279 0.00963295 +0.35 -0.07 -0.43 +0.46 -0.10
+         p2           0.00010067 0.01003368 +0.16 -0.10 -0.27 -0.72 +0.21 -0.21
+Subj     (Intercept)  0.01195708 0.10934843
+         f            0.00027724 0.01665044 +0.17
+         f1           0.00012536 0.01119653 +0.20 +0.16
+         f2           0.00002877 0.00536372 -0.23 -0.48 -0.29
+         p            0.00003209 0.00566498 -0.25 -0.74 +0.23 +0.42
+         p1           0.00000971 0.00311634 -0.20 -0.36 -0.63 +0.76 +0.30
+         p2           0.00001087 0.00329713 +0.01 +0.49 +0.53 -0.85 -0.26 -0.92
+Residual              0.09039629 0.30065975</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 87%">
@@ -3012,38 +3012,38 @@ Residual              0.09039788 0.30066240</code></pre>
 </section>
 <section id="fit-lmm-m_prsm" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="fit-lmm-m_prsm"><span class="header-section-number">4.4</span> Fit LMM <code>m_prsm</code></h2>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="6">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="m_prsm1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="m_prsm1-1"><a href="#m_prsm1-1" aria-hidden="true" tabindex="-1"></a>f2_prsm <span class="op">=</span> <span class="pp">@formula</span>(lfd <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> lls <span class="op">+</span> rfl<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> rwn<span class="op">^</span><span class="fl">3</span> <span class="op">+</span></span>
 <span id="m_prsm1-2"><a href="#m_prsm1-2" aria-hidden="true" tabindex="-1"></a>                         f <span class="op">+</span> f<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> f<span class="op">^</span><span class="fl">3</span> <span class="op">+</span> l <span class="op">+</span> f1 <span class="op">+</span> l1 <span class="op">+</span> f2 <span class="op">+</span> l2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">+</span></span>
 <span id="m_prsm1-3"><a href="#m_prsm1-3" aria-hidden="true" tabindex="-1"></a>                        (<span class="fl">0</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p      <span class="op">+</span> p2 <span class="op">|</span> Subj) <span class="op">+</span>  <span class="fu">zerocorr</span>(<span class="fl">1</span> <span class="op">+</span> p1 <span class="op">|</span> Subj) <span class="op">+</span></span>
-<span id="m_prsm1-4"><a href="#m_prsm1-4" aria-hidden="true" tabindex="-1"></a>                        (<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Sent) </span>
+<span id="m_prsm1-4"><a href="#m_prsm1-4" aria-hidden="true" tabindex="-1"></a>                        (<span class="fl">1</span> <span class="op">+</span> f <span class="op">+</span> f1 <span class="op">+</span> f2 <span class="op">+</span> p <span class="op">+</span> p1 <span class="op">+</span> p2 <span class="op">|</span> Sent)</span>
 <span id="m_prsm1-5"><a href="#m_prsm1-5" aria-hidden="true" tabindex="-1"></a>                );</span>
 <span id="m_prsm1-6"><a href="#m_prsm1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="m_prsm1-7"><a href="#m_prsm1-7" aria-hidden="true" tabindex="-1"></a>m2_prsm <span class="op">=</span> <span class="fu">fit</span>(MixedModel, f2_prsm, dat; contrasts);</span>
 <span id="m_prsm1-8"><a href="#m_prsm1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(<span class="fu">issingular</span>(m2_prsm))</span>
-<span id="m_prsm1-9"><a href="#m_prsm1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(m2_prsm.PCA[<span class="op">:</span>Subj]) </span>
+<span id="m_prsm1-9"><a href="#m_prsm1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(m2_prsm.PCA[<span class="op">:</span>Subj])</span>
 <span id="m_prsm1-10"><a href="#m_prsm1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(m2_prsm.PCA[<span class="op">:</span>Sent])</span>
 <span id="m_prsm1-11"><a href="#m_prsm1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(<span class="fu">VarCorr</span>(m2_prsm))</span>
 <span id="m_prsm1-12"><a href="#m_prsm1-12" aria-hidden="true" tabindex="-1"></a>MixedModels.<span class="fu">likelihoodratiotest</span>(m2_zcp, m2_prsm, m2_cpx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 5501      Time: 0:00:31 ( 5.68 ms/it)</code></pre>
+<pre><code>Minimizing 3990      Time: 0:00:17 ( 4.35 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>false
 Principal components based on correlation matrix
  f             1.0     .      .      .     .     .     .
  f1            0.11   1.0     .      .     .     .     .
- f2           -0.49  -0.13   1.0     .     .     .     .
+ f2           -0.49  -0.14   1.0     .     .     .     .
  p            -0.75   0.3    0.44   1.0    .     .     .
  p2            0.54   0.39  -0.89  -0.3   1.0    .     .
  (Intercept)   0.0    0.0    0.0    0.0   0.0   1.0    .
  p1            0.0    0.0    0.0    0.0   0.0   0.0   1.0
 
 Normalized cumulative variances:
-[0.3908, 0.5901, 0.733, 0.8758, 0.969, 0.9919, 1.0]
+[0.3907, 0.5901, 0.733, 0.8759, 0.969, 0.9919, 1.0]
 
 Component loadings
                 PC1    PC2   PC3   PC4    PC5    PC6    PC7
@@ -3052,23 +3052,23 @@ Component loadings
  f2            0.53   0.13  0.0   0.0   -0.53  -0.19   0.62
  p             0.42  -0.55  0.0   0.0    0.22  -0.65  -0.24
  p2           -0.53  -0.33  0.0   0.0    0.29  -0.22   0.69
- (Intercept)   0.0    0.0   0.0   1.0    0.0    0.0    0.0
- p1            0.0    0.0   1.0   0.0    0.0    0.0    0.0
+ (Intercept)   0.0    0.0   1.0   0.0    0.0    0.0    0.0
+ p1            0.0    0.0   0.0   1.0    0.0    0.0    0.0
 Principal components based on correlation matrix
  (Intercept)   1.0     .      .      .      .      .      .
  f            -0.16   1.0     .      .      .      .      .
  f1           -0.3    0.13   1.0     .      .      .      .
  f2            0.02  -0.28   0.05   1.0     .      .      .
- p             0.33  -0.45   0.01   0.01   1.0     .      .
+ p             0.34  -0.45   0.01   0.01   1.0     .      .
  p1            0.35  -0.07  -0.43   0.46  -0.1    1.0     .
- p2            0.16  -0.1   -0.27  -0.72   0.21  -0.21   1.0
+ p2            0.16  -0.11  -0.27  -0.72   0.21  -0.21   1.0
 
 Normalized cumulative variances:
-[0.2879, 0.5631, 0.7591, 0.8687, 0.928, 0.9786, 1.0]
+[0.2879, 0.5632, 0.7591, 0.8687, 0.928, 0.9786, 1.0]
 
 Component loadings
                 PC1    PC2    PC3    PC4    PC5    PC6    PC7
- (Intercept)  -0.26  -0.46   0.1   -0.66   0.36   0.37   0.05
+ (Intercept)  -0.27  -0.46   0.1   -0.66   0.36   0.37   0.05
  f             0.26   0.33   0.49  -0.55  -0.45  -0.11   0.27
  f1            0.21   0.4   -0.49  -0.41   0.47  -0.41  -0.01
  f2           -0.6    0.27  -0.2    0.08  -0.05   0.04   0.72
@@ -3079,23 +3079,23 @@ Component loadings
 <div class="cell-output cell-output-stdout">
 <pre><code>Variance components:
             Column    Variance   Std.Dev.    Corr.
-Sent     (Intercept)  0.00118233 0.03438498
-         f            0.00122532 0.03500452 -0.16
-         f1           0.00064796 0.02545504 -0.30 +0.13
-         f2           0.00038356 0.01958457 +0.02 -0.28 +0.05
-         p            0.00011148 0.01055820 +0.33 -0.45 +0.01 +0.01
-         p1           0.00009240 0.00961248 +0.35 -0.07 -0.43 +0.46 -0.10
-         p2           0.00010048 0.01002419 +0.16 -0.10 -0.27 -0.72 +0.21 -0.21
-Subj     f            0.00028166 0.01678273
-         f1           0.00009449 0.00972042 +0.11
-         f2           0.00003016 0.00549159 -0.49 -0.13
-         p            0.00003297 0.00574222 -0.75 +0.30 +0.44
-         p2           0.00001041 0.00322601 +0.54 +0.39 -0.89 -0.30
-         (Intercept)  0.01215552 0.11025206   .     .     .     .     .  
-         p1           0.00000521 0.00228264   .     .     .     .     .     .  
-Residual              0.09045109 0.30075088</code></pre>
+Sent     (Intercept)  0.00118282 0.03439218
+         f            0.00122590 0.03501285 -0.16
+         f1           0.00064826 0.02546097 -0.30 +0.13
+         f2           0.00038336 0.01957963 +0.02 -0.28 +0.05
+         p            0.00011149 0.01055904 +0.34 -0.45 +0.01 +0.01
+         p1           0.00009238 0.00961152 +0.35 -0.07 -0.43 +0.46 -0.10
+         p2           0.00010048 0.01002388 +0.16 -0.11 -0.27 -0.72 +0.21 -0.21
+Subj     f            0.00028163 0.01678181
+         f1           0.00009442 0.00971687 +0.11
+         f2           0.00003015 0.00549113 -0.49 -0.14
+         p            0.00003297 0.00574186 -0.75 +0.30 +0.44
+         p2           0.00001041 0.00322579 +0.54 +0.39 -0.89 -0.30
+         (Intercept)  0.01217975 0.11036189   .     .     .     .     .  
+         p1           0.00000521 0.00228254   .     .     .     .     .     .  
+Residual              0.09045069 0.30075021</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 87%">
@@ -3164,21 +3164,21 @@ Residual              0.09045109 0.30075088</code></pre>
 </section>
 <section id="appendix" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Appendix</h1>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="7">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Julia Version 1.8.0
-Commit 5544a0fab76 (2022-08-17 13:38 UTC)
+<pre><code>Julia Version 1.8.1
+Commit afb6c60d69a (2022-09-06 15:09 UTC)
 Platform Info:
-  OS: macOS (x86_64-apple-darwin21.4.0)
-  CPU: 12 × Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
+  OS: Linux (x86_64-linux-gnu)
+  CPU: 8 × 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz
   WORD_SIZE: 64
   LIBM: libopenlibm
-  LLVM: libLLVM-13.0.1 (ORCJIT, skylake)
-  Threads: 1 on 6 virtual cores</code></pre>
+  LLVM: libLLVM-13.0.1 (ORCJIT, tigerlake)
+  Threads: 8 on 8 virtual cores</code></pre>
 </div>
 </div>
 </section>

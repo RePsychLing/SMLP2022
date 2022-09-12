@@ -132,11 +132,10 @@ print(fig1)
 #| message: false
 
 R"""
-
 fig2 <-
   df |>
   ggplot(aes(x=trial, y=rating)) +
-  geom_smooth() +
+  geom_smooth(method="gam") +
   xlab("Trial") +
   scale_y_continuous("Rating", limits=c(1,5)) +
   theme_bw() + theme(legend.position = "top")
@@ -147,6 +146,7 @@ print(fig2)
 
 ## Trial x Case x Gram
 
+<!-- this crashes -->
 ```{julia}
 #| label: fig3
 #| fig-cap: _Figure 3_. Trial effect for four conditions with default smooth() parameters.
@@ -156,7 +156,7 @@ R"""
 fig3 <-
   df |>
   ggplot(aes(x=trial, y=rating, group=Case, color=Case)) +
-  geom_smooth() +
+  geom_smooth(method="gam") +
   xlab("Trial") +
   scale_y_continuous("Rating", limits=c(1,5)) +
   scale_colour_manual("Condition", values=cbPalette) +
