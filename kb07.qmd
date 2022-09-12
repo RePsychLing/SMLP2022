@@ -7,8 +7,6 @@ Begin by loading the packages to be used.
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using AlgebraOfGraphics
 using CairoMakie
 using DataFrameMacros

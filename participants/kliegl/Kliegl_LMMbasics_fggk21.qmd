@@ -3,7 +3,7 @@ title: "LMM Workflow Illustrated with Children's Physical Fitness"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl, Douglas Bates, & Phillip Alday"
 date: "2022-09-10 (revised)"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,14 +12,14 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
 ---
 
 # Background
 
-This script uses a subset of data reported in [Fühner et al.(2021)](https://rdcu.be/cwSeR); [OSF](https://osf.io/2d8rj/)), entitled: "Age and sex effects in physical fitness components of 108,295 third graders including 515 primary schools and 9 cohorts." There is also a second paper using these data from keyage children for the predication of younger-than-keyage and older-than-keyage children ([Fühner et al., 2022](https://www.nature.com/articles/s41598-022-11710-x); [OSF](https://osf.io/dmu68/)). 
+This script uses a subset of data reported in [Fühner et al.(2021)](https://rdcu.be/cwSeR); [OSF](https://osf.io/2d8rj/)), entitled: "Age and sex effects in physical fitness components of 108,295 third graders including 515 primary schools and 9 cohorts." There is also a second paper using these data from keyage children for the predication of younger-than-keyage and older-than-keyage children ([Fühner et al., 2022](https://www.nature.com/articles/s41598-022-11710-x); [OSF](https://osf.io/dmu68/)).
 
 To circumvent delays associated with model fitting we work with models that are less complex than those in the reference publication.
 All the data to reproduce the models in the publication are used here, too; the script requires only a few changes to specify the more complex models in the article.
@@ -33,13 +33,11 @@ The script is structured in four main sections:
 
 # Setup
 
-## Environment 
+## Environment
 
 ```{julia}
 #| label: environment
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 ```
 
 ## Packages

@@ -1,7 +1,5 @@
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using Arrow
 using CairoMakie
 using DataFrames

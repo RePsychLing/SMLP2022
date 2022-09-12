@@ -27,8 +27,6 @@ In this and the complementary `kkl15.jl` scripts, we provide some corresponding 
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using Arrow
 using AlgebraOfGraphics
 using CairoMakie
