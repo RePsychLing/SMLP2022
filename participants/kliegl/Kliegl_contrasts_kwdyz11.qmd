@@ -18,10 +18,13 @@ editor_options:
 
 ```{julia}
 #| code-fold: true
+#| 
+using Pkg; Pkg.activate(".")
+
 using Arrow
 using Chain
 using DataFrames
-using DataFramMacros
+using DataFrameMacros
 using MixedModels
 using ProgressMeter
 using StatsBase
@@ -31,9 +34,9 @@ using StatsModels: ContrastsCoding
 ProgressMeter.ijulia_behavior(:clear);
 ```
 
-## Example data {#sec-data}
+# Example data 
 
-We take the `KWDYZ` dataset [@Kliegl2010].
+We take the `KWDYZ` dataset from [Kliegl et al. (2011, _Front. Psychol._)](https://doi.org/10.3389/fpsyg.2010.00238).
 This is an experiment looking at three effects of visual cueing under four different cue-target relations (CTRs).
 Two horizontal rectangles are displayed above and below a central fixation point or they displayed in vertical orientation to the left and right of the fixation point.
 Subjects react to the onset of a small visual target occuring at one of the four ends of the two rectangles.
@@ -47,7 +50,7 @@ Can the results refute one of the theoretical perspectives?
 We also have a dataset from a replication and extension of this study (Kliegl, Kuschela, & Laubrock, 2015).
 Both data sets are available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/)
 
-## Preprocessing {#sec-preprocessing}
+# Preprocessing {#sec-preprocessing}
 
 ```{julia}
 dat1 = @chain "./data/kwdyz11.arrow" begin
@@ -64,16 +67,26 @@ cellmeans = combine(
 )
 ```
 
+# Constant across script
+
+```{julia}
+display(StatsModels.levels(dat1.CTR))
+form = @formula rt ~ 1 + CTR + (1 + CTR | Subj)
+```
+
+# Contrast options
+
 ## SeqDiffCoding
 
 This contrast corresponds to `MASS::contr.sdif()` in R.
 
 ```{julia}
-form = @formula rt ~ 1 + CTR + (1 + CTR | Subj)
-levels = ["val", "sod", "dos", "dod"]
+
+
 m1 = let
   contrasts = Dict(
-    :CTR => SeqDiffCoding(; levels), :Subj => Grouping()
+    :CTR => SeqDiffCoding(; levels=StatsModels.levels(dat1.CTR)), 
+    :Subj => Grouping()
   )
   fit(MixedModel, form, dat1; contrasts)
 end
@@ -89,11 +102,11 @@ m1b = let
   contrasts = Dict(
     :CTR => HypothesisCoding(
       [
-        -1 1 0 0
-        0 -1 1 0
-        0 0 1 -1
+       -1  1 0  0
+        0 -1 1  0
+        0  0 1 -1
       ];
-      levels,
+      levels=StatsModels.levels(dat1.CTR),
       labels=["spt", "obj", "grv"],
     ),
   )
@@ -106,11 +119,9 @@ Controlling the ordering of levels for contrasts:
  1. kwarg `levels` to order the levels; the first is set as the baseline.
  2. kwarg `base=` to fix the baseline level.
 
-The assignment of random factors such as `Subj` to `Grouping()` is only necessary when the sample size is very large and leads to an out-of-memory error; it is included only in the first example for reference.
-
 ## DummyCoding
 
-Thi contrast corresponds to `contr.treatment()` in R
+This contrast corresponds to `contr.treatment()` in R
 
 ```{julia}
 m2 = let
@@ -137,7 +148,7 @@ m2b = let
         -1 0 1 0
         -1 0 0 1
       ];
-      levels,
+      levels=StatsModels.levels(dat1.CTR),
     )
   )
   fit(MixedModel, form, dat1; contrasts)
@@ -146,27 +157,42 @@ end
 
 Just relevel the factor or move the column with -1s for a different base.
 
-## EffectsCoding - corresponds to `contr.sum()` in R
+## EffectsCoding 
+
+This contrast corresponds almost to `contr.sum()` in R
 
 ```{julia}
 m3 = let
-  contrasts = Dict(:CTR => EffectsCoding(; base="dod"))
+  contrasts = Dict(:CTR => EffectsCoding(; 
+                    levels=StatsModels.levels(dat1.CTR), 
+                    base="dod"))
   fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
 ## HelmertCoding
 
+Helmert contrasts are othogonal.
+
+Helmert coding codes each level as the difference from the average of the lower levels. With the default order of `CTR` levels we get the following test statistics.
+
 ```{julia}
 m4 = let
-  contrasts = Dict(:CTR => HelmertCoding())
+  contrasts = Dict(:CTR => HelmertCoding(;
+                    levels=StatsModels.levels(dat1.CTR)))
   fit(MixedModel, form, dat1; contrasts)
 end
 ```
 
+```sh
++ HeC1: (2 - 1)/2           # (391 - 358)/2
++ HeC2: (3 - (2+1)/2)/3     # (405 - (391 + 358)/2)/3
++ HeC3: (4 - (3+2+1)/3)/4   # (402 - (405 + 391 + 358)/3)/4
+```
 ## Reverse HelmertCoding
 
 ```{julia}
+display(reverse(StatsModels.levels(dat1.CTR)))
 m4b = let
   levels = reverse(StatsModels.levels(dat1.CTR))
   contrasts = Dict(:CTR => HelmertCoding(; levels))
@@ -174,7 +200,11 @@ m4b = let
 end
 ```
 
-Helmert contrasts are othogonal.
+```sh
++ HeC1:(3 - 4)/2            # (405 - 402)/2
++ HeC2:(2 - (3+4)/2)/3      # (391 - (405 + 402)/2)/3
++ HeC3:(1 - (2+3+4)/3/4     # (356  -(391 + 405 + 402)/3)/4 
+```
 
 ## AnovaCoding - Anova contrasts are orthogonal.
 
@@ -194,7 +224,7 @@ m5 = let
         -1 +1 -1 +1          # B
         +1 -1 -1 +1          # A x B
       ];
-      levels,
+      levels=StatsModels.levels(dat1.CTR),
       labels=["A", "B", "AxB"],
     ),
   )
@@ -238,11 +268,11 @@ m8 = let
   contrasts = Dict(
     :CTR => HypothesisCoding(
       [
-        -1 -1 +1 +1
-        -1 +1 0 0
-        0 0 +1 -1
+      -1 -1 +1 +1
+      -1 +1  0  0
+       0  0 +1 -1
       ];
-      levels,
+      levels=StatsModels.levels(dat1.CTR),
       labels=["do_so", "spt", "grv"],
     ),
   )
@@ -269,11 +299,11 @@ contrasts = Dict(
   :CTR => HypothesisCoding(
     [
       -1/4 -1/4 -1/4 -1/4 +1/3 +1/3 +1/3
-      -1/2 -1/2 +1/2 +1/2 0 0 0
-      -1/2 +1/2 -1/2 +1/2 0 0 0
-      +1/2 -1/2 -1/2 +1/2 0 0 0
-      0 0 0 0 -1 +1 0
-      0 0 0 0 -1/2 -1/2 1
+      -1/2 -1/2 +1/2 +1/2    0    0    0
+      -1/2 +1/2 -1/2 +1/2    0    0    0
+      +1/2 -1/2 -1/2 +1/2    0    0    0
+         0    0    0    0   -1   +1    0
+         0    0    0    0 -1/2 -1/2    1
     ];
     levels=["A1", "A2", "A3", "A4", "A5", "A6", "A7"],
     labels=["c567.1234", "B", "C", "BxC", "c6.5", "c6.56"],
