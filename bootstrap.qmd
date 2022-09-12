@@ -1,4 +1,7 @@
-# Parametric bootstrap for mixed-effects models
+---
+title: "Parametric bootstrap for mixed-effects models"
+jupyter: julia-1.8
+---
 
 The speed of MixedModels.jl relative to its predecessors makes the parametric bootstrap much more computationally tractable.
 This is valuable because the parametric bootstrap can be used to produce more accurate confidence intervals than methods based on standard errors or profiling of the likelihood surface.
@@ -43,20 +46,78 @@ ProgressMeter.ijulia_behavior(:clear);
 Note that the precise stream of random numbers generated for a given seed can change between Julia versions.
 For exact reproducibility, you either need to have the exact same Julia version or use the [StableRNGs](https://github.com/JuliaRandom/StableRNGs.jl) package.
 
-## Bootstrap basics
+## A model of moderate complexity
+
+The `kb07` data [@Kronmueller2007] are one of the datasets provided by the `MixedModels` package.
 
 ```{julia}
 kb07 = MixedModels.dataset(:kb07)
-# formula f4 from https://doi.org/10.33016/nextjournal.100002
-form = @formula(rt_trunc ~ 1 + spkr * prec * load + (1 | subj) + (1 + prec | item))
+```
+
+Convert the table to a DataFrame for summary.
+
+```{julia}
+kb07 = DataFrame(kb07)
+describe(kb07)
+```
+
+The experimental factors; `spkr`, `prec`, and `load`, are two-level factors.
+
+```{julia}
 contrasts = Dict(:spkr => EffectsCoding(),
                  :prec => EffectsCoding(),
                  :load => EffectsCoding(),
                  :subj => Grouping(),
                  :item => Grouping())
+```
+
+The `EffectsCoding` contrast is used with these to create a ± encoding.
+Furthermore, `Grouping` constrasts are assigned to the `subj` and `item` factors.
+This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
+For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
+
+It is not important in these cases but a good practice in any case.
+
+We can look at an initial fit of moderate complexity:
+
+```{julia}
+form = @formula(rt_trunc ~ 1 + spkr * prec * load +
+                          (1 + spkr + prec + load | subj) +
+                          (1 + spkr + prec + load | item))
+m0 = fit(MixedModel, form, kb07; contrasts)
+```
+
+The default display in Quarto uses the [pretty MIME show method](https://juliastats.org/MixedModels.jl/v4.7.1/mime/) for the model and omits the estimated correlations of the random effects.
+
+The `VarCorr` extractor displays these.
+
+```{julia}
+VarCorr(m0)
+```
+
+None of the two-factor or three-factor interaction terms in the fixed-effects are significant.
+In the random-effects terms only the scalar random effects and the `prec` random effect for `item` appear to be warranted, leading to the reduced formula
+
+```{julia}
+# formula f4 from https://doi.org/10.33016/nextjournal.100002
+form = @formula(rt_trunc ~ 1 + spkr * prec * load + (1 | subj) + (1 + prec | item))
 
 m1 = fit(MixedModel, form, kb07; contrasts)
 ```
+
+```{julia}
+VarCorr(m1)
+```
+
+These two models are nested and can be compared with a likelihood-ratio test.
+
+```{julia}
+MixedModels.likelihoodratiotest(m0, m1)
+```
+
+The p-value of approximately 14% leads us to prefer the simpler model, `m1`, to the more complex, `m0`.
+
+## Bootstrap basics
 
 To bootstrap the model parameters, first initialize a random number generator then create a bootstrap sample
 
@@ -91,7 +152,6 @@ The bootstrap sample can be used to generate intervals that cover a certain perc
 We refer to these as "coverage intervals", similar to a confidence interval.
 The shortest such intervals, obtained with the `shortestcovint` extractor, correspond to a highest posterior density interval in Bayesian inference.
 
-
 We generate these for all random and fixed effects:
 ```{julia}
 shortestcovint(samp)
@@ -101,6 +161,14 @@ and convert it to a dataframe:
 ```{julia}
 DataFrame(shortestcovint(samp))
 ```
+
+```{julia}
+draw(
+  data(samp.β) * mapping(:β; color=:coefname) * AoG.density();
+  figure=(; resolution=(800, 450)),
+)
+```
+
 
 For the fixed effects, MixedModelsMakie provides a convenience interface to plot the combined coverage intervals and density plots
 
@@ -128,6 +196,7 @@ mdye = fit(MixedModel, @formula(yield ~ 1 + (1 | batch)), dyestuff)
 ```{julia}
 sampdye = parametricbootstrap(MersenneTwister(1234321), 10_000, mdye)
 dfdye = DataFrame(sampdye.allpars)
+first(dfdye, 10)
 ```
 
 ```{julia}
@@ -200,3 +269,8 @@ This operation is encapsulated in a method for the `issingular` function that wo
 ```{julia}
 count(issingular(sampsleep))
 ```
+
+# References
+
+::: {#refs}
+:::
