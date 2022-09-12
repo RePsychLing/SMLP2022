@@ -2,7 +2,7 @@
 title: "Andrea Hofmann: Maulwurf Analysis"
 author: "Reinhold Kliegl"
 date: "2022-08-24 (last revised: `r format(Sys.time())`)"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -11,7 +11,7 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -32,28 +32,28 @@ cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
 
 The file was prepared on the basis of the dataframe used for the original LMM analysis.  (see https://osf.io/3u62p/ )
 
-The data are part of the Master thesis that recorded children's (age: 4-8 years) reaction times during a task teaching them syntactic relations. 
+The data are part of the Master thesis that recorded children's (age: 4-8 years) reaction times during a task teaching them syntactic relations.
 
 # Variables
 
 + `Subj`: Participant ID (renamed from `ID`; random factor)
 + `Item`: Word ID (random factor)
-+ `age`:  4 - 8 years 
-+ `Block` (within-Subj/within-Item): 
++ `age`:  4 - 8 years
++ `Block` (within-Subj/within-Item):
      + 1st Learning
      + 2nd Learning
      + Disruption
      + Recovery
 + `Target`(renamend fom targetness)
-     + Non-target syllable 
+     + Non-target syllable
      + Target syllable
-+ `rt`:  response time 
++ `rt`:  response time
 
 ```{r}
-dat <- 
-  read_feather("./data/Hofmann_Maulwurf_rt.arrow") |> 
+dat <-
+  read_feather("./data/Hofmann_Maulwurf_rt.arrow") |>
   mutate(a1 = age - 6.210813,
-         lrt = log(rt)) |> 
+         lrt = log(rt)) |>
   relocate(a1, .before=Block)
 ```
 
@@ -68,7 +68,7 @@ Indicator variables for `Target` and `Block` contrasts
      + `trgt` : Target syllable - Non-target syllable
      + `trng` : 2md learning - 1st learning
      + `drpt` : Disruption - 2nd learning
-     + `rcvr` : Recovery - Disruption 
+     + `rcvr` : Recovery - Disruption
 
 ```{r}
 contrasts(dat$Target) <- contr.sum(2)
@@ -84,7 +84,7 @@ dat$rcvr <- mm[,5]
 
 ```
 lmax.logRT <-
-  lmer(logRT ~ Block * Targetness * c_age + (1 + Block * Targetness | anon_ID) + (1 + c_age| Item), 
+  lmer(logRT ~ Block * Targetness * c_age + (1 + Block * Targetness | anon_ID) + (1 + c_age| Item),
        control = lmerControl(calc.derivs = FALSE, optCtrl=list(maxfun=100000), optimizer="bobyqa"), data = SRT.analysis)
 ```
 
@@ -98,7 +98,7 @@ VarCorr(lmax.logRT)
 
 ```{r}
 system.time(
-m_cpx <- lmer(lrt ~ 1 + trgt * (trng+drpt+rcvr) * a1  + 
+m_cpx <- lmer(lrt ~ 1 + trgt * (trng+drpt+rcvr) * a1  +
                    (1 + trgt * (trng+drpt+rcvr) | Subj) + (1 + a1 | Item),
                data=dat, REML=FALSE, control = lmerControl(calc.derivs = FALSE))
 )
@@ -106,16 +106,16 @@ VarCorr(m_cpx)
 ```
 
 ```
-   user  system elapsed 
- 54.186   8.368  56.758 
+   user  system elapsed
+ 54.186   8.368  56.758
 ```
 
 ## Parsimonious LMM
 
 ```{r}
 system.time(
-m_prm2 <- lmer(lrt ~ 1 + trgt * (trng+drpt+rcvr) * a1  + 
-                    (1 + drpt + rcvr + trng + drpt:trgt + rcvr:trgt | Subj) + 
+m_prm2 <- lmer(lrt ~ 1 + trgt * (trng+drpt+rcvr) * a1  +
+                    (1 + drpt + rcvr + trng + drpt:trgt + rcvr:trgt | Subj) +
                     (0 + trgt || Subj) +  (1 + a1 | Item),
                data=dat, REML=FALSE, control = lmerControl(calc.derivs = FALSE))
 )
@@ -123,8 +123,8 @@ VarCorr(m_prm2)
 ```
 
 ```
-   user  system elapsed 
- 20.009   2.432  20.612 
+   user  system elapsed
+ 20.009   2.432  20.612
 ```
 ## Diagnostics
 
@@ -139,4 +139,3 @@ check_model(m_prm2)
 ```{r}
 sessionInfo()
 ```
-

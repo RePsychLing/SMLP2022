@@ -16,6 +16,9 @@ editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
 execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
 # Description

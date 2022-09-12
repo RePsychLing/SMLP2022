@@ -12,6 +12,9 @@ output:
 callout-appearance: simple
 jupyter: julia-1.8
 execute-dir: file
+execute:
+  cache: true
+  freeze: auto
 ---
 
 # Fitting and examining models for the IAT data
