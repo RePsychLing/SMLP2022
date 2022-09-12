@@ -8,8 +8,6 @@ This script uses a subset of data reported in Fühner, Golle, Granacher, & Klieg
 All children were between 6.0 and 6.99 years at legal keydate (30 September) of school enrollement, that is they were in their ninth year of life in the third grade. To speed up we work with a reduced data set and less complex models than those in the reference publication. This illustrates also drawing a stratified subsample from a large data set.
 
 ```{julia}
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using DataFrames
 using Chain
 using DataFrameMacros

@@ -21,8 +21,6 @@ Activate that package with the SVG (Scalable Vector Graphics) backend.
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using CairoMakie       # graphics back-end
 using DataFrameMacros  # simplified dplyr-like data wrangling
 using DataFrames

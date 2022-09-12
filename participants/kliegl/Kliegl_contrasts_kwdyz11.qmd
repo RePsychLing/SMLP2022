@@ -2,7 +2,7 @@
 title: "Contrast Coding of Visual Attention Effects"
 author: "Reinhold Kliegl"
 date: "2022-09-09 (last revised: `r format(Sys.time())`)"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,14 +12,12 @@ format:
     fig-width: 8
     fig-height: 6
     fig-format: svg
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
 ```{julia}
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 using Arrow
 using Chain
 using DataFrames

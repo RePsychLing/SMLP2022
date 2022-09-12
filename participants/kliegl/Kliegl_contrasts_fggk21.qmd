@@ -3,7 +3,7 @@ title: "Mixed Models Tutorial: Contrast Coding of Children's Physical Fitness"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-09-10 (revised)"
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -12,7 +12,7 @@ format:
     number-sections: true
     fig-width: 8
     fig-height: 6
-editor_options: 
+editor_options:
   chunk_output_type: console
 jupyter: julia-1.8
 ---
@@ -20,7 +20,7 @@ jupyter: julia-1.8
 # Background
 
 This script uses a subset of data reported in [Fühner et al. (2021)](https://rdcu.be/cwSeR); [OSF](https://osf.io/2d8rj/)), entitled: "Age and sex effects in physical fitness components of 108,295 third graders including 515 primary schools and 9 cohorts."
-There is also a second paper using these data from keyage children for the predication of younger-than-keyage and older-than-keyage children ([Fühner et al., 2022](https://www.nature.com/articles/s41598-022-11710-x); [OSF](https://osf.io/dmu68/)). 
+There is also a second paper using these data from keyage children for the predication of younger-than-keyage and older-than-keyage children ([Fühner et al., 2022](https://www.nature.com/articles/s41598-022-11710-x); [OSF](https://osf.io/dmu68/)).
 To circumvent delays associated with model fitting we work with models that are less complex than those in the reference publication.
 All the data to reproduce the models in the publication are used here, too; the script requires only a few changes to specify the more complex models in the original paper.
 
@@ -49,8 +49,6 @@ The script is structured in four main sections:
 ```{julia}
 #| label: enviroment
 #| code-fold: true
-# use the project in the current working directory
-using Pkg; Pkg.activate(".")
 ```
 
 ## Packages and functions
@@ -142,8 +140,8 @@ df[!, Not(:score)]
 
 ## Extract a stratified subsample
 
-Dataframe `df` contains all the data uses in the original publications (525,126 measures). 
-We extract a random sample of 1000 girls and boys; cohort and school are also random.  
+Dataframe `df` contains all the data uses in the original publications (525,126 measures).
+We extract a random sample of 1000 girls and boys; cohort and school are also random.
 
 ```{julia}
 children = unique(select(df, :Cohort, :School, :Child, :Sex, :age, :a1))
@@ -164,9 +162,9 @@ Let's compare `zScore` to the full sample.
 
 ```{julia}
   dat2 = combine(
-    groupby(dat, [:Test]), 
-      :zScore => length, 
-      :zScore => mean, 
+    groupby(dat, [:Test]),
+      :zScore => length,
+      :zScore => mean,
       :zScore => std
   )
 ```
@@ -210,7 +208,7 @@ The statistical disadvantage of _SeqDiffCoding_ is that the contrasts are not or
 Obviously, the tradeoff between theoretical motivation and statistical purity is something that must be considered carefully when planning the analysis.
 
 ```{julia}
-contr1 =  
+contr1 =
    merge(
        Dict(i => Grouping() for i in (:School, :Child, :Cohort)),
        Dict(:Sex => EffectsCoding(; levels=["Girls", "Boys"]),
@@ -219,9 +217,9 @@ contr1 =
    )
 ```
 
-We  estimate the five test means by replacing the default 1 with 0 in the formula. They should all be very close to zero. 
+We  estimate the five test means by replacing the default 1 with 0 in the formula. They should all be very close to zero.
 ```{julia}
-m_ovi_0 = let 
+m_ovi_0 = let
    form = @formula zScore ~ 0 + Test + (1 | Child);
    fit(MixedModel, form, dat; contrasts=contr1)
 end
@@ -230,7 +228,7 @@ end
 We estimate the GM and the sequential differences between test means. Obviously, they should also be very close to zero.
 
 ```{julia}
-m_ovi_1 = let 
+m_ovi_1 = let
    form = @formula zScore ~ 1 + Test + (1 | Child);
    fit(MixedModel, form, dat; contrasts=contr1)
 end
@@ -411,7 +409,7 @@ Does model complexification improve the goodness of fit?
 MixedModels.likelihoodratiotest(m_ovi_HC, m_zcp_HC, m_cpx_HC)
 ```
 
-Yes, it does, but the CPs are not all that interpretable.  
+Yes, it does, but the CPs are not all that interpretable.
 
 # Individual differences in test scores (levels)
 
@@ -445,7 +443,7 @@ Does model complexification improve the goodness of fit?
 MixedModels.likelihoodratiotest(m_zcp_HC_L, m_cpx_HC_L)
 ```
 
-The improvement here is much larger than the one we saw for effects. Well, correlations are higher. 
+The improvement here is much larger than the one we saw for effects. Well, correlations are higher.
 
 # Other topics
 
@@ -508,7 +506,7 @@ MixedModels.likelihoodratiotest(m_Child_He0, m_Child_He)
 MixedModels.likelihoodratiotest(m_Child_Hy0, m_Child_Hy)
 ```
 
-This is kind of interesting given that the complex LMMs all have the same objective. 
+This is kind of interesting given that the complex LMMs all have the same objective.
 
 ## VCs and CPs depend on random factor
 
