@@ -10,6 +10,7 @@ project:
     - pkg.qmd
     - sleepstudy.qmd
     - sleepstudy_speed.qmd
+    - largescaledesigned.qmd
     - arrow.qmd
     - glmm.qmd
     - kb07.qmd
@@ -42,6 +43,7 @@ website:
       - pkg.qmd
       - sleepstudy.qmd
       - sleepstudy_speed.qmd
+      - largescaledesigned.qmd
       - arrow.qmd
       - glmm.qmd
       - kb07.qmd

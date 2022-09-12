@@ -25,6 +25,7 @@ Manifest.toml
 
 /.quarto/
 .CondaPkg/
+_freeze/
 
 *.*~
 .vscode/
