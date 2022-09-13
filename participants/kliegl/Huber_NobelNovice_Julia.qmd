@@ -142,38 +142,124 @@ let mods = [m_voi,  m_zcp, m_cpx];
   )
 end
 ```
-Well, 
+
+We select LMM `m_cpx`
 
 ```{julia}
-coeftable(m_zcp)
+m_cpx
 ```
 
+# Graph of interaction(s)
+
 ```{julia}
-coeftable(m_cpx)
+RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=10.0)
+@rput dat;
+
+R"""
+suppressWarnings(suppressMessages(library(tidyverse)))
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+
+dat$Cond <- factor(dat$Cond, levels=c("HH", "AH", "AA", "AL", "LL"))
+
+fig <-
+  dat |>
+  group_by(Cond, Scale) |> 
+  summarise(N=n(), M=mean(sub_rating), SE=sd(rating)/sqrt(N)) |> 
+  ggplot(aes(x=Cond, y=M, group=Scale, color=Scale)) +
+  geom_point() + geom_line() + 
+  geom_errorbar(aes(ymax = M + 2*SE, ymin = M - 2*SE), width=.1) +
+  scale_color_manual("Scale", values=cbPalette) +
+  scale_y_continuous("Rating") +
+  xlab("Treatment") + 
+  theme_bw() + theme(legend.position=c(0.01, 0.01), legend.justification=c(0.01, 0.01)) +
+  coord_cartesian(ylim=c(1,4.5))
+
+print(fig)
+""";
 ```
 
 ## Diagnostics
 
 ```{julia}
 qqnorm(m_cpx)
-```# Source
+```
 
-Huber, J., Inoua, S., Kerschbamer, R., König-Kersting, C., Palan, S., Smith, V. L., 2022. “Nobel and novice: Author prominence affects peer review”, University of Graz, School of Business, Economics and Social Sciences Working Paper 2022-01.
-
-[SSRN link to download](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4190976)
-
-## Abstract
-
->Peer-review is a well-established cornerstone of the scientific process, yet it is not immune to status bias. Merton identified the problem as one in which prominent researchers get disproportionately great credit for their contribution while relatively unknown researchers get disproportionately little credit (Merton, 1968). We measure the extent of this effect in the peer-review process through a pre-registered field experiment. We invite more than 3,300 researchers to review a paper jointly written by a prominent author -- a Nobel laureate -- and by a relatively unknown author -- an early-career research associate --, varying whether reviewers see the prominent author's name, an anonymized version of the paper, or the less well-known author's name. We find strong evidence for the status bias: while only 23 percent recommend “reject” when the prominent researcher is the only author shown, 48 percent do so when the paper is anonymized, and 65 percent do so when the little-known author is the only author shown. Our findings complement and extend earlier results on double-anonymized vs. single-anonymized review (Peters and Ceci, 1982; Blank, 1991; Cox et al., 1993; Okike et al., 2016; Tomkins et al., 2017; Card and Della Vigna, 2020) and strongly suggest that double-anonymization is a minimum requirement for an unbiased review process.
-
-## Data and code
-
-Data and code are available at [OSF repo](https://osf.io/mjh8s/). 
-
+```{julia}
+let
+  n = nrow(dat)
+  dat_rz = (;
+    value=vcat(residuals(m_cpx) ./ std(residuals(m_cpx)), randn(n)),
+    curve=repeat(["residual", "normal"]; inner=n),
+  )
+  draw(
+    data(dat_rz) *
+    mapping(:value; color=:curve) *
+    density(; bandwidth=0.1);
+  )
+end
+```
 
 # Bootstrapping
 
-**Task 4:** Get the shortest coverage intervals for VCs and CP. 
+Get the shortest coverage intervals for VCs and CP. 
+
+```{julia}
+Random.seed!(1234321)
+samp = parametricbootstrap(2500, m_cpx);
+```
+
+```{julia}
+dat2 = DataFrame(samp.allpars)
+first(dat2, 10)
+```
+
+```{julia}
+DataFrame(shortestcovint(samp))
+```
+
+```{julia}
+ridgeplot(samp; show_intercept=false)
+```
+
+```{julia}
+draw(
+ # data(@subset(dat2, :type == "β" && :names ≠ "(Intercept)")) *
+  data(@subset(dat2, :type == "β" && :names == "Cond: AL & Scale: worthy")) *
+  mapping(
+    :value => "Experimental effect size [ms]";
+    color=:names => "Experimental effects",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+draw(
+  data(@subset(dat2, :type == "σ" && :group == "Reviewer")) *
+  mapping(
+    :value => "Standard deviations [ms]";
+    color=:names  => "Variance components",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+draw(
+  data(@subset(dat2, :type == "ρ")) *
+  mapping(
+    :value => "Correlation";
+    color=:names => "Correlation parameters",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
 
 # Appendix
 ```{julia}
