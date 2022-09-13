@@ -10,6 +10,7 @@ project:
     - pkg.qmd
     - sleepstudy.qmd
     - sleepstudy_speed.qmd
+    - bootstrap.qmd
     - largescaledesigned.qmd
     - arrow.qmd
     - glmm.qmd
@@ -71,10 +72,10 @@ website:
       - pkg.qmd
       - sleepstudy.qmd
       - sleepstudy_speed.qmd
+      - bootstrap.qmd
       - largescaledesigned.qmd
       - arrow.qmd
       - glmm.qmd
-      - kb07.qmd
       - kwdyz11.qmd
       - kkl15.qmd
       - shrinkageplot.qmd

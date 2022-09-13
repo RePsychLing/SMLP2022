@@ -1,0 +1,276 @@
+---
+title: "Parametric bootstrap for mixed-effects models"
+jupyter: julia-1.8
+---
+
+The speed of MixedModels.jl relative to its predecessors makes the parametric bootstrap much more computationally tractable.
+This is valuable because the parametric bootstrap can be used to produce more accurate confidence intervals than methods based on standard errors or profiling of the likelihood surface.
+
+This page is adapted from the [MixedModels.jl docs](https://juliastats.org/MixedModels.jl/v4.7.1/bootstrap/)
+
+## The parametric bootstrap
+
+[Bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)) is a family of procedures
+for generating sample values of a statistic, allowing for visualization of the distribution of the
+statistic or for inference from this sample of values.
+Bootstrapping also belongs to a larger family of procedures called [*resampling*](https://en.wikipedia.org/wiki/Resampling_(statistics)), which are based on creating new samples of data from an existing one, then computing statistics on the new samples, in order to examine the distribution of the relevant statistics.
+
+A _parametric bootstrap_ is used with a parametric model, `m`, that has been fit to data.
+The procedure is to simulate `n` response vectors from `m` using the estimated parameter values
+and refit `m` to these responses in turn, accumulating the statistics of interest at each iteration.
+
+The parameters of a `LinearMixedModel` object are the fixed-effects
+parameters, `β`, the standard deviation, `σ`, of the per-observation noise, and the covariance
+parameter, `θ`, that defines the variance-covariance matrices of the random effects.
+A technical description of the covariance parameter can be found in the [MixedModels.jl docs](https://juliastats.org/MixedModels.jl/v4.7.1/optimization/).
+Lisa Schwetlick and Daniel Backhaus have provided a more beginner-friendly description of the covariance parameter in the [documentation for MixedModelsSim.jl](https://repsychling.github.io/MixedModelsSim.jl/v0.2.6/simulation_tutorial/).
+For today's purposes -- looking at the uncertainty in the estimates from a fitted model -- we can simply use values from the fitted model, but we will revisit the parametric bootstrap as a convenient way to simulate new data, potentially with different parameter values, for power analysis.
+
+For example, a simple linear mixed-effects model for the `Dyestuff` data in the [`lme4`](http://github.com/lme4/lme4)
+package for [`R`](https://www.r-project.org) is fit by
+
+```{julia}
+using AlgebraOfGraphics
+using CairoMakie
+using DataFrames
+using MixedModels
+using MixedModelsMakie
+using ProgressMeter
+using Random
+
+using AlgebraOfGraphics: AlgebraOfGraphics as AoG
+CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
+ProgressMeter.ijulia_behavior(:clear);
+```
+
+Note that the precise stream of random numbers generated for a given seed can change between Julia versions.
+For exact reproducibility, you either need to have the exact same Julia version or use the [StableRNGs](https://github.com/JuliaRandom/StableRNGs.jl) package.
+
+## A model of moderate complexity
+
+The `kb07` data [@Kronmueller2007] are one of the datasets provided by the `MixedModels` package.
+
+```{julia}
+kb07 = MixedModels.dataset(:kb07)
+```
+
+Convert the table to a DataFrame for summary.
+
+```{julia}
+kb07 = DataFrame(kb07)
+describe(kb07)
+```
+
+The experimental factors; `spkr`, `prec`, and `load`, are two-level factors.
+
+```{julia}
+contrasts = Dict(:spkr => EffectsCoding(),
+                 :prec => EffectsCoding(),
+                 :load => EffectsCoding(),
+                 :subj => Grouping(),
+                 :item => Grouping())
+```
+
+The `EffectsCoding` contrast is used with these to create a ± encoding.
+Furthermore, `Grouping` constrasts are assigned to the `subj` and `item` factors.
+This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
+For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
+
+It is not important in these cases but a good practice in any case.
+
+We can look at an initial fit of moderate complexity:
+
+```{julia}
+form = @formula(rt_trunc ~ 1 + spkr * prec * load +
+                          (1 + spkr + prec + load | subj) +
+                          (1 + spkr + prec + load | item))
+m0 = fit(MixedModel, form, kb07; contrasts)
+```
+
+The default display in Quarto uses the [pretty MIME show method](https://juliastats.org/MixedModels.jl/v4.7.1/mime/) for the model and omits the estimated correlations of the random effects.
+
+The `VarCorr` extractor displays these.
+
+```{julia}
+VarCorr(m0)
+```
+
+None of the two-factor or three-factor interaction terms in the fixed-effects are significant.
+In the random-effects terms only the scalar random effects and the `prec` random effect for `item` appear to be warranted, leading to the reduced formula
+
+```{julia}
+# formula f4 from https://doi.org/10.33016/nextjournal.100002
+form = @formula(rt_trunc ~ 1 + spkr * prec * load + (1 | subj) + (1 + prec | item))
+
+m1 = fit(MixedModel, form, kb07; contrasts)
+```
+
+```{julia}
+VarCorr(m1)
+```
+
+These two models are nested and can be compared with a likelihood-ratio test.
+
+```{julia}
+MixedModels.likelihoodratiotest(m0, m1)
+```
+
+The p-value of approximately 14% leads us to prefer the simpler model, `m1`, to the more complex, `m0`.
+
+## Bootstrap basics
+
+To bootstrap the model parameters, first initialize a random number generator then create a bootstrap sample
+
+```{julia}
+const RNG = MersenneTwister(42)
+samp = parametricbootstrap(RNG, 1_000, m1)
+df = DataFrame(samp.allpars)
+first(df, 10)
+```
+
+Especially for those with a background in [`R`](https://www.R-project.org/) or [`pandas`](https://pandas.pydata.org),
+the simplest way of accessing the parameter estimates in the parametric bootstrap object is to create a `DataFrame` from the `allpars` property as shown above.
+
+We can use `subset` to subset out relevant rows of a dataframe.
+A density plot of the estimates of `σ`, the residual standard deviation, can be created as
+```{julia}
+σres = subset(df, :type => ByRow(==("σ")), :group => ByRow(==("residual")); skipmissing=true)
+
+plt = data(σres) * mapping(:value) * AoG.density()
+draw(plt; axis=(;title="Parametric bootstrap estimates of σ"))
+```
+
+A density plot of the estimates of the standard deviation of the random effects is obtained as
+```{julia}
+σsubjitem = subset(df, :type => ByRow(==("σ")), :group => ByRow(!=("residual")); skipmissing=true)
+
+plt = data(σsubjitem) * mapping(:value; layout=:names, color=:group) * AoG.density()
+draw(plt; axis=(;title="Parametric bootstrap estimates of variance components"))
+```
+
+The bootstrap sample can be used to generate intervals that cover a certain percentage of the bootstrapped values.
+We refer to these as "coverage intervals", similar to a confidence interval.
+The shortest such intervals, obtained with the `shortestcovint` extractor, correspond to a highest posterior density interval in Bayesian inference.
+
+We generate these for all random and fixed effects:
+```{julia}
+shortestcovint(samp)
+```
+
+and convert it to a dataframe:
+```{julia}
+DataFrame(shortestcovint(samp))
+```
+
+```{julia}
+draw(
+  data(samp.β) * mapping(:β; color=:coefname) * AoG.density();
+  figure=(; resolution=(800, 450)),
+)
+```
+
+
+For the fixed effects, MixedModelsMakie provides a convenience interface to plot the combined coverage intervals and density plots
+
+```{julia}
+ridgeplot(samp)
+```
+
+Often the intercept will be on a different scale and potentially less interesting, so we can stop it from being included in the plot:
+
+```{julia}
+ridgeplot(samp; show_intercept=false, xlabel="Bootstrap density and 95%CI")
+```
+
+
+## Singularity
+
+Let's consider the classic dysetuff dataset:
+
+```{julia}
+dyestuff = MixedModels.dataset(:dyestuff)
+mdye = fit(MixedModel, @formula(yield ~ 1 + (1 | batch)), dyestuff)
+```
+
+
+```{julia}
+sampdye = parametricbootstrap(MersenneTwister(1234321), 10_000, mdye)
+dfdye = DataFrame(sampdye.allpars)
+first(dfdye, 10)
+```
+
+```{julia}
+σbatch = subset(dfdye, :type => ByRow(==("σ")), :group => ByRow(==("batch")); skipmissing=true)
+
+plt = data(σbatch) * mapping(:value) * AoG.density()
+draw(plt; axis=(;title="Parametric bootstrap estimates of σ_batch"))
+```
+
+Notice that this density plot has a spike, or mode, at zero.
+Although this mode appears to be diffuse, this is an artifact of the way that density plots are created.
+In fact, it is a pulse, as can be seen from a histogram.
+
+```{julia}
+plt = data(σbatch) * mapping(:value) * AoG.histogram(;bins=100)
+draw(plt; axis=(;title="Parametric bootstrap estimates of σ_batch"))
+```
+
+A value of zero for the standard deviation of the random effects is an example of a *singular* covariance.
+It is easy to detect the singularity in the case of a scalar random-effects term.
+However, it is not as straightforward to detect singularity in vector-valued random-effects terms.
+
+For example, if we bootstrap a model fit to the `sleepstudy` data
+```{julia}
+sleepstudy = MixedModels.dataset(:sleepstudy)
+msleep = fit(MixedModel, @formula(reaction ~ 1 + days + (1 + days | subj)),
+             sleepstudy)
+```
+
+```{julia}
+sampsleep = parametricbootstrap(MersenneTwister(666), 10_000, msleep);
+dfsleep = DataFrame(sampsleep.allpars);
+first(dfsleep, 10)
+```
+the singularity can be exhibited as a standard deviation of zero or as a correlation of ±1.
+
+```{julia}
+DataFrame(shortestcovint(sampsleep))
+```
+
+A histogram of the estimated correlations from the bootstrap sample has a spike at `+1`.
+```{julia}
+ρs = subset(dfsleep, :type => ByRow(==("ρ")), :group => ByRow(==("subj")); skipmissing=true)
+plt = data(ρs) * mapping(:value) * AoG.histogram(;bins=100)
+draw(plt; axis=(;title="Parametric bootstrap samples of correlation of random effects"))
+```
+or, as a count,
+```{julia}
+count(ρs.value .≈ 1)
+```
+
+Close examination of the histogram shows a few values of `-1`.
+```{julia}
+count(ρs.value .≈ -1)
+```
+
+Furthermore there are even a few cases where the estimate of the standard deviation of the random effect for the intercept is zero.
+```{julia}
+σs = subset(dfsleep, :type => ByRow(==("σ")), :group => ByRow(==("subj")), :names => ByRow(==("(Intercept)")); skipmissing=true)
+count(σs.value .≈ 0)
+```
+
+There is a general condition to check for singularity of an estimated covariance matrix or matrices in a bootstrap sample.
+The parameter optimized in the estimation is `θ`, the relative covariance parameter.
+Some of the elements of this parameter vector must be non-negative and, when one of these components is approximately zero, one of the covariance matrices will be singular.
+
+The `issingular` method for a `MixedModel` object that tests if a parameter vector `θ` corresponds to a boundary or singular fit.
+
+This operation is encapsulated in a method for the `issingular` function that works on `MixedModelBootstrap` objects.
+```{julia}
+count(issingular(sampsleep))
+```
+
+# References
+
+::: {#refs}
+:::
