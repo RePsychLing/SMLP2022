@@ -17,40 +17,21 @@ editor_options:
 jupyter: julia-1.8
 ---
 
-# List of issues to be disucssed
+# Source
 
-A few things that still confuse me and that would be nice to discuss are:
+Huber, J., Inoua, S., Kerschbamer, R., König-Kersting, C., Palan, S., Smith, V. L., 2022. “Nobel and novice: Author prominence affects peer review”, University of Graz, School of Business, Economics and Social Sciences Working Paper 2022-01.
 
-+ The importance of 0-correlation models for random effect-structure reduction
-+ Setting REML to FALSE for random effect structure reduction - some do it, some don't. What do you advice and why?
-+ Sometimes a model with REML=FALSE converges, rePCA shows that all the variance is captured by the random effect structure, but when set back to REML=TRUE it doesn't converge anymore. Why is that and how would you advice to proceed?
-+ Getting power estimates for main studies based on pilot data and simulations, i.e., how many participants will I need (the observed-power issue / debate)
+[SSRN link to download](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4190976)
 
-# Background of the data
+## Abstract
 
-Do participants take the situational-functional setting into account when evaluating language? How do semantic incongruencies compare to incongruencies in register? Do they interact? Participants were presented with a picture prime of either formally or informally dressed speakers. They then heard that speaker utter a target sentence that either matched or mismatched the register and / or matched of mismatched the semantic verb-argument congruency of the target sentence. 
+>Peer-review is a well-established cornerstone of the scientific process, yet it is not immune to status bias. Merton identified the problem as one in which prominent researchers get disproportionately great credit for their contribution while relatively unknown researchers get disproportionately little credit (Merton, 1968). We measure the extent of this effect in the peer-review process through a pre-registered field experiment. We invite more than 3,300 researchers to review a paper jointly written by a prominent author -- a Nobel laureate -- and by a relatively unknown author -- an early-career research associate --, varying whether reviewers see the prominent author's name, an anonymized version of the paper, or the less well-known author's name. We find strong evidence for the status bias: while only 23 percent recommend “reject” when the prominent researcher is the only author shown, 48 percent do so when the paper is anonymized, and 65 percent do so when the little-known author is the only author shown. Our findings complement and extend earlier results on double-anonymized vs. single-anonymized review (Peters and Ceci, 1982; Blank, 1991; Cox et al., 1993; Okike et al., 2016; Tomkins et al., 2017; Card and Della Vigna, 2020) and strongly suggest that double-anonymization is a minimum requirement for an unbiased review process.
 
-# Design and variables
+## Data and code
 
-+ Design: 2x2, fully crossed Latin square
-+ Dependent Variable: Acceptability ratings on a fully-anchored 7-point Likert-type scale: How acceptable is the sentence when spoken by the presented speaker (1=not at all - 7=completely)
-
-+ Independent Variables
-     + _RC_ (match vs. mismatch): target sentence final noun either matches or mismatches in register with the prime picture. Example mismatch: prime picture showing formally dressed speaker, target sentence heard: "Ich binde jetzt meinen Latschen." (lit. transl: I tie now my shoes\textsubscript{colloquial})
-    + _SC_ (yes vs. no): verb and argument in target sentence are either semantically congruent or not. Example mismatch: "Ich binde jetzt meine Klamotten" (lit. transl: I tie now my clothes\textsubscript{colloquial})
+Data and code are available at [OSF repo](https://osf.io/mjh8s/). 
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: environment
-#| echo: false
-#| output: false
-using Pkg; Pkg.activate(".")
-```
-
-## Packages
 
 ```{julia}
 #| label: packages
@@ -175,7 +156,20 @@ coeftable(m_cpx)
 
 ```{julia}
 qqnorm(m_cpx)
-```
+```# Source
+
+Huber, J., Inoua, S., Kerschbamer, R., König-Kersting, C., Palan, S., Smith, V. L., 2022. “Nobel and novice: Author prominence affects peer review”, University of Graz, School of Business, Economics and Social Sciences Working Paper 2022-01.
+
+[SSRN link to download](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4190976)
+
+## Abstract
+
+>Peer-review is a well-established cornerstone of the scientific process, yet it is not immune to status bias. Merton identified the problem as one in which prominent researchers get disproportionately great credit for their contribution while relatively unknown researchers get disproportionately little credit (Merton, 1968). We measure the extent of this effect in the peer-review process through a pre-registered field experiment. We invite more than 3,300 researchers to review a paper jointly written by a prominent author -- a Nobel laureate -- and by a relatively unknown author -- an early-career research associate --, varying whether reviewers see the prominent author's name, an anonymized version of the paper, or the less well-known author's name. We find strong evidence for the status bias: while only 23 percent recommend “reject” when the prominent researcher is the only author shown, 48 percent do so when the paper is anonymized, and 65 percent do so when the little-known author is the only author shown. Our findings complement and extend earlier results on double-anonymized vs. single-anonymized review (Peters and Ceci, 1982; Blank, 1991; Cox et al., 1993; Okike et al., 2016; Tomkins et al., 2017; Card and Della Vigna, 2020) and strongly suggest that double-anonymization is a minimum requirement for an unbiased review process.
+
+## Data and code
+
+Data and code are available at [OSF repo](https://osf.io/mjh8s/). 
+
 
 # Bootstrapping
 
