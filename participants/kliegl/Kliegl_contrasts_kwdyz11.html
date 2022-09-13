@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.147">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-10">
+<meta name="dcterms.date" content="2022-09-09">
 
 <title>Contrast Coding of Visual Attention Effects</title>
 <style>
@@ -2604,36 +2604,28 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background"><span class="toc-section-number">1</span>  Background</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="toc-section-number">2</span>  Setup</a>
+  <li><a href="#example-data" id="toc-example-data" class="nav-link active" data-scroll-target="#example-data"><span class="toc-section-number">1</span>  Example data</a></li>
+  <li><a href="#sec-preprocessing" id="toc-sec-preprocessing" class="nav-link" data-scroll-target="#sec-preprocessing"><span class="toc-section-number">2</span>  Preprocessing</a></li>
+  <li><a href="#constant-across-script" id="toc-constant-across-script" class="nav-link" data-scroll-target="#constant-across-script"><span class="toc-section-number">3</span>  Constant across script</a></li>
+  <li><a href="#contrast-options" id="toc-contrast-options" class="nav-link" data-scroll-target="#contrast-options"><span class="toc-section-number">4</span>  Contrast options</a>
   <ul class="collapse">
-  <li><a href="#environment" id="toc-environment" class="nav-link" data-scroll-target="#environment"><span class="toc-section-number">2.1</span>  Environment</a></li>
-  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><span class="toc-section-number">2.2</span>  Packages</a></li>
-  <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data"><span class="toc-section-number">2.3</span>  Example data</a></li>
+  <li><a href="#seqdiffcoding" id="toc-seqdiffcoding" class="nav-link" data-scroll-target="#seqdiffcoding"><span class="toc-section-number">4.1</span>  SeqDiffCoding</a></li>
+  <li><a href="#hypothesiscoding" id="toc-hypothesiscoding" class="nav-link" data-scroll-target="#hypothesiscoding"><span class="toc-section-number">4.2</span>  HypothesisCoding</a></li>
+  <li><a href="#dummycoding" id="toc-dummycoding" class="nav-link" data-scroll-target="#dummycoding"><span class="toc-section-number">4.3</span>  DummyCoding</a></li>
+  <li><a href="#ychycaeitcoding" id="toc-ychycaeitcoding" class="nav-link" data-scroll-target="#ychycaeitcoding"><span class="toc-section-number">4.4</span>  YchycaeitCoding</a></li>
+  <li><a href="#effectscoding" id="toc-effectscoding" class="nav-link" data-scroll-target="#effectscoding"><span class="toc-section-number">4.5</span>  EffectsCoding</a></li>
+  <li><a href="#helmertcoding" id="toc-helmertcoding" class="nav-link" data-scroll-target="#helmertcoding"><span class="toc-section-number">4.6</span>  HelmertCoding</a></li>
+  <li><a href="#reverse-helmertcoding" id="toc-reverse-helmertcoding" class="nav-link" data-scroll-target="#reverse-helmertcoding"><span class="toc-section-number">4.7</span>  Reverse HelmertCoding</a></li>
+  <li><a href="#anovacoding---anova-contrasts-are-orthogonal." id="toc-anovacoding---anova-contrasts-are-orthogonal." class="nav-link" data-scroll-target="#anovacoding---anova-contrasts-are-orthogonal."><span class="toc-section-number">4.8</span>  AnovaCoding - Anova contrasts are orthogonal.</a></li>
+  <li><a href="#nestedcoding" id="toc-nestedcoding" class="nav-link" data-scroll-target="#nestedcoding"><span class="toc-section-number">4.9</span>  NestedCoding</a></li>
+  <li><a href="#other-orthogonal-contrasts" id="toc-other-orthogonal-contrasts" class="nav-link" data-scroll-target="#other-orthogonal-contrasts"><span class="toc-section-number">4.10</span>  Other orthogonal contrasts</a></li>
   </ul></li>
-  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"><span class="toc-section-number">3</span>  Preprocessing</a></li>
-  <li><a href="#seqdiffcoding" id="toc-seqdiffcoding" class="nav-link" data-scroll-target="#seqdiffcoding"><span class="toc-section-number">4</span>  SeqDiffCoding</a></li>
-  <li><a href="#hypothesiscoding" id="toc-hypothesiscoding" class="nav-link" data-scroll-target="#hypothesiscoding"><span class="toc-section-number">5</span>  HypothesisCoding</a></li>
-  <li><a href="#dummycoding" id="toc-dummycoding" class="nav-link" data-scroll-target="#dummycoding"><span class="toc-section-number">6</span>  DummyCoding</a></li>
-  <li><a href="#ychycaeitcoding" id="toc-ychycaeitcoding" class="nav-link" data-scroll-target="#ychycaeitcoding"><span class="toc-section-number">7</span>  YchycaeitCoding</a></li>
-  <li><a href="#effectscoding" id="toc-effectscoding" class="nav-link" data-scroll-target="#effectscoding"><span class="toc-section-number">8</span>  EffectsCoding</a></li>
-  <li><a href="#helmertcoding" id="toc-helmertcoding" class="nav-link" data-scroll-target="#helmertcoding"><span class="toc-section-number">9</span>  HelmertCoding</a></li>
-  <li><a href="#reverse-helmertcoding" id="toc-reverse-helmertcoding" class="nav-link" data-scroll-target="#reverse-helmertcoding"><span class="toc-section-number">10</span>  Reverse HelmertCoding</a></li>
-  <li><a href="#anovacoding---anova-contrasts-are-orthogonal." id="toc-anovacoding---anova-contrasts-are-orthogonal." class="nav-link" data-scroll-target="#anovacoding---anova-contrasts-are-orthogonal."><span class="toc-section-number">11</span>  AnovaCoding - Anova contrasts are orthogonal.</a>
+  <li><a href="#appendix-summary-dave-kleinschmidt" id="toc-appendix-summary-dave-kleinschmidt" class="nav-link" data-scroll-target="#appendix-summary-dave-kleinschmidt"><span class="toc-section-number">5</span>  Appendix: Summary (Dave Kleinschmidt)</a>
   <ul class="collapse">
-  <li><a href="#a2-x-b2" id="toc-a2-x-b2" class="nav-link" data-scroll-target="#a2-x-b2"><span class="toc-section-number">11.1</span>  A(2) x B(2)</a></li>
-  <li><a href="#a2-x-b2-x-c2" id="toc-a2-x-b2-x-c2" class="nav-link" data-scroll-target="#a2-x-b2-x-c2"><span class="toc-section-number">11.2</span>  A(2) x B(2) x C(2)</a></li>
-  <li><a href="#a2-x-b2-x-c3" id="toc-a2-x-b2-x-c3" class="nav-link" data-scroll-target="#a2-x-b2-x-c3"><span class="toc-section-number">11.3</span>  A(2) x B(2) x C(3)</a></li>
+  <li><a href="#standard-contrasts" id="toc-standard-contrasts" class="nav-link" data-scroll-target="#standard-contrasts"><span class="toc-section-number">5.1</span>  Standard contrasts</a></li>
+  <li><a href="#exotic-contrasts-rk-well" id="toc-exotic-contrasts-rk-well" class="nav-link" data-scroll-target="#exotic-contrasts-rk-well"><span class="toc-section-number">5.2</span>  “Exotic” contrasts (rk: well …)</a></li>
+  <li><a href="#manual-contrasts" id="toc-manual-contrasts" class="nav-link" data-scroll-target="#manual-contrasts"><span class="toc-section-number">5.3</span>  Manual contrasts</a></li>
   </ul></li>
-  <li><a href="#nestedcoding" id="toc-nestedcoding" class="nav-link" data-scroll-target="#nestedcoding"><span class="toc-section-number">12</span>  NestedCoding</a></li>
-  <li><a href="#other-orthogonal-contrasts" id="toc-other-orthogonal-contrasts" class="nav-link" data-scroll-target="#other-orthogonal-contrasts"><span class="toc-section-number">13</span>  Other orthogonal contrasts</a></li>
-  <li><a href="#appendix-summary-dave-kleinschmidt" id="toc-appendix-summary-dave-kleinschmidt" class="nav-link" data-scroll-target="#appendix-summary-dave-kleinschmidt"><span class="toc-section-number">14</span>  Appendix: Summary (Dave Kleinschmidt)</a>
-  <ul class="collapse">
-  <li><a href="#standard-contrasts" id="toc-standard-contrasts" class="nav-link" data-scroll-target="#standard-contrasts"><span class="toc-section-number">14.1</span>  Standard contrasts</a></li>
-  <li><a href="#exotic-contrasts-rk-well" id="toc-exotic-contrasts-rk-well" class="nav-link" data-scroll-target="#exotic-contrasts-rk-well"><span class="toc-section-number">14.2</span>  “Exotic” contrasts (rk: well …)</a></li>
-  <li><a href="#manual-contrasts" id="toc-manual-contrasts" class="nav-link" data-scroll-target="#manual-contrasts"><span class="toc-section-number">14.3</span>  Manual contrasts</a></li>
-  </ul></li>
-  <li><a href="#version-information" id="toc-version-information" class="nav-link" data-scroll-target="#version-information"><span class="toc-section-number">15</span>  Version information</a></li>
   </ul>
 </nav>
 </div>
@@ -2642,7 +2634,6 @@ vertical-align: -.125em;
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Contrast Coding of Visual Attention Effects</h1>
-<p class="subtitle lead">RePsychLing in SMLP2022</p>
 </div>
 
 
@@ -2659,7 +2650,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 10, 2022</p>
+      <p class="date">September 9, 2022</p>
     </div>
   </div>
     
@@ -2668,80 +2659,59 @@ vertical-align: -.125em;
 
 </header>
 
-<section id="background" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Background</h1>
-<p>For a (quasi-)experimental set of data, there is (or should be) a clear <em>a priori</em> theoretical committment to specific hypotheses about differences between factor levels and how these differences enter in interactions with other factors. This specification should be used in the first LMM and reported, irrespective of the outcome. If alternative theories lead to alternative <em>a priori</em> contrast specifications, both analyses are justified. If the observed means render the specification completely irrelevant, the planned comparisons could still be repor in a <em>Supplement</em>).</p>
-<p>In this script, we are working through a large number of different contrasts for the <em>same</em> data. The purpose is to introduce both the preprogrammed (“canned”) and the general options to specify hypotheses about such related to main effects and interactions. Obviously, we do not endorse generating a plot of the means and specifying the contrasts accordingly. This is known as the <em>Texas sharpshooter fallacy</em>. Here is a link to an illustration and brief historical account by <a href="https://www.bayesianspectacles.org/origin-of-the-texas-sharpshooter/">Wagenmakers (2018)</a></p>
-<p>If results do not turn out as expected, there is nothing wrong with specifying a set of <em>post-hoc</em> contrasts to gain a better understanding of what the data are trying to tell us. In a report the <em>a priori</em> and <em>post-hoc</em> nature of contrast specifications must be made clear. Some kind of alpha-level adjustment (e.g., Bonferroni) may be called for, too. And, of course, there are grey zones.</p>
-<p>There is quite a bit of literature on contrasts. Two “local” references are:</p>
-<ul>
-<li>Brehm, L., &amp; Alday, P. M., (2022). Contrast coding choices in a decade of mixed models. <em>Journal of Memory and Language, 125</em>, 104334.
-<ul>
-<li><a href="https://doi.org/10.1016/j.jml.2022.104334">URL</a></li>
-<li><a href="https://osf.io/jkpxt/">OSF</a></li>
-</ul></li>
-<li>Schad, D. J., Vasishth, S., Hohenstein, S., &amp; Kliegl, R. (2020). How to capitalize on a priori contrasts in linear (mixed) models: A tutorial. <em>Journal of Memory and Language, 110,</em> 104038.
-<ul>
-<li><a href="https://doi.org/10.1016/j.jml.2019.104038">URL</a></li>
-<li><a href="https://osf.io/7ukf6/">OSF</a></li>
-</ul></li>
-</ul>
-<p>For further readings see “Further Readings” in Schad et al. (2020).</p>
-</section>
-<section id="setup" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Setup</h1>
-<section id="environment" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="environment"><span class="header-section-number">2.1</span> Environment</h2>
-<div id="environomen" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the project in the current working directory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">activate</span>(<span class="st">&quot;.&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>  Activating project at `~/Google Drive/JuliaMixedModels/SMLP2022/participants/kliegl`</code></pre>
-</div>
-</div>
-</section>
-<section id="packages" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="packages"><span class="header-section-number">2.2</span> Packages</h2>
-<div id="packages" class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="1">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span>: ContrastsCoding</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">activate</span>(<span class="st">&quot;.&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Arrow</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressMeter</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsModels</span>: ContrastsCoding</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>ProgressMeter.<span class="fu">ijulia_behavior</span>(<span class="op">:</span>clear);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stderr">
+<pre><code>  Activating project at `/Volumes/GoogleDrive/My Drive/JuliaMixedModels/SMLP2022/participants/kliegl`</code></pre>
 </div>
-</section>
-<section id="example-data" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="example-data"><span class="header-section-number">2.3</span> Example data</h2>
-<p>We take the <code>KWDYZ</code> dataset from Kliegl et al. (2011). This is an experiment looking at three effects of visual cueing under four different cue-target relations (CTRs). Two horizontal rectangles are displayed above and below a central fixation point or they displayed in vertical orientation to the left and right of the fixation point. Subjects react to the onset of a small visual target occuring at one of the four ends of the two rectangles. The target is cued validly on 70% of trials by a brief flash of the corner of the rectangle at which it appears; it is cued invalidly at the three other locations 10% of the trials each.</p>
+</div>
+<section id="example-data" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Example data</h1>
+<p>We take the <code>KWDYZ</code> dataset from <a href="https://doi.org/10.3389/fpsyg.2010.00238">Kliegl et al. (2011, <em>Front. Psychol.</em>)</a>. This is an experiment looking at three effects of visual cueing under four different cue-target relations (CTRs). Two horizontal rectangles are displayed above and below a central fixation point or they displayed in vertical orientation to the left and right of the fixation point. Subjects react to the onset of a small visual target occuring at one of the four ends of the two rectangles. The target is cued validly on 70% of trials by a brief flash of the corner of the rectangle at which it appears; it is cued invalidly at the three other locations 10% of the trials each.</p>
 <p>We specify three contrasts for the four-level factor CTR that are derived from spatial, object-based, and attractor-like features of attention. They map onto sequential differences between appropriately ordered factor levels. Interestingly, a different theoretical perspective, derived from feature overlap, leads to a different set of contrasts. Can the results refute one of the theoretical perspectives?</p>
 <p>We also have a dataset from a replication and extension of this study (Kliegl, Kuschela, &amp; Laubrock, 2015). Both data sets are available in <a href="https://github.com/dmbates/RePsychLing/tree/master/data/">R-package RePsychLing</a></p>
 </section>
+<section id="sec-preprocessing" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Preprocessing</h1>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dat1 <span class="op">=</span> <span class="pp">@chain</span> <span class="st">&quot;./data/kwdyz11.arrow&quot;</span> <span class="cf">begin</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  Arrow.Table</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select!</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="op">:</span>Subj, <span class="op">:</span>tar <span class="op">=&gt;</span> <span class="op">:</span>CTR, <span class="op">:</span>rt)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>cellmeans <span class="op">=</span> <span class="fu">combine</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">groupby</span>(dat1, [<span class="op">:</span>CTR]),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> mean,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> std,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> length,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> (x <span class="op">-&gt;</span> <span class="fu">std</span>(x) <span class="op">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(x))) <span class="op">=&gt;</span> <span class="op">:</span>rt_semean,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="104">
+
+<div class="data-frame"><p>4 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>CTR</th><th>rt_mean</th><th>rt_std</th><th>rt_length</th><th>rt_semean</th></tr><tr><th></th><th title="String">String</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>val</td><td>358.032</td><td>83.4581</td><td>20141</td><td>0.588069</td></tr><tr><th>2</th><td>sod</td><td>391.267</td><td>92.662</td><td>2863</td><td>1.73177</td></tr><tr><th>3</th><td>dos</td><td>405.146</td><td>92.6893</td><td>2843</td><td>1.73837</td></tr><tr><th>4</th><td>dod</td><td>402.3</td><td>95.3914</td><td>2863</td><td>1.78278</td></tr></tbody></table></div>
+</div>
+</div>
 </section>
-<section id="preprocessing" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Preprocessing</h1>
+<section id="constant-across-script" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Constant across script</h1>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat1 <span class="op">=</span> <span class="pp">@chain</span> <span class="st">&quot;./data/kwdyz11.arrow&quot;</span> <span class="cf">begin</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  Arrow.Table</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select!</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="op">:</span>Subj, <span class="op">:</span>tar <span class="op">=&gt;</span> <span class="op">:</span>CTR, <span class="op">:</span>rt)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">levels</span>(dat1.CTR))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>cellmeans <span class="op">=</span> <span class="fu">combine</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">groupby</span>(dat1, [<span class="op">:</span>CTR]),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> mean,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> std,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> length,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>rt <span class="op">=&gt;</span> (x <span class="op">-&gt;</span> <span class="fu">std</span>(x) <span class="op">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(x))) <span class="op">=&gt;</span> <span class="op">:</span>rt_semean,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(StatsModels.<span class="fu">levels</span>(dat1.CTR))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>form <span class="op">=</span> <span class="pp">@formula</span> rt <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> CTR <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> CTR <span class="op">|</span> Subj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>4-element Vector{String}:
  &quot;val&quot;
@@ -2749,25 +2719,549 @@ vertical-align: -.125em;
  &quot;dos&quot;
  &quot;dod&quot;</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="36">
-
-<div class="data-frame"><p>4 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>CTR</th><th>rt_mean</th><th>rt_std</th><th>rt_length</th><th>rt_semean</th></tr><tr><th></th><th title="String">String</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Int64">Int64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>val</td><td>358.032</td><td>83.4581</td><td>20141</td><td>0.588069</td></tr><tr><th>2</th><td>sod</td><td>391.267</td><td>92.662</td><td>2863</td><td>1.73177</td></tr><tr><th>3</th><td>dos</td><td>405.146</td><td>92.6893</td><td>2843</td><td>1.73837</td></tr><tr><th>4</th><td>dod</td><td>402.3</td><td>95.3914</td><td>2863</td><td>1.78278</td></tr></tbody></table></div>
+<div class="cell-output cell-output-display" data-execution_count="105">
+<pre><code>FormulaTerm
+Response:
+  rt(unknown)
+Predictors:
+  1
+  CTR(unknown)
+  (CTR,Subj)-&gt;(1 + CTR) | Subj</code></pre>
 </div>
 </div>
 </section>
-<section id="seqdiffcoding" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> SeqDiffCoding</h1>
-<p>A very popular contrast is taking differences between neighboring factor levels (i.e., 2-1, 3-2, etc.). The “canned” version is R is <code>MASS::contr.sdif()</code>.</p>
+<section id="contrast-options" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Contrast options</h1>
+<section id="seqdiffcoding" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="seqdiffcoding"><span class="header-section-number">4.1</span> SeqDiffCoding</h2>
+<p>This contrast corresponds to <code>MASS::contr.sdif()</code> in R.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>form <span class="op">=</span> <span class="pp">@formula</span> rt <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> CTR <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> CTR <span class="op">|</span> Subj)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(base<span class="op">=</span> <span class="st">&quot;val&quot;</span>; levels<span class="op">=</span>[<span class="st">&quot;val&quot;</span>, <span class="st">&quot;sod&quot;</span>, <span class="st">&quot;dos&quot;</span>, <span class="st">&quot;dod&quot;</span>]), </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>Subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>()</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">SeqDiffCoding</span>(; levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR)), </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>Subj <span class="op">=&gt;</span> <span class="fu">Grouping</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="106">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0900</td>
+<td style="text-align: right;">54.97</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.1891</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">33.7818</td>
+<td style="text-align: right;">3.2873</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2478</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">13.9851</td>
+<td style="text-align: right;">2.3060</td>
+<td style="text-align: right;">6.06</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;">10.7577</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">-2.7469</td>
+<td style="text-align: right;">2.2138</td>
+<td style="text-align: right;">-1.24</td>
+<td style="text-align: right;">0.2147</td>
+<td style="text-align: right;">9.5041</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8349</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="hypothesiscoding" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="hypothesiscoding"><span class="header-section-number">4.2</span> HypothesisCoding</h2>
+<p>This contrast corresponds to <code>MASS::contr.sdif()</code> in R. A general solution (not inverse of last contrast)</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m1b <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       <span class="op">-</span><span class="fl">1</span>  <span class="fl">1</span> <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span>  <span class="fl">0</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0</span>  <span class="fl">0</span> <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">&quot;spt&quot;</span>, <span class="st">&quot;obj&quot;</span>, <span class="st">&quot;grv&quot;</span>],</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="107">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0924</td>
+<td style="text-align: right;">54.95</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.2080</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: spt</td>
+<td style="text-align: right;">33.7817</td>
+<td style="text-align: right;">3.2877</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2511</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: obj</td>
+<td style="text-align: right;">13.9852</td>
+<td style="text-align: right;">2.3060</td>
+<td style="text-align: right;">6.06</td>
+<td style="text-align: right;">&lt;1e-08</td>
+<td style="text-align: right;">10.7571</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: grv</td>
+<td style="text-align: right;">2.7470</td>
+<td style="text-align: right;">2.2143</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">0.2148</td>
+<td style="text-align: right;">9.5113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Controlling the ordering of levels for contrasts:</p>
+<ol type="1">
+<li>kwarg <code>levels</code> to order the levels; the first is set as the baseline.</li>
+<li>kwarg <code>base=</code> to fix the baseline level.</li>
+</ol>
+</section>
+<section id="dummycoding" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="dummycoding"><span class="header-section-number">4.3</span> DummyCoding</h2>
+<p>This contrast corresponds to <code>contr.treatment()</code> in R</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">DummyCoding</span>(; base<span class="op">=</span><span class="st">&quot;val&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="108">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">358.0914</td>
+<td style="text-align: right;">6.1533</td>
+<td style="text-align: right;">58.20</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">47.9047</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">45.0200</td>
+<td style="text-align: right;">4.3641</td>
+<td style="text-align: right;">10.32</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">32.2952</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">47.7669</td>
+<td style="text-align: right;">3.5570</td>
+<td style="text-align: right;">13.43</td>
+<td style="text-align: right;">&lt;1e-40</td>
+<td style="text-align: right;">25.5401</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">33.7817</td>
+<td style="text-align: right;">3.2876</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2499</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This contrast has the disadvantage that the intercept returns the mean of the level specified as <code>base</code>, default is the first level, not the GM.</p>
+</section>
+<section id="ychycaeitcoding" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="ychycaeitcoding"><span class="header-section-number">4.4</span> YchycaeitCoding</h2>
+<p>The contrasts returned by <code>DummyCoding</code> may be what you want. Can’t we have them, but also the GM rather than the mean of the base level? Yes, we can! I call this “You can have your cake and it eat, too”-Coding (YchycaeitCoding).</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m2b <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="109">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0894</td>
+<td style="text-align: right;">54.97</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.1850</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">33.7817</td>
+<td style="text-align: right;">3.2873</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">23.2475</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">47.7669</td>
+<td style="text-align: right;">3.5574</td>
+<td style="text-align: right;">13.43</td>
+<td style="text-align: right;">&lt;1e-40</td>
+<td style="text-align: right;">25.5440</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">45.0200</td>
+<td style="text-align: right;">4.3638</td>
+<td style="text-align: right;">10.32</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">32.2928</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8349</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Just relevel the factor or move the column with -1s for a different base.</p>
+</section>
+<section id="effectscoding" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="effectscoding"><span class="header-section-number">4.5</span> EffectsCoding</h2>
+<p>This contrast corresponds almost to <code>contr.sum()</code> in R</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(; </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                    levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR), </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                    base<span class="op">=</span><span class="st">&quot;dod&quot;</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="110">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0915</td>
+<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.2013</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: val</td>
+<td style="text-align: right;">-31.6422</td>
+<td style="text-align: right;">2.6420</td>
+<td style="text-align: right;">-11.98</td>
+<td style="text-align: right;">&lt;1e-32</td>
+<td style="text-align: right;">19.9477</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">2.1396</td>
+<td style="text-align: right;">1.3339</td>
+<td style="text-align: right;">1.60</td>
+<td style="text-align: right;">0.1087</td>
+<td style="text-align: right;">6.0084</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">16.1248</td>
+<td style="text-align: right;">1.4404</td>
+<td style="text-align: right;">11.19</td>
+<td style="text-align: right;">&lt;1e-28</td>
+<td style="text-align: right;">7.3320</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="helmertcoding" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="helmertcoding"><span class="header-section-number">4.6</span> HelmertCoding</h2>
+<p>Helmert contrasts are othogonal.</p>
+<p>Helmert coding codes each level as the difference from the average of the lower levels. With the default order of <code>CTR</code> levels we get the following test statistics.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(;</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                    levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR)))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="111">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0953</td>
+<td style="text-align: right;">54.93</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.2314</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">16.8909</td>
+<td style="text-align: right;">1.6439</td>
+<td style="text-align: right;">10.27</td>
+<td style="text-align: right;">&lt;1e-24</td>
+<td style="text-align: right;">11.6259</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">10.2920</td>
+<td style="text-align: right;">0.8353</td>
+<td style="text-align: right;">12.32</td>
+<td style="text-align: right;">&lt;1e-34</td>
+<td style="text-align: right;">5.2568</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dod</td>
+<td style="text-align: right;">4.4593</td>
+<td style="text-align: right;">0.6441</td>
+<td style="text-align: right;">6.92</td>
+<td style="text-align: right;">&lt;1e-11</td>
+<td style="text-align: right;">4.1547</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC1: <span class="er">(</span><span class="ex">2</span> <span class="at">-</span> 1<span class="kw">)</span><span class="ex">/2</span>           <span class="co"># (391 - 358)/2</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC2: <span class="er">(</span><span class="ex">3</span> <span class="at">-</span> <span class="er">(</span><span class="ex">2+1</span><span class="kw">)</span><span class="ex">/2</span><span class="kw">)</span><span class="ex">/3</span>     <span class="co"># (405 - (391 + 358)/2)/3</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC3: <span class="er">(</span><span class="ex">4</span> <span class="at">-</span> <span class="er">(</span><span class="ex">3+2+1</span><span class="kw">)</span><span class="ex">/3</span><span class="kw">)</span><span class="ex">/4</span>   <span class="co"># (402 - (405 + 391 + 358)/3)/4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="reverse-helmertcoding" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="reverse-helmertcoding"><span class="header-section-number">4.7</span> Reverse HelmertCoding</h2>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">display</span>(<span class="fu">reverse</span>(StatsModels.<span class="fu">levels</span>(dat1.CTR)))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>m4b <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  levels <span class="op">=</span> <span class="fu">reverse</span>(StatsModels.<span class="fu">levels</span>(dat1.CTR))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(; levels))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>4-element Vector{String}:
+ &quot;dod&quot;
+ &quot;dos&quot;
+ &quot;sod&quot;
+ &quot;val&quot;</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="112">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Est.</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">σ_Subj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">389.7336</td>
+<td style="text-align: right;">7.0927</td>
+<td style="text-align: right;">54.95</td>
+<td style="text-align: right;">&lt;1e-99</td>
+<td style="text-align: right;">55.2103</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: dos</td>
+<td style="text-align: right;">1.3735</td>
+<td style="text-align: right;">1.1077</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">0.2150</td>
+<td style="text-align: right;">4.7626</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CTR: sod</td>
+<td style="text-align: right;">-4.2039</td>
+<td style="text-align: right;">0.6847</td>
+<td style="text-align: right;">-6.14</td>
+<td style="text-align: right;">&lt;1e-09</td>
+<td style="text-align: right;">3.3539</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CTR: val</td>
+<td style="text-align: right;">-10.5474</td>
+<td style="text-align: right;">0.8810</td>
+<td style="text-align: right;">-11.97</td>
+<td style="text-align: right;">&lt;1e-32</td>
+<td style="text-align: right;">6.6523</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: right;">69.8347</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC1:<span class="er">(</span><span class="ex">3</span> <span class="at">-</span> 4<span class="kw">)</span><span class="ex">/2</span>            <span class="co"># (405 - 402)/2</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC2:<span class="er">(</span><span class="ex">2</span> <span class="at">-</span> <span class="er">(</span><span class="ex">3+4</span><span class="kw">)</span><span class="ex">/2</span><span class="kw">)</span><span class="ex">/3</span>      <span class="co"># (391 - (405 + 402)/2)/3</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> HeC3:<span class="er">(</span><span class="ex">1</span> <span class="at">-</span> <span class="er">(</span><span class="ex">2+3+4</span><span class="kw">)</span><span class="ex">/3/4</span>     <span class="co"># (356  -(391 + 405 + 402)/3)/4 </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="anovacoding---anova-contrasts-are-orthogonal." class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="anovacoding---anova-contrasts-are-orthogonal."><span class="header-section-number">4.8</span> AnovaCoding - Anova contrasts are orthogonal.</h2>
+<section id="a2-x-b2" class="level3" data-number="4.8.1">
+<h3 data-number="4.8.1" class="anchored" data-anchor-id="a2-x-b2"><span class="header-section-number">4.8.1</span> A(2) x B(2)</h3>
+<p>An A(2) x B(2) design can be recast as an F(4) design with the levels (A1-B1, A1-B2, A2-B1, A2-B2). The following contrast specifiction returns estimates for the main effect of A, the main effect of B, and the interaction of A and B. In a figure With A on the x-axis and the levels of B shown as two lines, the interaction tests the null hypothesis that the two lines are parallel. A positive coefficient implies overadditivity (diverging lines toward the right) and a negative coefficient underadditivity (converging lines).</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># B</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A x B</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;AxB&quot;</span>],</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="113">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
@@ -2786,549 +3280,23 @@ vertical-align: -.125em;
 <td style="text-align: right;">7.0914</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2874</td>
-<td style="text-align: right;">10.28</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2485</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">13.9852</td>
-<td style="text-align: right;">2.3056</td>
-<td style="text-align: right;">6.07</td>
-<td style="text-align: right;">&lt;1e-08</td>
-<td style="text-align: right;">10.7520</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">-2.7470</td>
-<td style="text-align: right;">2.2142</td>
-<td style="text-align: right;">-1.24</td>
-<td style="text-align: right;">0.2147</td>
-<td style="text-align: right;">9.5093</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8348</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>The fixed-effect coefficients estimate the expected difference scores. In the largest decimal, they are not excatly identical to the computed difference because the design is not balanced, but it is close enough for this tutorial.</p>
-</section>
-<section id="hypothesiscoding" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> HypothesisCoding</h1>
-<p>We are not limited to “canned” contrasts. <code>HypothesisCoding()</code> contrast is the most general option avaiable. It contains all the “canned” contrasts as special cases. For example, we specify <code>SeqDiffCoding()</code> again, but with a tiny difference. Actually, this was the theoretically motivated contrasts in Kliegl et al. (2011).</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>       <span class="op">-</span><span class="fl">1</span>  <span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span>  <span class="fl">1</span>  <span class="fl">0</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0</span>  <span class="fl">0</span>  <span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>[<span class="st">&quot;val&quot;</span>, <span class="st">&quot;sod&quot;</span>, <span class="st">&quot;dos&quot;</span>, <span class="st">&quot;dod&quot;</span>],</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">&quot;spt&quot;</span>, <span class="st">&quot;obj&quot;</span>, <span class="st">&quot;grv&quot;</span>],</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0918</td>
-<td style="text-align: right;">54.96</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2033</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: spt</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2874</td>
-<td style="text-align: right;">10.28</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2484</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: obj</td>
-<td style="text-align: right;">13.9852</td>
-<td style="text-align: right;">2.3057</td>
-<td style="text-align: right;">6.07</td>
-<td style="text-align: right;">&lt;1e-08</td>
-<td style="text-align: right;">10.7542</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: grv</td>
-<td style="text-align: right;">2.7469</td>
-<td style="text-align: right;">2.2142</td>
-<td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">9.5099</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8348</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Controlling the ordering of levels for contrasts:</p>
-<ol type="1">
-<li>kwarg <code>levels</code> to order the levels; the first is set as the baseline.</li>
-<li>kwarg <code>base</code> to fix the baseline level.</li>
-</ol>
-<p>The assignment of random factors such as <code>Subj</code> to <code>Grouping()</code> is only necessary when the sample size is very large and leads to an out-of-memory error; but we recommend to include it as part of the documentation.</p>
-</section>
-<section id="dummycoding" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> DummyCoding</h1>
-<p>Thi contrast corresponds to <code>contr.treatment()</code> in R</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">DummyCoding</span>(levels<span class="op">=</span>[<span class="st">&quot;val&quot;</span>, <span class="st">&quot;sod&quot;</span>, <span class="st">&quot;dos&quot;</span>, <span class="st">&quot;dod&quot;</span>]; base<span class="op">=</span><span class="st">&quot;val&quot;</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="39">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">358.0914</td>
-<td style="text-align: right;">6.1515</td>
-<td style="text-align: right;">58.21</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">47.8910</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2868</td>
-<td style="text-align: right;">10.28</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2433</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">47.7670</td>
-<td style="text-align: right;">3.5555</td>
-<td style="text-align: right;">13.43</td>
-<td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">25.5276</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">45.0199</td>
-<td style="text-align: right;">4.3625</td>
-<td style="text-align: right;">10.32</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">32.2818</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8350</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>This contrast has the disadvantage that the intercept returns the mean of the level specified as <code>base</code>, default is the first level, not the <code>GM</code>.</p>
-</section>
-<section id="ychycaeitcoding" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> YchycaeitCoding</h1>
-<p>The contrasts returned by <code>DummyCoding</code> may be what you want. Can’t we have them, but also the <code>GM</code> rather than the mean of the base level? Yes, we can! I call this “You can have your cake and it eat, too”-Coding (<code>YchycaeitCoding</code>).</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m2b <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">1</span> <span class="fl">0</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span> <span class="fl">1</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7335</td>
-<td style="text-align: right;">7.0691</td>
-<td style="text-align: right;">55.13</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.0256</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">33.7816</td>
-<td style="text-align: right;">3.2802</td>
-<td style="text-align: right;">10.30</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.1865</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">47.7669</td>
-<td style="text-align: right;">3.5513</td>
-<td style="text-align: right;">13.45</td>
-<td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">25.4919</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">45.0199</td>
-<td style="text-align: right;">4.3542</td>
-<td style="text-align: right;">10.34</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">32.2138</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8355</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Just relevel the factor or move the column with -1s for a different base.</p>
-</section>
-<section id="effectscoding" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> EffectsCoding</h1>
-<p><code>EffectCoding()</code> is very frequently used. It returns the effects relative to the <code>GM</code>. Thus, for a two-level factor it will be half the difference between the two levels.</p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">EffectsCoding</span>(levels<span class="op">=</span>[<span class="st">&quot;val&quot;</span>, <span class="st">&quot;sod&quot;</span>, <span class="st">&quot;dos&quot;</span>, <span class="st">&quot;dod&quot;</span>]; base<span class="op">=</span><span class="st">&quot;val&quot;</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="41">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0966</td>
-<td style="text-align: right;">54.92</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2409</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">2.1396</td>
-<td style="text-align: right;">1.3344</td>
-<td style="text-align: right;">1.60</td>
-<td style="text-align: right;">0.1088</td>
-<td style="text-align: right;">6.0153</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">16.1248</td>
-<td style="text-align: right;">1.4414</td>
-<td style="text-align: right;">11.19</td>
-<td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">7.3439</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">13.3778</td>
-<td style="text-align: right;">1.9331</td>
-<td style="text-align: right;">6.92</td>
-<td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">12.4707</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8346</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>The effect will <em>not</em> be returned for the <code>base</code> level. The default <code>base</code> is the first level. Thus, if you leave out the argument, you get the same results in this case. Importantly, <code>EffectCoding()</code> corresponds to the very popular <code>contr.sum()</code> in R – except that the <code>base</code> in <code>contr.sum()</code> is the last level.</p>
-</section>
-<section id="helmertcoding" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> HelmertCoding</h1>
-<p><code>HelmertCoding()</code> compares the</p>
-<p>A very nice property of Helmert contrasts is that for balanced designs they are othogonal.</p>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(levels<span class="op">=</span>[<span class="st">&quot;val&quot;</span>, <span class="st">&quot;sod&quot;</span>, <span class="st">&quot;dos&quot;</span>, <span class="st">&quot;dod&quot;</span>]))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="42">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0810</td>
-<td style="text-align: right;">55.04</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1187</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">16.8907</td>
-<td style="text-align: right;">1.6411</td>
-<td style="text-align: right;">10.29</td>
-<td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">11.6015</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">10.2920</td>
-<td style="text-align: right;">0.8379</td>
-<td style="text-align: right;">12.28</td>
-<td style="text-align: right;">&lt;1e-33</td>
-<td style="text-align: right;">5.2817</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">4.4594</td>
-<td style="text-align: right;">0.6459</td>
-<td style="text-align: right;">6.90</td>
-<td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">4.1717</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8349</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Rougly:</p>
-<ul>
-<li>sod: (391-358)/2</li>
-<li>dos: (405-(391+358)/2)/3</li>
-<li>dod: (402-(405+391+358)/3)/4</li>
-</ul>
-<p>I don’t find the labelling of the coefficients very intuitive. How about? <code>labels=[&quot;2.1&quot;, &quot;3.21&quot;, &quot;4.321&quot;]</code></p>
-</section>
-<section id="reverse-helmertcoding" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Reverse HelmertCoding</h1>
-<p>Also popular is to start at the end of the factor.</p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m4b <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="op">=</span> <span class="fu">reverse</span>(StatsModels.<span class="fu">levels</span>(dat1.CTR))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(<span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HelmertCoding</span>(; levels))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0931</td>
-<td style="text-align: right;">54.95</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2134</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">1.3735</td>
-<td style="text-align: right;">1.1071</td>
-<td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2147</td>
-<td style="text-align: right;">4.7544</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">-4.2039</td>
-<td style="text-align: right;">0.6843</td>
-<td style="text-align: right;">-6.14</td>
-<td style="text-align: right;">&lt;1e-09</td>
-<td style="text-align: right;">3.3491</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">CTR: val</td>
-<td style="text-align: right;">-10.5474</td>
-<td style="text-align: right;">0.8809</td>
-<td style="text-align: right;">-11.97</td>
-<td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">6.6508</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8348</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<ul>
-<li>Helmert
-<ul>
-<li>sod: (391-358)/2</li>
-<li>dos: (405-(391+358)/2)/3</li>
-<li>dod: (402-(405+391+358)/3)/4</li>
-</ul></li>
-<li>Reverse Helmert
-<ul>
-<li>dos: (405-402)/2</li>
-<li>spd: (391-(405+402)/2)/3</li>
-<li>dod: (358-(391+405+402)/3)/4</li>
-</ul></li>
-</ul>
-</section>
-<section id="anovacoding---anova-contrasts-are-orthogonal." class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> AnovaCoding - Anova contrasts are orthogonal.</h1>
-<section id="a2-x-b2" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="a2-x-b2"><span class="header-section-number">11.1</span> A(2) x B(2)</h2>
-<p>An A(2) x B(2) design can be recast as an F(4) design with the levels (A1-B1, A1-B2, A2-B1, A2-B2). The following contrast specifiction returns estimates for the main effect of A, the main effect of B, and the interaction of A and B. In a figure With A on the x-axis and the levels of B shown as two lines, the interaction tests the null hypothesis that the two lines are parallel. A positive coefficient implies overadditivity (diverging lines toward the right) and a negative coefficient underadditivity (converging lines).</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># B</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>          <span class="co"># A x B</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;AxB&quot;</span>],</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="44">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Est.</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: right;">σ_Subj</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0912</td>
-<td style="text-align: right;">54.96</td>
-<td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1986</td>
+<td style="text-align: right;">55.2004</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: A</td>
 <td style="text-align: right;">59.0052</td>
-<td style="text-align: right;">5.1827</td>
-<td style="text-align: right;">11.38</td>
+<td style="text-align: right;">5.1826</td>
+<td style="text-align: right;">11.39</td>
 <td style="text-align: right;">&lt;1e-29</td>
-<td style="text-align: right;">36.2091</td>
+<td style="text-align: right;">36.2076</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: B</td>
 <td style="text-align: right;">31.0348</td>
-<td style="text-align: right;">4.6750</td>
+<td style="text-align: right;">4.6748</td>
 <td style="text-align: right;">6.64</td>
 <td style="text-align: right;">&lt;1e-10</td>
-<td style="text-align: right;">31.7133</td>
+<td style="text-align: right;">31.7114</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: AxB</td>
@@ -3336,7 +3304,7 @@ vertical-align: -.125em;
 <td style="text-align: right;">3.0927</td>
 <td style="text-align: right;">-11.81</td>
 <td style="text-align: right;">&lt;1e-31</td>
-<td style="text-align: right;">16.0046</td>
+<td style="text-align: right;">16.0050</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -3356,38 +3324,38 @@ vertical-align: -.125em;
    A2   -1     +1</code></pre>
 <p>Thus, interaction tests whether the difference between main diagonal and minor diagonal is different from zero.</p>
 </section>
-<section id="a2-x-b2-x-c2" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="a2-x-b2-x-c2"><span class="header-section-number">11.2</span> A(2) x B(2) x C(2)</h2>
+<section id="a2-x-b2-x-c2" class="level3" data-number="4.8.2">
+<h3 data-number="4.8.2" class="anchored" data-anchor-id="a2-x-b2-x-c2"><span class="header-section-number">4.8.2</span> A(2) x B(2) x C(2)</h3>
 <p>Going beyond the four level factor; it is also helpful to see the corresponding layout of the eight means for the interaction of A and B and C.</p>
 <pre><code>          C1              C2
       B1     B2        B1     B2
  A1   +1     -1   A1   -1     +1
  A2   -1     +1   A2   +1     -1</code></pre>
 </section>
-<section id="a2-x-b2-x-c3" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="a2-x-b2-x-c3"><span class="header-section-number">11.3</span> A(2) x B(2) x C(3)</h2>
+<section id="a2-x-b2-x-c3" class="level3" data-number="4.8.3">
+<h3 data-number="4.8.3" class="anchored" data-anchor-id="a2-x-b2-x-c3"><span class="header-section-number">4.8.3</span> A(2) x B(2) x C(3)</h3>
 <p>TO BE DONE</p>
 </section>
 </section>
-<section id="nestedcoding" class="level1" data-number="12">
-<h1 data-number="12"><span class="header-section-number">12</span> NestedCoding</h1>
+<section id="nestedcoding" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="nestedcoding"><span class="header-section-number">4.9</span> NestedCoding</h2>
 <p>An A(2) x B(2) design can be recast as an F(4) design with the levels (A1-B1, A1-B2, A2-B1, A2-B2). The following contrast specifiction returns an estimate for the main effect of A and the effects of B nested in the two levels of A. In a figure With A on the x-axis and the levels of B shown as two lines, the second contrast tests whether A1-B1 is different from A1-B2 and the third contrast tests whether A2-B1 is different from A2-B2.</p>
 <div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>m8 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      [</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>  <span class="fl">0</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">&quot;do_so&quot;</span>, <span class="st">&quot;spt&quot;</span>, <span class="st">&quot;grv&quot;</span>],</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>m8 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      [</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span> <span class="op">+</span><span class="fl">1</span>  <span class="fl">0</span>  <span class="fl">0</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>       <span class="fl">0</span>  <span class="fl">0</span> <span class="op">+</span><span class="fl">1</span> <span class="op">-</span><span class="fl">1</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>      ];</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      levels<span class="op">=</span>StatsModels.<span class="fu">levels</span>(dat1.CTR),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      labels<span class="op">=</span>[<span class="st">&quot;do_so&quot;</span>, <span class="st">&quot;spt&quot;</span>, <span class="st">&quot;grv&quot;</span>],</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="114">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
@@ -3403,34 +3371,34 @@ vertical-align: -.125em;
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0908</td>
-<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">7.0899</td>
+<td style="text-align: right;">54.97</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1961</td>
+<td style="text-align: right;">55.1887</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: do_so</td>
-<td style="text-align: right;">59.0051</td>
-<td style="text-align: right;">5.1824</td>
+<td style="text-align: right;">59.0053</td>
+<td style="text-align: right;">5.1799</td>
 <td style="text-align: right;">11.39</td>
 <td style="text-align: right;">&lt;1e-29</td>
-<td style="text-align: right;">36.2060</td>
+<td style="text-align: right;">36.1846</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: spt</td>
 <td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2871</td>
+<td style="text-align: right;">3.2873</td>
 <td style="text-align: right;">10.28</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2462</td>
+<td style="text-align: right;">23.2475</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: grv</td>
 <td style="text-align: right;">2.7470</td>
-<td style="text-align: right;">2.2140</td>
+<td style="text-align: right;">2.2146</td>
 <td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2147</td>
-<td style="text-align: right;">9.5068</td>
+<td style="text-align: right;">0.2148</td>
+<td style="text-align: right;">9.5150</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -3446,26 +3414,26 @@ vertical-align: -.125em;
 </div>
 <p>The three contrasts for one main effect and two nested contrasts are orthogonal. There is no test of the interaction (parallelism).</p>
 </section>
-<section id="other-orthogonal-contrasts" class="level1" data-number="13">
-<h1 data-number="13"><span class="header-section-number">13</span> Other orthogonal contrasts</h1>
+<section id="other-orthogonal-contrasts" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="other-orthogonal-contrasts"><span class="header-section-number">4.10</span> Other orthogonal contrasts</h2>
 <p>For factors with more than four levels there are many options for specifying orthogonal contrasts as long as one proceeds in a top-down strictly hiearchical fashion.</p>
 <p>Suppose you have a factor with seven levels and let’s ignore shifting colummns. In this case, you have six options for the first contrast, that is 6 vs. 1, 5 vs.2 , 4 vs. 3, 3 vs. 4, 2 vs. 5, and 1 vs. 6 levels. Then, you specify orthogonal contrasts for partitions with more than 2 elements and so on. That is, you don’t specify a contrast that crosses an earlier partition line.</p>
 <p>In the following example, after an initial 4 vs 3 partitioning of levels, we specify <code>AnovaCoding</code> for the left and <code>HelmertCoding</code> for the right partition.</p>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>   <span class="op">-</span><span class="fl">1</span>   <span class="op">+</span><span class="fl">1</span>    <span class="fl">0</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">1</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    ];</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="st">&quot;A1&quot;</span>, <span class="st">&quot;A2&quot;</span>, <span class="st">&quot;A3&quot;</span>, <span class="st">&quot;A4&quot;</span>, <span class="st">&quot;A5&quot;</span>, <span class="st">&quot;A6&quot;</span>, <span class="st">&quot;A7&quot;</span>],</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">&quot;c567.1234&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;BxC&quot;</span>, <span class="st">&quot;c6.5&quot;</span>, <span class="st">&quot;c6.56&quot;</span>],</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>CTR <span class="op">=&gt;</span> <span class="fu">HypothesisCoding</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">4</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>   <span class="op">-</span><span class="fl">1</span>   <span class="op">+</span><span class="fl">1</span>    <span class="fl">0</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>         <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span>    <span class="fl">0</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>    <span class="fl">1</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    ];</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="st">&quot;A1&quot;</span>, <span class="st">&quot;A2&quot;</span>, <span class="st">&quot;A3&quot;</span>, <span class="st">&quot;A4&quot;</span>, <span class="st">&quot;A5&quot;</span>, <span class="st">&quot;A6&quot;</span>, <span class="st">&quot;A7&quot;</span>],</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="st">&quot;c567.1234&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;BxC&quot;</span>, <span class="st">&quot;c6.5&quot;</span>, <span class="st">&quot;c6.56&quot;</span>],</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There are two rules that hold for all orthogonal contrasts:</p>
 <ol type="1">
@@ -3473,42 +3441,26 @@ vertical-align: -.125em;
 <li>For all pairs of rows, the sum of the products of weights in the same columns sums to zero.</li>
 </ol>
 </section>
-<section id="appendix-summary-dave-kleinschmidt" class="level1" data-number="14">
-<h1 data-number="14"><span class="header-section-number">14</span> Appendix: Summary (Dave Kleinschmidt)</h1>
+</section>
+<section id="appendix-summary-dave-kleinschmidt" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Appendix: Summary (Dave Kleinschmidt)</h1>
 <p><a href="https://juliastats.org/StatsModels.jl/latest/contrasts/">StatsModels</a></p>
 <p>StatsModels.jl provides a few commonly used contrast coding schemes, some less-commonly used schemes, and structs that allow you to manually specify your own, custom schemes.</p>
-<section id="standard-contrasts" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="standard-contrasts"><span class="header-section-number">14.1</span> Standard contrasts</h2>
+<section id="standard-contrasts" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="standard-contrasts"><span class="header-section-number">5.1</span> Standard contrasts</h2>
 <p>The most commonly used contrasts are <code>DummyCoding</code> and <code>EffectsCoding</code> (which are similar to <code>contr.treatment()</code> and <code>contr.sum()</code> in R, respectively).</p>
 </section>
-<section id="exotic-contrasts-rk-well" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="exotic-contrasts-rk-well"><span class="header-section-number">14.2</span> “Exotic” contrasts (rk: well …)</h2>
+<section id="exotic-contrasts-rk-well" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="exotic-contrasts-rk-well"><span class="header-section-number">5.2</span> “Exotic” contrasts (rk: well …)</h2>
 <p>We also provide <code>HelmertCoding</code> and <code>SeqDiffCoding</code> (corresponding to base R’s <code>contr.helmert()</code> and <code>MASS::contr.sdif()</code>).</p>
 </section>
-<section id="manual-contrasts" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="manual-contrasts"><span class="header-section-number">14.3</span> Manual contrasts</h2>
+<section id="manual-contrasts" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="manual-contrasts"><span class="header-section-number">5.3</span> Manual contrasts</h2>
 <p><strong>ContrastsCoding()</strong></p>
 <p>There are two ways to manually specify contrasts. First, you can specify them <strong>directly</strong> via <code>ContrastsCoding</code>. If you do, it’s good practice to specify the levels corresponding to the rows of the matrix, although they can be omitted in which case they’ll be inferred from the data.</p>
 <p><strong>HypothesisCoding()</strong></p>
-<p>A better way to specify manual contrasts is via <code>HypothesisCoding</code>, where each row of the matrix corresponds to the weights given to the cell means of the levels corresponding to each column (see <a href="https://www.sciencedirect.com/science/article/pii/S0749596X19300695?via%3Dihub">Schad et al., 2020)</a> for more information).</p>
+<p>A better way to specify manual contrasts is via <code>HypothesisCoding</code>, where each row of the matrix corresponds to the weights given to the cell means of the levels corresponding to each column (see <span class="citation" data-cites="Schad2020">@Schad2020</span> for more information).</p>
 </section>
-</section>
-<section id="version-information" class="level1" data-number="15">
-<h1 data-number="15"><span class="header-section-number">15</span> Version information</h1>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">versioninfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Julia Version 1.8.0
-Commit 5544a0fab76 (2022-08-17 13:38 UTC)
-Platform Info:
-  OS: macOS (x86_64-apple-darwin21.4.0)
-  CPU: 12 × Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
-  WORD_SIZE: 64
-  LIBM: libopenlibm
-  LLVM: libLLVM-13.0.1 (ORCJIT, skylake)
-  Threads: 1 on 6 virtual cores</code></pre>
-</div>
-</div>
 </section>
 
 </main>

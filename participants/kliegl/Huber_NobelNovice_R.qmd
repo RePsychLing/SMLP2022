@@ -38,6 +38,7 @@ Data and code are available at [OSF repo](https://osf.io/mjh8s/).
 #| echo: true
 #| message: false
 
+library(arrow)
 library(haven)
 library(labelled)
 library(tidyverse)
@@ -58,16 +59,17 @@ cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
 dat <- 
   read_dta("./processed_data/nobel_data.dta") |> 
   filter(!(is.na(recommendation))) |> 
-  select(Rvwr = reviewer_code, time=time_to_report_h, 
+  select(Reviewer  = reviewer_code, time=time_to_report_h, 
          Cond = treatment, 14, 17, 13, 19) |> 
-  mutate(Rvwr = factor(Rvwr),
+  mutate(Reviewer  = factor(Reviewer ),
          time = time / 24.,  # convert from hours to days
          rating = remove_val_labels(recommendation),
-         new = remove_val_labels(new_information),
-         Rating = to_factor(recommendation),
+         new_info = remove_val_labels(new_information),
          Cond = fct_relevel(Cond, "HH", "AH", "AA", "AL", "LL")) |> 
-  select(Rvwr, Cond, time, Rating, rating, worthy=worthy_subject, new, 
+  select(Reviewer , Cond, time, Recommendation=recommendation, rating, worthy=worthy_subject, new_info, 
          supported=conclusions_supported)
+
+dat$Recommendation=factor(dat$Recommendation, labels=names(val_labels(dat$Recommendation)))
 
 #stview(dfSummary(dat))
 ```
@@ -90,7 +92,7 @@ Status revailed in email and correspondent.
 tbl1 <- 
   dat %>%
   filter(Cond %in% c("AH", "AA", "AL")) |> 
-  group_by(Cond, Rating) |> 
+  group_by(Cond, Recommendation) |> 
   summarise(n = n()) |> 
   mutate(perc = 100 * n/sum(n))
 
@@ -98,7 +100,7 @@ tbl1 <-
 tbl1 |> group_by(Cond) |> summarize(N=sum(perc))
 
 # Use position = position_dodge() 
-ggplot(tbl1, aes(x = Rating, y = perc)) +
+ggplot(tbl1, aes(x = Recommendation, y = perc)) +
   geom_bar(
     aes(color = Cond, fill = Cond),
 #  stat = "identity", position = position_stack()) +
@@ -118,14 +120,14 @@ ggplot(tbl1, aes(x = Rating, y = perc)) +
 tbl2 <- 
   dat %>%
   filter(Cond %in% c("HH", "LL")) |> 
-  group_by(Cond, Rating) |> 
+  group_by(Cond, Recommendation) |> 
   summarise(n = n()) |> 
   mutate(perc = 100 * n/sum(n))
 
 # Check: 
 tbl2 |> group_by(Cond) |> summarize(N=sum(perc))
 
-ggplot(tbl2, aes(x = Rating, y = perc)) +
+ggplot(tbl2, aes(x = Recommendation, y = perc)) +
   geom_bar(
     aes(color = Cond, fill = Cond),
    stat = "identity", position = position_dodge(0.8), width = 0.7) +
@@ -135,7 +137,7 @@ ggplot(tbl2, aes(x = Rating, y = perc)) +
   theme_bw() + theme(legend.position = c(.9,.9), legend.justification = c(.9,.9))
 ```
 
-## Ratings graph
+## Recommendations graph (1)
 
 ```{r}
 dat |> 
@@ -145,7 +147,7 @@ dat |>
   geom_point() + geom_line() + 
   geom_errorbar(aes(ymax = M + 2*SE, ymin = M - 2*SE), width=.1) +
   geom_hline(yintercept = 2.5) +
-  scale_y_continuous("Recommendation", limit=c(1,4), n.breaks=4, labels=levels(dat$Rating)) +
+  scale_y_continuous("Recommendation", limit=c(1,4), n.breaks=4, labels=levels(dat$Recommendation)) +
   xlab("Treatment") + theme_bw()
 ```
 
@@ -157,7 +159,7 @@ contrasts(dat$Cond) <- MASS::contr.sdif(5)
 
 # Linear model
 
-## Rating (continuous)
+## Recommendation (continuous)
 
 ```{r}
 lm1 <- lm(rating ~ 1 + Cond, data=dat)
@@ -183,10 +185,10 @@ cor(dat[, 5:8], use="complete.obs")
 dat2 <- 
   dat |> 
   mutate(worthy = if_else(is.na(worthy), rating, worthy),
-         new = if_else(is.na(new), rating, new), 
+         new_info = if_else(is.na(new_info), rating, new_info), 
          supported = if_else(is.na(supported), rating, supported)) |> 
-  pivot_longer(c("worthy", "new", "supported"), names_to="Scale", values_to="sub_rating") |> 
-  mutate(Scale = fct_relevel(Scale, "worthy", "new", "supported"))
+  pivot_longer(c("worthy", "new_info", "supported"), names_to="Scale", values_to="sub_rating") |> 
+  mutate(Scale = fct_relevel(Scale, "worthy", "new_info", "supported"))
 
 dat2 |> group_by(Scale) |> summarise(M=mean(sub_rating), SD=sd(sub_rating))
 ```
@@ -202,7 +204,7 @@ contrasts(dat2$Scale) <- MASS::contr.sdif(3)
 ## Fit the model
 
 ```{r}
-lmm1 <- lmer(sub_rating ~ 1 + Cond*Scale + (1 | Rvwr), data=dat2, REML=FALSE,
+lmm1 <- lmer(sub_rating ~ 1 + Cond*Scale + (1 | Reviewer ), data=dat2, REML=FALSE,
              control=lmerControl(calc.derivs=FALSE))
 print(summary(lmm1), corr=FALSE)
 ```
@@ -210,7 +212,7 @@ print(summary(lmm1), corr=FALSE)
 Remove interactions.
 
 ```{r}
-lmm2 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 | Rvwr), data=dat2, REML=FALSE,
+lmm2 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 | Reviewer ), data=dat2, REML=FALSE,
              control=lmerControl(calc.derivs=FALSE))
 print(summary(lmm2), corr=FALSE)
 
@@ -220,7 +222,7 @@ anova(lmm2, lmm1)
 Add VCs and CPs. 
 
 ```{r}
-lmm3 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 + Scale | Rvwr), data=dat2, REML=FALSE,
+lmm3 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 + Scale | Reviewer ), data=dat2, REML=FALSE,
              control=lmerControl(calc.derivs=FALSE, check.nobs.vs.nRE="ignore"))
 print(summary(lmm3), corr=FALSE)
 
@@ -233,12 +235,35 @@ Check the CPs.
 mm   <- model.matrix(~ 1 + Cond + Scale, data=dat2)
 sc2_1 <- mm[,6]
 sc3_2 <- mm[,7]
-lmm4 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 + sc2_1+sc3_2 || Rvwr), data=dat2, REML=FALSE,
+lmm4 <- lmer(sub_rating ~ 1 + Cond + Scale + (1 + sc2_1+sc3_2 || Reviewer ), data=dat2, REML=FALSE,
              control=lmerControl(calc.derivs=FALSE, check.nobs.vs.nRE="ignore"))
 print(summary(lmm4), corr=FALSE)
 
 anova(lmm2, lmm4, lmm3)
 ```
+
+## Recommendations graph (2)
+
+```{r}
+dat2 |> 
+  group_by(Cond, Scale) |> 
+  summarise(N=n(), M=mean(sub_rating), SE=sd(rating)/sqrt(N)) |> 
+  ggplot(aes(x=Cond, y=M, group=Scale, color=Scale)) +
+  geom_point() + geom_line() + 
+  geom_errorbar(aes(ymax = M + 2*SE, ymin = M - 2*SE), width=.1) +
+  scale_color_manual("Scale", values=cbPalette) +
+  scale_y_continuous("Rating") +
+  xlab("Treatment") + 
+  theme_bw() + theme(legend.position=c(0.01, 0.01), legend.justification=c(0.01, 0.01)) +
+  coord_cartesian(ylim=c(1,4.5))
+```
+
+# Transfer to Julia
+
+```{r}
+write_feather(dat2, "./data/nobel_data.arrow")
+```
+
 
 # Session Info
 
