@@ -29,7 +29,6 @@ There will be another vignette modelling the additional experimental manipulatio
 This analysis was reported in the parsimonious mixed-model paper [@Bates2015]; they were also used in a paper of GAMMs [@Baayen2017].
 Data and R scripts are also available in [R-package RePsychLing](https://github.com/dmbates/RePsychLing/tree/master/data/).
 Here we provide some of the corresponding analyses with _MixedModels.jl_ and a much wider variety of visualizations of LMM results.
-A _MixedModels.jl_-based analysis focusing on the complex experimental design and the analysis of a complex random-effect structure for this design is in script `kkl15_complex.jl`.
 
 ## Packages
 
@@ -490,9 +489,9 @@ draw(
 )
 ```
 
-#### Fixed effects (w/o GM)
+#### Fixed effects and associated variance components (w/o GM)
 
-The shortest coverage interval for the `GM` ranges from 376 to 404 ms. To keep the plot range small we do not include its density here.
+The shortest coverage interval for the `GM` ranges from 376 to 404 ms and the associate variance component from .15 to .21. To keep the plot range small we do not include their densities here.
 
 ```{julia}
 #| code-fold: true
@@ -526,9 +525,9 @@ The densitiies correspond nicely with the shortest coverage intervals.
 ```{julia}
 #| code-fold: true
 #| label: fig-sigmasdensitym1
-#| fig-cap: '  Kernel density estimate from bootstrap samples of the standard deviations for  model m1L'
+#| fig-cap: '  Kernel density estimate from bootstrap samples of the standard deviations for  model m1L (excluding Grand Mean)'
 draw(
-  data(@subset(dat2, :type == "σ" && :group == "Subj")) *
+  data(@subset(dat2, :type == "σ" && :group == "Subj" && :names ≠ "(Intercept)") ) *
   mapping(
     :value => "Standard deviations [ms]";
     color=:names => rn => "Variance components",
