@@ -584,7 +584,7 @@ Note
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts)</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 231   Time: 0:00:00 ( 2.07 ms/it)</code></pre>
+<pre><code>Minimizing 235   Time: 0:00:00 ( 1.83 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <table class="table table-sm table-striped">
@@ -671,8 +671,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.03382755</td>
-<td style="text-align: right;">0.18392268</td>
+<td style="text-align: right;">0.03382674</td>
+<td style="text-align: right;">0.18392046</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -680,8 +680,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">0.00472960</td>
-<td style="text-align: right;">0.06877208</td>
+<td style="text-align: right;">0.00472976</td>
+<td style="text-align: right;">0.06877325</td>
 <td style="text-align: right;">+0.56</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -689,8 +689,8 @@ Note
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">0.00000126</td>
-<td style="text-align: right;">0.00112159</td>
+<td style="text-align: right;">0.00000125</td>
+<td style="text-align: right;">0.00111915</td>
 <td style="text-align: right;">-0.05</td>
 <td style="text-align: right;">+0.80</td>
 <td style="text-align: right;"></td>
@@ -698,8 +698,8 @@ Note
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">0.00149685</td>
-<td style="text-align: right;">0.03868912</td>
+<td style="text-align: right;">0.00149679</td>
+<td style="text-align: right;">0.03868834</td>
 <td style="text-align: right;">+0.60</td>
 <td style="text-align: right;">+0.66</td>
 <td style="text-align: right;">+0.36</td>
@@ -708,7 +708,7 @@ Note
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
 <td style="text-align: right;">0.03884575</td>
-<td style="text-align: right;">0.19709325</td>
+<td style="text-align: right;">0.19709326</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -734,14 +734,14 @@ Principal components based on correlation matrix
  CTR: dod      0.6    0.66   0.36   1.0
 
 Normalized cumulative variances:
-[0.6327, 0.9136, 1.0, 1.0]
+[0.6326, 0.9136, 1.0, 1.0]
 
 Component loadings
                 PC1    PC2    PC3    PC4
  (Intercept)  -0.41   0.66  -0.47   0.42
  CTR: sod     -0.6   -0.18  -0.34  -0.7
  CTR: dos     -0.43  -0.69  -0.07   0.58
- CTR: dod     -0.53   0.25   0.81   0.0</code></pre>
+ CTR: dod     -0.53   0.25   0.81  -0.0</code></pre>
 </div>
 </div>
 <p>We note that the critical correlation parameter between spatial (<code>sod</code>) and attraction (<code>dod</code>) is now estimated at .66 – not that close to the 1.0 boundary that caused singularity in <span class="citation" data-cites="Kliegl2010">Kliegl et al. (<a href="#ref-Kliegl2010" role="doc-biblioref">2010</a>)</span>. However, the LMM based on log reaction times is still singular. Let’s check for untransformed reaction times.</p>
@@ -766,34 +766,34 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">308.2059</td>
-<td style="text-align: right;">6.4147</td>
-<td style="text-align: right;">48.05</td>
+<td style="text-align: right;">6.4152</td>
+<td style="text-align: right;">48.04</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">59.3745</td>
+<td style="text-align: right;">59.3788</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: sod</td>
 <td style="text-align: right;">23.0720</td>
-<td style="text-align: right;">2.6415</td>
+<td style="text-align: right;">2.6419</td>
 <td style="text-align: right;">8.73</td>
 <td style="text-align: right;">&lt;1e-17</td>
-<td style="text-align: right;">22.8504</td>
+<td style="text-align: right;">22.8535</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">13.0855</td>
-<td style="text-align: right;">1.4583</td>
+<td style="text-align: right;">1.4586</td>
 <td style="text-align: right;">8.97</td>
 <td style="text-align: right;">&lt;1e-18</td>
-<td style="text-align: right;">6.8329</td>
+<td style="text-align: right;">6.8371</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dod</td>
 <td style="text-align: right;">2.6860</td>
-<td style="text-align: right;">2.0608</td>
+<td style="text-align: right;">2.0612</td>
 <td style="text-align: right;">1.30</td>
 <td style="text-align: right;">0.1925</td>
-<td style="text-align: right;">15.1026</td>
+<td style="text-align: right;">15.1063</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -835,8 +835,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">3525.32539</td>
-<td style="text-align: right;">59.37445</td>
+<td style="text-align: right;">3525.84432</td>
+<td style="text-align: right;">59.37882</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -844,8 +844,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">522.13947</td>
-<td style="text-align: right;">22.85037</td>
+<td style="text-align: right;">522.28198</td>
+<td style="text-align: right;">22.85349</td>
 <td style="text-align: right;">+0.66</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -853,8 +853,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">46.68842</td>
-<td style="text-align: right;">6.83289</td>
+<td style="text-align: right;">46.74633</td>
+<td style="text-align: right;">6.83713</td>
 <td style="text-align: right;">+0.35</td>
 <td style="text-align: right;">+0.15</td>
 <td style="text-align: right;"></td>
@@ -862,8 +862,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">228.08774</td>
-<td style="text-align: right;">15.10257</td>
+<td style="text-align: right;">228.19971</td>
+<td style="text-align: right;">15.10628</td>
 <td style="text-align: right;">+0.53</td>
 <td style="text-align: right;">+0.65</td>
 <td style="text-align: right;">+0.30</td>
@@ -871,8 +871,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">4254.25039</td>
-<td style="text-align: right;">65.22461</td>
+<td style="text-align: right;">4254.24353</td>
+<td style="text-align: right;">65.22456</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1044,7 +1044,7 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">308.2059</td>
-<td style="text-align: right;">6.4146</td>
+<td style="text-align: right;">6.4139</td>
 <td style="text-align: right;">48.05</td>
 <td style="text-align: right;">&lt;1e-99</td>
 <td style="text-align: right;"></td>
@@ -1052,26 +1052,26 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;">CTR: sod</td>
 <td style="text-align: right;">23.0720</td>
-<td style="text-align: right;">2.6415</td>
+<td style="text-align: right;">2.6422</td>
 <td style="text-align: right;">8.73</td>
 <td style="text-align: right;">&lt;1e-17</td>
-<td style="text-align: right;">60.1729</td>
+<td style="text-align: right;">60.1688</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">13.0855</td>
-<td style="text-align: right;">1.4583</td>
-<td style="text-align: right;">8.97</td>
+<td style="text-align: right;">1.4580</td>
+<td style="text-align: right;">8.98</td>
 <td style="text-align: right;">&lt;1e-18</td>
-<td style="text-align: right;">62.4723</td>
+<td style="text-align: right;">62.4677</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">2.6860</td>
-<td style="text-align: right;">2.0609</td>
+<td style="text-align: right;">2.6859</td>
+<td style="text-align: right;">2.0606</td>
 <td style="text-align: right;">1.30</td>
-<td style="text-align: right;">0.1925</td>
-<td style="text-align: right;">71.5378</td>
+<td style="text-align: right;">0.1924</td>
+<td style="text-align: right;">71.5296</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: val</td>
@@ -1079,7 +1079,7 @@ Component loadings
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: right;">47.2871</td>
+<td style="text-align: right;">47.2810</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Residual</td>
@@ -1112,8 +1112,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">CTR: val</td>
-<td style="text-align: right;">2236.0678</td>
-<td style="text-align: right;">47.2871</td>
+<td style="text-align: right;">2235.4887</td>
+<td style="text-align: right;">47.2810</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1121,8 +1121,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">3620.7745</td>
-<td style="text-align: right;">60.1729</td>
+<td style="text-align: right;">3620.2873</td>
+<td style="text-align: right;">60.1688</td>
 <td style="text-align: right;">+0.94</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1130,8 +1130,8 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">3902.7873</td>
-<td style="text-align: right;">62.4723</td>
+<td style="text-align: right;">3902.2113</td>
+<td style="text-align: right;">62.4677</td>
 <td style="text-align: right;">+0.93</td>
 <td style="text-align: right;">+0.99</td>
 <td style="text-align: right;"></td>
@@ -1139,8 +1139,8 @@ Component loadings
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">5117.6611</td>
-<td style="text-align: right;">71.5378</td>
+<td style="text-align: right;">5116.4787</td>
+<td style="text-align: right;">71.5296</td>
 <td style="text-align: right;">+0.89</td>
 <td style="text-align: right;">+0.98</td>
 <td style="text-align: right;">+0.98</td>
@@ -1148,7 +1148,7 @@ Component loadings
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">4254.2488</td>
+<td style="text-align: right;">4254.2505</td>
 <td style="text-align: right;">65.2246</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1238,7 +1238,7 @@ Component loadings
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(dat2, <span class="fl">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
 
-<div class="data-frame"><p>10 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>iter</th><th>type</th><th>group</th><th>names</th><th>value</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.69191</td></tr><tr><th>2</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.077751</td></tr><tr><th>3</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.0406744</td></tr><tr><th>4</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.00249326</td></tr><tr><th>5</th><td>1</td><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.18254</td></tr><tr><th>6</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0623572</td></tr><tr><th>7</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.677464</td></tr><tr><th>8</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.00391139</td></tr><tr><th>9</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.290374</td></tr><tr><th>10</th><td>1</td><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>0.507145</td></tr></tbody></table></div>
+<div class="data-frame"><p>10 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>iter</th><th>type</th><th>group</th><th>names</th><th>value</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.69191</td></tr><tr><th>2</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.0777472</td></tr><tr><th>3</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.040676</td></tr><tr><th>4</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.00284787</td></tr><tr><th>5</th><td>1</td><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.182585</td></tr><tr><th>6</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0623485</td></tr><tr><th>7</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.677731</td></tr><tr><th>8</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.00415275</td></tr><tr><th>9</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.273477</td></tr><tr><th>10</th><td>1</td><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>0.48492</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell" data-execution_count="32">
@@ -1254,7 +1254,7 @@ Component loadings
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(samp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
 
-<div class="data-frame"><p>15 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.6487</td><td>5.72775</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.057934</td><td>0.0889794</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.0329184</td><td>0.047716</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.00970197</td><td>0.0126765</td></tr><tr><th>5</th><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.153353</td><td>0.207577</td></tr><tr><th>6</th><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0565748</td><td>0.0799768</td></tr><tr><th>7</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.38826</td><td>0.71653</td></tr><tr><th>8</th><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.00101646</td><td>0.0179572</td></tr><tr><th>9</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.999999</td><td>0.920422</td></tr><tr><th>10</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>-0.884311</td><td>0.999988</td></tr><tr><th>11</th><td>σ</td><td>Subj</td><td>CTR: dod</td><td>0.0277264</td><td>0.0486859</td></tr><tr><th>12</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dod</td><td>0.392801</td><td>0.83008</td></tr><tr><th>13</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dod</td><td>0.445164</td><td>0.890842</td></tr><tr><th>14</th><td>ρ</td><td>Subj</td><td>CTR: dos, CTR: dod</td><td>-0.834588</td><td>0.936726</td></tr><tr><th>15</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>0.195895</td><td>0.198225</td></tr></tbody></table></div>
+<div class="data-frame"><p>15 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.6487</td><td>5.72775</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.0579395</td><td>0.0889763</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.0329147</td><td>0.0477117</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.0092995</td><td>0.0131985</td></tr><tr><th>5</th><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.15335</td><td>0.207575</td></tr><tr><th>6</th><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0567868</td><td>0.0801194</td></tr><tr><th>7</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.388252</td><td>0.716763</td></tr><tr><th>8</th><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.000844807</td><td>0.0178315</td></tr><tr><th>9</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.91708</td><td>1.0</td></tr><tr><th>10</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>-0.878557</td><td>1.0</td></tr><tr><th>11</th><td>σ</td><td>Subj</td><td>CTR: dod</td><td>0.0276736</td><td>0.0486781</td></tr><tr><th>12</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dod</td><td>0.393957</td><td>0.822121</td></tr><tr><th>13</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dod</td><td>0.446138</td><td>0.898671</td></tr><tr><th>14</th><td>ρ</td><td>Subj</td><td>CTR: dos, CTR: dod</td><td>-0.867048</td><td>0.926754</td></tr><tr><th>15</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>0.19588</td><td>0.19821</td></tr></tbody></table></div>
 </div>
 </div>
 <p>We can also visualize the shortest coverage intervals for fixed effects with the <code>ridgeplot()</code> command:</p>

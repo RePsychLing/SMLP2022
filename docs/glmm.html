@@ -350,7 +350,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 57    Time: 0:00:00 ( 7.35 ms/it)</code></pre>
+<pre><code>Minimizing 57    Time: 0:00:00 ( 6.86 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by maximum likelihood
@@ -368,7 +368,7 @@ Variance components:</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
             Column    Variance Std.Dev.   Corr.
-subj     (Intercept)  565.51068 23.78047
+subj     (Intercept)  565.51067 23.78047
          days          32.68212  5.71683 +0.08
 Residual              654.94145 25.59182
  Number of obs: 180; levels of grouping factors: 18
@@ -423,8 +423,8 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m1.β</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>2-element Vector{Float64}:
- 251.40510484848417
-  10.467285959595715</code></pre>
+ 251.40510484848375
+  10.467285959595792</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="6">
@@ -465,7 +465,7 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>m1.b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>1-element Vector{Matrix{Float64}}:
- [2.8158188821572576 -40.04844169634357 … 0.7232620708173191 12.118907835512482; 9.075511758123813 -8.644079444480187 … -0.9710526399373302 1.310698060178722]</code></pre>
+ [2.8158191325913045 -40.04844170604461 … 0.7232620377478233 12.118907799956531; 9.07551171690184 -8.644079452057246 … -0.9710526342424729 1.31069806890679]</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="8">
@@ -515,64 +515,64 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>m1.X <span class="op">*</span> m1.β <span class="op">+</span> <span class="fu">only</span>(m1.reterms) <span class="op">*</span> <span class="fu">vec</span>(<span class="fu">only</span>(m1.b))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>180-element Vector{Float64}:
- 254.22092373064143
- 273.76372144836097
- 293.3065191660805
- 312.8493168838
- 332.39211460151955
- 351.93491231923906
- 371.47771003695857
- 391.0205077546781
- 410.5633054723977
- 430.1061031901172
- 211.35666315214058
- 213.17986966725613
- 215.00307618237164
+ 254.22092398107506
+ 273.7637216575727
+ 293.3065193340703
+ 312.849317010568
+ 332.3921146870656
+ 351.93491236356317
+ 371.47771004006086
+ 391.0205077165585
+ 410.5633053930561
+ 430.1061030695537
+ 211.35666314243912
+ 213.1798696499777
+ 215.0030761575162
    ⋮
- 328.09823347656857
- 337.5944667962269
- 263.52401268399666
- 275.3019967037711
- 287.07998072354553
- 298.85796474331994
- 310.6359487630944
- 322.41393278286887
- 334.1919168026433
- 345.9699008224177
- 357.74788484219215
- 369.5258688619666</code></pre>
+ 328.09823348905815
+ 337.5944668144114
+ 263.52401264844025
+ 275.3019966769429
+ 287.07998070544545
+ 298.85796473394805
+ 310.63594876245065
+ 322.4139327909532
+ 334.1919168194558
+ 345.9699008479584
+ 357.74788487646094
+ 369.5258689049635</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fitted</span>(m1)   <span class="co"># just to check that these are indeed the same as calculated above</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>180-element Vector{Float64}:
- 254.22092373064143
- 273.76372144836097
- 293.3065191660805
- 312.8493168838
- 332.39211460151955
- 351.93491231923906
- 371.47771003695857
- 391.0205077546781
- 410.5633054723977
- 430.1061031901172
- 211.35666315214058
- 213.17986966725616
- 215.00307618237167
+ 254.22092398107506
+ 273.76372165757266
+ 293.3065193340703
+ 312.8493170105679
+ 332.3921146870656
+ 351.93491236356317
+ 371.47771004006086
+ 391.0205077165585
+ 410.5633053930561
+ 430.1061030695537
+ 211.35666314243912
+ 213.1798696499777
+ 215.0030761575162
    ⋮
- 328.09823347656857
- 337.594466796227
- 263.52401268399666
- 275.30199670377107
- 287.0799807235455
- 298.85796474331994
- 310.6359487630944
- 322.4139327828688
- 334.1919168026432
- 345.9699008224177
- 357.74788484219215
- 369.52586886196656</code></pre>
+ 328.0982334890581
+ 337.5944668144114
+ 263.52401264844025
+ 275.3019966769429
+ 287.07998070544545
+ 298.857964733948
+ 310.63594876245065
+ 322.4139327909532
+ 334.19191681945574
+ 345.9699008479584
+ 357.74788487646094
+ 369.5258689049635</code></pre>
 </div>
 </div>
 <p>In symbols we would write the <em>linear predictor expression</em> as <span class="math display">\[
@@ -589,9 +589,9 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>m1.θ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>3-element Vector{Float64}:
- 0.9292213219958606
- 0.018168376087695465
- 0.22264487473562505</code></pre>
+ 0.9292213186823386
+ 0.018168380890783722
+ 0.22264487369155986</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="13">
@@ -628,7 +628,7 @@ days          10.4673     1.50224   6.97    &lt;1e-11
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">565.51068</td>
+<td style="text-align: right;">565.51067</td>
 <td style="text-align: right;">23.78047</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -751,7 +751,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 <span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, contra, dist; nAGQ, contrasts)</span>
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 186   Time: 0:00:00 ( 2.41 ms/it)</code></pre>
+<pre><code>Minimizing 217   Time: 0:00:00 ( 1.96 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <table class="table table-sm table-striped">
@@ -779,7 +779,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 <td style="text-align: right;">0.0035</td>
 <td style="text-align: right;">0.0092</td>
 <td style="text-align: right;">0.38</td>
-<td style="text-align: right;">0.7021</td>
+<td style="text-align: right;">0.7022</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
@@ -800,7 +800,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 </tr>
 <tr class="odd">
 <td style="text-align: left;">livch: 1</td>
-<td style="text-align: right;">0.8151</td>
+<td style="text-align: right;">0.8152</td>
 <td style="text-align: right;">0.1622</td>
 <td style="text-align: right;">5.02</td>
 <td style="text-align: right;">&lt;1e-06</td>
@@ -816,7 +816,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 </tr>
 <tr class="odd">
 <td style="text-align: left;">livch: 3+</td>
-<td style="text-align: right;">0.9153</td>
+<td style="text-align: right;">0.9154</td>
 <td style="text-align: right;">0.1858</td>
 <td style="text-align: right;">4.93</td>
 <td style="text-align: right;">&lt;1e-06</td>
@@ -845,8 +845,8 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 <tr class="odd">
 <td style="text-align: left;">dist</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.229100</td>
-<td style="text-align: right;">0.478644</td>
+<td style="text-align: right;">0.229090</td>
+<td style="text-align: right;">0.478634</td>
 </tr>
 </tbody>
 </table>
@@ -877,7 +877,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 <span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, contra, dist; nAGQ, contrasts)</span>
 <span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 138   Time: 0:00:00 ( 2.04 ms/it)</code></pre>
+<pre><code>Minimizing 133   Time: 0:00:00 ( 1.10 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="24">
 <table class="table table-sm table-striped">
@@ -984,7 +984,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, contra, dist; nAGQ, contrasts)</span>
 <span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 143   Time: 0:00:00 ( 1.13 ms/it)</code></pre>
+<pre><code>Minimizing 158   Time: 0:00:00 ( 1.56 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <table class="table table-sm table-striped">
@@ -1025,7 +1025,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 </tr>
 <tr class="odd">
 <td style="text-align: left;">children: true</td>
-<td style="text-align: right;">0.6065</td>
+<td style="text-align: right;">0.6064</td>
 <td style="text-align: right;">0.1045</td>
 <td style="text-align: right;">5.80</td>
 <td style="text-align: right;">&lt;1e-08</td>
@@ -1188,7 +1188,7 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 </tr>
 <tr class="odd">
 <td style="text-align: left;">children: true</td>
-<td style="text-align: right;">0.6065</td>
+<td style="text-align: right;">0.6064</td>
 <td style="text-align: right;">0.1045</td>
 <td style="text-align: right;">5.80</td>
 <td style="text-align: right;">&lt;1e-08</td>
@@ -1233,24 +1233,20 @@ y_i = \beta_1 x_{i,1} + \beta_2 x_{i,2}+ b_1 z_{i,1} +\dots+b_{36} z_{i,36}+\eps
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>children <span class="op">=&gt;</span> [<span class="cn">true</span>, <span class="cn">false</span>], <span class="op">:</span>urban <span class="op">=&gt;</span> [<span class="st">"Y"</span>, <span class="st">"N"</span>], <span class="op">:</span>age <span class="op">=&gt;</span> [<span class="fl">0.0</span>]</span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> <span class="fu">effects</span>(design, gm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>┌ Info: Precompiling Effects [8f03c58b-bd97-4933-a826-f71b64d2cca2]
-└ @ Base loading.jl:1662</code></pre>
-</div>
 <div class="cell-output cell-output-display" data-execution_count="30">
 
-<div class="data-frame"><p>4 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>children</th><th>age</th><th>urban</th><th>use: Y</th><th>err</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Float64">Float64</th><th title="String">String</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>0.0</td><td>Y</td><td>0.658576</td><td>0.15053</td><td>0.508046</td><td>0.809106</td></tr><tr><th>2</th><td>0</td><td>0.0</td><td>Y</td><td>-0.554325</td><td>0.230477</td><td>-0.784802</td><td>-0.323848</td></tr><tr><th>3</th><td>1</td><td>0.0</td><td>N</td><td>-0.128616</td><td>0.113017</td><td>-0.241633</td><td>-0.0155985</td></tr><tr><th>4</th><td>0</td><td>0.0</td><td>N</td><td>-1.34152</td><td>0.221575</td><td>-1.56309</td><td>-1.11994</td></tr></tbody></table></div>
+<div class="data-frame"><p>4 rows × 7 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>children</th><th>age</th><th>urban</th><th>use: Y</th><th>err</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="Bool">Bool</th><th title="Float64">Float64</th><th title="String">String</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>0.0</td><td>Y</td><td>0.658571</td><td>0.150531</td><td>0.508041</td><td>0.809102</td></tr><tr><th>2</th><td>0</td><td>0.0</td><td>Y</td><td>-0.55432</td><td>0.230476</td><td>-0.784796</td><td>-0.323844</td></tr><tr><th>3</th><td>1</td><td>0.0</td><td>N</td><td>-0.12862</td><td>0.113017</td><td>-0.241638</td><td>-0.0156026</td></tr><tr><th>4</th><td>0</td><td>0.0</td><td>N</td><td>-1.34151</td><td>0.221574</td><td>-1.56309</td><td>-1.11994</td></tr></tbody></table></div>
 </div>
 </div>
 <p>Converting these η values to probabilities yields</p>
 <div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logistic</span>.(preds[!, <span class="st">"use: Y"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logistic</span>.(preds[!, <span class="st">"use: Y"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>4-element Vector{Float64}:
- 0.6589404445793394
- 0.3648614994485519
- 0.46789030652047003
- 0.2072606855141492</code></pre>
+ 0.6589393396622255
+ 0.36486270216684996
+ 0.4678892232266047
+ 0.20726163113968424</code></pre>
 </div>
 </div>
 </section>

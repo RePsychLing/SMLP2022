@@ -858,7 +858,7 @@ Using inline transformations vs defining new columns
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, pruned; contrasts)</span>
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 53    Time: 0:00:06 ( 0.13  s/it)</code></pre>
+<pre><code>Minimizing 53    Time: 0:00:07 ( 0.14  s/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="29">
 <table class="table table-sm table-striped">
@@ -950,7 +950,7 @@ Using inline transformations vs defining new columns
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts)</span>
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 53    Time: 0:00:03 (70.60 ms/it)</code></pre>
+<pre><code>Minimizing 53    Time: 0:00:04 (86.08 ms/it)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="31">
 <table class="table table-sm table-striped">
@@ -988,7 +988,7 @@ Using inline transformations vs defining new columns
 <td style="text-align: left;">isword: true</td>
 <td style="text-align: right;">0.0656</td>
 <td style="text-align: right;">0.0005</td>
-<td style="text-align: right;">133.73</td>
+<td style="text-align: right;">133.72</td>
 <td style="text-align: right;">&lt;1e-99</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -1028,7 +1028,7 @@ Using inline transformations vs defining new columns
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">effects</span>(<span class="fu">Dict</span>(<span class="op">:</span>isword <span class="op">=&gt;</span> [<span class="cn">false</span>, <span class="cn">true</span>], <span class="op">:</span>wrdlen <span class="op">=&gt;</span> <span class="fl">4</span><span class="op">:</span><span class="fl">2</span><span class="op">:</span><span class="fl">12</span>), elm02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
 
-<div class="data-frame"><p>10 rows × 6 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>wrdlen</th><th>isword</th><th>1000 / rt</th><th>err</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Bool">Bool</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>4</td><td>0</td><td>1.45036</td><td>0.00892466</td><td>1.44144</td><td>1.45929</td></tr><tr><th>2</th><td>6</td><td>0</td><td>1.37297</td><td>0.008871</td><td>1.3641</td><td>1.38184</td></tr><tr><th>3</th><td>8</td><td>0</td><td>1.29557</td><td>0.00885308</td><td>1.28672</td><td>1.30443</td></tr><tr><th>4</th><td>10</td><td>0</td><td>1.21818</td><td>0.0088711</td><td>1.20931</td><td>1.22705</td></tr><tr><th>5</th><td>12</td><td>0</td><td>1.14078</td><td>0.00892486</td><td>1.13186</td><td>1.14971</td></tr><tr><th>6</th><td>4</td><td>1</td><td>1.62735</td><td>0.00892465</td><td>1.61842</td><td>1.63627</td></tr><tr><th>7</th><td>6</td><td>1</td><td>1.52702</td><td>0.008871</td><td>1.51815</td><td>1.53589</td></tr><tr><th>8</th><td>8</td><td>1</td><td>1.4267</td><td>0.00885307</td><td>1.41784</td><td>1.43555</td></tr><tr><th>9</th><td>10</td><td>1</td><td>1.32637</td><td>0.00887109</td><td>1.3175</td><td>1.33524</td></tr><tr><th>10</th><td>12</td><td>1</td><td>1.22605</td><td>0.00892483</td><td>1.21712</td><td>1.23497</td></tr></tbody></table></div>
+<div class="data-frame"><p>10 rows × 6 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>wrdlen</th><th>isword</th><th>1000 / rt</th><th>err</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Bool">Bool</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>4</td><td>0</td><td>1.45036</td><td>0.00892467</td><td>1.44144</td><td>1.45929</td></tr><tr><th>2</th><td>6</td><td>0</td><td>1.37297</td><td>0.00887101</td><td>1.3641</td><td>1.38184</td></tr><tr><th>3</th><td>8</td><td>0</td><td>1.29557</td><td>0.00885308</td><td>1.28672</td><td>1.30443</td></tr><tr><th>4</th><td>10</td><td>0</td><td>1.21818</td><td>0.00887111</td><td>1.20931</td><td>1.22705</td></tr><tr><th>5</th><td>12</td><td>0</td><td>1.14078</td><td>0.00892486</td><td>1.13186</td><td>1.14971</td></tr><tr><th>6</th><td>4</td><td>1</td><td>1.62735</td><td>0.00892466</td><td>1.61842</td><td>1.63627</td></tr><tr><th>7</th><td>6</td><td>1</td><td>1.52702</td><td>0.00887101</td><td>1.51815</td><td>1.53589</td></tr><tr><th>8</th><td>8</td><td>1</td><td>1.4267</td><td>0.00885308</td><td>1.41784</td><td>1.43555</td></tr><tr><th>9</th><td>10</td><td>1</td><td>1.32637</td><td>0.0088711</td><td>1.3175</td><td>1.33524</td></tr><tr><th>10</th><td>12</td><td>1</td><td>1.22605</td><td>0.00892484</td><td>1.21712</td><td>1.23497</td></tr></tbody></table></div>
 </div>
 </div>
 <p>The differences in the fixed-effects parameter estimates between a model fit to the full data set and one fit to the data from accurate responders only, are small.</p>
