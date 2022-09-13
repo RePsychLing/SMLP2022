@@ -71,7 +71,7 @@ contrasts = Dict(:spkr => EffectsCoding(),
                  :item => Grouping())
 ```
 
-The `EffectsCoding` contrast is used with these to create a ± encoding.
+The `EffectsCoding` contrast is used with these to create a ±1 encoding.
 Furthermore, `Grouping` constrasts are assigned to the `subj` and `item` factors.
 This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
 For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
