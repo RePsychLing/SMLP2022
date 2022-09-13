@@ -1,0 +1,335 @@
+---
+title: "Huber et al. (2022). Nobel and Novice: Author prominence affects peer review"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-09-12"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+    fig-format: svg
+editor_options: 
+jupyter: julia-1.8
+---
+
+# List of issues to be disucssed
+
+A few things that still confuse me and that would be nice to discuss are:
+
++ The importance of 0-correlation models for random effect-structure reduction
++ Setting REML to FALSE for random effect structure reduction - some do it, some don't. What do you advice and why?
++ Sometimes a model with REML=FALSE converges, rePCA shows that all the variance is captured by the random effect structure, but when set back to REML=TRUE it doesn't converge anymore. Why is that and how would you advice to proceed?
++ Getting power estimates for main studies based on pilot data and simulations, i.e., how many participants will I need (the observed-power issue / debate)
+
+# Background of the data
+
+Do participants take the situational-functional setting into account when evaluating language? How do semantic incongruencies compare to incongruencies in register? Do they interact? Participants were presented with a picture prime of either formally or informally dressed speakers. They then heard that speaker utter a target sentence that either matched or mismatched the register and / or matched of mismatched the semantic verb-argument congruency of the target sentence. 
+
+# Design and variables
+
++ Design: 2x2, fully crossed Latin square
++ Dependent Variable: Acceptability ratings on a fully-anchored 7-point Likert-type scale: How acceptable is the sentence when spoken by the presented speaker (1=not at all - 7=completely)
+
++ Independent Variables
+     + _RC_ (match vs. mismatch): target sentence final noun either matches or mismatches in register with the prime picture. Example mismatch: prime picture showing formally dressed speaker, target sentence heard: "Ich binde jetzt meinen Latschen." (lit. transl: I tie now my shoes\textsubscript{colloquial})
+    + _SC_ (yes vs. no): verb and argument in target sentence are either semantically congruent or not. Example mismatch: "Ich binde jetzt meine Klamotten" (lit. transl: I tie now my clothes\textsubscript{colloquial})
+
+# Setup
+
+## Environment
+
+```{julia}
+#| label: environment
+#| echo: false
+#| output: false
+using Pkg; Pkg.activate(".")
+```
+
+## Packages
+
+```{julia}
+#| label: packages
+
+using AlgebraOfGraphics
+using Arrow
+using CairoMakie       # graphics back-end
+using CategoricalArrays
+using Chain
+using DataFrames
+using DataFrameMacros  # simplified dplyr-like data wrangling M
+using MixedModels
+using MixedModelsMakie # diagnostic plots
+using ProgressMeter
+using Random           # random number generators
+using RCall            # call R from Julia
+using StatsBase
+using StatsModels
+
+using AlgebraOfGraphics: density
+using AlgebraOfGraphics: boxplot
+using MixedModelsMakie: qqnorm
+using MixedModelsMakie: ridgeplot
+using MixedModelsMakie: scatter
+
+ProgressMeter.ijulia_behavior(:clear);
+CairoMakie.activate!(; type="svg");
+```
+
+
+```{julia}
+#| label: read_data
+dat = DataFrame(Arrow.Table("./data/nobel_data.arrow"));
+describe(dat)
+```
+
+# Contrasts
+ 
+ ## RK choice
+
+ I chose:
+
++ Helmert for Scale, alternative for Scale could be Sequential Difference
++ Sequential Difference for Treatment (Condition)
+
+```{julia}
+#| label: contrasts1
+
+contrasts_rk1 = Dict(:Cond => SeqDiffCoding(levels=["HH", "AH", "AA", "AL", "LL"]),
+                 :Scale => HelmertCoding(levels=["supported", "new_info", "worthy"]),
+                 :Reviewer => Grouping()
+                 );
+```
+
+
+## RK Alternative for Treatment
+
+```sh
+1. HH+AH ~ AA 
+2. AA    ~ AL+LL
+3. HH ~ HA
+4. AL ~ LL
+```
+
+Direction is such that four positive effects are expected.
+
+```{julia}
+#| label: contrasts2
+
+contrasts_rk2 = Dict(:Cond =>  HypothesisCoding(
+                              [
+                               +1/2 +1/2 -1    0    0
+                                  0    0 +1 -1/2 -1/2
+                                 +1   -1  0    0    0
+                                  0    0  0    1   -1 
+                               ];
+                               levels=StatsModels.levels(dat.Cond),
+                               labels=["12.3", "3.45", "1.2", "4.5"]),
+                 :Scale => HelmertCoding(levels=["supported", "new_info", "worthy"]),
+                 :Reviewer => Grouping()
+                 );
+```
+
+
+## Authors' alternative for treatment
+
+I think, when translated into contrasts the authors used this but they reported two separate analyses -- the first for contrasts 1 and 2 the second for contrast 3.  (They did not look at subratings, I think.)
+
+```sh
+1. AH vs. AA
+2. AA vs. AL
+3. HH vs. LL
+```
+
+We can work with fewer than the maximal possible number of contrasts. If the rest is noise, this increases statistical power because we use fewer model parameters.
+
+
+# Linear mixed models 
+
+For this LMM we use the alternative set of contrasts.  Let's stay with the following models.
+
+## LMM m_cpx
+
+```{julia}
+#| label: cpx
+
+m_cpx = let
+  form = @formula(sub_rating ~ 1 + Cond*Scale + (1 + Scale | Reviewer))
+  fit(MixedModel, form, dat; contrasts=contrasts_rk2)
+end
+display(issingular(m_cpx))
+VarCorr(m_cpx)
+```
+
+## LMM m_zcp
+
+```{julia}
+#| label: zcp
+
+m_zcp = let
+  form = @formula(sub_rating ~ 1 + Cond*Scale + zerocorr(1 + Scale | Reviewer))
+  fit(MixedModel, form, dat; contrasts=contrasts_rk2)
+end
+display(issingular(m_zcp))
+VarCorr(m_zcp)
+```
+
+## LMM m_voi
+
+```{julia}
+#| label: voi
+
+m_voi = let
+  form = @formula(sub_rating ~ 1 + Cond*Scale + (1 | Reviewer))
+  fit(MixedModel, form, dat; contrasts=contrasts_rk2)
+end
+
+VarCorr(m_voi)
+```
+
+## Compare model fits
+
+```{julia}
+MixedModels.likelihoodratiotest(m_voi, m_zcp, m_cpx)
+```
+
+```{julia}
+let mods = [m_voi,  m_zcp, m_cpx];
+ DataFrame(;
+    model=[:m_voi, :m_zcp, :m_cpx],
+    pars=dof.(mods),
+    geomdof=round.(Int, (sum ∘ leverage).(mods)),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
+We select LMM `m_cpx`
+
+```{julia}
+m_cpx
+```
+
+# Graph of interaction(s)
+
+```{julia}
+RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=10.0)
+@rput dat;
+
+R"""
+suppressWarnings(suppressMessages(library(tidyverse)))
+
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+
+dat$Cond <- factor(dat$Cond, levels=c("HH", "AH", "AA", "AL", "LL"))
+
+fig <-
+  dat |>
+  group_by(Cond, Scale) |> 
+  summarise(N=n(), M=mean(sub_rating), SE=sd(rating)/sqrt(N)) |> 
+  ggplot(aes(x=Cond, y=M, group=Scale, color=Scale)) +
+  geom_point() + geom_line() + 
+  geom_errorbar(aes(ymax = M + 2*SE, ymin = M - 2*SE), width=.1) +
+  scale_color_manual("Scale", values=cbPalette) +
+  scale_y_continuous("Rating") +
+  xlab("Treatment") + 
+  theme_bw() + theme(legend.position=c(0.01, 0.01), legend.justification=c(0.01, 0.01)) +
+  coord_cartesian(ylim=c(1,4.5))
+
+print(fig)
+""";
+```
+
+## Diagnostics
+
+```{julia}
+qqnorm(m_cpx)
+```
+
+```{julia}
+let
+  n = nrow(dat)
+  dat_rz = (;
+    value=vcat(residuals(m_cpx) ./ std(residuals(m_cpx)), randn(n)),
+    curve=repeat(["residual", "normal"]; inner=n),
+  )
+  draw(
+    data(dat_rz) *
+    mapping(:value; color=:curve) *
+    density(; bandwidth=0.1);
+  )
+end
+```
+
+
+# Bootstrapping
+
+Get the shortest coverage intervals for VCs and CP. 
+
+```{julia}
+Random.seed!(1234321)
+samp = parametricbootstrap(2500, m_cpx);
+```
+
+```{julia}
+dat2 = DataFrame(samp.allpars)
+first(dat2, 10)
+```
+
+```{julia}
+DataFrame(shortestcovint(samp))
+```
+
+```{julia}
+ridgeplot(samp; show_intercept=false)
+```
+
+```{julia}
+draw(
+ # data(@subset(dat2, :type == "β" && :names ≠ "(Intercept)")) *
+  data(@subset(dat2, :type == "β" && :names == "Cond: 3.45 & Scale: worthy")) *
+  mapping(
+    :value => "Experimental effect size [ms]";
+    color=:names => "Experimental effects",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+draw(
+  data(@subset(dat2, :type == "σ" && :group == "Reviewer")) *
+  mapping(
+    :value => "Standard deviations [ms]";
+    color=:names  => "Variance components",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+```{julia}
+draw(
+  data(@subset(dat2, :type == "ρ")) *
+  mapping(
+    :value => "Correlation";
+    color=:names => "Correlation parameters",
+  ) *
+  density();
+  figure=(; resolution=(800, 350)),
+)
+```
+
+# Appendix
+```{julia}
+versioninfo()
+```
