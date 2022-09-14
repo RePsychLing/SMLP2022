@@ -1,0 +1,151 @@
+# Comparison to R's `remef`
+
+```{julia}
+using AlgebraOfGraphics
+using CairoMakie
+using DataFrames
+using Effects
+using MixedModels
+using ProgressMeter
+
+using AlgebraOfGraphics: AlgebraOfGraphics as AoG
+CairoMakie.activate!(; type="svg") # use SVG (other options include PNG)
+ProgressMeter.ijulia_behavior(:clear);
+```
+
+```{julia}
+sleepstudy = DataFrame(MixedModels.dataset("sleepstudy"))
+
+fms = fit(MixedModel,
+          @formula(reaction ~ 1 + days + (1+days|subj)),
+          sleepstudy)
+```
+
+
+```{julia}
+design = Dict(:days => unique(sleepstudy.days))
+# note that lower and upper are simply reaction ± 1 s.e.
+eff = effects(design, fms)
+```
+
+
+```{julia}
+datplt = data(sleepstudy) * mapping(:days, :reaction; layout=:subj) * visual(Scatter)
+effplt = data(eff) * mapping(:days, :reaction) * visual(Lines; color=:red)
+draw(datplt + effplt)
+```
+
+```{julia}
+DataFrame(raneftables(fms)[:subj]
+```
+
+
+=> effects.jl just does the fixed effects
+
+```{julia}
+sleepstudy[!, :fitted] = fitted(fms)
+fitplt = data(sleepstudy) * mapping(:days, :fitted; layout=:subj) * visual(Lines)
+draw(datplt + effplt + fitplt)
+```
+
+can also do prediction; here with the same data
+
+```{julia}
+sleepstudy[!, :predicted] = predict(fms, sleepstudy)
+predplt = data(sleepstudy) * mapping(:days, :fitted; layout=:subj) * visual(Lines)
+draw(datplt + effplt + predplt)
+```
+
+
+```{julia}
+subj = transform(sleepstudy, :subj => ByRow(x -> x * "_NEW"); renamecols=false)
+subj
+```
+
+```{julia}
+predict(fms, subj)
+```
+
+```{julia}
+predict(fms, subj; new_re_levels=:missing)
+```
+
+```{julia}
+try
+    predict(fms, subj; new_re_levels=:error)
+catch e
+    println("An error was thrown")
+end
+```
+
+```{julia}
+predpop = predict(fms, subj; new_re_levels=:population)
+```
+
+```{julia}
+predpop ≈ repeat(eff.reaction, 18)
+```
+
+not possible at the moment: removal of individual variance components within a blocking variable; for that you need to do the matrix math yourself :(
+
+so how do we delete things?
+
+set the corresponding value to 0 / center
+
+
+```{julia}
+kb07 = DataFrame(MixedModels.dataset("kb07"))
+
+kb07_trt = fit(MixedModel,
+          @formula(rt_trunc ~ 1 + spkr * prec * load +
+                    (1 + spkr +  prec + load|subj) +
+                    (1 + spkr +  prec + load|item)),
+          kb07;
+          contrasts=Dict(:spkr => DummyCoding(),
+                         :prec => DummyCoding(),
+                         :load => DummyCoding(),
+                         :item => Grouping(),
+                         :subj => Grouping()))
+
+kb07_eff = fit(MixedModel,
+          @formula(rt_trunc ~ 1 + spkr * prec * load +
+                    (1 + spkr +  prec + load|subj) +
+                    (1 + spkr +  prec + load|item)),
+          kb07;
+          contrasts=Dict(:spkr => EffectsCoding(),
+                         :prec => EffectsCoding(),
+                         :load => EffectsCoding(),
+                         :item => Grouping(),
+                         :subj => Grouping()))
+
+
+```
+
+```{julia}
+design = Dict(:spkr => unique(kb07.spkr),
+              :prec => unique(kb07.prec))
+```
+
+
+```{julia}
+effects(design, kb07_trt)
+```
+
+```{julia}
+effects(design, kb07_eff)
+```
+
+```{julia}
+typical_zero(x) = zero(eltype(x))
+```
+
+now contrast coding matters
+
+
+```{julia}
+effects(design, kb07_trt; typical=typical_zero)
+```
+
+```{julia}
+effects(design, kb07_eff; typical=typical_zero)
+```
