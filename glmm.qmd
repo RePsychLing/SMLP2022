@@ -137,8 +137,11 @@ $$
 but this more abstract form is necessary for generalizations.
 
 The way that I read the first form is
+
 :::{.callout}
-The conditional distribution of the response vector, $\mathcal Y$, given that the random effects vector, $\mathcal B =\bf b$, is a multivariate normal (or *Gaussian*) distribution whose mean, $\boldsymbol\mu$, is the linear predictor, $\boldsymbol\eta=\bf{X\boldsymbol\beta+Zb}$, and whose covariance matrix is $\sigma^2\bf I$.  That is, conditional on $\bf b$, the elements of $\mathcal Y$ are independent normal random variables with constant variance, $\sigma^2$, and means of the form $\boldsymbol\mu = \boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}$.
+The conditional distribution of the response vector, $\mathcal Y$, given that the random effects vector, $\mathcal B =\bf b$, is a multivariate normal (or *Gaussian*) distribution whose mean, $\boldsymbol\mu$, is the linear predictor, $\boldsymbol\eta=\bf{X\boldsymbol\beta+Zb}$, and whose covariance matrix is $\sigma^2\bf I$.
+That is, conditional on $\bf b$, the elements of $\mathcal Y$ are independent normal random variables with constant variance, $\sigma^2$, and means of the form $\boldsymbol\mu = \boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}$.
+:::
 
 So the only things that differ in the distributions of the $y_i$'s are the means and they are determined by this linear predictor, $\boldsymbol\eta = \bf{X\boldsymbol\beta+Zb}$.
 
