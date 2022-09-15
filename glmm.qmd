@@ -235,7 +235,8 @@ draw(
 contrasts = Dict(
   :dist => Grouping(),
   :urban => HelmertCoding(),
-  :children => HelmertCoding(),
+  :livch => DummyCoding(), # default, but no harm in being explicit
+  :children => HelmertCoding() # not for this model; used later
 )
 nAGQ = 9
 dist = Bernoulli()
