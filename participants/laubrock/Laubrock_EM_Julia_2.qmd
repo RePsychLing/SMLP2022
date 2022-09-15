@@ -111,8 +111,8 @@ We use centered covariates and model frequency `f` of the fixated word with a cu
 
 ```{julia}
 #| lst-label: m_ovi
-f2_ovi = @formula(lfd ~ 1 + lls + rfl^2 + rwn^3 +
-                        f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+f2_ovi = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
+                            f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                        (1 | Subj) + (1 | Sent)
                 );
 m2_ovi = fit(MixedModel, f2_ovi, dat; contrasts);
@@ -123,7 +123,7 @@ m2_ovi = fit(MixedModel, f2_ovi, dat; contrasts);
 ```{julia}
 #| lst-label: m_zcp
 f2_zcp = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
-                        f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                            f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                zerocorr(1 + f + f1 + f2 + p + p1 + p2 | Subj) +
                zerocorr(1 + f + f1 + f2 + p + p2 + p2 | Sent)
                 );
@@ -140,10 +140,10 @@ Expand LMM `m_zcp` with CPs.
 
 ```{julia}
 #| lst-label: m_cpx
-f2_cpx = @formula(lfd ~ 1 + lls + rfl^2 + rwn^3 +
-                       f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
-                      (1 + f + f1 + f2 + p + p1 + p2 | Subj) +
-                      (1 + f + f1 + f2 + p + p1 + p2 | Sent)
+f2_cpx = @formula(lfd ~ 1 + lls + rfl + rfl^2 + rwn + rwn^2 + rwn^3 +
+                            f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                       (1 + f + f1 + f2 + p + p1 + p2 | Subj) +
+                       (1 + f + f1 + f2 + p + p1 + p2 | Sent)
                 );
 
 m2_cpx = fit(MixedModel, f2_cpx, dat; contrasts);
@@ -161,7 +161,7 @@ MixedModels.likelihoodratiotest(m2_ovi, m2_zcp, m2_cpx)
 ```{julia}
 #| lst-label: m_prsm1
 f2_prsm = @formula(lfd ~ 1 + lls + rfl^2 + rwn^3 +
-                         f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
+                             f + f^2 + f^3 + l + f1 + l1 + f2 + l2 + p + p1 + p2 +
                         (0 + f + f1 + f2 + p      + p2 | Subj) +  zerocorr(1 + p1 | Subj) +
                         (1 + f + f1 + f2 + p + p1 + p2 | Sent)
                 );
