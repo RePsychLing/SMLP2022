@@ -145,7 +145,7 @@ Switch to indicator variables and refit the model.
 
 ```{julia}
 #| lst-label: m_voi2
-f_voi2 = @formula(lrt ~  1 + (trng+drpt+rcvr) * trgt * a1 + (1 | Subj) + (1 | Item));
+f_voi2 = @formula(lrt ~  1 + V * trgt * a1 + (1 | Subj) + (1 | Item));
 m_voi2 = fit(MixedModel, f_voi2, dat; contrasts)
 ```
 
@@ -155,7 +155,8 @@ They are equivalent.
 
 ```{julia}
 #| lst-label: m_zcp1
-f_zcp1 = @formula(lrt ~  1 +  Block * Target * a1 + zerocorr(1 + Block * Target | Subj) + (1 + a1 | Item));
+f_zcp1 = @formula(lrt ~  1 + Block * Target * a1 + 
+                zerocorr(1 + Block * Target | Subj) + (1 + a1 | Item));
 m_zcp1 = fit(MixedModel, f_zcp1, dat; contrasts);
 
 show(issingular(m_zcp1))
@@ -288,7 +289,7 @@ Looks like we missed some fast response times.
 qqnorm(m_prm2; qqline=:none)
 ```
 
-Hm?
+It might be useful to check removing some of the most negative outliers
 
 ### Residual distributions: observed vs. theoretical
 
@@ -327,7 +328,7 @@ caterpillar!(Figure(; resolution=(800, 1200)), cm_Subj; orderby=1)
 
 ### Borrowing-strength plots
 
-Shrinkage refers to the adjustment of subject-level or item-level predictions by taking population estimates into account. The further a subject's/item's estimate is from the fixed effect or the more variable or less reliable the subject's/item's estimate, the more the prediction will be shrunk towards the population estimate. Alternative terms for shrinkage are "borrowing strength" (Tukey) and regularization. My favorite is actually Tukey's because indeed we borrow strength from the population estimates to make predictions for individual subjects' effects. The goal of this section to illustrate the results of borrowing strength.
+Shrinkage refers to the adjustment of subject-level or item-level predictions by taking population estimates into account. The further a subject's/item's estimate is from the fixed effect or the more variable or less reliable the subject's/item's estimate, the more the prediction will be shrunk towards the population estimate. Alternative terms for shrinkage are "borrowing strength" (Tukey) and regularization. My favorite is actually Tukey's because indeed we borrow strength from the population estimates to make predictions for individual subjects' ]effects. The goal of this section to illustrate the results of borrowing strength.
 
 Subject-related conditional means of random effects revealed information about individual differences beyond fixed effects. Would these results also be visible in _unconditional_ means, that is when we compute GM and experimental effects _within_ subjects (i.e., as fixed effects) without borrowing strength from the population estimates?
 
