@@ -566,6 +566,10 @@ The corresponding `lme4` times for LMM `m1` are [397  | 348 | 195].
 Finally, times for fitting the full set of data --not in this script--, for LMM `m1`are [60 | 62 | 85] minutes (!); for LMM `m1a` the times were [46 | 48 | 34] minutes. It was  not possible to fit the full set of data with `lme4`; after about 13 to 18 minutes the  program stopped with:  `Error in eval_f(x, ...) : Downdated VtV is not positive definite.`
 
 ```{julia}
+contrasts = merge(
+  Dict(nm => SeqDiffCoding() for nm in (:Test, :Sex)),
+  Dict(nm => Grouping() for nm in (:Child, :School, :Cohort)),
+);
 m1 = let
   f = @formula(
     zScore ~
@@ -592,7 +596,7 @@ Depending on the random number for stratified samplign, LMM `m1` may or may not 
 We also fit an alternative parameterization, estimating VCs and CPs for `Test` scores rather than `Test` effects by replacing the `1 + ...` in the RE terms with `0 + ...`.
 
 ```{julia}
-m2 = let
+m2b = let
   f = @formula(
     zScore ~
       1 +
@@ -611,9 +615,6 @@ issingular(m2)
 
 Depending on the random number generator seed, the model may or may not be supported in the alternative parameterization of scores. The fixed-effects profile is not affected (see 2.8 below).
 
-:::{.callout-caution}
-RK: The order of RE terms is critical. In formula `f2` the `zerocorr()` term must be placed last as shown. If it is placed first, School-related and Child-related CPs are estimated/reported (?) as zero. This was not the case for formula `m1`. Thus, it appears to be related to the `0`-intercepts in School and Child terms. Need a reprex.
-:::
 
 ```{julia}
 VarCorr(m2)
@@ -765,12 +766,9 @@ Postprocessing related to conditional modes will be dealt with in a different tu
 
 ```
 + julia> m1.optsum         # MixedModels.OptSummary:  gets all info
-+ julia> loglikelihood(m1) # StatsBase.loglikelihood: return loglikelihood
-							 of the model
-+ julia> deviance(m1)      # StatsBase.deviance: negative twice the log-likelihood
-							 relative to saturated model
-+ julia> objective(m1)     # MixedModels.objective: saturated model not clear:
-							 negative twice the log-likelihood
++ julia> loglikelihood(m1) # StatsBase.loglikelihood: return loglikelihood of the model
++ julia> deviance(m1)      # StatsBase.deviance: negative twice the log-likelihood relative to saturated model
++ julia> objective(m1)     # MixedModels.objective: saturated model not clear: negative twice the log-likelihood
 + julia> nobs(m1)          # n of observations; they are not independent
 + julia> dof(m1)           # n of degrees of freedom is number of model parameters
 + julia> aic(m1)           # objective(m1) + 2*dof(m1)
@@ -842,7 +840,7 @@ coeftable(m1) # StatsBase.coeftable: fixed-effects statiscs; default level=0.95
 ```
 
 ```{julia}
-#Arrow.write("./data/m_cpx_fe.arrow", DataFrame(coeftable(m1)));
+Arrow.write("./data/m1_fe.arrow", DataFrame(coeftable(m1)));
 ```
 
 ```{julia}
@@ -876,6 +874,7 @@ stderror(m1)       # StatsBase.stderror: SE for fixed-effects coefficients
 ```{julia}
 propertynames(m1)  # names of available extractors
 ```
+
 
 ## Covariance parameter estimates
 
@@ -933,6 +932,11 @@ BlockDescription(m2)
 These commands inform us about extracion of conditional modes/means and (co-)variances, that using the model parameters to improve the predictions for units (levels) of the grouping (random) factors. We need this information, e.g., for partial-effect response profiles (e.g., facet plot) or effect profiles (e.g., caterpillar plot), or visualizing the borrowing-strength effect for correlation parameters (e.g., shrinkage plots).
 We are using the fit of LMM `m2`.
 
+```{julia}
+raneftables(m2)[:Child]
+DataFrame(ans)
+```
+
 ```jl
 julia> condVar(m2)
 ```
@@ -947,7 +951,8 @@ Some plotting functions are currently available from the `MixedModelsMakie` pack
 ### Conditional covariances
 
 ```{julia}
-condVar(m1)
+condVartables(m1)[:Cohort]
+DataFrame(ans)
 ```
 
 ```{julia}
@@ -984,6 +989,19 @@ shrinkageplot!(Figure(; resolution=(800, 800)), m1, :Cohort)
 #| label: fig-m2shrinkageCohort
 #| fig-cap: Shrinkage plot of the random effects for Cohort in model m2
 shrinkageplot!(Figure(; resolution=(800, 800)), m2, :Cohort)
+```
+
+# Add ellipsis
+
+Use a development branch
+
+```jl
+pkg > add MixedModelsMakie#pa/ellipse
+```
+
+```{julia}
+using Revise
+shrinkageplot!(Figure(; resolution=(1000, 1200)), m1; ellipse=true)
 ```
 
 # Appendix
