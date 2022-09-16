@@ -77,8 +77,6 @@ dat <- read_feather("./data/Cajar_IAT.arrow")
 dat$speed <- 1000/dat$rt
 ```
 
-## Faking Group
-
 ```{r}
 iat_fake <- dat |> filter(Group == "Faking")
 
@@ -91,21 +89,16 @@ sw <- mm[,2]
 tm <- mm[,3]
 bl <- mm[,4] 
 
-m_cpx <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw*tm*bl | Subj) ,
-                data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
-summary(rePCA(m_cpx))
-VarCorr(m_cpx)
-
 m_cpx <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw + tm + bl + sw:bl + tm:bl | Subj) ,
               data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
 summary(rePCA(m_cpx))
-VarCorr(m_cpx)
+print(summary(m_cpx), corr=TRUE)
 ```
 
-+ Two significant interactions (sw:bl; tm:bl)
++ All interactions are significant (sw:bl; tm:bl)
 + Significant CPs
 
-### No pooling (within-subject OLS estimates)
+## No pooling (within-subject OLS estimates)
 
 _Credit_: This and the following sections are heavily inspired by [Tristan Mahr's blog](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/).
 
@@ -127,7 +120,7 @@ coef_ws <-
 coef_ws
 ```
 
-### Partial pooling
+## Partial pooling
 
 These are fixed effects plus conditional modes (aka BLUPs) for 19 "faking" subjects.
 
@@ -144,7 +137,7 @@ coef_mm
 #lattice::splom(~ coef_mm[,2:4])
 ```
 
-### Complete pooling
+## Complete pooling
 
 Here we ignore that data come from different subjects. We treat the data as independent observations; no clustering is assumed. The fixed effects are centers of gravity in the plots. 
 
@@ -157,9 +150,9 @@ gravity$Pooling <- "Complete"
 gravity <- gravity[,c(5,1:4,6)]
 ```
 
-### Plots
+## Plots
 
-#### SPLOM
+### SPLOM
 
 Here we compare within-subject estimates (no pooling) and BLUPs (partial pooling). 
 
@@ -178,7 +171,7 @@ coef_ws_mm |>
 + There is a moderate negative correlation between `GM` and `Switch` effect (i.e., -.33 with no-pooling and -.46 with partial pooling; the corresponding CP was -.39).
 + There is a strong negative correlation between `Time` and `Block` effects, irrespective of no-pooling (-0.8) or partial-pooling (-0.9) of effects. The corresponding CP was -.86.  
 
-#### Setup
+### Setup
 
 The following code chunks are taken directly from Tristan Mahr's blog.  
 
@@ -205,7 +198,7 @@ coef_all <- rbind(gravity, coef_ws_mm)
 
 ```
 
-#### `GM` over `Switch` costs
+### `GM` over `Switch` costs
 
 We plot individual difference in switch costs over overall mean response speed.
 
