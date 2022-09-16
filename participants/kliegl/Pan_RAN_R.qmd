@@ -1,0 +1,239 @@
+---
+title: "Pan et al. (2013). Eye–voice span during rapid automatized naming of digits and ￼dice in Chinese normal and dyslexic children"
+subtitle: "RePsychLing in SMLP2022"
+author: "Reinhold Kliegl"
+date: "2022-09-15 (last revised: `r format(Sys.time())`)"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    code-fold: false
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+    fig-format: svg
+editor_options: 
+  chunk_output_type: console
+---
+
+# Background
+
+Predicting psychometric digit-RAN and dice-RAN with gaze duration and 
+eye-voice span (EVS) from computerized assessment of digit-RAN and dice-RAN 
+in Chinese control and dyslexic children. These results are reported in:
+
+Pan et al. (2013). Eye–voice span during rapid automatized naming of digits  
+and ￼dice in Chinese normal and dyslexic children. `Developmental Science`. 
+
+# Setup
+
+## Packages
+
+```{r}
+library(arrow)
+library(easystats)
+library(tidyverse)
+library(lme4)
+library(latticeExtra)
+library(RePsychLing)
+library(remef)
+library(grid)
+
+vplayout <- function(x, y) {
+viewport(layout.pos.row = x, layout.pos.col = y) 
+}
+
+theme_set(theme_bw())
+# respecting color vision deficiency
+cbPalette <- c( "#0072B2", "#D55E00", "#009E73", "#CC79A7",
+                "#F0E442", "#56B4E9", "#999999", "#E69F00")
+```
+
+## Reading data and preprocessing
+
+```{r}
+load("./data/Pan_RAN.rda")
+
+dat <- 
+  dat |> 
+  tibble() |> 
+  select("Subj"="subj", "Group"="group", "Condition"="condition", ran, gaze, evs) |>
+  mutate(
+    Subj = factor(paste0("S", str_pad(Subj, width = 3, side = "left", pad = "0"))),
+    Group = factor(Group, labels=c("control", "dyslexic")),
+    Condition = factor(Condition, labels=c("digit", "dice")),
+    lran = log(ran),
+    gaze_c = gaze - 406,
+    evs_c  = evs - .84
+  )
+```
+
+## Baseline result
+
+```{r}
+dat |> 
+  group_by(Group, Condition) |> 
+  summarise(N=n(), M= mean(lran), SE=sd(lran)/sqrt(N)) |> 
+  ggplot(aes(x=Group, y=M, group=Condition, color=Condition)) +
+  geom_point() + geom_line() +
+  geom_errorbar(aes(max=M+2*SE, min=M-2*SE, width=0.03)) +
+  scale_y_continuous("log(ran)") +
+  scale_color_manual("Condition", values=cbPalette)
+```
+
+# LMMs
+
+## Baseline 
+
+```{r}
+contrasts(dat$Group) <- contr.sum(2)
+contrasts(dat$Condition) <- contr.sum(2)
+
+mm <- model.matrix(~Group*Condition,data=dat)
+dat$grp <- mm[,2]
+dat$cnd <- mm[,3]
+
+r1  <- lmer(lran ~ Group*Condition + (1 | Subj), 
+            data=dat, REML=FALSE, control=lmerControl(calc.derivs = FALSE))
+print(summary(r1), cor=FALSE)
+
+
+
+r1b  <- lmer(lran ~ Group*Condition + (1 + Condition | Subj), 
+             data=dat, REML=FALSE, 
+             control=lmerControl(calc.derivs = FALSE, check.nobs.vs.nRE= "ignore"))     
+print(summary(r1b), cor=FALSE)
+
+anova(r1, r1b) # not significant
+```
+
+## Covariates
+
+```{r}
+m_cpx1 <- lmer(lran ~ Condition*Group*evs_c*gaze_c + (1  | Subj),
+              data=dat, REML=FALSE, control=lmerControl(calc.derivs = FALSE))
+print(summary(m_cpx1), cor=FALSE)
+
+# Remove 3 non-significant higher-order interactions involving evs.c:gaze.c
+m_cpx2 <- lmer(lran ~ 1 + Condition*Group*evs_c*gaze_c - Condition:Group:evs_c:gaze_c -
+	                        Group:evs_c:gaze_c - Condition:gaze_c:evs_c +
+	                   (1  | Subj), data=dat, REML=FALSE)
+print(summary(m_cpx2), corr=FALSE)
+
+# Best model; reported in Table 3
+
+# Check effect of log-transformation
+m_cpx2b <- lmer(ran ~ 1 + Condition*Group*evs_c*gaze_c - Condition:Group:evs_c:gaze_c -
+	                        Group:evs_c:gaze_c - Condition:gaze_c:evs_c +
+	                   (1  | Subj), data=dat, REML=FALSE)
+print(summary(m_cpx2b), corr=FALSE)
+
+# Check residuals
+qqmath(resid(m_cpx2))
+
+qplot(x=fitted(m_cpx2), y=resid(m_cpx2), geom="point", 	
+	xlab="Fitted values", ylab="Standardized residuals") + 
+	geom_hline(yintercept=0) + 
+	geom_density2d(size=1) 
+
+# ... for log-transformed values
+qqmath(resid(m_cpx2b))      
+qplot(x=fitted(m_cpx2b), y=resid(m_cpx2b), geom="point", 	
+      xlab="Fitted values", ylab="Standardized residuals") + 
+  geom_hline(yintercept=0) + 
+  geom_density2d(size=1)
+```
+
+# Unadjusted and partial plots of Ran
+
+##  Figure 1: Eye-voice span x Condition x Group
+ 
+```{r}
+# Zero-order relation
+p1a <- 
+  dat |> 
+  ggplot(aes(y=lran, x=evs,  group=Condition:Group, color=Condition:Group)) + 
+  geom_point() + geom_smooth(method="lm") +
+  xlab("Eye-voice span") + 
+  scale_y_continuous("log(RAN)", limits=c(2, 4)) + 
+  scale_color_manual("Condition x Group", values=cbPalette) +
+  theme(legend.position = "none", 
+        panel.background=element_rect(fill = "white"))
+
+# Partial effects
+dat$CndGrpEVS.m_cpx2 <- keepef(m_cpx2, fix = c(2:4,6:8,12), ran = NULL) 
+
+p1b <- 
+  dat |> 
+  ggplot(aes(y=CndGrpEVS.m_cpx2, x=evs, group=Condition:Group, color=Condition:Group)) +
+  geom_point() + geom_smooth(method="lm") +
+  xlab("Eye-voice span") + 
+  scale_y_continuous("Adjusted log(RAN)", limits=c(2, 4)) + 
+  scale_color_manual("Condition x Group", values=cbPalette) +
+  theme(legend.position = c(.01, .01), legend.justification = c(.01, .01), 
+        legend.text = element_text(size=8), 
+        panel.background=element_rect(fill = "white")) 
+
+#  -- evs only predictor for control in digit-RAN!
+
+grid.newpage() # Figure 1
+pushViewport(viewport(layout = grid.layout(1,2))) 
+print(p1a, vp=vplayout(1,1))
+print(p1b, vp=vplayout(1,2))
+```
+
+##  Figure 2: Gaze duration x Condition x Group
+
+Partial effect for EVS x GD, visualized for small and large EVS groups.
+
+```{r}
+# EVS groups
+dat <- 
+  dat |> 
+  mutate(EVS = factor(findInterval(evs, c(-Inf, quantile(evs, probs=c(0.5)), Inf)), 
+                                   labels=c("small","large")))
+
+# Zero-order relation
+p2a <- 
+  dat |> 
+  ggplot(aes(y=lran, x=gaze, group=EVS, color=EVS)) +
+  geom_point() + geom_smooth(method="lm") + 
+	xlab("Gaze duration") + 
+  scale_y_continuous("log(RAN)", limits=c(2, 4)) + 
+  scale_colour_manual("EVS group", values=cbPalette) +
+	theme(legend.position = "none") 
+
+# Partial effects
+dat$gd_evs.m_cpx2 <- keepef(m_cpx2, fix = c(4,5,11), ran = NULL) 
+
+p2b <- 
+  dat |> 
+  ggplot(aes(y=gd_evs.m_cpx2, x=gaze, group=EVS, color=EVS)) +
+  geom_point() + geom_smooth(method="lm") + 
+	xlab("Gaze duration") + 
+  scale_y_continuous("Adjusted log(RAN)", limits=c(2, 4)) + 
+  scale_colour_manual("EVS group", values=cbPalette) +
+  theme(legend.position = c(.99, .01), legend.justification = c(.99, .01), 
+        legend.text = element_text(size=8), 
+        panel.background=element_rect(fill = "white")) 
+
+grid.newpage() # Figure 2
+pushViewport(viewport(layout = grid.layout(1,2))) 
+print(p2a, vp=vplayout(1,1))
+print(p2b, vp=vplayout(1,2))
+```
+
+# Transfer to Julia
+
+```{r}
+write_feather(dat, "./data/Pan_RAN.arrow")
+```
+
+# Appendix
+
+```{r}
+sessionInfo()
+```
+
+
