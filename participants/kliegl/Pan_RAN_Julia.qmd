@@ -1,5 +1,5 @@
 ---
-title: "Pan et al. (2013). "
+title: "Pan et al. (2013): "
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-09-12"
@@ -23,8 +23,7 @@ Predicting psychometric digit-RAN and dice-RAN with gaze duration and
 eye-voice span (EVS) from computerized assessment of digit-RAN and dice-RAN 
 in Chinese control and dyslexic children. 
 
-Source: Pan et al. (2013). 
-and ￼dice in Chinese normal and dyslexic children. Developmental Science. 
+Source: Pan et al. (2013). _Developmental Science_. 
 
 # Packages
 
@@ -39,10 +38,12 @@ using Chain
 using DataFrames
 using DataFrameMacros  # simplified dplyr-like data wrangling
 using MixedModels
+using MixedModelsExtras  # NEW!
 using MixedModelsMakie # diagnostic plots
 using ProgressMeter
 using Random           # random number generators
 using RCall            # call R from Julia
+using RegressionFormulae # RELATIVELY NEW!
 using StatsModels
 
 using AlgebraOfGraphics: boxplot
@@ -65,21 +66,68 @@ CairoMakie.activate!(; type="svg");
 ```{julia}
 dat = DataFrame(Arrow.Table("./data/Pan_RAN.arrow"))
 describe(dat)
-contrasts =
-       Dict(:Group => EffectsCoding(),
-            :Condition => EffectsCoding(),
-            :Subj => Grouping());
 ```
 
 # Lineare mixed model
 
-using RegressionFormulae
- 1 + Condition*Group*evs_c*gaze_c - Condition:Group:evs_c:gaze_c -
-	                        Group:evs_c:gaze_c - Condition:gaze_c:evs_c +
+## ... with lme4
+
 ```{julia}
-#| label: m0
-m0 = let
-    form = @formula(lran ~ 1 + (Condition+Group+evs_c+gaze_c)^2 +
+#| eval: false
+#| label: m_lme4
+RCall.ijulia_setdevice(MIME("image/svg+xml"); width=10, height=10.0)
+@rput dat;
+
+R"""
+suppressWarnings(suppressMessages(library(lme4)))
+
+dat$Condition <- factor(dat$Condition)
+contrasts(dat$Condition) <- contr.sum(2)
+
+dat$Group <- factor(dat$Group)
+contrasts(dat$Group) <- contr.sum(2)
+
+# Remove 3 non-significant higher-order interactions involving evs.c:gaze.c
+m_lme4 <- lmer(ran ~ 1 + (Condition+Group+evs_c+gaze_c)^2 +
+                          Group:Condition:evs_c + Group:Condition:gaze_c +
+                          (1|Subj), data=dat, REML=FALSE,
+                          control=lmerControl(calc.derivs=FALSE))
+summary(rePCA)
+print(summary(m_lme4), corr=FALSE)
+""";
+
+```
+
+```sh
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)              22.310022   0.506333  44.062
+Condition1               -1.348417   0.470275  -2.867
+Group1                   -0.567608   0.528414  -1.074
+evs_c                    -3.859904   1.518589  -2.542
+gaze_c                    0.045024   0.008053   5.591
+Condition1:Group1         0.934292   0.545349   1.713
+Condition1:evs_c         -2.595648   1.686822  -1.539
+Condition1:gaze_c         0.006861   0.006376   1.076
+Group1:evs_c             -2.117413   1.724089  -1.228
+Group1:gaze_c             0.019926   0.008766   2.273
+evs_c:gaze_c             -0.104459   0.032596  -3.205
+Condition1:Group1:evs_c  -2.724253   1.100870  -2.475
+Condition1:Group1:gaze_c  0.001574   0.005864   0.268
+```
+
+## ... with MixedModels.jl
+
+```{julia}
+#| label: m_mmjl
+
+contrasts =
+       Dict(:Group => EffectsCoding(),
+            :Condition => EffectsCoding(),
+            :Subj => Grouping());
+            
+m_mmjl = let
+    form = @formula(ran ~ 1 + (Condition+Group+evs_c+gaze_c)^2 +
                           Group&Condition&evs_c + Group&Condition&gaze_c +
                           (1|Subj));
     fit(MixedModel, form, dat; contrasts);
@@ -87,11 +135,16 @@ m0 = let
 ```
 
 ```{julia}
-using Remef
-coefnames(m0)
-cn = coefnames(m0)
-dat.CGe = partial_fitted(m0, vcat(cn[8], cn[10:11], cn[13]), Dict(:Subj => String[])) # no random effects
-describe(dat.CGe) 
+coefnames(m_mmjl)
+cn = coefnames(m_mmjl)
+dat.CGe2 = partial_fitted(m_mmjl, vcat(cn[1:4], cn[6:7], cn[9], cn[12]), 
+                         Dict(:Subj => String[]))
+describe(dat) 
 ```
 
+# Appendix
+
+```{julia}
+versioninfo()
+```
 
