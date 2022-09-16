@@ -1,5 +1,5 @@
 ---
-title: "Anke Cajar:Borrowing Strength in IAT: No-Faking Subject"
+title: "Anke Cajar:Borrowing Strength in IAT: Faking Subject"
 subtitle: "RePsychLing in SMLP2022"
 author: "Reinhold Kliegl"
 date: "2022-08-09 (last revised: `r format(Sys.time())`)"
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Background
 
-This is a follow-up analysis.
+This is a follow-up analysis. We use data from the subjects who faked the second time. We use only three within-subject factors: `Time`, `Block`, and `Switch`. 
 
 # Readme 
 
@@ -86,32 +86,20 @@ contrasts(iat_fake$Time)   <- contr.sum(2)
 contrasts(iat_fake$Block)  <- contr.sum(2)
 contrasts(iat_fake$Switch) <- contr.sum(2)
 
-mm2 <- model.matrix(~ 1 + Switch*Time*Block, data=iat_fake)
-sw <- mm2[,2]
-tm <- mm2[,3]
-bl <- mm2[,4] 
+mm <- model.matrix(~ 1 + Switch*Time*Block, data=iat_fake)
+sw <- mm[,2]
+tm <- mm[,3]
+bl <- mm[,4] 
 
-m2_cpx1 <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw*tm*bl | Subj) ,
+m_cpx <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw*tm*bl | Subj) ,
                 data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
-summary(rePCA(m2_cpx1))
-VarCorr(m2_cpx1)
+summary(rePCA(m_cpx))
+VarCorr(m_cpx)
 
-m2_cpx2 <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw + tm + bl + sw:bl + tm:bl | Subj) ,
-                data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
-summary(rePCA(m2_cpx2))
-VarCorr(m2_cpx2)
-
-m2_zcp <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw + tm + bl + sw:bl + tm:bl || Subj) ,
-               data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
-summary(rePCA(m2_zcp))
-VarCorr(m2_zcp)
-
-anova(m2_zcp, m2_cpx2, m2_cpx1)
-
-m2_voi <- lmer(speed ~ 1 + sw*tm*bl + (1 | Subj),
-           data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
-
-anova(m2_voi, m2_zcp, m2_cpx2, m2_cpx1)
+m_cpx <- lmer(speed ~ 1 + sw*tm*bl + (1 + sw + tm + bl + sw:bl + tm:bl | Subj) ,
+              data=iat_fake, REML=FALSE, control=lmerControl(calc.derivs=FALSE))
+summary(rePCA(m_cpx))
+VarCorr(m_cpx)
 ```
 
 + Two significant interactions (sw:bl; tm:bl)
@@ -123,7 +111,6 @@ _Credit_: This and the following sections are heavily inspired by [Tristan Mahr'
 
 Each subject's data are analyzed with multipe regression without reference to the other subjects, i.e., no pooling of information across subjects. The regression coeffiencents are assembled in a data frame. 
 
-We are using fake-group data. (Change data and model-object for a look at nofake-group data in the next three chunks.)
 
 ```{r}
 coef_ws <- 
@@ -146,7 +133,7 @@ These are fixed effects plus conditional modes (aka BLUPs) for 19 "faking" subje
 
 ```{r}
 coef_mm <- 
-  coef(m2_cpx2)[["Subj"]] |> 
+  coef(m_cpx)[["Subj"]] |> 
   select(GM=1, Switch=2, Time=3, Block=4) |> 
   add_column(Subj = pull(coef_ws, "Subj"),
              Pooling = "Partial") |> 
@@ -209,7 +196,7 @@ make_ellipse <- function(cov_mat, center, level) {
 levels <- c(.1, .3, .5, .7, .9)
 
 # Strip off some details so that just the useful part is printed
-cov_mat <- VarCorr(m2_cpx2)[["Subj"]]
+cov_mat <- VarCorr(m_cpx)[["Subj"]]
 attr(cov_mat, "stddev") <- NULL
 attr(cov_mat, "correlation") <- NULL
 
@@ -223,7 +210,7 @@ coef_all <- rbind(gravity, coef_ws_mm)
 We plot individual difference in switch costs over overall mean response speed.
 
 ```{r}
-center12 <- fixef(m2_cpx2)[1:2]
+center12 <- fixef(m_cpx)[1:2]
 cov_mat12 <- cov_mat[1:2, 1:2]
 
 # Create an ellipse dataframe for each of the levels defined 
@@ -277,7 +264,7 @@ We embellished the plot with ellipses to show that even if arrows are not pointi
 We plot individual difference in slow-down due to incompatibility of required responses over slow-down from baseline to retest. The correlation is negative, that is slowing down reduces the incompatibility effect.
 
 ```{r}
-center34 <- fixef(m2_cpx2)[3:4]
+center34 <- fixef(m_cpx)[3:4]
 cov_mat34 <- cov_mat[3:4, 3:4]
 
 # Create an ellipse dataframe for each of the levels defined 
