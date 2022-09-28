@@ -388,7 +388,7 @@ div.csl-indent {
   :subj =&gt; Grouping()</code></pre>
 </div>
 </div>
-<p>The <code>EffectsCoding</code> contrast is used with these to create a ± encoding. Furthermore, <code>Grouping</code> constrasts are assigned to the <code>subj</code> and <code>item</code> factors. This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix. For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.</p>
+<p>The <code>EffectsCoding</code> contrast is used with these to create a ±1 encoding. Furthermore, <code>Grouping</code> constrasts are assigned to the <code>subj</code> and <code>item</code> factors. This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix. For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.</p>
 <p>It is not important in these cases but a good practice in any case.</p>
 <p>We can look at an initial fit of moderate complexity:</p>
 <div class="cell" data-execution_count="5">
@@ -397,7 +397,7 @@ div.csl-indent {
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                          (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> item))</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 934   Time: 0:00:01 ( 1.43 ms/it)
+<pre><code>Minimizing 934   Time: 0:00:01 ( 1.60 ms/it)
   objective:  28637.97101024215</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="6">
@@ -855,7 +855,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>σsubjitem <span class="op">=</span> <span class="fu">subset</span>(df, <span class="op">:</span><span class="kw">type</span> <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="op">==</span>(<span class="st">"σ"</span>)), <span class="op">:</span>group <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="op">!=</span>(<span class="st">"residual"</span>)); skipmissing<span class="op">=</span><span class="cn">true</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt <span class="op">=</span> <span class="fu">data</span>(σsubjitem) <span class="op">*</span> <span class="fu">mapping</span>(<span class="op">:</span>value; layout<span class="op">=:</span>names, color<span class="op">=:</span>group) <span class="op">*</span> AoG.<span class="fu">density</span>()</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(plt; axis<span class="op">=</span>(;title<span class="op">=</span><span class="st">"Parametric bootstrap estimates of variance components"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(plt; figure<span class="op">=</span>(;supertitle<span class="op">=</span><span class="st">"Parametric bootstrap estimates of variance components"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <p><img src="bootstrap_files/figure-html/cell-13-output-1.svg" class="img-fluid"></p>
 </div>
