@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-13">
+<meta name="dcterms.date" content="2022-09-27">
 
 <title>SMLP2022 - More on shrinkage plots</title>
 <style>
@@ -295,7 +295,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-09-13</p>
+      <p class="date">2022-09-27</p>
     </div>
   </div>
     
@@ -358,8 +358,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 998   Time: 0:00:01 ( 1.56 ms/it)
-  objective:  28637.123615980247</code></pre>
+<pre><code>Minimizing 934   Time: 0:00:01 ( 1.52 ms/it)
+  objective:  28637.97101024215</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <table class="table table-sm table-striped">
@@ -386,79 +386,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2181.6729</td>
-<td style="text-align: right;">77.3017</td>
-<td style="text-align: right;">28.22</td>
+<td style="text-align: right;">2181.6424</td>
+<td style="text-align: right;">77.3512</td>
+<td style="text-align: right;">28.20</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">301.7729</td>
-<td style="text-align: right;">362.1928</td>
+<td style="text-align: right;">301.8676</td>
+<td style="text-align: right;">362.4694</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">67.7491</td>
-<td style="text-align: right;">18.2670</td>
-<td style="text-align: right;">3.71</td>
+<td style="text-align: right;">67.7496</td>
+<td style="text-align: right;">17.9607</td>
+<td style="text-align: right;">3.77</td>
 <td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">42.3846</td>
-<td style="text-align: right;">40.6839</td>
+<td style="text-align: right;">33.0524</td>
+<td style="text-align: right;">41.1185</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-333.9205</td>
-<td style="text-align: right;">47.1494</td>
+<td style="text-align: right;">-333.9200</td>
+<td style="text-align: right;">47.1564</td>
 <td style="text-align: right;">-7.08</td>
 <td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">61.9514</td>
-<td style="text-align: right;">246.8784</td>
+<td style="text-align: right;">58.8607</td>
+<td style="text-align: right;">247.3292</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">78.7702</td>
-<td style="text-align: right;">19.5279</td>
-<td style="text-align: right;">4.03</td>
+<td style="text-align: right;">78.8007</td>
+<td style="text-align: right;">19.7260</td>
+<td style="text-align: right;">3.99</td>
 <td style="text-align: right;">&lt;1e-04</td>
-<td style="text-align: right;">64.9594</td>
-<td style="text-align: right;">42.3730</td>
+<td style="text-align: right;">66.9505</td>
+<td style="text-align: right;">43.3885</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spkr: old &amp; prec: maintain</td>
-<td style="text-align: right;">-21.9655</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">-21.9960</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">-1.39</td>
-<td style="text-align: right;">0.1647</td>
+<td style="text-align: right;">0.1644</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; load: yes</td>
-<td style="text-align: right;">18.3837</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">18.3832</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">1.16</td>
-<td style="text-align: right;">0.2448</td>
+<td style="text-align: right;">0.2452</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">4.5332</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">4.5327</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.7743</td>
+<td style="text-align: right;">0.7745</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">23.6072</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">23.6377</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">1.49</td>
-<td style="text-align: right;">0.1353</td>
+<td style="text-align: right;">0.1351</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">668.5600</td>
+<td style="text-align: right;">669.0516</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -497,8 +497,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">91066.9013</td>
-<td style="text-align: right;">301.7729</td>
+<td style="text-align: right;">91124.0779</td>
+<td style="text-align: right;">301.8676</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -506,35 +506,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1796.4562</td>
-<td style="text-align: right;">42.3846</td>
-<td style="text-align: right;">+0.79</td>
+<td style="text-align: right;">1092.4628</td>
+<td style="text-align: right;">33.0524</td>
+<td style="text-align: right;">+1.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">3837.9706</td>
-<td style="text-align: right;">61.9514</td>
-<td style="text-align: right;">-0.59</td>
-<td style="text-align: right;">+0.02</td>
+<td style="text-align: right;">3464.5848</td>
+<td style="text-align: right;">58.8607</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.62</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">4219.7289</td>
-<td style="text-align: right;">64.9594</td>
+<td style="text-align: right;">4482.3662</td>
+<td style="text-align: right;">66.9505</td>
 <td style="text-align: right;">+0.36</td>
-<td style="text-align: right;">+0.85</td>
-<td style="text-align: right;">+0.54</td>
+<td style="text-align: right;">+0.36</td>
+<td style="text-align: right;">+0.51</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">131183.5937</td>
-<td style="text-align: right;">362.1928</td>
+<td style="text-align: right;">131384.0733</td>
+<td style="text-align: right;">362.4694</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -542,35 +542,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1655.1780</td>
-<td style="text-align: right;">40.6839</td>
-<td style="text-align: right;">+0.44</td>
+<td style="text-align: right;">1690.7347</td>
+<td style="text-align: right;">41.1185</td>
+<td style="text-align: right;">+0.42</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">60948.9590</td>
-<td style="text-align: right;">246.8784</td>
+<td style="text-align: right;">61171.7458</td>
+<td style="text-align: right;">247.3292</td>
 <td style="text-align: right;">-0.69</td>
-<td style="text-align: right;">+0.35</td>
+<td style="text-align: right;">+0.37</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">1795.4747</td>
-<td style="text-align: right;">42.3730</td>
-<td style="text-align: right;">+0.32</td>
-<td style="text-align: right;">+0.16</td>
-<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">1882.5594</td>
+<td style="text-align: right;">43.3885</td>
+<td style="text-align: right;">+0.29</td>
+<td style="text-align: right;">+0.14</td>
+<td style="text-align: right;">-0.13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">446972.4924</td>
-<td style="text-align: right;">668.5600</td>
+<td style="text-align: right;">447630.0111</td>
+<td style="text-align: right;">669.0516</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -591,19 +591,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>Linear mixed model fit by maximum likelihood
  rt_trunc ~ 1 + spkr + prec + load + spkr &amp; prec + spkr &amp; load + prec &amp; load + spkr &amp; prec &amp; load + (1 + spkr + prec + load | subj) + (1 + spkr + prec + load | item)
     logLik   -2 logLik      AIC         AICc        BIC     
- -14318.5618  28637.1236  28695.1236  28696.1128  28854.3166
+ -14318.9855  28637.9710  28695.9710  28696.9602  28855.1640
 
 Variance components:
              Column       Variance  Std.Dev.   Corr.
-subj     (Intercept)      91066.9013 301.7729
-         spkr: old         1796.4562  42.3846 +0.79
-         prec: maintain    3837.9706  61.9514 -0.59 +0.02
-         load: yes         4219.7289  64.9594 +0.36 +0.85 +0.54
-item     (Intercept)     131183.5937 362.1928
-         spkr: old         1655.1780  40.6839 +0.44
-         prec: maintain   60948.9590 246.8784 -0.69 +0.35
-         load: yes         1795.4747  42.3730 +0.32 +0.16 -0.14
-Residual                 446972.4924 668.5600
+subj     (Intercept)      91124.0779 301.8676
+         spkr: old         1092.4628  33.0524 +1.00
+         prec: maintain    3464.5848  58.8607 -0.62 -0.62
+         load: yes         4482.3662  66.9505 +0.36 +0.36 +0.51
+item     (Intercept)     131384.0733 362.4694
+         spkr: old         1690.7347  41.1185 +0.42
+         prec: maintain   61171.7458 247.3292 -0.69 +0.37
+         load: yes         1882.5594  43.3885 +0.29 +0.14 -0.13
+Residual                 447630.0111 669.0516
  Number of obs: 1789; levels of grouping factors: 56, 32
 
   Fixed-effects parameters:
@@ -612,17 +612,15 @@ Residual                 446972.4924 668.5600
 <div class="cell-output cell-output-stdout">
 <pre><code>
                                              Coef.  Std. Error      z  Pr(&gt;|z|)
-───────────────────────────────────────────────────────────────────────────────</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept)                             2181.67        77.3017  28.22    &lt;1e-99
-spkr: old                                 67.7491      18.267    3.71    0.0002
-prec: maintain                          -333.921       47.1494  -7.08    &lt;1e-11
-load: yes                                 78.7702      19.5279   4.03    &lt;1e-04
-spkr: old &amp; prec: maintain               -21.9655      15.8075  -1.39    0.1647
-spkr: old &amp; load: yes                     18.3837      15.8075   1.16    0.2448
-prec: maintain &amp; load: yes                 4.53324     15.8075   0.29    0.7743
-spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49    0.1353
+───────────────────────────────────────────────────────────────────────────────
+(Intercept)                             2181.64        77.3512  28.20    &lt;1e-99
+spkr: old                                 67.7496      17.9607   3.77    0.0002
+prec: maintain                          -333.92        47.1564  -7.08    &lt;1e-11
+load: yes                                 78.8007      19.726    3.99    &lt;1e-04
+spkr: old &amp; prec: maintain               -21.996       15.8191  -1.39    0.1644
+spkr: old &amp; load: yes                     18.3832      15.8191   1.16    0.2452
+prec: maintain &amp; load: yes                 4.53274     15.8191   0.29    0.7745
+spkr: old &amp; prec: maintain &amp; load: yes    23.6377      15.8191   1.49    0.1351
 ───────────────────────────────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
@@ -630,55 +628,55 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <h2 class="anchored" data-anchor-id="expressing-the-covariance-of-random-effects">Expressing the covariance of random effects</h2>
 <p>Earlier today we mentioned that the parameters being optimized are from a “matrix square root” of the covariance matrix for the random effects. There is one such lower triangular matrix for each grouping factor.</p>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> <span class="fu">first</span>(m1.λ)   <span class="co"># Cholesky factor of relative covariance for subj</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="op">=</span> <span class="fu">first</span>(m1.λ)   <span class="co"># Cholesky factor of relative covariance for subj</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>4×4 LowerTriangular{Float64, Matrix{Float64}}:
-  0.451377    ⋅          ⋅            ⋅ 
-  0.0502693  0.0386285   ⋅            ⋅ 
- -0.0550086  0.0745698  0.0           ⋅ 
-  0.0351657  0.0905761  0.000197331  0.0</code></pre>
+  0.451187     ⋅           ⋅          ⋅ 
+  0.0494019   0.0          ⋅          ⋅ 
+ -0.0547554  -0.00478924  0.0686931   ⋅ 
+  0.0359018  -0.00650109  0.0931791  0.0</code></pre>
 </div>
 </div>
 <p>Notice the zero on the diagonal. A triangular matrix with zeros on the diagonal is singular.</p>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> <span class="fu">last</span>(m1.λ)    <span class="co"># this one is not singular</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>l2 <span class="op">=</span> <span class="fu">last</span>(m1.λ)    <span class="co"># this one is not singular</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>4×4 LowerTriangular{Float64, Matrix{Float64}}:
-  0.541751    ⋅           ⋅          ⋅ 
-  0.0268909  0.0545891    ⋅          ⋅ 
- -0.253007   0.267994    0.0229349   ⋅ 
-  0.0200061  0.00129624  0.0601252  0.0</code></pre>
+  0.541766    ⋅            ⋅          ⋅ 
+  0.0259253  0.0557222     ⋅          ⋅ 
+ -0.253781   0.267843     0.0226331   ⋅ 
+  0.0189249  0.000871109  0.0620218  0.0</code></pre>
 </div>
 </div>
 <p>To regenerate the covariance matrix we need to know that the covariance is not the <em>square</em> of <code>l1</code>, it is <code>l1 * l1'</code> (so that the result is symmetric) and multiplied by σ̂²</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Σ₁ <span class="op">=</span> <span class="fu">varest</span>(m1) <span class="op">.*</span> (l1 <span class="op">*</span> l1<span class="op">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Σ₁ <span class="op">=</span> <span class="fu">varest</span>(m1) <span class="op">.*</span> (l1 <span class="op">*</span> l1<span class="op">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>4×4 Matrix{Float64}:
-  91066.9  10142.0     -11098.2     7094.8
-  10142.0   1796.46        51.5247  2354.01
- -11098.2     51.5247    3837.97    2154.33
-   7094.8   2354.01      2154.33    4219.73</code></pre>
+  91124.1    9977.46   -11058.7   7250.91
+   9977.46   1092.46    -1210.85   793.924
+ -11058.7   -1210.85     3464.58  1999.15
+   7250.91    793.924    1999.15  4482.37</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(Σ₁)  <span class="co"># compare to the variance column in the VarCorr output</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(Σ₁)  <span class="co"># compare to the variance column in the VarCorr output</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>4-element Vector{Float64}:
- 91066.90130655935
-  1796.456155611904
-  3837.970642774287
-  4219.728946685882</code></pre>
+ 91124.07791836817
+  1092.4628467755617
+  3464.584800597221
+  4482.366224216353</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>.(<span class="fu">diag</span>(Σ₁))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>.(<span class="fu">diag</span>(Σ₁))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>4-element Vector{Float64}:
- 301.772930042705
-  42.38462168772896
-  61.95135706967433
-  64.95944078181309</code></pre>
+ 301.86764967178607
+  33.05242573209358
+  58.86072375189776
+  66.95047590731788</code></pre>
 </div>
 </div>
 </section>
@@ -687,7 +685,7 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <div class="cell" data-execution_count="12">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <div id="fig-m1shrinkage" class="quarto-figure quarto-figure-center anchored">
@@ -700,13 +698,13 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 <p>The upper left panel shows the perfect negative correlation for those two components of the random effects.</p>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m1, <span class="op">:</span>item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m1, <span class="op">:</span>item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <p><img src="shrinkageplot_files/figure-html/cell-14-output-1.svg" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> <span class="fu">Int</span>.(m1.X<span class="op">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> <span class="fu">Int</span>.(m1.X<span class="op">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>8×1789 Matrix{Int64}:
   1   1   1   1   1  1   1   1   1   1  …   1   1   1   1   1   1   1  1   1
@@ -720,7 +718,7 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 </div>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">*</span> X1<span class="op">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">*</span> X1<span class="op">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>8×8 Matrix{Int64}:
  1789    -1    -1     3    -3     1     1     3
@@ -750,13 +748,13 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <li>For the <code>item</code> both the intercept and the <code>spkr</code> appear to be contributing</li>
 </ul>
 <div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">*</span> spkr <span class="op">*</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">*</span> spkr <span class="op">*</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj) <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <table class="table table-sm table-striped">
 <colgroup>
@@ -866,7 +864,7 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 </div>
 <div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <table class="table table-sm table-striped">
 <thead>
@@ -882,21 +880,21 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <tr class="odd">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">133026.918</td>
+<td style="text-align: right;">133026.916</td>
 <td style="text-align: right;">364.729</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63841.496</td>
+<td style="text-align: right;">63841.497</td>
 <td style="text-align: right;">252.669</td>
 <td style="text-align: right;">-0.70</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88870.080</td>
+<td style="text-align: right;">88870.081</td>
 <td style="text-align: right;">298.111</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -914,7 +912,7 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <div class="cell" data-execution_count="18">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shrinkageplot</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <div id="fig-m2shrinkage" class="quarto-figure quarto-figure-center anchored">
@@ -1006,7 +1004,7 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 </div>
 <div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <table class="table table-sm table-striped">
 <thead>
@@ -1029,14 +1027,14 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63766.937</td>
+<td style="text-align: right;">63766.936</td>
 <td style="text-align: right;">252.521</td>
 <td style="text-align: right;">-0.70</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88819.438</td>
+<td style="text-align: right;">88819.436</td>
 <td style="text-align: right;">298.026</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -1052,20 +1050,20 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 </div>
 <div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> <span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1234321</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> <span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">1234321</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>m3btstrp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(rng, <span class="fl">2000</span>, m3);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>m3btstrp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(rng, <span class="fl">2000</span>, m3);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(m3btstrp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(m3btstrp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="24">
 
-<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2013.95</td><td>2319.53</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-429.807</td><td>-241.429</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>35.3339</td><td>95.7272</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>47.067</td><td>111.04</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>267.788</td><td>452.9</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>171.547</td><td>314.7</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.89308</td><td>-0.457084</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>235.921</td><td>364.717</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>657.736</td><td>703.054</td></tr></tbody></table></div>
+<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2013.95</td><td>2319.53</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-429.807</td><td>-241.429</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>35.3339</td><td>95.7272</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>47.067</td><td>111.04</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>267.788</td><td>452.9</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>171.547</td><td>314.702</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.893081</td><td>-0.457084</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>235.922</td><td>364.717</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>657.736</td><td>703.054</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(m3btstrp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(m3btstrp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="25">
 <div id="fig-ridgeplot" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -1077,18 +1075,18 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 <div id="fig-ridgeplotnoint" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(m3btstrp; show_intercept<span class="op">=</span><span class="cn">false</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(m3btstrp; show_intercept<span class="op">=</span><span class="cn">false</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p></p><figcaption class="figure-caption">Figure&nbsp;4: <strong>?(caption)</strong></figcaption><p></p>
 </figure>
 </div>
 <div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="kw">let</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">+</span> spkr <span class="op">+</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="op">=</span> <span class="kw">let</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  form <span class="op">=</span> <span class="pp">@formula</span>(</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    rt_trunc <span class="op">~</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>      <span class="fl">1</span> <span class="op">+</span> prec <span class="op">+</span> spkr <span class="op">+</span> load <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> prec <span class="op">|</span> item) <span class="op">+</span> (<span class="fl">1</span> <span class="op">|</span> subj)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <table class="table table-sm table-striped">
 <colgroup>
@@ -1162,23 +1160,23 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 </div>
 </div>
 <div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>m4bstrp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(rng, <span class="fl">2000</span>, m4);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>m4bstrp <span class="op">=</span> <span class="fu">parametricbootstrap</span>(rng, <span class="fl">2000</span>, m4);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(m4bstrp; show_intercept<span class="op">=</span><span class="cn">false</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(m4bstrp; show_intercept<span class="op">=</span><span class="cn">false</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="28">
 <p><img src="shrinkageplot_files/figure-html/cell-29-output-1.svg" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(m4bstrp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(m4bstrp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
 
-<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2008.72</td><td>2319.8</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-433.808</td><td>-248.858</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>35.4729</td><td>97.9576</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>47.0078</td><td>108.437</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>261.52</td><td>444.426</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>177.431</td><td>318.848</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.898522</td><td>-0.477346</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>229.037</td><td>356.407</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>656.919</td><td>701.946</td></tr></tbody></table></div>
+<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2008.72</td><td>2319.8</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-433.808</td><td>-248.858</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>35.4729</td><td>97.9576</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>47.0078</td><td>108.437</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>261.52</td><td>444.426</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>177.438</td><td>318.854</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.898522</td><td>-0.477346</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>229.031</td><td>356.407</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>656.918</td><td>701.946</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
 <table class="table table-sm table-striped">
 <thead>
@@ -1201,14 +1199,14 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63766.937</td>
+<td style="text-align: right;">63766.936</td>
 <td style="text-align: right;">252.521</td>
 <td style="text-align: right;">-0.70</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88819.438</td>
+<td style="text-align: right;">88819.436</td>
 <td style="text-align: right;">298.026</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -1226,24 +1224,24 @@ spkr: old &amp; prec: maintain &amp; load: yes    23.6072      15.8075   1.49   
 <div class="cell" data-execution_count="31">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> mods <span class="op">=</span> [m1, m2, m4]</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(;</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    geomdof<span class="op">=</span>(sum <span class="op">∘</span> leverage).(mods),</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    npar<span class="op">=</span><span class="fu">dof</span>.(mods),</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    deviance<span class="op">=</span><span class="fu">deviance</span>.(mods),</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">bic</span>.(mods),</span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> mods <span class="op">=</span> [m1, m2, m4]</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(;</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    geomdof<span class="op">=</span>(sum <span class="op">∘</span> leverage).(mods),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    npar<span class="op">=</span><span class="fu">dof</span>.(mods),</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    deviance<span class="op">=</span><span class="fu">deviance</span>.(mods),</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    AIC<span class="op">=</span><span class="fu">aic</span>.(mods),</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    BIC<span class="op">=</span><span class="fu">bic</span>.(mods),</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    AICc<span class="op">=</span><span class="fu">aicc</span>.(mods),</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="31">
 
-<div class="data-frame"><p>3 rows × 6 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>geomdof</th><th>npar</th><th>deviance</th><th>AIC</th><th>BIC</th><th>AICc</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>131.277</td><td>29</td><td>28637.1</td><td>28695.1</td><td>28854.3</td><td>28696.1</td></tr><tr><th>2</th><td>107.543</td><td>13</td><td>28658.5</td><td>28684.5</td><td>28755.8</td><td>28684.7</td></tr><tr><th>3</th><td>103.478</td><td>9</td><td>28663.9</td><td>28681.9</td><td>28731.3</td><td>28682.0</td></tr></tbody></table></div>
+<div class="data-frame"><p>3 rows × 6 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>geomdof</th><th>npar</th><th>deviance</th><th>AIC</th><th>BIC</th><th>AICc</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Int64">Int64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>130.125</td><td>29</td><td>28638.0</td><td>28696.0</td><td>28855.2</td><td>28697.0</td></tr><tr><th>2</th><td>107.543</td><td>13</td><td>28658.5</td><td>28684.5</td><td>28755.8</td><td>28684.7</td></tr><tr><th>3</th><td>103.478</td><td>9</td><td>28663.9</td><td>28681.9</td><td>28731.3</td><td>28682.0</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter</span>(<span class="fu">fitted</span>(m4), <span class="fu">residuals</span>(m4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter</span>(<span class="fu">fitted</span>(m4), <span class="fu">residuals</span>(m4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
 <div id="fig-scatterm4" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">

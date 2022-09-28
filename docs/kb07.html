@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-13">
+<meta name="dcterms.date" content="2022-09-27">
 
 <title>SMLP2022 - Bootstrapping a fitted model</title>
 <style>
@@ -312,7 +312,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-09-13</p>
+      <p class="date">2022-09-27</p>
     </div>
   </div>
     
@@ -387,8 +387,8 @@ div.csl-indent {
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 998   Time: 0:00:01 ( 1.59 ms/it)
-  objective:  28637.123615980247</code></pre>
+<pre><code>Minimizing 934   Time: 0:00:01 ( 1.46 ms/it)
+  objective:  28637.97101024215</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <table class="table table-sm table-striped">
@@ -415,79 +415,79 @@ div.csl-indent {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2181.6729</td>
-<td style="text-align: right;">77.3017</td>
-<td style="text-align: right;">28.22</td>
+<td style="text-align: right;">2181.6424</td>
+<td style="text-align: right;">77.3512</td>
+<td style="text-align: right;">28.20</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">301.7729</td>
-<td style="text-align: right;">362.1928</td>
+<td style="text-align: right;">301.8676</td>
+<td style="text-align: right;">362.4694</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">67.7491</td>
-<td style="text-align: right;">18.2670</td>
-<td style="text-align: right;">3.71</td>
+<td style="text-align: right;">67.7496</td>
+<td style="text-align: right;">17.9607</td>
+<td style="text-align: right;">3.77</td>
 <td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">42.3846</td>
-<td style="text-align: right;">40.6839</td>
+<td style="text-align: right;">33.0524</td>
+<td style="text-align: right;">41.1185</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-333.9205</td>
-<td style="text-align: right;">47.1494</td>
+<td style="text-align: right;">-333.9200</td>
+<td style="text-align: right;">47.1564</td>
 <td style="text-align: right;">-7.08</td>
 <td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">61.9514</td>
-<td style="text-align: right;">246.8784</td>
+<td style="text-align: right;">58.8607</td>
+<td style="text-align: right;">247.3292</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">78.7702</td>
-<td style="text-align: right;">19.5279</td>
-<td style="text-align: right;">4.03</td>
+<td style="text-align: right;">78.8007</td>
+<td style="text-align: right;">19.7260</td>
+<td style="text-align: right;">3.99</td>
 <td style="text-align: right;">&lt;1e-04</td>
-<td style="text-align: right;">64.9594</td>
-<td style="text-align: right;">42.3730</td>
+<td style="text-align: right;">66.9505</td>
+<td style="text-align: right;">43.3885</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spkr: old &amp; prec: maintain</td>
-<td style="text-align: right;">-21.9655</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">-21.9960</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">-1.39</td>
-<td style="text-align: right;">0.1647</td>
+<td style="text-align: right;">0.1644</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; load: yes</td>
-<td style="text-align: right;">18.3837</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">18.3832</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">1.16</td>
-<td style="text-align: right;">0.2448</td>
+<td style="text-align: right;">0.2452</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">4.5332</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">4.5327</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.7743</td>
+<td style="text-align: right;">0.7745</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">23.6072</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">23.6377</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">1.49</td>
-<td style="text-align: right;">0.1353</td>
+<td style="text-align: right;">0.1351</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">668.5600</td>
+<td style="text-align: right;">669.0516</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -528,8 +528,8 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">91066.9013</td>
-<td style="text-align: right;">301.7729</td>
+<td style="text-align: right;">91124.0779</td>
+<td style="text-align: right;">301.8676</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -537,35 +537,35 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1796.4562</td>
-<td style="text-align: right;">42.3846</td>
-<td style="text-align: right;">+0.79</td>
+<td style="text-align: right;">1092.4628</td>
+<td style="text-align: right;">33.0524</td>
+<td style="text-align: right;">+1.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">3837.9706</td>
-<td style="text-align: right;">61.9514</td>
-<td style="text-align: right;">-0.59</td>
-<td style="text-align: right;">+0.02</td>
+<td style="text-align: right;">3464.5848</td>
+<td style="text-align: right;">58.8607</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.62</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">4219.7289</td>
-<td style="text-align: right;">64.9594</td>
+<td style="text-align: right;">4482.3662</td>
+<td style="text-align: right;">66.9505</td>
 <td style="text-align: right;">+0.36</td>
-<td style="text-align: right;">+0.85</td>
-<td style="text-align: right;">+0.54</td>
+<td style="text-align: right;">+0.36</td>
+<td style="text-align: right;">+0.51</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">131183.5937</td>
-<td style="text-align: right;">362.1928</td>
+<td style="text-align: right;">131384.0733</td>
+<td style="text-align: right;">362.4694</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -573,35 +573,35 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1655.1780</td>
-<td style="text-align: right;">40.6839</td>
-<td style="text-align: right;">+0.44</td>
+<td style="text-align: right;">1690.7347</td>
+<td style="text-align: right;">41.1185</td>
+<td style="text-align: right;">+0.42</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">60948.9590</td>
-<td style="text-align: right;">246.8784</td>
+<td style="text-align: right;">61171.7458</td>
+<td style="text-align: right;">247.3292</td>
 <td style="text-align: right;">-0.69</td>
-<td style="text-align: right;">+0.35</td>
+<td style="text-align: right;">+0.37</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">1795.4747</td>
-<td style="text-align: right;">42.3730</td>
-<td style="text-align: right;">+0.32</td>
-<td style="text-align: right;">+0.16</td>
-<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">1882.5594</td>
+<td style="text-align: right;">43.3885</td>
+<td style="text-align: right;">+0.29</td>
+<td style="text-align: right;">+0.14</td>
+<td style="text-align: right;">-0.13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">446972.4924</td>
-<td style="text-align: right;">668.5600</td>
+<td style="text-align: right;">447630.0111</td>
+<td style="text-align: right;">669.0516</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -708,21 +708,21 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">133015.243</td>
+<td style="text-align: right;">133015.241</td>
 <td style="text-align: right;">364.713</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63766.937</td>
+<td style="text-align: right;">63766.936</td>
 <td style="text-align: right;">252.521</td>
 <td style="text-align: right;">-0.70</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88819.436</td>
+<td style="text-align: right;">88819.437</td>
 <td style="text-align: right;">298.026</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -772,10 +772,10 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">rt_trunc ~ 1 + spkr + prec + load + spkr &amp; prec + spkr &amp; load + prec &amp; load + spkr &amp; prec &amp; load + (1 + spkr + prec + load | subj) + (1 + spkr + prec + load | item)</td>
 <td style="text-align: right;">29</td>
-<td style="text-align: right;">28637</td>
-<td style="text-align: right;">27</td>
+<td style="text-align: right;">28638</td>
+<td style="text-align: right;">26</td>
 <td style="text-align: right;">20</td>
-<td style="text-align: left;">0.1431</td>
+<td style="text-align: left;">0.1698</td>
 </tr>
 </tbody>
 </table>
@@ -796,7 +796,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(kbm02samp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 
-<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2028.01</td><td>2337.92</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>38.431</td><td>99.5944</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-439.321</td><td>-245.864</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>46.0262</td><td>107.511</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>261.196</td><td>448.51</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>175.489</td><td>312.044</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.897984</td><td>-0.4456</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>228.099</td><td>357.789</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>655.249</td><td>701.497</td></tr></tbody></table></div>
+<div class="data-frame"><p>9 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2028.01</td><td>2337.92</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>38.431</td><td>99.5944</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-439.321</td><td>-245.864</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>46.0262</td><td>107.511</td></tr><tr><th>5</th><td>σ</td><td>item</td><td>(Intercept)</td><td>261.196</td><td>448.509</td></tr><tr><th>6</th><td>σ</td><td>item</td><td>prec: maintain</td><td>175.489</td><td>312.043</td></tr><tr><th>7</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.89799</td><td>-0.445596</td></tr><tr><th>8</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>228.099</td><td>357.789</td></tr><tr><th>9</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>655.249</td><td>701.497</td></tr></tbody></table></div>
 </div>
 </div>
 <p>A sample like this can be used for more than just creating an interval because it approximates the distribution of the estimator. For the fixed-effects parameters the estimators are close to being normally distributed, <a href="#fig-kbm02fedens">Figure&nbsp;1</a>.</p>

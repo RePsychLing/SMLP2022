@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-13">
+<meta name="dcterms.date" content="2022-09-27">
 
 <title>SMLP2022 - RePsychLing Kliegl et al.&nbsp;(2010)</title>
 <style>
@@ -334,7 +334,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-09-13</p>
+      <p class="date">2022-09-27</p>
     </div>
   </div>
     
@@ -488,8 +488,8 @@ div.csl-indent {
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat; contrasts)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 265   Time: 0:00:00 ( 1.79 ms/it)
-  objective:  -12782.373740600688</code></pre>
+<pre><code>Minimizing 254   Time: 0:00:00 ( 1.60 ms/it)
+  objective:  -12782.373740584513</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <table class="table table-sm table-striped">
@@ -576,8 +576,8 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;">Subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.0207655</td>
-<td style="text-align: right;">0.1441023</td>
+<td style="text-align: right;">0.0207645</td>
+<td style="text-align: right;">0.1440989</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -585,8 +585,8 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">0.0033848</td>
-<td style="text-align: right;">0.0581786</td>
+<td style="text-align: right;">0.0033847</td>
+<td style="text-align: right;">0.0581778</td>
 <td style="text-align: right;">+0.48</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -594,8 +594,8 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dos</td>
-<td style="text-align: right;">0.0007530</td>
-<td style="text-align: right;">0.0274415</td>
+<td style="text-align: right;">0.0007531</td>
+<td style="text-align: right;">0.0274423</td>
 <td style="text-align: right;">-0.24</td>
 <td style="text-align: right;">-0.15</td>
 <td style="text-align: right;"></td>
@@ -603,8 +603,8 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">0.0006220</td>
-<td style="text-align: right;">0.0249406</td>
+<td style="text-align: right;">0.0006221</td>
+<td style="text-align: right;">0.0249410</td>
 <td style="text-align: right;">+0.30</td>
 <td style="text-align: right;">+0.93</td>
 <td style="text-align: right;">-0.43</td>
@@ -817,7 +817,7 @@ Component loadings
 </details>
 <div class="cell-output cell-output-display" data-execution_count="17">
 
-<div class="data-frame"><p>10 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>iter</th><th>type</th><th>group</th><th>names</th><th>value</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.93392</td></tr><tr><th>2</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.0864217</td></tr><tr><th>3</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.048889</td></tr><tr><th>4</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.0121835</td></tr><tr><th>5</th><td>1</td><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.132942</td></tr><tr><th>6</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.049737</td></tr><tr><th>7</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.604951</td></tr><tr><th>8</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.0278826</td></tr><tr><th>9</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.254326</td></tr><tr><th>10</th><td>1</td><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>0.0550054</td></tr></tbody></table></div>
+<div class="data-frame"><p>10 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>iter</th><th>type</th><th>group</th><th>names</th><th>value</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.93392</td></tr><tr><th>2</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.0864217</td></tr><tr><th>3</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.0488894</td></tr><tr><th>4</th><td>1</td><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.0121838</td></tr><tr><th>5</th><td>1</td><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.13294</td></tr><tr><th>6</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0497365</td></tr><tr><th>7</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.604951</td></tr><tr><th>8</th><td>1</td><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.0278832</td></tr><tr><th>9</th><td>1</td><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.254321</td></tr><tr><th>10</th><td>1</td><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>0.0550145</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell" data-execution_count="17">
@@ -837,7 +837,7 @@ Component loadings
 </details>
 <div class="cell-output cell-output-display" data-execution_count="19">
 
-<div class="data-frame"><p>15 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.89917</td><td>5.97256</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.0719308</td><td>0.104588</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.0251178</td><td>0.0491671</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.0207177</td><td>0.00268293</td></tr><tr><th>5</th><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.116568</td><td>0.168571</td></tr><tr><th>6</th><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0446272</td><td>0.0699643</td></tr><tr><th>7</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.243658</td><td>0.712968</td></tr><tr><th>8</th><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.00940079</td><td>0.0409629</td></tr><tr><th>9</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.892364</td><td>0.259348</td></tr><tr><th>10</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>-0.727005</td><td>0.495774</td></tr><tr><th>11</th><td>σ</td><td>Subj</td><td>CTR: dod</td><td>0.0144106</td><td>0.0384772</td></tr><tr><th>12</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dod</td><td>-0.132652</td><td>0.740396</td></tr><tr><th>13</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dod</td><td>0.573708</td><td>0.999989</td></tr><tr><th>14</th><td>ρ</td><td>Subj</td><td>CTR: dos, CTR: dod</td><td>-0.896273</td><td>0.43596</td></tr><tr><th>15</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>0.190558</td><td>0.193642</td></tr></tbody></table></div>
+<div class="data-frame"><p>15 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>5.89917</td><td>5.97256</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>CTR: sod</td><td>0.0719311</td><td>0.104588</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>CTR: dos</td><td>0.0251178</td><td>0.0491673</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>CTR: dod</td><td>-0.0207176</td><td>0.0026829</td></tr><tr><th>5</th><td>σ</td><td>Subj</td><td>(Intercept)</td><td>0.116561</td><td>0.168571</td></tr><tr><th>6</th><td>σ</td><td>Subj</td><td>CTR: sod</td><td>0.0454958</td><td>0.0708402</td></tr><tr><th>7</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: sod</td><td>0.24378</td><td>0.712966</td></tr><tr><th>8</th><td>σ</td><td>Subj</td><td>CTR: dos</td><td>0.00921535</td><td>0.040977</td></tr><tr><th>9</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dos</td><td>-0.870267</td><td>0.288412</td></tr><tr><th>10</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dos</td><td>-0.66917</td><td>0.562077</td></tr><tr><th>11</th><td>σ</td><td>Subj</td><td>CTR: dod</td><td>0.0144121</td><td>0.0386782</td></tr><tr><th>12</th><td>ρ</td><td>Subj</td><td>(Intercept), CTR: dod</td><td>-0.135087</td><td>0.740413</td></tr><tr><th>13</th><td>ρ</td><td>Subj</td><td>CTR: sod, CTR: dod</td><td>0.573681</td><td>0.999995</td></tr><tr><th>14</th><td>ρ</td><td>Subj</td><td>CTR: dos, CTR: dod</td><td>-0.896183</td><td>0.45778</td></tr><tr><th>15</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>0.190558</td><td>0.193642</td></tr></tbody></table></div>
 </div>
 </div>
 </section>

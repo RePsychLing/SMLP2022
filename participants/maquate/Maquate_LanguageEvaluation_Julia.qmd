@@ -143,7 +143,9 @@ display(m_max.PCA[:Item])
 VarCorr(m_max)
 ```
 
-Overparameterized according to all criteria. Force the correlation parameters to zero.
+Overparameterized according to all criteria. 
+
+Force the correlation parameters to zero.
 
 ```{julia}
 #| label: m_zcp
@@ -250,6 +252,60 @@ end
 ```
 
 AIC and BIC are 6 points smaller for ` m_prsm ` than `m_KM`.  Using the rule of thumb that 5 points smaller indicates a better fit, according to these statistics we select LMM `m_prsm`. There is no relevant difference in fixed-effect estimates between the two models. In an RES-exploratory setting, we still may want to test the significance the VCs of both models and  the CPs of LMM `m_KM`.
+
+# Some other demonstrations
+
+We can force zero correlations by specifying separator terms for the same random factor.
+
+```{julia}
+#| label: m_cpx1
+m_cpx1 = let
+    form = @formula(rating ~ 1 + RC*SC + 
+                            (1 + SC+RC | Subj) + (SC&RC | Subj) + 
+                            (1 + SC+RC | Item) + (SC&RC | Item));
+
+    fit(MixedModel, form, dat; contrasts);
+  end;
+
+m_cpx2 = let
+    form = @formula(rating ~ 1 + RC*SC + 
+                            (1 + SC+RC | Subj) + (SC&RC | Subj) + 
+                            (1 + SC | Item) + (RC | Item));
+    fit(MixedModel, form, dat; contrasts);
+  end;
+
+display(issingular(m_cpx1))
+display(m_cpx1.PCA[:Subj])
+display(m_cpx1.PCA[:Item])
+
+VarCorr(m_cpx1)
+
+
+```
+
+```{julia}
+lrtest(m_KM, m_cpx2, m_cpx1, m_max)
+lrtest(m_prsm, m_cpx2, m_cpx1, m_max)
+```
+
+```{julia}
+MixedModels.likelihoodratiotest(m_KM, m_cpx2)
+```
+
+
+```{julia}
+let mods = [m_prsm, m_KM, m_cpx2];
+ DataFrame(;
+    model=[:m_prsm, :m_KM, :m_cpx2],
+    pars=dof.(mods),
+    geomdof=round.(Int, (sum ∘ leverage).(mods)),
+    AIC=round.(Int, aic.(mods)),
+    AICc=round.(Int, aicc.(mods)),
+    BIC=round.(Int, bic.(mods)),
+  )
+end
+```
+
 
 # Observation-level residual diagnostics
 

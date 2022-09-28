@@ -242,6 +242,15 @@ We need to arrive at a representation that is supported by the data. Unfortunate
 
 ### Fit LMM `m_max`
 
+```sh
++ Group:  B-Subj / W-Item
++ Time:   W-Subj / W-Item
++ Block:  W-Subj / W-Item
++ Switch: W-Subj / W-Item
++ Task:   W-Subj / B-Item
++ Valence:W-Subj / B-Item
+```
+
 ```{julia}
 #| lst-label: f_max
 f_max = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
@@ -321,6 +330,16 @@ f_cpx = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
 ```
 
 ```{julia}
+#| lst-label: f_cpx2
+using RegressionFormulae
+
+f_cpx = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
+                         (1 +      (Time+Block+Switch+Task+Valence)^2 | Subj) +
+                         (1 +(Group+Time+Block+Switch)^2              | Item));
+```
+
+
+```{julia}
 #| eval: false
 #| lst-label: m_cpx
 
@@ -373,7 +392,7 @@ end
 
 LMM `m_cpx` is a defensible solution, because $\chi^2$  < 2*df and $\Delta$ AIC and $\Delta$ BIC do not decrease by more than 5 in absolute units; they actually even increase. In the absence of specific theoretical expectations about the removed VCs and CPs, they are likely to result from fitting noise in the data. (This is only a rule of thumb.)
 
-Note that for an LMM:  `objective(m)` = `deviance(m)` = `-2 + loglikelihood(m)`
+Note that for an LMM:  `objective(m)` = `deviance(m)` = `-2*loglikelihood(m)`
 
 The degrees of freedom in `StatsModels.lrtest` correspond to number of model parameters in `MixedModels.likelihoodratiotest`. The residual number of degrees of freedom is a red herring in mixed models. One proposal is to use the sum of the leverage values (i.e., the rank of the model matrix). This is also called the trace of the hat matrix or the number of geometric degrees of freedom (geomdof). For details check [MixedModels.jl documentation](https://juliastats.org/MixedModels.jl/stable/constructors/#StatsAPI.leverage):
 
@@ -389,18 +408,14 @@ An alternative approach is to start with VCs for main effects and simple interac
 #| lst-label: m_zcp1
  m_zcp1 = let
     form = @formula(speed ~  1 + Group*Time*Block*Switch*Task*Valence +
-                    zerocorr(1 +       Time+Block+Switch+Task+Valence +
-                             Time&Block+Time&Switch+Time&Task+Time&Valence +
-                             Block&Switch+Block&Task+Block&Valence +
-                             Switch&Task + Switch&Valence + Task&Valence | Subj) +
-                    zerocorr(1 + Group+Time+Block+Switch +
-                             Group&Time+Group&Block+Group&Switch +
-                             Time&Block+Time&Switch+Block&Switch          | Item));
+                 zerocorr(1 +      (Time+Block+Switch+Task+Valence)^2 | Subj) +
+                 zerocorr(1 +(Group+Time+Block+Switch)^2              | Item));
     fit(MixedModel, form, dat; contrasts);
   end;
 show(issingular(m_zcp1))
 VarCorr(m_zcp1)
 ```
+
 
 Quite a large number of VCs are estimated to be negligible. We take out zero-terms and `Item`-related VCs for  `Group`, `Time`, and `Switch`.
 
@@ -528,7 +543,7 @@ We do no longer touch the RES, but introduce a distinction between theoretically
 ```{julia}
 #| lst-label: m1
  m1 = let
-    form = @formula(speed ~  1 + Group*Time*Block*Switch+Task*Valence +
+    form = @formula(speed ~  1 + Group*Time*Block*Switch + Task*Valence + Time&Valence + Block&Valence +
                             (1+Time+Block+Time&Block | Subj) +
                     zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Item));
@@ -642,7 +657,7 @@ Finally, we also check the items for _outliers_ in how fast they are responded t
 ```{julia}
 #| lst-label: m1x
  m1x = let
-    form = @formula(speed ~  1 + Group*Time*Block*Switch+Task*Valence +
+    form = @formula(speed ~  1 + Group*Time*Block*Switch+Task*Valence + Time&Valence + Block&Valence +
                             (1+Time+Block+Time&Block | Subj) +
                     zerocorr(Switch+Task+Valence +Time&Valence+Block&Switch+Block&Valence | Subj) +
                     zerocorr(1+Block | Word));

@@ -17,21 +17,7 @@ editor_options:
 jupyter: julia-1.8
 ---
 
-# Source
-
-Huber, J., Inoua, S., Kerschbamer, R., König-Kersting, C., Palan, S., Smith, V. L., 2022. “Nobel and novice: Author prominence affects peer review”, University of Graz, School of Business, Economics and Social Sciences Working Paper 2022-01.
-
-[SSRN link to download](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4190976)
-
-## Abstract
-
->Peer-review is a well-established cornerstone of the scientific process, yet it is not immune to status bias. Merton identified the problem as one in which prominent researchers get disproportionately great credit for their contribution while relatively unknown researchers get disproportionately little credit (Merton, 1968). We measure the extent of this effect in the peer-review process through a pre-registered field experiment. We invite more than 3,300 researchers to review a paper jointly written by a prominent author -- a Nobel laureate -- and by a relatively unknown author -- an early-career research associate --, varying whether reviewers see the prominent author's name, an anonymized version of the paper, or the less well-known author's name. We find strong evidence for the status bias: while only 23 percent recommend “reject” when the prominent researcher is the only author shown, 48 percent do so when the paper is anonymized, and 65 percent do so when the little-known author is the only author shown. Our findings complement and extend earlier results on double-anonymized vs. single-anonymized review (Peters and Ceci, 1982; Blank, 1991; Cox et al., 1993; Okike et al., 2016; Tomkins et al., 2017; Card and Della Vigna, 2020) and strongly suggest that double-anonymization is a minimum requirement for an unbiased review process.
-
-## Data and code
-
-Data and code are available at [OSF repo](https://osf.io/mjh8s/). 
-
-# Setup
+# Packages
 
 ```{julia}
 #| label: packages
@@ -64,35 +50,33 @@ CairoMakie.activate!(; type="svg");
 
 ```{julia}
 #| label: read_data
-dat = DataFrame(Arrow.Table("./data/nobel_data.arrow"));
+dat = DataFrame(Arrow.Table("./data/Pan_RAN.arrow"));
 describe(dat)
 ```
 
 # Contrasts
 
-**Task 1**: Replace with your own contrast!
-
 ```{julia}
-#| label: contrasts
+#| label: contrasts1
 
-contrasts = Dict(:Cond => SeqDiffCoding(levels=["HH", "AH", "AA", "AL", "LL"]),
-                 :Scale => HelmertCoding(levels=["supported", "new_info", "worthy"]),
-                 :Reviewer => Grouping()
+contrasts = Dict(:Group => EffectsCoding(),
+                 :Condition => EffectsCoding(),
+                 :Subj => Grouping()
                  );
 ```
 
 # Linear mixed models 
 
-**Task 2**: Do the LMM selection for your own set of contrasts? Let's stay with the following models.
+For this LMM we use the alternative set of contrasts.  Let's stay with the following models.
 
 ## LMM m_cpx
 
 ```{julia}
 #| label: cpx
 
-m_cpx = let
-  form = @formula(sub_rating ~ 1 + Cond*Scale + (1 + Scale | Reviewer))
-  fit(MixedModel, form, dat; contrasts)
+m_cpx2 = let
+  form = @formula(ran ~ 1 +  + (1 + Scale | Reviewer))
+  fit(MixedModel, form, dat; contrasts=contrasts_rk2)
 end
 display(issingular(m_cpx))
 VarCorr(m_cpx)
@@ -105,7 +89,7 @@ VarCorr(m_cpx)
 
 m_zcp = let
   form = @formula(sub_rating ~ 1 + Cond*Scale + zerocorr(1 + Scale | Reviewer))
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts=contrasts_rk2)
 end
 display(issingular(m_zcp))
 VarCorr(m_zcp)
@@ -118,7 +102,7 @@ VarCorr(m_zcp)
 
 m_voi = let
   form = @formula(sub_rating ~ 1 + Cond*Scale + (1 | Reviewer))
-  fit(MixedModel, form, dat; contrasts)
+  fit(MixedModel, form, dat; contrasts=contrasts_rk2)
 end
 
 VarCorr(m_voi)
@@ -202,6 +186,7 @@ let
 end
 ```
 
+
 # Bootstrapping
 
 Get the shortest coverage intervals for VCs and CP. 
@@ -227,7 +212,7 @@ ridgeplot(samp; show_intercept=false)
 ```{julia}
 draw(
  # data(@subset(dat2, :type == "β" && :names ≠ "(Intercept)")) *
-  data(@subset(dat2, :type == "β" && :names == "Cond: AL & Scale: worthy")) *
+  data(@subset(dat2, :type == "β" && :names == "Cond: 3.45 & Scale: worthy")) *
   mapping(
     :value => "Experimental effect size [ms]";
     color=:names => "Experimental effects",

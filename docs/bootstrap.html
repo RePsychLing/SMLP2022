@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-13">
+<meta name="dcterms.date" content="2022-09-27">
 
 <title>SMLP2022 - Parametric bootstrap for mixed-effects models</title>
 <style>
@@ -315,7 +315,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-09-13</p>
+      <p class="date">2022-09-27</p>
     </div>
   </div>
     
@@ -397,8 +397,8 @@ div.csl-indent {
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                          (<span class="fl">1</span> <span class="op">+</span> spkr <span class="op">+</span> prec <span class="op">+</span> load <span class="op">|</span> item))</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>m0 <span class="op">=</span> <span class="fu">fit</span>(MixedModel, form, kb07; contrasts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 998   Time: 0:00:01 ( 1.43 ms/it)
-  objective:  28637.123615980247</code></pre>
+<pre><code>Minimizing 934   Time: 0:00:01 ( 1.60 ms/it)
+  objective:  28637.97101024215</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <table class="table table-sm table-striped">
@@ -425,79 +425,79 @@ div.csl-indent {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">2181.6729</td>
-<td style="text-align: right;">77.3017</td>
-<td style="text-align: right;">28.22</td>
+<td style="text-align: right;">2181.6424</td>
+<td style="text-align: right;">77.3512</td>
+<td style="text-align: right;">28.20</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">301.7729</td>
-<td style="text-align: right;">362.1928</td>
+<td style="text-align: right;">301.8676</td>
+<td style="text-align: right;">362.4694</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">67.7491</td>
-<td style="text-align: right;">18.2670</td>
-<td style="text-align: right;">3.71</td>
+<td style="text-align: right;">67.7496</td>
+<td style="text-align: right;">17.9607</td>
+<td style="text-align: right;">3.77</td>
 <td style="text-align: right;">0.0002</td>
-<td style="text-align: right;">42.3846</td>
-<td style="text-align: right;">40.6839</td>
+<td style="text-align: right;">33.0524</td>
+<td style="text-align: right;">41.1185</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">-333.9205</td>
-<td style="text-align: right;">47.1494</td>
+<td style="text-align: right;">-333.9200</td>
+<td style="text-align: right;">47.1564</td>
 <td style="text-align: right;">-7.08</td>
 <td style="text-align: right;">&lt;1e-11</td>
-<td style="text-align: right;">61.9514</td>
-<td style="text-align: right;">246.8784</td>
+<td style="text-align: right;">58.8607</td>
+<td style="text-align: right;">247.3292</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">78.7702</td>
-<td style="text-align: right;">19.5279</td>
-<td style="text-align: right;">4.03</td>
+<td style="text-align: right;">78.8007</td>
+<td style="text-align: right;">19.7260</td>
+<td style="text-align: right;">3.99</td>
 <td style="text-align: right;">&lt;1e-04</td>
-<td style="text-align: right;">64.9594</td>
-<td style="text-align: right;">42.3730</td>
+<td style="text-align: right;">66.9505</td>
+<td style="text-align: right;">43.3885</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">spkr: old &amp; prec: maintain</td>
-<td style="text-align: right;">-21.9655</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">-21.9960</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">-1.39</td>
-<td style="text-align: right;">0.1647</td>
+<td style="text-align: right;">0.1644</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; load: yes</td>
-<td style="text-align: right;">18.3837</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">18.3832</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">1.16</td>
-<td style="text-align: right;">0.2448</td>
+<td style="text-align: right;">0.2452</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">4.5332</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">4.5327</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">0.29</td>
-<td style="text-align: right;">0.7743</td>
+<td style="text-align: right;">0.7745</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">spkr: old &amp; prec: maintain &amp; load: yes</td>
-<td style="text-align: right;">23.6072</td>
-<td style="text-align: right;">15.8075</td>
+<td style="text-align: right;">23.6377</td>
+<td style="text-align: right;">15.8191</td>
 <td style="text-align: right;">1.49</td>
-<td style="text-align: right;">0.1353</td>
+<td style="text-align: right;">0.1351</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">668.5600</td>
+<td style="text-align: right;">669.0516</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -538,8 +538,8 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">91066.9013</td>
-<td style="text-align: right;">301.7729</td>
+<td style="text-align: right;">91124.0779</td>
+<td style="text-align: right;">301.8676</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -547,35 +547,35 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1796.4562</td>
-<td style="text-align: right;">42.3846</td>
-<td style="text-align: right;">+0.79</td>
+<td style="text-align: right;">1092.4628</td>
+<td style="text-align: right;">33.0524</td>
+<td style="text-align: right;">+1.00</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">3837.9706</td>
-<td style="text-align: right;">61.9514</td>
-<td style="text-align: right;">-0.59</td>
-<td style="text-align: right;">+0.02</td>
+<td style="text-align: right;">3464.5848</td>
+<td style="text-align: right;">58.8607</td>
+<td style="text-align: right;">-0.62</td>
+<td style="text-align: right;">-0.62</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">4219.7289</td>
-<td style="text-align: right;">64.9594</td>
+<td style="text-align: right;">4482.3662</td>
+<td style="text-align: right;">66.9505</td>
 <td style="text-align: right;">+0.36</td>
-<td style="text-align: right;">+0.85</td>
-<td style="text-align: right;">+0.54</td>
+<td style="text-align: right;">+0.36</td>
+<td style="text-align: right;">+0.51</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">131183.5937</td>
-<td style="text-align: right;">362.1928</td>
+<td style="text-align: right;">131384.0733</td>
+<td style="text-align: right;">362.4694</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -583,35 +583,35 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">spkr: old</td>
-<td style="text-align: right;">1655.1780</td>
-<td style="text-align: right;">40.6839</td>
-<td style="text-align: right;">+0.44</td>
+<td style="text-align: right;">1690.7347</td>
+<td style="text-align: right;">41.1185</td>
+<td style="text-align: right;">+0.42</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">60948.9590</td>
-<td style="text-align: right;">246.8784</td>
+<td style="text-align: right;">61171.7458</td>
+<td style="text-align: right;">247.3292</td>
 <td style="text-align: right;">-0.69</td>
-<td style="text-align: right;">+0.35</td>
+<td style="text-align: right;">+0.37</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">load: yes</td>
-<td style="text-align: right;">1795.4747</td>
-<td style="text-align: right;">42.3730</td>
-<td style="text-align: right;">+0.32</td>
-<td style="text-align: right;">+0.16</td>
-<td style="text-align: right;">-0.14</td>
+<td style="text-align: right;">1882.5594</td>
+<td style="text-align: right;">43.3885</td>
+<td style="text-align: right;">+0.29</td>
+<td style="text-align: right;">+0.14</td>
+<td style="text-align: right;">-0.13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
 <td style="text-align: left;"></td>
-<td style="text-align: right;">446972.4924</td>
-<td style="text-align: right;">668.5600</td>
+<td style="text-align: right;">447630.0111</td>
+<td style="text-align: right;">669.0516</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -751,21 +751,21 @@ div.csl-indent {
 <tr class="odd">
 <td style="text-align: left;">item</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">133026.918</td>
+<td style="text-align: right;">133026.916</td>
 <td style="text-align: right;">364.729</td>
 <td style="text-align: right;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;">prec: maintain</td>
-<td style="text-align: right;">63841.496</td>
+<td style="text-align: right;">63841.497</td>
 <td style="text-align: right;">252.669</td>
 <td style="text-align: right;">-0.70</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">subj</td>
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">88870.080</td>
+<td style="text-align: right;">88870.081</td>
 <td style="text-align: right;">298.111</td>
 <td style="text-align: right;"></td>
 </tr>
@@ -815,10 +815,10 @@ div.csl-indent {
 <tr class="even">
 <td style="text-align: left;">rt_trunc ~ 1 + spkr + prec + load + spkr &amp; prec + spkr &amp; load + prec &amp; load + spkr &amp; prec &amp; load + (1 + spkr + prec + load | subj) + (1 + spkr + prec + load | item)</td>
 <td style="text-align: right;">29</td>
-<td style="text-align: right;">28637</td>
+<td style="text-align: right;">28638</td>
 <td style="text-align: right;">21</td>
 <td style="text-align: right;">16</td>
-<td style="text-align: left;">0.1650</td>
+<td style="text-align: left;">0.1979</td>
 </tr>
 </tbody>
 </table>
@@ -866,19 +866,19 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shortestcovint</span>(samp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>13-element Vector{NamedTuple{(:type, :group, :names, :lower, :upper)}}:
- (type = "β", group = missing, names = "(Intercept)", lower = 2028.4504680335554, upper = 2335.4980375952355)
- (type = "β", group = missing, names = "spkr: old", lower = 33.90584287502229, upper = 97.10171233808869)
- (type = "β", group = missing, names = "prec: maintain", lower = -420.97598477539503, upper = -246.9263082590225)
- (type = "β", group = missing, names = "load: yes", lower = 49.93973149268326, upper = 108.72371421970315)
- (type = "β", group = missing, names = "spkr: old &amp; prec: maintain", lower = -52.84340405061888, upper = 8.707634573406127)
- (type = "β", group = missing, names = "spkr: old &amp; load: yes", lower = -11.99035874137543, upper = 49.090842750842036)
- (type = "β", group = missing, names = "prec: maintain &amp; load: yes", lower = -25.207699116980887, upper = 36.98654156159168)
- (type = "β", group = missing, names = "spkr: old &amp; prec: maintain &amp; load: yes", lower = -5.885170802410345, upper = 54.770344716326534)
- (type = "σ", group = "item", names = "(Intercept)", lower = 267.2821906610501, upper = 462.8175747642724)
- (type = "σ", group = "item", names = "prec: maintain", lower = 178.14890738834447, upper = 316.22872858265805)
- (type = "ρ", group = "item", names = "(Intercept), prec: maintain", lower = -0.9058574052541241, upper = -0.4813889679152871)
- (type = "σ", group = "subj", names = "(Intercept)", lower = 231.87600268210568, upper = 356.1578311938218)
- (type = "σ", group = "residual", names = missing, lower = 653.5649233344942, upper = 700.7662324139706)</code></pre>
+ (type = "β", group = missing, names = "(Intercept)", lower = 2028.4504684663298, upper = 2335.498038554574)
+ (type = "β", group = missing, names = "spkr: old", lower = 33.90584062173727, upper = 97.10171233641093)
+ (type = "β", group = missing, names = "prec: maintain", lower = -420.9759788935399, upper = -246.9263080177159)
+ (type = "β", group = missing, names = "load: yes", lower = 49.939730827892056, upper = 108.72371421725681)
+ (type = "β", group = missing, names = "spkr: old &amp; prec: maintain", lower = -52.84340405357466, upper = 8.707634564888837)
+ (type = "β", group = missing, names = "spkr: old &amp; load: yes", lower = -11.990358739323007, upper = 49.09084416150385)
+ (type = "β", group = missing, names = "prec: maintain &amp; load: yes", lower = -25.207700054695998, upper = 36.98654156979304)
+ (type = "β", group = missing, names = "spkr: old &amp; prec: maintain &amp; load: yes", lower = -5.885146326787089, upper = 54.77034471400362)
+ (type = "σ", group = "item", names = "(Intercept)", lower = 267.2821884396632, upper = 462.8203408672154)
+ (type = "σ", group = "item", names = "prec: maintain", lower = 178.1489090587561, upper = 316.2287416548999)
+ (type = "ρ", group = "item", names = "(Intercept), prec: maintain", lower = -0.9058618744930751, upper = -0.4813912713068965)
+ (type = "σ", group = "subj", names = "(Intercept)", lower = 231.87615523560174, upper = 356.151666966933)
+ (type = "σ", group = "residual", names = missing, lower = 653.5649114745823, upper = 700.7662324102956)</code></pre>
 </div>
 </div>
 <p>and convert it to a dataframe:</p>
@@ -886,7 +886,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(samp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 
-<div class="data-frame"><p>13 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2028.45</td><td>2335.5</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>33.9058</td><td>97.1017</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-420.976</td><td>-246.926</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>49.9397</td><td>108.724</td></tr><tr><th>5</th><td>β</td><td><em>missing</em></td><td>spkr: old &amp; prec: maintain</td><td>-52.8434</td><td>8.70763</td></tr><tr><th>6</th><td>β</td><td><em>missing</em></td><td>spkr: old &amp; load: yes</td><td>-11.9904</td><td>49.0908</td></tr><tr><th>7</th><td>β</td><td><em>missing</em></td><td>prec: maintain &amp; load: yes</td><td>-25.2077</td><td>36.9865</td></tr><tr><th>8</th><td>β</td><td><em>missing</em></td><td>spkr: old &amp; prec: maintain &amp; load: yes</td><td>-5.88517</td><td>54.7703</td></tr><tr><th>9</th><td>σ</td><td>item</td><td>(Intercept)</td><td>267.282</td><td>462.818</td></tr><tr><th>10</th><td>σ</td><td>item</td><td>prec: maintain</td><td>178.149</td><td>316.229</td></tr><tr><th>11</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.905857</td><td>-0.481389</td></tr><tr><th>12</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>231.876</td><td>356.158</td></tr><tr><th>13</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>653.565</td><td>700.766</td></tr></tbody></table></div>
+<div class="data-frame"><p>13 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>2028.45</td><td>2335.5</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>spkr: old</td><td>33.9058</td><td>97.1017</td></tr><tr><th>3</th><td>β</td><td><em>missing</em></td><td>prec: maintain</td><td>-420.976</td><td>-246.926</td></tr><tr><th>4</th><td>β</td><td><em>missing</em></td><td>load: yes</td><td>49.9397</td><td>108.724</td></tr><tr><th>5</th><td>β</td><td><em>missing</em></td><td>spkr: old &amp; prec: maintain</td><td>-52.8434</td><td>8.70763</td></tr><tr><th>6</th><td>β</td><td><em>missing</em></td><td>spkr: old &amp; load: yes</td><td>-11.9904</td><td>49.0908</td></tr><tr><th>7</th><td>β</td><td><em>missing</em></td><td>prec: maintain &amp; load: yes</td><td>-25.2077</td><td>36.9865</td></tr><tr><th>8</th><td>β</td><td><em>missing</em></td><td>spkr: old &amp; prec: maintain &amp; load: yes</td><td>-5.88515</td><td>54.7703</td></tr><tr><th>9</th><td>σ</td><td>item</td><td>(Intercept)</td><td>267.282</td><td>462.82</td></tr><tr><th>10</th><td>σ</td><td>item</td><td>prec: maintain</td><td>178.149</td><td>316.229</td></tr><tr><th>11</th><td>ρ</td><td>item</td><td>(Intercept), prec: maintain</td><td>-0.905862</td><td>-0.481391</td></tr><tr><th>12</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>231.876</td><td>356.152</td></tr><tr><th>13</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>653.565</td><td>700.766</td></tr></tbody></table></div>
 </div>
 </div>
 <div class="cell" data-execution_count="15">
@@ -1047,7 +1047,7 @@ div.csl-indent {
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(dfsleep, <span class="fl">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="24">
 
-<div class="data-frame"><p>10 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>iter</th><th>type</th><th>group</th><th>names</th><th>value</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>252.488</td></tr><tr><th>2</th><td>1</td><td>β</td><td><em>missing</em></td><td>days</td><td>11.0328</td></tr><tr><th>3</th><td>1</td><td>σ</td><td>subj</td><td>(Intercept)</td><td>29.6185</td></tr><tr><th>4</th><td>1</td><td>σ</td><td>subj</td><td>days</td><td>6.33343</td></tr><tr><th>5</th><td>1</td><td>ρ</td><td>subj</td><td>(Intercept), days</td><td>0.233383</td></tr><tr><th>6</th><td>1</td><td>σ</td><td>residual</td><td><em>missing</em></td><td>22.4544</td></tr><tr><th>7</th><td>2</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>260.763</td></tr><tr><th>8</th><td>2</td><td>β</td><td><em>missing</em></td><td>days</td><td>8.55352</td></tr><tr><th>9</th><td>2</td><td>σ</td><td>subj</td><td>(Intercept)</td><td>20.8031</td></tr><tr><th>10</th><td>2</td><td>σ</td><td>subj</td><td>days</td><td>4.3309</td></tr></tbody></table></div>
+<div class="data-frame"><p>10 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>iter</th><th>type</th><th>group</th><th>names</th><th>value</th></tr><tr><th></th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>252.488</td></tr><tr><th>2</th><td>1</td><td>β</td><td><em>missing</em></td><td>days</td><td>11.0328</td></tr><tr><th>3</th><td>1</td><td>σ</td><td>subj</td><td>(Intercept)</td><td>29.6185</td></tr><tr><th>4</th><td>1</td><td>σ</td><td>subj</td><td>days</td><td>6.33343</td></tr><tr><th>5</th><td>1</td><td>ρ</td><td>subj</td><td>(Intercept), days</td><td>0.233383</td></tr><tr><th>6</th><td>1</td><td>σ</td><td>residual</td><td><em>missing</em></td><td>22.4544</td></tr><tr><th>7</th><td>2</td><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>260.763</td></tr><tr><th>8</th><td>2</td><td>β</td><td><em>missing</em></td><td>days</td><td>8.55352</td></tr><tr><th>9</th><td>2</td><td>σ</td><td>subj</td><td>(Intercept)</td><td>20.8064</td></tr><tr><th>10</th><td>2</td><td>σ</td><td>subj</td><td>days</td><td>4.32891</td></tr></tbody></table></div>
 </div>
 </div>
 <p>the singularity can be exhibited as a standard deviation of zero or as a correlation of ±1.</p>
@@ -1055,7 +1055,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DataFrame</span>(<span class="fu">shortestcovint</span>(sampsleep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="25">
 
-<div class="data-frame"><p>6 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>237.905</td><td>264.231</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>days</td><td>7.44545</td><td>13.3516</td></tr><tr><th>3</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>10.6759</td><td>33.3567</td></tr><tr><th>4</th><td>σ</td><td>subj</td><td>days</td><td>3.07053</td><td>7.82205</td></tr><tr><th>5</th><td>ρ</td><td>subj</td><td>(Intercept), days</td><td>-0.411455</td><td>1.0</td></tr><tr><th>6</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>22.6345</td><td>28.5125</td></tr></tbody></table></div>
+<div class="data-frame"><p>6 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>type</th><th>group</th><th>names</th><th>lower</th><th>upper</th></tr><tr><th></th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>β</td><td><em>missing</em></td><td>(Intercept)</td><td>237.905</td><td>264.231</td></tr><tr><th>2</th><td>β</td><td><em>missing</em></td><td>days</td><td>7.44545</td><td>13.3516</td></tr><tr><th>3</th><td>σ</td><td>subj</td><td>(Intercept)</td><td>10.6757</td><td>33.3567</td></tr><tr><th>4</th><td>σ</td><td>subj</td><td>days</td><td>3.07053</td><td>7.82204</td></tr><tr><th>5</th><td>ρ</td><td>subj</td><td>(Intercept), days</td><td>-0.411665</td><td>1.0</td></tr><tr><th>6</th><td>σ</td><td>residual</td><td><em>missing</em></td><td>22.6345</td><td>28.5125</td></tr></tbody></table></div>
 </div>
 </div>
 <p>A histogram of the estimated correlations from the bootstrap sample has a spike at <code>+1</code>.</p>
@@ -1071,7 +1071,7 @@ div.csl-indent {
 <div class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(ρs.value <span class="op">.≈</span> <span class="fl">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="27">
-<pre><code>291</code></pre>
+<pre><code>292</code></pre>
 </div>
 </div>
 <p>Close examination of the histogram shows a few values of <code>-1</code>.</p>
@@ -1086,7 +1086,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>σs <span class="op">=</span> <span class="fu">subset</span>(dfsleep, <span class="op">:</span><span class="kw">type</span> <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="op">==</span>(<span class="st">"σ"</span>)), <span class="op">:</span>group <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="op">==</span>(<span class="st">"subj"</span>)), <span class="op">:</span>names <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="op">==</span>(<span class="st">"(Intercept)"</span>)); skipmissing<span class="op">=</span><span class="cn">true</span>)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(σs.value <span class="op">.≈</span> <span class="fl">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
-<pre><code>6</code></pre>
+<pre><code>7</code></pre>
 </div>
 </div>
 <p>There is a general condition to check for singularity of an estimated covariance matrix or matrices in a bootstrap sample. The parameter optimized in the estimation is <code>θ</code>, the relative covariance parameter. Some of the elements of this parameter vector must be non-negative and, when one of these components is approximately zero, one of the covariance matrices will be singular.</p>
@@ -1095,7 +1095,7 @@ div.csl-indent {
 <div class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(<span class="fu">issingular</span>(sampsleep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
-<pre><code>299</code></pre>
+<pre><code>301</code></pre>
 </div>
 </div>
 </section>
