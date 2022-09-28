@@ -660,7 +660,7 @@ subjextended = leftjoin(
 )
 ```
 
-As shown in @fig-fig-elm01vocabage, there does not seem to be a strong relationship between vocabulary age and speed of response by subject.
+As shown in @fig-elm01vocabage, there does not seem to be a strong relationship between vocabulary age and speed of response by subject.
 
 ```{julia}
 #| label: fig-elm01vocabage

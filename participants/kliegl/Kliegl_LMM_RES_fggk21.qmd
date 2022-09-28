@@ -277,9 +277,9 @@ contrHE = merge(
 ```{julia}
 contrHY = merge(
   Dict(:Test => HypothesisCoding([-1  1  0   0  0
-                                  -1 -1  2   0  0
-                                  -1 -1 -1   3  0
-                                  -1 -1 -1  -1  4];
+                                  -1/2 -1/2  1   0  0
+                                  -1/3 -1/3 -1/3   1  0
+                                  -1/4 -1/4 -1/4  -1/4  1];
                levels=["Run", "Star_r", "S20_r", "SLJ", "BPT"],
                labels=["c2.1", "c3.21", "c4.321", "c5.4321"]),
        :Sex => EffectsCoding(levels=["Boys", "Girls"])),
@@ -290,7 +290,7 @@ contrHY = merge(
 
 ```{julia}
 m_ovi = let
-  f = @formula zScore ~ 1 + Test + (1 | Child)
+  f = @formula zScore ~ 1 + Test/a1 + (1 | Child)
   fit(MixedModel, f, dat; contrasts=contrHY)
 end
 ```
@@ -315,31 +315,38 @@ It is well known that such a simple RES is likely to be anti-conservative with r
 ```{julia}
 m_zcp11 = let
   f = @formula zScore ~ 1 + Test * Sex * a1 + zerocorr(1 + Test | Child)
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts=contrHE)
 end
+VarCorr(m_zcp11)
 display(issingular(m_zcp11))
 
 m_zcp01 = let
   f = @formula zScore ~ 0 + Test * Sex * a1 + zerocorr(1 + Test | Child)
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts=contrSD)
 end
 display(issingular(m_zcp01))
 
 m_zcp10 = let
   f = @formula zScore ~ 1 + Test * Sex * a1 + zerocorr(0 + Test | Child)
-  fit(MixedModel, f, dat; contrasts)
+  fit(MixedModel, f, dat; contrasts=contrSD)
 end
 display(issingular(m_zcp10))
 
 m_cpx10 = let
-  f = @formula zScore ~ 1 + Test * Sex * a1 + (1 + Test | Child)
-  fit(MixedModel, f, dat; contrasts)
+  f = @formula zScore ~ 1 + Test * Sex * a1 + (0 + Test | Child)
+  fit(MixedModel, f, dat; contrasts=contrSD)
 end
 display(issingular(m_cpx10))
 
-m_fdm10 = let
-  f = @formula zScore ~ 1 + Test * Sex * a1 + (0 + fulldummy(Test) | Child)
-  fit(MixedModel, f, dat; contrasts)
+m_cpx11 = let
+  f = @formula zScore ~ 1 + Test * Sex * a1 + (1 + Test | Child)
+  fit(MixedModel, f, dat; contrasts=contrSD)
+end
+display(issingular(m_cpx10))
+
+m_fdm11 = let
+  f = @formula zScore ~ 1 + Test * Sex * a1 + (1 + fulldummy(Test) | Child)
+  fit(MixedModel, f, dat; contrasts=contrSD)
 end
 display(issingular(m_fdm10))
 ```
@@ -414,7 +421,7 @@ The PCA for LMM `m1` shows that each of the five PCs for `Child` accounts for a 
 Importantly, again depending on sampling, a non-singular fit does not imply that unique variance is associated with all PCs. Embrace uncertainty!
 
 ```{julia}
-MixedModels.PCA(m_cpx)
+MixedModels.PCA(m_cpx10)
 ```
 
 ## Scores in RES

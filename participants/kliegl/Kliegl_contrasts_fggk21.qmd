@@ -28,7 +28,7 @@ There is also a second paper using these data from keyage children for the predi
 To circumvent delays associated with model fitting we work with models that are less complex than those in the reference publication.
 All the data to reproduce the models in the publication are used here, too; the script requires only a few changes to specify the more complex models in the original paper.
 
-All children were between 6.0 and 6.99 years at legal keydate (30 September) of school enrollement, that is in their ninth year of life in the third grade.
+All children were between 6.0 and 6.99 years at legal keydate (30 September) of school enrollment, that is in their ninth year of life in the third grade.
 To avoid delays associated with model fitting we work with a reduced data set and less complex models than those in the reference publication.
 The script requires only a few changes to specify the more complex models in the paper.
 
@@ -47,13 +47,6 @@ The script is structured in four main sections:
      + VCs and CPs depend on random factor
 
 # Setup
-
-## Environment
-
-```{julia}
-#| label: enviroment
-#| code-fold: true
-```
 
 ## Packages and functions
 
@@ -174,6 +167,7 @@ Let's compare `zScore` to the full sample.
 
 As expected, more data are missing for the physically (i.e., endurance) and cognitively (i.e., coordination) challenging tests.
 
+
 ## Figure of age x Sex x Test interactions
 
 The main results of relevance are shown in Figure 2 of [Scientific Reports 11:17566](https://rdcu.be/cwSeR).
@@ -271,9 +265,11 @@ The final step in this first series is to add the interactions between the three
 ```{julia}
 f_ovi = @formula zScore ~ 1 + Test * a1 * Sex + (1 | Child)
 m_ovi_SeqDiff = fit(MixedModel, f_ovi, dat; contrasts=contr1)
+
+MixedModels.likelihoodratiotest(m_ovi_0, m_ovi_1, m_ovi_2, m_ovi_3, m_ovi_SeqDiff)
 ```
 
-The results are very clear: Despite an abundance of statistical power there is no evidence for the differences between boys and girls in how much they gain in the ninth year of life in these five tests. The authors argue that, in this case, absence of evidence looks very much like evidence of absence of a hypothesized interaction.
+The results are very clear: Despite an abundance of statistical power there is no evidence for the differences between boys and girls in how much they gain in the ninth year of life in these five tests. And this was also true for the complete sample of 108,295 children. The authors argue that, in this case, absence of evidence looks very much like evidence of absence of a hypothesized interaction.
 
 In the next two sections we use different contrasts. Does this have a bearing on this result?  We still ignore for now that we are looking at anti-conservative test statistics.
 
@@ -348,11 +344,12 @@ contr3 = Dict(
 ```
 
 ```{julia}
-m_ovi_HC = fit(MixedModel, f_ovi, dat; contrasts=contr3)
+m_ovi_HyC = fit(MixedModel, f_ovi, dat; contrasts=contr3)
 ```
 
 None of the interactions between `age` x `Sex` with the four `Test` contrasts was significant for these contrasts.
 Let's start over with the seq-diff contrasts bases with `HypothesisCoding()`.
+
 
 # Individual differences in test effects
 
@@ -378,7 +375,7 @@ contr1b = Dict(
 ```
 
 ```{julia}
-m_ovi_HC = let
+m_ovi_HyC = let
   form = @formula(
     zScore ~ 1 + Test * a1 * Sex + (1 | Child)
   )
@@ -388,17 +385,18 @@ end
 
 Next we add variance components (VCs) for the test effects. They represent individual differences between children.
 ```{julia}
-m_zcp_HC = let
+m_zcp_HyC = let
   form = @formula(
     zScore ~ 1 + Test * a1 * Sex + zerocorr(1 + Test | Child)
   )
   fit(MixedModel, form, dat; contrasts=contr1b)
 end
 ```
+
 Next we add correlation parameters (CPs) for the test effects (as specified with the sequential difference contrasts). These are **not**  correlations between test scores!
 
 ```{julia}
-m_cpx_HC = let
+m_cpx_HyC = let
   form = @formula(
     zScore ~ 1 + Test * a1 * Sex + (1 + Test | Child)
   )
@@ -409,7 +407,7 @@ end
 Does model complexification improve the goodness of fit?
 
 ```{julia}
-MixedModels.likelihoodratiotest(m_ovi_HC, m_zcp_HC, m_cpx_HC)
+MixedModels.likelihoodratiotest(m_ovi_HyC, m_zcp_HyC, m_cpx_HyC)
 ```
 
 Yes, it does, but the CPs are not all that interpretable.
@@ -419,20 +417,21 @@ Yes, it does, but the CPs are not all that interpretable.
 We can also look at the variance components (VCs) for scores/levels rather than effects of `Test`.
 
 ```{julia}
-m_zcp_HC_L = let
+m_zcp_HyC_L = let
   form = @formula(
     zScore ~ 1 + Test * a1 * Sex + zerocorr(0 + Test | Child)
   )
   fit(MixedModel, form, dat; contrasts=contr1b)
 end
 ```
+
 As expected, VCs (i.e., differences between children) are a bit larger for the physically (i.e., endurance) and cognitively (i.e., coordination) challenging tests.
 
 We can also look at the correlation parameters (CPs) for levels rather than effects of `Test`.
 
 
 ```{julia}
-m_cpx_HC_L = let
+m_cpx_HyC_L = let
  form = @formula(
     zScore ~ 1 + Test * a1 * Sex + (0 + Test | Child)
   )
@@ -441,12 +440,24 @@ end
 ```
 
 Does model complexification improve the goodness of fit?
+The improvement here is much larger than the one we saw for effects. Well, correlations are higher.
+
+
+What can we compare with LRT?
 
 ```{julia}
-MixedModels.likelihoodratiotest(m_zcp_HC_L, m_cpx_HC_L)
+[objective(m_cpx_HyC) objective(m_cpx_HyC_L)]
 ```
 
-The improvement here is much larger than the one we saw for effects. Well, correlations are higher.
+Both complex LMM version yield the objective, that is same goodness of fit statistic. 
+
+However, we cannot compare the two zcpLMM versions.
+
+```{julia}
+[objective(m_zcp_HyC) objective(m_zcp_HyC_L)]
+```
+
+Thus, the LRT statistic is only valid within the same model specification. This also holds for contrasts.
 
 # Other topics
 
@@ -458,9 +469,20 @@ The choice of contrast does not affect the model objective, in other words, they
 [
   objective(m_ovi_SeqDiff),
   objective(m_ovi_Helmert),
-  objective(m_ovi_HC)
+  objective(m_ovi_HyC)
 ]
 ```
+
+How about for the m_zcp versions
+```{julia}
+[
+  objective(m_ovi_SeqDiff),
+  objective(m_ovi_Helmert),
+  objective(m_ovi_HyC)
+]
+```
+
+
 
 ## VCs and CPs depend on contrast coding
 
