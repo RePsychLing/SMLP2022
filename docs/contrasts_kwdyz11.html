@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Phillip Alday, Douglas Bates, and Reinhold Kliegl">
-<meta name="dcterms.date" content="2022-09-14">
+<meta name="dcterms.date" content="2022-09-27">
 
 <title>SMLP2022 - Contrast Coding of Visual Attention Effects</title>
 <style>
@@ -331,7 +331,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-09-14</p>
+      <p class="date">2022-09-27</p>
     </div>
   </div>
     
@@ -445,8 +445,8 @@ Predictors:
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(MixedModel, form, dat1; contrasts)</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Minimizing 203   Time: 0:00:00 ( 2.29 ms/it)
-  objective:  325809.54934736044</code></pre>
+<pre><code>Minimizing 202   Time: 0:00:00 ( 2.07 ms/it)
+  objective:  325809.5493487461</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <table class="table table-sm table-striped">
@@ -464,10 +464,10 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0918</td>
+<td style="text-align: right;">7.0914</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2033</td>
+<td style="text-align: right;">55.2001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: sod</td>
@@ -475,23 +475,23 @@ Predictors:
 <td style="text-align: right;">3.2874</td>
 <td style="text-align: right;">10.28</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2487</td>
+<td style="text-align: right;">23.2485</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">13.9852</td>
-<td style="text-align: right;">2.3057</td>
+<td style="text-align: right;">2.3056</td>
 <td style="text-align: right;">6.07</td>
 <td style="text-align: right;">&lt;1e-08</td>
-<td style="text-align: right;">10.7541</td>
+<td style="text-align: right;">10.7520</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dod</td>
 <td style="text-align: right;">-2.7470</td>
 <td style="text-align: right;">2.2142</td>
 <td style="text-align: right;">-1.24</td>
-<td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">9.5095</td>
+<td style="text-align: right;">0.2147</td>
+<td style="text-align: right;">9.5093</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -540,18 +540,18 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0915</td>
+<td style="text-align: right;">7.0910</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2013</td>
+<td style="text-align: right;">55.1977</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: spt</td>
 <td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2874</td>
+<td style="text-align: right;">3.2876</td>
 <td style="text-align: right;">10.28</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2487</td>
+<td style="text-align: right;">23.2499</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: obj</td>
@@ -559,15 +559,15 @@ Predictors:
 <td style="text-align: right;">2.3058</td>
 <td style="text-align: right;">6.07</td>
 <td style="text-align: right;">&lt;1e-08</td>
-<td style="text-align: right;">10.7548</td>
+<td style="text-align: right;">10.7556</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: grv</td>
 <td style="text-align: right;">2.7470</td>
-<td style="text-align: right;">2.2142</td>
+<td style="text-align: right;">2.2144</td>
 <td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2147</td>
-<td style="text-align: right;">9.5094</td>
+<td style="text-align: right;">0.2148</td>
+<td style="text-align: right;">9.5116</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -607,10 +607,10 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">358.0914</td>
-<td style="text-align: right;">6.1537</td>
-<td style="text-align: right;">58.19</td>
+<td style="text-align: right;">6.1516</td>
+<td style="text-align: right;">58.21</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">47.9076</td>
+<td style="text-align: right;">47.8919</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dod</td>
@@ -618,23 +618,23 @@ Predictors:
 <td style="text-align: right;">4.3644</td>
 <td style="text-align: right;">10.32</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">32.2981</td>
+<td style="text-align: right;">32.2974</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">47.7669</td>
-<td style="text-align: right;">3.5568</td>
+<td style="text-align: right;">3.5573</td>
 <td style="text-align: right;">13.43</td>
 <td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">25.5390</td>
+<td style="text-align: right;">25.5426</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2879</td>
+<td style="text-align: right;">33.7818</td>
+<td style="text-align: right;">3.2886</td>
 <td style="text-align: right;">10.27</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2524</td>
+<td style="text-align: right;">23.2586</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -682,39 +682,39 @@ Predictors:
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0914</td>
-<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">389.7335</td>
+<td style="text-align: right;">7.0691</td>
+<td style="text-align: right;">55.13</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2003</td>
+<td style="text-align: right;">55.0256</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: sod</td>
-<td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2872</td>
-<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">33.7816</td>
+<td style="text-align: right;">3.2802</td>
+<td style="text-align: right;">10.30</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2463</td>
+<td style="text-align: right;">23.1865</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">47.7669</td>
-<td style="text-align: right;">3.5563</td>
-<td style="text-align: right;">13.43</td>
+<td style="text-align: right;">3.5513</td>
+<td style="text-align: right;">13.45</td>
 <td style="text-align: right;">&lt;1e-40</td>
-<td style="text-align: right;">25.5345</td>
+<td style="text-align: right;">25.4919</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dod</td>
-<td style="text-align: right;">45.0200</td>
-<td style="text-align: right;">4.3632</td>
-<td style="text-align: right;">10.32</td>
+<td style="text-align: right;">45.0199</td>
+<td style="text-align: right;">4.3542</td>
+<td style="text-align: right;">10.34</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">32.2883</td>
+<td style="text-align: right;">32.2138</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
-<td style="text-align: right;">69.8348</td>
+<td style="text-align: right;">69.8355</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
@@ -750,10 +750,10 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0903</td>
-<td style="text-align: right;">54.97</td>
+<td style="text-align: right;">7.0908</td>
+<td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1918</td>
+<td style="text-align: right;">55.1953</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dos</td>
@@ -761,23 +761,23 @@ Predictors:
 <td style="text-align: right;">1.4403</td>
 <td style="text-align: right;">11.20</td>
 <td style="text-align: right;">&lt;1e-28</td>
-<td style="text-align: right;">7.3300</td>
+<td style="text-align: right;">7.3308</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: sod</td>
 <td style="text-align: right;">2.1396</td>
-<td style="text-align: right;">1.3340</td>
+<td style="text-align: right;">1.3338</td>
 <td style="text-align: right;">1.60</td>
 <td style="text-align: right;">0.1087</td>
-<td style="text-align: right;">6.0096</td>
+<td style="text-align: right;">6.0080</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: val</td>
 <td style="text-align: right;">-31.6422</td>
-<td style="text-align: right;">2.6420</td>
-<td style="text-align: right;">-11.98</td>
+<td style="text-align: right;">2.6424</td>
+<td style="text-align: right;">-11.97</td>
 <td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">19.9478</td>
+<td style="text-align: right;">19.9512</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -817,26 +817,26 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0928</td>
+<td style="text-align: right;">7.0931</td>
 <td style="text-align: right;">54.95</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2114</td>
+<td style="text-align: right;">55.2134</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">1.3735</td>
 <td style="text-align: right;">1.1071</td>
 <td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">4.7551</td>
+<td style="text-align: right;">0.2147</td>
+<td style="text-align: right;">4.7544</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: sod</td>
 <td style="text-align: right;">-4.2039</td>
-<td style="text-align: right;">0.6842</td>
+<td style="text-align: right;">0.6843</td>
 <td style="text-align: right;">-6.14</td>
 <td style="text-align: right;">&lt;1e-09</td>
-<td style="text-align: right;">3.3487</td>
+<td style="text-align: right;">3.3491</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: val</td>
@@ -844,7 +844,7 @@ Predictors:
 <td style="text-align: right;">0.8809</td>
 <td style="text-align: right;">-11.97</td>
 <td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">6.6515</td>
+<td style="text-align: right;">6.6508</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -887,26 +887,26 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0928</td>
+<td style="text-align: right;">7.0931</td>
 <td style="text-align: right;">54.95</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2114</td>
+<td style="text-align: right;">55.2134</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: dos</td>
 <td style="text-align: right;">1.3735</td>
 <td style="text-align: right;">1.1071</td>
 <td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">4.7551</td>
+<td style="text-align: right;">0.2147</td>
+<td style="text-align: right;">4.7544</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: sod</td>
 <td style="text-align: right;">-4.2039</td>
-<td style="text-align: right;">0.6842</td>
+<td style="text-align: right;">0.6843</td>
 <td style="text-align: right;">-6.14</td>
 <td style="text-align: right;">&lt;1e-09</td>
-<td style="text-align: right;">3.3487</td>
+<td style="text-align: right;">3.3491</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: val</td>
@@ -914,7 +914,7 @@ Predictors:
 <td style="text-align: right;">0.8809</td>
 <td style="text-align: right;">-11.97</td>
 <td style="text-align: right;">&lt;1e-32</td>
-<td style="text-align: right;">6.6515</td>
+<td style="text-align: right;">6.6508</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -969,26 +969,26 @@ Predictors:
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">389.7336</td>
-<td style="text-align: right;">7.0917</td>
+<td style="text-align: right;">7.0912</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.2026</td>
+<td style="text-align: right;">55.1986</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: A</td>
 <td style="text-align: right;">59.0052</td>
-<td style="text-align: right;">5.1824</td>
-<td style="text-align: right;">11.39</td>
+<td style="text-align: right;">5.1827</td>
+<td style="text-align: right;">11.38</td>
 <td style="text-align: right;">&lt;1e-29</td>
-<td style="text-align: right;">36.2064</td>
+<td style="text-align: right;">36.2091</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: B</td>
 <td style="text-align: right;">31.0348</td>
-<td style="text-align: right;">4.6749</td>
+<td style="text-align: right;">4.6750</td>
 <td style="text-align: right;">6.64</td>
 <td style="text-align: right;">&lt;1e-10</td>
-<td style="text-align: right;">31.7128</td>
+<td style="text-align: right;">31.7133</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: AxB</td>
@@ -996,7 +996,7 @@ Predictors:
 <td style="text-align: right;">3.0927</td>
 <td style="text-align: right;">-11.81</td>
 <td style="text-align: right;">&lt;1e-31</td>
-<td style="text-align: right;">16.0056</td>
+<td style="text-align: right;">16.0046</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>
@@ -1067,31 +1067,31 @@ Predictors:
 <td style="text-align: right;">7.0908</td>
 <td style="text-align: right;">54.96</td>
 <td style="text-align: right;">&lt;1e-99</td>
-<td style="text-align: right;">55.1955</td>
+<td style="text-align: right;">55.1961</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: do_so</td>
-<td style="text-align: right;">59.0052</td>
-<td style="text-align: right;">5.1823</td>
+<td style="text-align: right;">59.0051</td>
+<td style="text-align: right;">5.1824</td>
 <td style="text-align: right;">11.39</td>
 <td style="text-align: right;">&lt;1e-29</td>
-<td style="text-align: right;">36.2051</td>
+<td style="text-align: right;">36.2060</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CTR: spt</td>
 <td style="text-align: right;">33.7817</td>
-<td style="text-align: right;">3.2870</td>
+<td style="text-align: right;">3.2871</td>
 <td style="text-align: right;">10.28</td>
 <td style="text-align: right;">&lt;1e-24</td>
-<td style="text-align: right;">23.2454</td>
+<td style="text-align: right;">23.2462</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">CTR: grv</td>
 <td style="text-align: right;">2.7470</td>
-<td style="text-align: right;">2.2142</td>
+<td style="text-align: right;">2.2140</td>
 <td style="text-align: right;">1.24</td>
-<td style="text-align: right;">0.2148</td>
-<td style="text-align: right;">9.5096</td>
+<td style="text-align: right;">0.2147</td>
+<td style="text-align: right;">9.5068</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Residual</td>

@@ -71,7 +71,7 @@ contrasts = Dict(:spkr => EffectsCoding(),
                  :item => Grouping())
 ```
 
-The `EffectsCoding` contrast is used with these to create a ± encoding.
+The `EffectsCoding` contrast is used with these to create a ±1 encoding.
 Furthermore, `Grouping` constrasts are assigned to the `subj` and `item` factors.
 This is not a contrast per-se but an indication that these factors will be used as grouping factors for random effects and, therefore, there is no need to create a contrast matrix.
 For large numbers of levels in a grouping factor, an attempt to create a contrast matrix may cause memory overflow.
@@ -145,7 +145,7 @@ A density plot of the estimates of the standard deviation of the random effects 
 σsubjitem = subset(df, :type => ByRow(==("σ")), :group => ByRow(!=("residual")); skipmissing=true)
 
 plt = data(σsubjitem) * mapping(:value; layout=:names, color=:group) * AoG.density()
-draw(plt; axis=(;title="Parametric bootstrap estimates of variance components"))
+draw(plt; figure=(;supertitle="Parametric bootstrap estimates of variance components"))
 ```
 
 The bootstrap sample can be used to generate intervals that cover a certain percentage of the bootstrapped values.
