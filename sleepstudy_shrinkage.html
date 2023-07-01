@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.147">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The sleepstudy: Shrinkage</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="sleepstudy_shrinkage_files/libs/clipboard/clipboard.min.js"></script>
+<script src="sleepstudy_shrinkage_files/libs/quarto-html/quarto.js"></script>
+<script src="sleepstudy_shrinkage_files/libs/quarto-html/popper.min.js"></script>
+<script src="sleepstudy_shrinkage_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="sleepstudy_shrinkage_files/libs/quarto-html/anchor.min.js"></script>
+<link href="sleepstudy_shrinkage_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="sleepstudy_shrinkage_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="sleepstudy_shrinkage_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="sleepstudy_shrinkage_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="sleepstudy_shrinkage_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The sleepstudy: Shrinkage</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain              </span><span class="co"># like pipes but cleaner</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrameMacros</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModels</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsExtras</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random </span><span class="co"># we don't depend on exact PRNG vals, so no need for StableRNGs</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MixedModelsMakie</span>: confint_table</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> progress <span class="op">=</span> <span class="cn">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>false</code></pre>
+</div>
+</div>
+<section id="preprocessing" class="level1">
+<h1>Preprocessing</h1>
+<p>The <code>sleepstudy</code> data are one of the datasets available with recent versions of the <code>MixedModels</code> package. We carry out some preprocessing to have the dataframe in the desired shape:</p>
+<ul>
+<li>Capitalize random factor <code>Subj</code></li>
+<li>Compute <code>speed</code> as an alternative dependent variable from <code>reaction</code>, warranted by a ‘boxcox’ check of residuals.</li>
+<li>Create a <code>GroupedDataFrame</code> by levels of <code>Subj</code> (the original dataframe is available as <code>gdf.parent</code>, which we name <code>df</code>)</li>
+</ul>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gdf <span class="op">=</span> <span class="pp">@chain</span> MixedModels.<span class="fu">dataset</span>(<span class="op">:</span>sleepstudy) <span class="cf">begin</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  DataFrame</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename!</span>(<span class="op">:</span>subj <span class="op">=&gt;</span> <span class="op">:</span>Subj, <span class="op">:</span>days <span class="op">=&gt;</span> <span class="op">:</span>day)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="pp">@transform</span>!(<span class="op">:</span>speed <span class="op">=</span> <span class="fl">1000</span> <span class="op">/</span> <span class="op">:</span>reaction)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">groupby</span>(<span class="op">:</span>Subj)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+
+<p><b>GroupedDataFrame with 18 groups based on key: Subj</b></p><div><div style="float: left;"><span>First Group (10 rows): Subj = "S308"</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">Subj</th><th style="text-align: left;">day</th><th style="text-align: left;">reaction</th><th style="text-align: left;">speed</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String" style="text-align: left;">String</th><th title="Int8" style="text-align: left;">Int8</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">S308</td><td style="text-align: right;">0</td><td style="text-align: right;">249.56</td><td style="text-align: right;">4.00705</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">S308</td><td style="text-align: right;">1</td><td style="text-align: right;">258.705</td><td style="text-align: right;">3.86541</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">S308</td><td style="text-align: right;">2</td><td style="text-align: right;">250.801</td><td style="text-align: right;">3.98723</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">S308</td><td style="text-align: right;">3</td><td style="text-align: right;">321.44</td><td style="text-align: right;">3.111</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">S308</td><td style="text-align: right;">4</td><td style="text-align: right;">356.852</td><td style="text-align: right;">2.80228</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">S308</td><td style="text-align: right;">5</td><td style="text-align: right;">414.69</td><td style="text-align: right;">2.41144</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">S308</td><td style="text-align: right;">6</td><td style="text-align: right;">382.204</td><td style="text-align: right;">2.61641</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">S308</td><td style="text-align: right;">7</td><td style="text-align: right;">290.149</td><td style="text-align: right;">3.44651</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">S308</td><td style="text-align: right;">8</td><td style="text-align: right;">430.585</td><td style="text-align: right;">2.32242</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">S308</td><td style="text-align: right;">9</td><td style="text-align: right;">466.353</td><td style="text-align: right;">2.1443</td></tr></tbody></table></div><p>⋮</p><div><div style="float: left;"><span>Last Group (10 rows): Subj = "S372"</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">Subj</th><th style="text-align: left;">day</th><th style="text-align: left;">reaction</th><th style="text-align: left;">speed</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String" style="text-align: left;">String</th><th title="Int8" style="text-align: left;">Int8</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">S372</td><td style="text-align: right;">0</td><td style="text-align: right;">269.412</td><td style="text-align: right;">3.71179</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">S372</td><td style="text-align: right;">1</td><td style="text-align: right;">273.474</td><td style="text-align: right;">3.65665</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">S372</td><td style="text-align: right;">2</td><td style="text-align: right;">297.597</td><td style="text-align: right;">3.36025</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">S372</td><td style="text-align: right;">3</td><td style="text-align: right;">310.632</td><td style="text-align: right;">3.21925</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">S372</td><td style="text-align: right;">4</td><td style="text-align: right;">287.173</td><td style="text-align: right;">3.48223</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">S372</td><td style="text-align: right;">5</td><td style="text-align: right;">329.608</td><td style="text-align: right;">3.03391</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">S372</td><td style="text-align: right;">6</td><td style="text-align: right;">334.482</td><td style="text-align: right;">2.9897</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">S372</td><td style="text-align: right;">7</td><td style="text-align: right;">343.22</td><td style="text-align: right;">2.91358</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">S372</td><td style="text-align: right;">8</td><td style="text-align: right;">369.142</td><td style="text-align: right;">2.70899</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">S372</td><td style="text-align: right;">9</td><td style="text-align: right;">364.124</td><td style="text-align: right;">2.74632</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> gdf.parent</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+
+<div><div style="float: left;"><span>4×7 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">variable</th><th style="text-align: left;">mean</th><th style="text-align: left;">min</th><th style="text-align: left;">median</th><th style="text-align: left;">max</th><th style="text-align: left;">nmissing</th><th style="text-align: left;">eltype</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="Symbol" style="text-align: left;">Symbol</th><th title="Union{Nothing, Float64}" style="text-align: left;">Union…</th><th title="Any" style="text-align: left;">Any</th><th title="Union{Nothing, Float64}" style="text-align: left;">Union…</th><th title="Any" style="text-align: left;">Any</th><th title="Int64" style="text-align: left;">Int64</th><th title="DataType" style="text-align: left;">DataType</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">Subj</td><td style="font-style: italic; text-align: left;"></td><td style="text-align: left;">S308</td><td style="font-style: italic; text-align: left;"></td><td style="text-align: left;">S372</td><td style="text-align: right;">0</td><td style="text-align: left;">String</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">day</td><td style="text-align: left;">4.5</td><td style="text-align: left;">0</td><td style="text-align: left;">4.5</td><td style="text-align: left;">9</td><td style="text-align: right;">0</td><td style="text-align: left;">Int8</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">reaction</td><td style="text-align: left;">298.508</td><td style="text-align: left;">194.332</td><td style="text-align: left;">288.651</td><td style="text-align: left;">466.353</td><td style="text-align: right;">0</td><td style="text-align: left;">Float64</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">speed</td><td style="text-align: left;">3.46634</td><td style="text-align: left;">2.1443</td><td style="text-align: left;">3.46443</td><td style="text-align: left;">5.14583</td><td style="text-align: right;">0</td><td style="text-align: left;">Float64</td></tr></tbody></table></div>
+</div>
+</div>
+<section id="estimates-for-pooled-data" class="level2">
+<h2 class="anchored" data-anchor-id="estimates-for-pooled-data">Estimates for pooled data</h2>
+<p>In the first analysis we ignore the dependency of observations due to repeated measures from the same subjects. We pool all the data and estimate the regression of 180 speed scores on the nine days of the experiment.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pooledcoef <span class="op">=</span> <span class="fu">simplelinreg</span>(df.day, df.speed)  <span class="co"># produces a Tuple</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>(3.965811974783149, -0.110993592321997)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="lm" class="level1">
+<h1>LM</h1>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>within <span class="op">=</span> <span class="fu">combine</span>(gdf, [<span class="op">:</span>day, <span class="op">:</span>speed] <span class="op">=&gt;</span> simplelinreg <span class="op">=&gt;</span> <span class="op">:</span>coef)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+
+<div><div style="float: left;"><span>18×2 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">Subj</th><th style="text-align: left;">coef</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String" style="text-align: left;">String</th><th title="Tuple{Float64, Float64}" style="text-align: left;">Tuple…</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">S308</td><td style="text-align: left;">(3.94806, -0.194812)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">S309</td><td style="text-align: left;">(4.87022, -0.0475185)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">S310</td><td style="text-align: left;">(4.90606, -0.120054)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">S330</td><td style="text-align: left;">(3.4449, -0.0291309)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">S331</td><td style="text-align: left;">(3.47647, -0.0498047)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">S332</td><td style="text-align: left;">(3.84436, -0.105511)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">S333</td><td style="text-align: left;">(3.60159, -0.0917378)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">S334</td><td style="text-align: left;">(4.04528, -0.133527)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">S335</td><td style="text-align: left;">(3.80451, 0.0455771)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">S337</td><td style="text-align: left;">(3.34374, -0.137744)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">S349</td><td style="text-align: left;">(4.46855, -0.170885)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">S350</td><td style="text-align: left;">(4.21414, -0.20151)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">S351</td><td style="text-align: left;">(3.80469, -0.0728582)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">S352</td><td style="text-align: left;">(3.68634, -0.144957)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">S369</td><td style="text-align: left;">(3.85384, -0.120531)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">S370</td><td style="text-align: left;">(4.52679, -0.215965)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">S371</td><td style="text-align: left;">(3.853, -0.0936243)</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">18</td><td style="text-align: left;">S372</td><td style="text-align: left;">(3.69208, -0.113292)</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="lmm" class="level1">
+<h1>LMM</h1>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> <span class="fu">fit</span>(MixedModel,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>         <span class="pp">@formula</span>(speed <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> day <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> day <span class="op">|</span> Subj)), df; progress)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>m1_fe <span class="op">=</span> <span class="fu">coeftable</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="45">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Coef.</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: left;">Pr(&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.96581</td>
+<td style="text-align: right;">0.105603</td>
+<td style="text-align: right;">37.55</td>
+<td style="text-align: left;">&lt;1e-99</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">day</td>
+<td style="text-align: right;">-0.110994</td>
+<td style="text-align: right;">0.0150643</td>
+<td style="text-align: right;">-7.37</td>
+<td style="text-align: left;">&lt;1e-12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="figure-of-conditional-means-of-random-effects-given-the-data" class="level1">
+<h1>Figure of conditional means of random effects given the data</h1>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig1 <span class="op">=</span> <span class="fu">caterpillar</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="46">
+<p><img src="sleepstudy_shrinkage_files/figure-html/cell-8-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fig2 <span class="op">=</span> <span class="fu">qqcaterpillar</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<p><img src="sleepstudy_shrinkage_files/figure-html/cell-9-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig3 <span class="op">=</span> <span class="fu">shrinkageplot</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+<p><img src="sleepstudy_shrinkage_files/figure-html/cell-10-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>( <span class="st">"figures/slp_ctrpllr1.png"</span>, fig1)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>( <span class="st">"figures/slp_qqctrpllr1.png"</span>, fig2)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>( <span class="st">"figures/slp_shrkng1.png"</span>, fig3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="under-the-hood" class="level1">
+<h1>Under the hood …</h1>
+<p>Let’s take a look at the data used to generate the figures.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m1_slp_shrnkg <span class="op">=</span> <span class="fu">DataFrame</span>(<span class="fu">shrinkagetables</span>(m1)[<span class="op">:</span>Subj])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="50">
+
+<div><div style="float: left;"><span>18×3 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">Subj</th><th style="text-align: left;">(Intercept)</th><th style="text-align: left;">day</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String" style="text-align: left;">String</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">S308</td><td style="text-align: right;">0.0640783</td><td style="text-align: right;">-0.0158775</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">S309</td><td style="text-align: right;">0.0343741</td><td style="text-align: right;">0.00145061</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">S310</td><td style="text-align: right;">0.0945892</td><td style="text-align: right;">-0.0129051</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">S330</td><td style="text-align: right;">-0.112662</td><td style="text-align: right;">0.0219199</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">S331</td><td style="text-align: right;">-0.0935133</td><td style="text-align: right;">0.0175745</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">S332</td><td style="text-align: right;">-0.0155996</td><td style="text-align: right;">0.00250463</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">S333</td><td style="text-align: right;">-0.0489877</td><td style="text-align: right;">0.00803455</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">S334</td><td style="text-align: right;">0.0250651</td><td style="text-align: right;">-0.00526348</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">S335</td><td style="text-align: right;">-0.137788</td><td style="text-align: right;">0.0319937</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">S337</td><td style="text-align: right;">-0.0369017</td><td style="text-align: right;">0.00226356</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">S349</td><td style="text-align: right;">0.0937429</td><td style="text-align: right;">-0.0174678</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">S350</td><td style="text-align: right;">0.0940878</td><td style="text-align: right;">-0.0203258</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">S351</td><td style="text-align: right;">-0.044896</td><td style="text-align: right;">0.00924673</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">S352</td><td style="text-align: right;">0.000630803</td><td style="text-align: right;">-0.0031929</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">S369</td><td style="text-align: right;">-0.0029381</td><td style="text-align: right;">-0.000492726</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">S370</td><td style="text-align: right;">0.134514</td><td style="text-align: right;">-0.0268174</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">S371</td><td style="text-align: right;">-0.0241163</td><td style="text-align: right;">0.00468459</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">18</td><td style="text-align: left;">S372</td><td style="text-align: right;">-0.0236656</td><td style="text-align: right;">0.00281981</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m1_slp_shrnkgnrm <span class="op">=</span> <span class="fu">DataFrame</span>(<span class="fu">shrinkagenorm</span>(m1)[<span class="op">:</span>Subj])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+
+<div><div style="float: left;"><span>18×2 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">Subj</th><th style="text-align: left;">shrinkage</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String" style="text-align: left;">String</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">S308</td><td style="text-align: right;">0.0660161</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">S309</td><td style="text-align: right;">0.0344047</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">S310</td><td style="text-align: right;">0.0954654</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">S330</td><td style="text-align: right;">0.114775</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">S331</td><td style="text-align: right;">0.0951504</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">S332</td><td style="text-align: right;">0.0157994</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">S333</td><td style="text-align: right;">0.0496422</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">S334</td><td style="text-align: right;">0.0256118</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">S335</td><td style="text-align: right;">0.141454</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">S337</td><td style="text-align: right;">0.0369711</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">S349</td><td style="text-align: right;">0.0953565</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">S350</td><td style="text-align: right;">0.0962583</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">S351</td><td style="text-align: right;">0.0458383</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">S352</td><td style="text-align: right;">0.00325462</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">S369</td><td style="text-align: right;">0.00297913</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">S370</td><td style="text-align: right;">0.137161</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">S371</td><td style="text-align: right;">0.0245671</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">18</td><td style="text-align: left;">S372</td><td style="text-align: right;">0.023833</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m1_slp_csd <span class="op">=</span> <span class="fu">DataFrame</span>(<span class="fu">ranefinfotable</span>(<span class="fu">ranefinfo</span>(m1)[<span class="op">:</span>Subj]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="52">
+
+<div><div style="float: left;"><span>36×4 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">11 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">name</th><th style="text-align: left;">level</th><th style="text-align: left;">cmode</th><th style="text-align: left;">cstddev</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String" style="text-align: left;">String</th><th title="String" style="text-align: left;">String</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S308</td><td style="text-align: right;">-0.0818303</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S309</td><td style="text-align: right;">0.870037</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S310</td><td style="text-align: right;">0.845656</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S330</td><td style="text-align: right;">-0.408244</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S331</td><td style="text-align: right;">-0.395832</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S332</td><td style="text-align: right;">-0.105856</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S333</td><td style="text-align: right;">-0.315231</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S334</td><td style="text-align: right;">0.0544012</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S335</td><td style="text-align: right;">-0.0235164</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S337</td><td style="text-align: right;">-0.585169</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S349</td><td style="text-align: right;">0.408994</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S350</td><td style="text-align: right;">0.154244</td><td style="text-align: right;">0.140355</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">(Intercept)</td><td style="text-align: left;">S351</td><td style="text-align: right;">-0.116227</td><td style="text-align: right;">0.140355</td></tr><tr><td style="text-align: right;">⋮</td><td style="text-align: right;">⋮</td><td style="text-align: right;">⋮</td><td style="text-align: right;">⋮</td><td style="text-align: right;">⋮</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">25</td><td style="text-align: left;">day</td><td style="text-align: left;">S333</td><td style="text-align: right;">0.0112296</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">26</td><td style="text-align: left;">day</td><td style="text-align: left;">S334</td><td style="text-align: right;">-0.0172619</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">27</td><td style="text-align: left;">day</td><td style="text-align: left;">S335</td><td style="text-align: right;">0.124585</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">28</td><td style="text-align: left;">day</td><td style="text-align: left;">S337</td><td style="text-align: right;">-0.0290056</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">29</td><td style="text-align: left;">day</td><td style="text-align: left;">S349</td><td style="text-align: right;">-0.042415</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">30</td><td style="text-align: left;">day</td><td style="text-align: left;">S350</td><td style="text-align: right;">-0.0701819</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">31</td><td style="text-align: left;">day</td><td style="text-align: left;">S351</td><td style="text-align: right;">0.028897</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">32</td><td style="text-align: left;">day</td><td style="text-align: left;">S352</td><td style="text-align: right;">-0.0307619</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">33</td><td style="text-align: left;">day</td><td style="text-align: left;">S369</td><td style="text-align: right;">-0.00903683</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">34</td><td style="text-align: left;">day</td><td style="text-align: left;">S370</td><td style="text-align: right;">-0.0781459</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">35</td><td style="text-align: left;">day</td><td style="text-align: left;">S371</td><td style="text-align: right;">0.012693</td><td style="text-align: right;">0.0258053</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">36</td><td style="text-align: left;">day</td><td style="text-align: left;">S372</td><td style="text-align: right;">-0.00511008</td><td style="text-align: right;">0.0258053</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Write them out for post-processing somewhere else.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"./data/m1_shrnkg.csv"</span>, m1_slp_shrnkg);</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"./data/m1_shrnkgnrm.csv"</span>, m1_slp_shrnkgnrm);</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(<span class="st">"./data/m1_slp_csd.csv"</span>, m1_slp_csd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="53">
+<pre><code>"./data/m1_slp_csd.csv"</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

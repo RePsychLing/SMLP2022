@@ -50,7 +50,7 @@ CairoMakie.activate!(; type="svg");
 
 ```{julia}
 #| label: read_data
-dat = DataFrame(Arrow.Table("./data/Pan_RAN.arrow"));
+dat = DataFrame(Arrow.Table("./data/nobel_data.arrow"));
 describe(dat)
 ```
 
@@ -75,7 +75,7 @@ For this LMM we use the alternative set of contrasts.  Let's stay with the follo
 #| label: cpx
 
 m_cpx2 = let
-  form = @formula(ran ~ 1 +  + (1 + Scale | Reviewer))
+  form = @formula(ran ~ 1 + Cond*Scale + (1 + Scale | Reviewer))
   fit(MixedModel, form, dat; contrasts=contrasts_rk2)
 end
 display(issingular(m_cpx))

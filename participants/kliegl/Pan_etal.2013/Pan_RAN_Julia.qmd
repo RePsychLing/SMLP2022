@@ -92,7 +92,7 @@ m_lme4 <- lmer(ran ~ 1 + (Condition+Group+evs_c+gaze_c)^2 +
                           Group:Condition:evs_c + Group:Condition:gaze_c +
                           (1|Subj), data=dat, REML=FALSE,
                           control=lmerControl(calc.derivs=FALSE))
-summary(rePCA)
+summary(rePCA(m_lme4))
 print(summary(m_lme4), corr=FALSE)
 """;
 
@@ -116,6 +116,27 @@ Condition1:Group1:evs_c  -2.724253   1.100870  -2.475
 Condition1:Group1:gaze_c  0.001574   0.005864   0.268
 ```
 
+```sh
+  Fixed-effects parameters:
+─────────────────────────────────────────────────────────────────────────────────────
+                                                   Coef.  Std. Error      z  Pr(>|z|)
+─────────────────────────────────────────────────────────────────────────────────────
+(Intercept)                                  22.31        0.506332    44.06    <1e-99
+Condition: digit                             -1.34842     0.470276    -2.87    0.0041
+Group: dyslexic                               0.567621    0.528412     1.07    0.2827
+evs_c                                        -3.85985     1.51859     -2.54    0.0110
+gaze_c                                        0.0450237   0.0080528    5.59    <1e-07
+Condition: digit & Group: dyslexic           -0.934266    0.54535     -1.71    0.0867
+Condition: digit & evs_c                     -2.59559     1.68683     -1.54    0.1239
+Condition: digit & gaze_c                     0.00686115  0.00637627   1.08    0.2819
+Group: dyslexic & evs_c                       2.11741     1.72409      1.23    0.2194
+Group: dyslexic & gaze_c                     -0.0199257   0.00876629  -2.27    0.0230
+evs_c & gaze_c                               -0.104458    0.0325959   -3.20    0.0014
+Group: dyslexic & Condition: digit & evs_c    2.72426     1.10088      2.47    0.0133
+Group: dyslexic & Condition: digit & gaze_c  -0.00157401  0.00586364  -0.27    0.7884
+─────────────────────────────────────────────────────────────────────────────────────
+```
+
 ## ... with MixedModels.jl
 
 ```{julia}
@@ -137,8 +158,9 @@ m_mmjl = let
 ```{julia}
 coefnames(m_mmjl)
 cn = coefnames(m_mmjl)
-dat.CGe2 = partial_fitted(m_mmjl, vcat(cn[1:4], cn[6:7], cn[9], cn[12]), 
-                         Dict(:Subj => String[]))
+dat.CGe2 = partial_fitted(m_mmjl, 
+                          vcat(cn[1:4], cn[6:7], cn[9], cn[12]), 
+                          Dict(:Subj => String[]))
 describe(dat) 
 ```
 

@@ -1,0 +1,112 @@
+---
+title: "The sleepstudy: Shrinkage"
+jupyter: julia-1.9
+---
+
+```{julia}
+using CairoMakie
+using Chain              # like pipes but cleaner
+using CSV
+using DataFrameMacros
+using DataFrames
+using MixedModels
+using MixedModelsExtras
+using MixedModelsMakie
+using Random # we don't depend on exact PRNG vals, so no need for StableRNGs
+using Statistics
+using Test
+
+using MixedModelsMakie: confint_table
+const progress = false
+```
+
+
+# Preprocessing
+
+The `sleepstudy` data are one of the datasets available with recent versions of the `MixedModels` package. We carry out some preprocessing to have the dataframe in the desired shape:
+
+  - Capitalize random factor `Subj`
+  - Compute `speed` as an alternative dependent variable from `reaction`, warranted by a 'boxcox' check of residuals.
+  - Create a `GroupedDataFrame` by levels of `Subj` (the original dataframe is available as `gdf.parent`, which we name `df`)
+
+```{julia}
+gdf = @chain MixedModels.dataset(:sleepstudy) begin
+  DataFrame
+  rename!(:subj => :Subj, :days => :day)
+  @transform!(:speed = 1000 / :reaction)
+  groupby(:Subj)
+end
+```
+
+
+```{julia}
+df = gdf.parent
+describe(df)
+```
+
+## Estimates for pooled data
+
+In the first analysis we ignore the dependency of observations due to repeated measures from the same subjects. We pool all the data and estimate the regression of 180 speed scores on the nine days of the experiment.
+
+```{julia}
+pooledcoef = simplelinreg(df.day, df.speed)  # produces a Tuple
+```
+
+# LM
+
+```{julia}
+within = combine(gdf, [:day, :speed] => simplelinreg => :coef)
+```
+
+# LMM
+
+```{julia}
+m1 = fit(MixedModel,
+         @formula(speed ~ 1 + day + (1 + day | Subj)), df; progress)
+
+m1_fe = coeftable(m1)
+```
+
+# Figure of conditional means of random effects given the data 
+
+```{julia}
+fig1 = caterpillar(m1)
+```
+
+```{julia}
+fig2 = qqcaterpillar(m1)
+```
+
+```{julia}
+fig3 = shrinkageplot(m1)
+```
+
+```{julia}
+save( "figures/slp_ctrpllr1.png", fig1)
+save( "figures/slp_qqctrpllr1.png", fig2)
+save( "figures/slp_shrkng1.png", fig3)
+```
+
+# Under the hood ... 
+
+Let's take a look at the data used to generate the figures.
+
+```{julia}
+m1_slp_shrnkg = DataFrame(shrinkagetables(m1)[:Subj])
+```
+
+```{julia}
+m1_slp_shrnkgnrm = DataFrame(shrinkagenorm(m1)[:Subj])
+```
+
+```{julia}
+m1_slp_csd = DataFrame(ranefinfotable(ranefinfo(m1)[:Subj]))
+```
+
+Write them out for post-processing somewhere else. 
+
+```{julia}
+CSV.write("./data/m1_shrnkg.csv", m1_slp_shrnkg);
+CSV.write("./data/m1_shrnkgnrm.csv", m1_slp_shrnkgnrm);
+CSV.write("./data/m1_slp_csd.csv", m1_slp_csd)
+```

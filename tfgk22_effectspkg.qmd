@@ -1,0 +1,112 @@
+---
+title: "EMOTIKON data (2016 - 2021) with Effects package"
+format: html
+---
+
+Load packages: 
+```{julia}
+using Pkg; Pkg.activate(".")
+using Effects
+using AlgebraOfGraphics, CairoMakie, DataFrames, Effects, GLM, StatsModels, StableRNGs, RCall, MixedModels, MixedModelsMakie
+```
+
+
+Prepare data and contrasts
+```{julia}
+dat = rcopy(R"readRDS('./data/tfgk22_key.rds')");
+describe(dat)
+describe(dat.Child)
+
+dat.Covid = categorical(dat.Covid);
+levels(dat.Covid)
+dat.Sex = categorical(dat.Sex);
+levels!(dat.Sex, ["Girls", "Boys"]);
+dat.Test = categorical(dat.Test);
+levels!(dat.Test, ["Run", "Star_r", "S20_r", "SLJ", "BPT", "OLB_l"]);
+recode!(dat.Test, "Run" => "Endurance", "Star_r" => "Coordination", "S20_r" => "Speed",
+                  "SLJ" => "PowerLOW", "BPT" => "PowerUP", "OLB_l" => "Balance");
+
+# Transformations
+select!(groupby(dat, :Test), :, :score => zscore => :zScore);
+
+@transform!(dat, :a1 = :age - 8.5);
+@transform!(dat, :a2 = :a1 ^ 2);
+@transform!(dat, :c1 = :cohort - 2019.5);
+@transform!(dat, :c2 = :c1 ^ 2);
+@transform!(dat, :c3 = :c1 ^ 3);
+
+# Checks
+describe(dat)
+describe(dat.Child)
+combine(groupby(dat, :Test), :score => mean, :score => std)
+combine(groupby(dat, :Test), :zScore => mean, :zScore => std)
+
+contr = merge(
+       Dict(:Test => SeqDiffCoding() for nm in (:Test, :Sex)),
+       Dict(nm => Grouping() for nm in (:School, :Child)),
+       Dict(:Covid => DummyCoding())
+   );
+```
+
+
+Restore model (this or a slightly different model)
+```{julia}
+fb4 = @formula zScore ~ 1 + Test + Test&(Covid + a1 + Sex+c1+c2+c3) + 
+                      (1+Test+Covid | School) + zerocorr(0+Sex+a1 | School) + 
+                      (1+Test | Child);
+mb4 = LinearMixedModel(fb4, dat; contrasts=contr);
+restoreoptsum!(mb4, "./fits/tfgk22_mb4_optsum.json");
+```
+
+https://palday.github.io/MixedModelsExtras.jl/previews/PR15/api/#MixedModelsExtras.jl-API
+
+partial_fitted(model::LinearMixedModel,
+               fe::AbstractVector{<:AbstractString},
+               re::Dict{Symbol}=Dict(fn => fe for fn in fnames(model));
+               mode=:include)
+
+
+```{julia}
+coefnames(mb4)
+cn = coefnames(mb4)
+
+dat.chrt_cvd_tst = partial_fitted(mb4, vcat(cn[2:12], cn[25:42]), Dict(:Child => String[])) # no random effects
+describe(dat.chrt_cvd_tst)
+
+dat.chrt_tst = partial_fitted(mb4, vcat(cn[2:6], cn[25:42]), Dict(:Child => String[])) 
+describe(dat.chrt_tst)
+
+dat.chrt_cvd_sex_tst = partial_fitted(mb4, vcat(cn[2:12], cn[25:42]),  Dict(:Child => String[])) 
+describe(dat.chrt_cvd_sex_tst)
+
+dat.chrt_sex_tst = partial_fitted(mb4, vcat(cn[2:6], cn[19:42]), Dict(:Child => String[])) 
+describe(dat.chrt_sex_tst)
+
+dat.age_sex_tst = partial_fitted(mb4, vcat(cn[2:12], cn[25:42]), Dict(:Child => String[])) 
+describe(dat.age_sex_tst) 
+
+
+# this only gives me zeros, there is a residual function
+# dat.resid = partial_fitted(mb4, String[], Dict(:Child => String[])) 
+dat.resid = residuals(mb4)
+
+
+```
+
+
+
+This gives predictions with these fixed effects for typical values
+https://docs.juliahub.com/Effects/qason/0.1.6/
+```{julia}
+design = Dict(:Test => ["Endurance", "Coordination", "Speed", "PowerLOW", "PowerUP", "Balance"], 
+              :c1 => unique(dat.c1),
+              :c2 => unique(dat.c2),
+              :c3 => unique(dat.c3),
+              :Covid => unique(dat.Covid),
+              :Sex => unique(dat.Sex),
+              :a1 => [0.0])
+zeroed(x) = zero(eltype(x)) # it cancels out Sex of interaction
+preds = effects(design, mb4; typical=zeroed) # here, Sex (boys, girls) is still included
+
+preds_averaged_across_sex = combine(groupby(preds, [:c3, :Covid, :Test, :a1, :c1, :c2]), :zScore => mean, :err => (x -> sqrt(sum(abs2, x))); renamecols=false) # mean across girls and boys with pooled standard error
+```
