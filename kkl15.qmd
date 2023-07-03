@@ -564,6 +564,125 @@ The three remaining CPs are not well defined for log-transformed reaction times;
 It is also possible that fitting the complex experimental design (including target size and rectangle orientation) will lead to more acceptable estimates.
 The corresponding plot based on LMM `m1_rt` for raw reaction times still shows them with very wide distributions, but acceptable.
 
+# Profiling
+
+## KKL
+
+```{julia}
+coeftable(m1)
+VarCorr(m1)
+m1_bak = m1;
+m1_prf=profile(m1)
+
+coeftable(m1L)
+VarCorr(m1L_bak)
+m1L_bak = m1L;
+m1L_prf=profile(m1L)
+```
+
+## Example 
+
+https://dmbates.quarto.pub/plotting-profiles/#the-penicillin-example
+
+```{julia}
+using BSplineKit
+include(pkgdir(MixedModels, "test", "modelcache.jl"));
+```
+This works, ...
+
+```{julia}
+slpr01 = profile(models(:sleepstudy)[1]);
+show(slpr01.m)
+Table(slpr01.tbl)
+
+slpr02 = profile(models(:sleepstudy)[2]);
+show(slpr02.m)
+Table(slpr02.tbl)
+
+slpr03 = profile(models(:sleepstudy)[3]);
+show(slpr03.m)
+Table(slpr03.tbl)
+
+slpr04 = profile(models(:sleepstudy)[4]);
+show(slpr04.m)
+Table(slpr04.tbl)
+```
+
+```{julia}
+function fwdspline(pr::MixedModelProfile, par::Symbol)
+    spl = pr.fwd[par]
+    xv = spl.x
+    yv = spl.(xv)
+    minv = findmin(abs, yv)
+    est = xv[last(minv)]
+    slope = (Derivative(1) * spl)(est)
+    return (; spl, xv, yv, slope, intercept = first(minv) - slope * est)
+end
+
+```
+
+
+```{julia}
+let
+    f = Figure(; resolution=(700,600))
+    ax = Axis(f[1,1]; xlabel = "θ₁", ylabel="ζ")
+    (; spl, xv, yv, slope, intercept) = fwdspline(slpr03, :θ1)
+    lines!(ax, first(xv) .. last(xv), identity ∘ spl;)
+    scatter!(ax, xv, yv)
+    ablines!(ax, intercept, slope)
+    f
+end
+```
+
+We see that in both cases the profile  function is concave down over the region of interest. The ideal situation is for the profile  to be close to a straight line suggesting a transformation like the square root.
+
+
+```{julia}
+let
+    f = Figure(; resolution=(700,600))
+    ax = Axis(f[1,1]; xlabel = "√θ₂", ylabel="ζ")
+    (; spl, xv, yv) = fwdspline(slpr03, :θ2)
+    lines!(ax, sqrt(first(xv) + sqrt(eps())) .. sqrt(last(xv)), spl ∘ abs2;)
+    scatter!(ax, sqrt.(xv), yv)
+    f
+end
+```
+
+Although it is tempting to use a logarithmic transformation of the theta parameter instead of the square root, we must allow the  theta parameters to take on the value of zero, which is not possible when using a logarithmic transformation.
+
+```{julia}
+function extractzeta(pr::MixedModelProfile)
+    (; tbl, fwd) = pr
+    tbl = Table(tbl)
+    rounddownabs(x) = (abs(x) < 1.0e-5 ? 0. : x)
+    pnms = sort!(collect(keys(fwd)))
+    ptbl = NamedTuple{(pnms...,)}(ntuple(length(pnms)) do i
+        k = pnms[i]
+        rounddownabs.(fwd[k].(getproperty(tbl, k)))
+    end
+    )
+
+    Table(merge((; p=tbl.p), ptbl))
+end
+```
+
+
+```{julia}
+slpr03zeta = extractzeta(slpr03)
+```
+
+
+```{julia}
+let
+    f = Figure(; resolution=(700, 700))
+    ax = Axis(f[1,1]; aspect = 1, xlabel="ζ(θ₁)", ylabel="ζ(θ₂)")
+    tbl = filter(r -> r.p == :θ1, slpr03zeta)
+    scatterlines!(ax, tbl.θ1, tbl.θ2)
+    tbl = filter(r -> r.p == :θ2, slpr03zeta)
+    scatterlines!(ax, tbl.θ1, tbl.θ2)
+    f
+end
+```
 # References
 
 ::: {#refs}
