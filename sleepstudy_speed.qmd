@@ -1,6 +1,6 @@
 ---
 title: "The sleepstudy: Speed - for a change ..."
-jupyter: julia-1.8
+jupyter: julia-1.9
 ---
 
 ## Background

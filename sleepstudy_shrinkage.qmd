@@ -108,5 +108,5 @@ Write them out for post-processing somewhere else.
 ```{julia}
 CSV.write("./data/m1_shrnkg.csv", m1_slp_shrnkg);
 CSV.write("./data/m1_shrnkgnrm.csv", m1_slp_shrnkgnrm);
-CSV.write("./data/m1_slp_csd.csv", m1_slp_csd)
+CSV.write("./data/m1_slp_csd.csv", m1_slp_csd);
 ```
